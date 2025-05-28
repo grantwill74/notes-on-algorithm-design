@@ -2,8 +2,10 @@
 If you notice an error or have a suggestion for how to improve the wording or
 graphics of a slide or other class material, please submit a pull request.
 
-# License of contributions and modifications
-By opening a pull request, you assert implicitly that you own the copyright to the material being submitted and hereby grant me a license to your contributions under CC BY-SA 4.0.
+# Copyright of contributions and modifications
+By opening a pull request, you assert implicitly that you own the copyright to
+the material being submitted and hereby grant me a license to your contributions
+under CC BY-SA 4.0. Note that this license is non-revokable.
 
 If you do not own the copyright and are including material created by
 others, please state this in the pull request so that we can determine
