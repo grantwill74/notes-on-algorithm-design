@@ -25,6 +25,26 @@ if the material can be included.
 > your real name; but if you choose to, that’s your decision and I’ll gladly
 > credit you.
 
+# Slides
+These lecture notes are mostly written in [Marp](https://marp.app/). Marp is
+a technology for writing presentations in Markdown. Using Marp over
+Powerpoint or LibreOffice Impress has a number of advantages:
+
+1. Ease of writing: writing a new text slide is a bit faster,
+    and doesn't require any complex layout.
+2. Ease of contributing: slide decks can be remixed and merged using existing
+    text workflows.
+3. Accessibility: text flow and tab-order works the way you expect, aiding 
+    screen narration. For other accessibility concerns, the raw text is
+    actually human readable, unlike binary or XML presentation formats.
+
+Please make slide contributions in MARP, and integrate them into the existing
+marp documents (or createa a new one if suggesting an entirely new module).
+
+Eventually, I intend to create a CI/CD pipeline that builds the PDFs from the
+latest marp sourcecode, but until I do that, please manually include updated
+PDFs in your PRs.
+
 # Graphics
 Please use SVG graphics whenever possible (e.g., for tree/graph diagrams). For
 things that cannot use SVG graphics, raster graphics are okay. Please
@@ -33,10 +53,10 @@ always include alt-text for any graphical submissions.
 When using SVG graphics, please use mermaid, which is a
 markdown-based language for describing diagrams, wherever possible. 
 
-[Mermade Live Editor](https://mermaid.live/edit) is useful for generating
+[Mermaid Live Editor](https://mermaid.live/edit) is useful for generating
 SVG graphics with textual data.
 
 If you use mermaid to generate graphics, please
 also include the source code for the diagram in markdown comments
-(using \<!-- ... --\>)  in the relevant slide.
+(using \<!-- ... --\>)  in the relevant slide. I wish it were possible to directly incorporate mermaid diagrams, but this doesn't seem like something that Marp will support.
 
