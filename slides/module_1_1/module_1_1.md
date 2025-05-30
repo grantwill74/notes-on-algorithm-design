@@ -516,6 +516,7 @@ b(int*p){*p=7;}
 
 ---
 
-# Unworked practice
+# Practice 3
 
-1. Create 5 procedures where each one violates a different one of Knuth's rules but satisfies the others. For example, one that breaks rule 1 but satisfies rules 2-5; one that breaks rule 2 but satisfies rules 1, 2, 4, and 5; etc. These procedures can be in English or any other language, it doesn't have to be C or a formal language.
+Create 5 procedures where each one violates a different one of Knuth's rules but satisfies the others. For example, one that breaks rule 1 but satisfies rules 2-5; one that breaks rule 2 but satisfies rules 1, 2, 4, and 5; etc. These procedures can be in English or any other language, it doesn't have to be C or a formal language.
+
