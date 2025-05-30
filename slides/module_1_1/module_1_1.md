@@ -7,7 +7,7 @@ paginate: true
 
 # Design and Analysis of Algorithms  
 
-## Module 1: Introduction
+## Module 1-1: Introduction
 
 <br>
 <br>
@@ -365,7 +365,7 @@ There do exist excused withdrawals for specific circumstances that are permitted
 
 Quizzes and exams will be pen and paper, but open book and notes.
 
-You can bring any code-of-conduct-conforming written, drawn, or printed material to exams.
+You can bring any code-of-conduct-conforming written, drawn, or printed material.
 
 No electronic devices will be permitted. Phones must be off.
 
@@ -409,9 +409,11 @@ The rest of the class will not unlock until you have gotten 100% on the syllabus
 
 This means you will not be able to submit assignments, or receive credit for quizzes or tests, and you will end up with late penalties if you wait too long.
 
-The syllabus quiz is open for a couple of weeks because the drop/add deadline hasn't closed, but there's no reason to wait. It's open book with unlimited attempts. Do it with the syllabus open right there in another tab.
+The syllabus quiz is open for a couple of weeks because the drop/add deadline hasn't closed, but there's no reason to wait.
 
-Because of this quiz, I am allowed to assume that you read and understood the syllabus. 
+It's open book with unlimited attempts. Do it with the syllabus open right there in another tab.
+
+Because of this quiz, I may assume that you read and understood the syllabus. 
 
 ---
 
@@ -423,7 +425,7 @@ However, the quiz requires you to certify that you did it totally by yourself, w
 
 If you later get in trouble, either with grades or with class policy, you cannot use "I never read the syllabus" as an excuse without admitting to academic dishonesty.
 
-Please forgive the litigousness with which I am treating this subject. The rest of the class won't be like this, I promise. I just really need you to read the syllabus, especially because it's so different from previous semesters'. The whole standards-based grading is completely new for me.
+Please forgive the litigousness with which I am treating this subject. The rest of the class won't be like this, I promise. I just really need you to read the syllabus, especially because it's so different from previous semesters'. The whole standards-based grading is completely new for me and for many of you.
 
 --- 
 <!-- _class: questions invert -->
@@ -458,7 +460,7 @@ void do_nothing_forever() {
         ; // [3] do nothing
 }
 ```
-The question: **what are the reason(s) this procedure is not an algorithm?**
+The question: **what is/are the reason(s) this procedure is not an algorithm?**
 
 <div class="footnote">
 [1]: As you know, this is called a "function" in C. However, functions in C are procedures. 
