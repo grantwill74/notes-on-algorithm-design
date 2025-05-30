@@ -526,3 +526,21 @@ Create or imagine a procedure that is actually useful, but is *not* an algorithm
 What would you have to do to *make* it be an algorithm?
 
 Would it still be useful if you did?
+
+---
+
+# Practice 5: the oldest algorithm
+
+What do you think the oldest algorithm is? 
+
+---
+
+# Practice 5 discussion
+
+The earliest known published algorithm written *for a computer* is "[Note G](https://en.wikipedia.org/wiki/Note_G)", by Ada Lovelace.
+
+However, algorithms don't have to be for a computer. Knuth was careful to base his definition of effectiveness on someone using pencil and paper.
+
+The earliest published procedure that is definitely an algorithm is probably [Ancient Egyptian Multiplication](https://en.wikipedia.org/wiki/Ancient_Egyptian_multiplication) (2000 to 1700 BC). It's actually a cool algorithm for a computer scientist to know because it's based on decomposing an integer into powers of two.
+
+However, algorithms don't have to be published either. So the true earliest algorithm is probably a recipe or religious ritual.
