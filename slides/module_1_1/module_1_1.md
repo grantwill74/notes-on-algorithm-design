@@ -1,20 +1,9 @@
 ---
 marp: true
-theme: default
+theme: slides
 paginate: true
 
 ---
-
-<style>
-.footnote {
-    font-size: 60%;
-}
-
-section.questions h1 {
-    text-align: center;
-}
-</style>
-
 
 # Design and Analysis of Algorithms  
 
