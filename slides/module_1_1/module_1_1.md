@@ -374,15 +374,21 @@ There do exist excused withdrawals for specific circumstances that are permitted
 
 # Quiz and exam format
 
-Quizzes and exams will be pen and paper, but open book and notes. You can bring any code-of-conduct-conforming written, drawn, or printed material to exams.
+Quizzes and exams will be pen and paper, but open book and notes.
+
+You can bring any code-of-conduct-conforming written, drawn, or printed material to exams.
 
 No electronic devices will be permitted. Phones must be off.
 
 If you need access to an electronic device for accessibility reasons, please contact the access center right away. I will ensure that all quizzes and exams are made available to you to be proctored at the access center.
 
+---
+
+# Quiz and exam format (2)
+
 **Be careful**, just because an exam is open-book does not mean it is easy. You will need to study and practice to make sure you can finsh in time.
 
-If you aren't practicing in the exam format (i.e., pen/pencil and paper under a time limit for most of you) then you aren't fully studying.
+If you aren't practicing in the exam format (i.e., pen/pencil and paper under a time limit) then you aren't fully studying.
 
 ---
 
