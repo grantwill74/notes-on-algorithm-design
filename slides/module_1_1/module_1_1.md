@@ -79,7 +79,7 @@ Understanding this is important. You want to have an immediate gut-check when ce
 
 ---
 
-# Donald Knuth's Definition
+# A rigorous definition by Donald Knuth
 An algorithm is a procedure with the following properties:
 1. Finiteness: it terminates after a finite number of steps.
 2. Definiteness: each step is precisely defined.
