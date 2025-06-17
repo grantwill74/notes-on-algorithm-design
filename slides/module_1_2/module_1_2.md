@@ -2,7 +2,6 @@
 marp: true
 theme: slides
 paginate: true
-math: true
 ---
 
 # Design and Analysis of Algorithms  
@@ -559,16 +558,17 @@ Try writing a math expression for $T_{total}$
 
 # Total time
 
-$T_{total}= {\large\sum}_{i=1}^I{(130i)}=130\times{\large\sum}_{i=1}^I{i}=130\times {{i (i + 1)} \over 2}$
+$T_{total}= {\large\sum}_{i=2}^I{(130i)}=130\times{\large\sum}_{i=1}^I{i}=130\times {{i (i + 1)} \over 2}$
 
 I recall something like 10,000 instruments. How many time units is that?
 
-$T_{total}= {130\times10,000(10,000 + 1) \over 2}≈6.5$ billion units
+$T_{total}= {130\times10{,}000(10{,}000 + 1) \over 2}≈6.5$ billion units
 
 If each unit took a microsecond (because it was running in a slowly interpreted proprietary language on a slow computer), that's about $108$ minutes.
 
 <div class="footnote">
-*We're using the identity that sum(i = 1, n) = i*(i+1)/2
+
+\* We're using the identity that $\sum_{i=1}^i = {i*(i+1)\over 2}$
  
 </div>
 

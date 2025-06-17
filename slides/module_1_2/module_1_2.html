@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>module_1_2</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="design-and-analysis-of-algorithms">Design and Analysis of
+Algorithms</h1>
+<h2 id="module-1-2-introduction">Module 1-2: Introduction</h2>
+<p><br> <br></p>
+<p>Slides © Grant Williams, <a
+href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
+4.0</a>.</p>
+<p><br></p>
+<p>This is an open educational resource. Submit fixes, improvements, and
+new material <a
+href="https://github.com/grantwill74/notes-on-algorithm-design">here</a>.</p>
+<hr />
+<h1 id="welcome-back">Welcome back!</h1>
+<p>Last class was mostly syllabus day, but we still learned important
+things about what an algorithm <em>is</em>.</p>
+<p>Let’s see how much you can recall. This is a <em>fake quiz</em>.</p>
+<p>Try doing it with pen and paper.</p>
+<p>Remember, this is how you will have to do the real quizzes!</p>
+<hr />
+<h1 id="fake-quiz">Fake Quiz</h1>
+<p><strong>Q1</strong>: Is this procedure an algorithm? Why or why
+not?</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> factorial<span class="op">(</span><span class="dt">unsigned</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n <span class="op">*</span> factorial<span class="op">(</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Q2</strong>: What is a small change you could make to change
+that. <em>I.e., if it is an algorithm, to make it not one; if not, to
+make it one.</em></p>
+<hr />
+<h1 id="intended-answers">Intended answers</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> factorial<span class="op">(</span><span class="dt">unsigned</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n <span class="op">*</span> factorial<span class="op">(</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Yes, this is an algorithm. Let’s consider the important points:</p>
+<ul>
+<li>It definitely terminates. We get closer to the base case (i.e., make
+progress) with every recursive call.</li>
+<li>Each operation is well defined by the C standard, including
+overflow.</li>
+<li>There is one input, and the output clearly depends on it.</li>
+<li>We know how to do each operation and each can be carried out in
+finite time.</li>
+</ul>
+<hr />
+<h1 id="intended-answers-2">Intended answers (2)</h1>
+<p>How would we change it to not be an algorithm? There are many
+answers. Consider this one:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> factorial<span class="op">(</span><span class="dt">unsigned</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n <span class="op">*</span> factorial<span class="op">(</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>I removed the base case. Now it makes a recursive call
+unconditionally.</p>
+<p>There are some tricky ways to answer this wrongly, though…</p>
+<hr />
+<h1 id="surprising-wrong-answer">Surprising wrong answer</h1>
+<p>Suppose we did this instead?</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> factorial<span class="op">(</span><span class="dt">unsigned</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">==</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span>  <span class="co">// now it&#39;s == instead of &lt;=</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n <span class="op">*</span> factorial<span class="op">(</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<ul>
+<li>Would <code>factorial(0)</code> terminate?</li>
+<li>Actually, it would. <code>factorial(n - 1)</code> would become
+<code>factorial(0xFFFFFFFF)</code>. This is defined behavior. Eventually
+it would work its way back down to n == 1 and terminate.</li>
+<li>However, signed overflow is actually undefined behavior, which is
+why we made it ‘unsigned’</li>
+</ul>
+<hr />
+<h1 id="surprising-wrong-answer-2">Surprising wrong answer (2)</h1>
+<p>So it’s actually still an algorithm.</p>
+<p>But wait it gives the wrong answer! And also, it doesn’t work for n
+&gt; 12! It overflows!</p>
+<p>Believe it or not: that doesn’t make it stop being an algorithm.
+Algorithms can be incorrect.</p>
+<p>However, if we made the unsigned int a signed int, then it would not
+be an algorithm, because every operation would not be defined. In the C
+standard, signed overflow is undefined behavior.</p>
+<hr />
+<h1 id="some-reassurance">Some reassurance</h1>
+<p>Don’t worry, you aren’t expected to memorize the C standard.</p>
+<p>However, you are expected to have a coherent hypothesis of what will
+happen when you do something, and be able to explain it.</p>
+<p>I.e., “if I subtract 1, it will wrap around when it hits zero” is one
+reasonable hypothesis. “It will crash” is another reasonable
+hypothesis.</p>
+<p>If you don’t have such a hypothesis, then the operation becomes
+undefined behavior. That’s the kind of thing that will lose you
+points.</p>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions">Questions?</h1>
+<hr />
+<h1 id="standard-based-learning">Standard-based learning</h1>
+<p>Like I mentioned before, this class will follow a standard-based
+learning approach.</p>
+<p>That means that there will be certain skills that you are expected to
+master, and you will be given multiple attempts to demonstrate mastery
+of each one.</p>
+<p>There are 8: 4 before the midterm and 4 after.</p>
+<p>Let’s learn what these areas will be!</p>
+<hr />
+<h1 id="before-the-midterm">Before the midterm</h1>
+<ol type="1">
+<li>You will be able to understand Bachmann-Landau notation (i.e.,
+Big-O, Big-ϴ, small-o, etc.). You will be able to demonstrate this
+understanding by proving that algorithms have a given runtime
+bound.</li>
+<li>You will be able to implement and analyze a self-balancing tree,
+specifically a scapegoat tree, modify it to fit problem-specific
+constraints, and compare it to the performance of other data
+structures.</li>
+<li>You will be able to design and implement a custom sorting algorithm
+that exceeds the speed of standard sorting algorithms on data with
+certain characteristics.</li>
+<li>You will learn about complexity categories, such as P, NP, and
+NP-complete. You will learn how to determine and prove which category a
+problem belongs to.</li>
+</ol>
+<hr />
+<h1 id="after-the-midterm">After the midterm</h1>
+<ol start="5" type="1">
+<li>You will be able to identify when a greedy algorithm is appropriate
+and design one.</li>
+<li>You will be able to recognize when pre-computation is appropriate,
+and will demonstate the <em>prefix-sums</em> technique.</li>
+<li>You will be able to recognize when to use full dynamic programming,
+and to solve a dynamic programming problem with a reasonable technique
+(such as memoization).</li>
+<li>You will be able to work with graphs. You will demonstrate the
+algorithm design technique of “graph modelling”, and implement an
+algorithm using this technique.</li>
+</ol>
+<hr />
+<h1 id="short-modules">Short modules</h1>
+<p>In addition, there are some shorter modules that cover interesting
+information you haven’t seen in other classes, such as: 1. How to make a
+blazingly fast memory-allocator, and the issues with garbage collection
+and less structured allocators like malloc and free. 2. How b-trees
+work, why they’re so fast, and why they are Rust’s sorted dictionary. 3.
+Some basic number theory, so you can solve a common kind of technical
+interview and competitive programming problem.</p>
+<p>These aren’t specifically measured by standards, but they might show
+up in the other problems, and they are still important to learn.</p>
+<hr />
+<h1 id="remember-the-name-of-this-class">Remember the name of this
+class…</h1>
+<p>It’s not “algorithms” or “algorithms and data structures”.</p>
+<p>It’s <em>design</em> and <em>analysis</em> of algorithms.</p>
+<p>We will be making custom algorithms to solve specific problems. We
+will be applying tools of mathematical analysis on these algorithms to
+prove that they have certain properties.</p>
+<p>So this class is a little creative and a little mathy.</p>
+<p>Don’t be afraid: my hope is that proofs (especially inductive ones)
+will really <em>click</em> in this class. They will be easier and
+shorter than you think!</p>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-1">Questions?</h1>
+<hr />
+<h1 id="the-language">The Language</h1>
+<p>In the past, I allowed any language.</p>
+<p>The point was the algorithms, not the specific language used to
+implement them.</p>
+<p>Besides, it is a fun growth opportunity for students who found the
+class easy to try learning a new language.</p>
+<p>But with some experience teaching, my perspective changed a bit.</p>
+<hr />
+<h1 id="systems-languages">Systems languages</h1>
+<p>I realized that you cannot separate analysis of an algorithm from the
+fundamental time and space constraints of the system it runs on.</p>
+<p>We’ll see an example later of how the choice of programming language
+completely changes the mathematical properties of the runtime
+performance.</p>
+<p>The issue is that application languages, especially those with
+garbage collection and immutable strings, hide some very important
+performance considerations.</p>
+<p>Therefore, I made a rule that the language had to be a system
+language. Specifically, C, C++, or Rust, with special permission for
+other systems languages (like Zig or Odin).</p>
+<hr />
+<h1 id="what-is-a-systems-language">What is a systems language?</h1>
+<p>What makes a language a <em>systems language</em>?</p>
+<p>[What do you think?]</p>
+<hr />
+<h1 id="what-a-systems-language-is">What a systems language is</h1>
+<p>It’s a language that was mainly designed for writing <em>system
+software</em>.</p>
+<p>E.g., things like drivers, the OS kernel, and in general, things that
+need to be fast.</p>
+<p>How does that influence the design of the language?</p>
+<p>I.e., [what are some things that systems languages have in
+common?]</p>
+<hr />
+<h1 id="properties-of-systems-languages">Properties of systems
+languages</h1>
+<ul>
+<li>They usually don’t have a runtime.</li>
+<li>[What’s a runtime and [why does, say, <em>Python</em> have one but
+not <em>Rust</em>]?</li>
+<li>If you need to write an OS kernel, you can’t rely on other programs,
+including a runtime.</li>
+<li>Who would load it? The kernel that was written in a language that
+requires a runtime?</li>
+<li>At some point there needs to be a raw executable that just
+<em>runs</em> without needing any other software to be present.</li>
+</ul>
+<hr />
+<h1 id="properties-of-systems-languages-2">Properties of systems
+languages (2)</h1>
+<ul>
+<li>They usually do not have garbage collectors, or if they do, it can
+be turned off.</li>
+<li>[Why would that matter?]</li>
+<li>Garbage collectors typically require a runtime. Otherwise, they
+bloat the executable. They also create unpredictable performance
+characteristics.</li>
+<li>Either the garbage collector stops the world, or it runs in other
+threads that need to lock and synchronize.</li>
+<li>Therefore, GCs add a <em>non-trivial</em> amount of performance
+overhead.</li>
+</ul>
+<hr />
+<h1 id="properties-of-systems-languages-3">Properties of systems
+languages (3)</h1>
+<p>Systems languages are usually <em>fast</em>.</p>
+<p>That does not mean that every program written in a systems language
+will be faster than one written in an applications language. It’s
+possible to write slow code in a fast language (especially when more
+complex data structures like strings are involved)</p>
+<p>Systems languages give you <em>control</em>.</p>
+<p>You typically only pay for what you use. The language does not add
+features that have a performance impact unless you want it.</p>
+<hr />
+<h1 id="the-value-of-systems-languages">The value of systems
+languages</h1>
+<p>Therefore, using a systems language is very useful.</p>
+<p>You will be forced to think about everything the computer is
+doing.</p>
+<p>You will be forced to make performance decisions at a reasonably low
+level, although still not the lowest… <small>(<em>laughs in
+assembly</em>)</small></p>
+<hr />
+<h1 id="which-systems-language"><em>Which</em> systems language?</h1>
+<p>As I said, in the past I allowed many.</p>
+<p>The problem is, some choices still allowed performance bugs to
+hide.</p>
+<p>For example, C++ and Rust allow you to write very slow code without
+realizing it.</p>
+<p>Realizing it requires experience. Why do we always pass strings by
+reference in C++? Why do we use AsRef&lt;str&gt; in Rust? If you don’t
+know, you might write code that is slower than Java or Python in
+so-called “fast” languages.</p>
+<p>These are not things that you will pick up on your own; they would
+have to be covered in class. Valuable info, but something that really
+should be in an systems class.</p>
+<hr />
+<h1 id="the-language-will-be-c">The language will be C</h1>
+<p>We will use C for this class.</p>
+<p>Only C. No exceptions.</p>
+<p>C is very low level. It does not have any built-in data structures
+except for arrays.</p>
+<p>Every expensive operation requires a function call. There will be no
+surprises. It will actually make the analysis easier to know, e.g., when
+a string copy is happening vs. a pointer assignment.</p>
+<p>We are going to make sure we understand our algorithms at both high
+and low levels.</p>
+<p>Besides, more practice with pointers and manual memory management
+won’t hurt.</p>
+<hr />
+<!-- _class: questions invert -->
+<h1 id="questions-2">Questions?</h1>
+<hr />
+<h1 id="why-study-algorithms-to-this-level">Why study algorithms to this
+level?</h1>
+<p>Haven’t they already created the algorithms for us?</p>
+<p>Lots of algorithms have been created. Many more will be created in
+the future.</p>
+<p>But it’s rare that you can just use an algorithm without <em>any</em>
+customization at all.</p>
+<p>That would imply that the whole problem is just a function call
+away.</p>
+<hr />
+<h1 id="why-study-algorithms-to-this-level-2">Why study algorithms to
+this level? (2)</h1>
+<p>You are being trained to be a computer scientist, not just a
+programmer.</p>
+<p>A computer scientist is a mix between a mathematician and an
+engineer. They are skilled at problem solving in the abstract.</p>
+<p>You aren’t just here to implement someone else’s algorithm. You are
+meant to learn the field deeply enough to be able to make your own.</p>
+<p>And not just make them, but prove that they are suitable for a given
+purpose.</p>
+<hr />
+<h1 id="an-example">An example</h1>
+<p>To show you why these skills are important, I want to show you a
+version of an algorithm that I stumbled across in the industry.</p>
+<p>It has a serious bug that isn’t obvious, and requires some knowledge
+of the underlying language and algorithmic analysis to see.</p>
+<p>However, it’s simple enough to understand if those problems are
+pointed out.</p>
+<p>First, let me set the stage by explaining what this software was
+meant to do…</p>
+<hr />
+<h1 id="the-report-generator">The report generator</h1>
+<p>Briefly, I worked at a chemical plant as an automation engineer.</p>
+<p>There was a push to improve monitoring of alarms and anomalous
+events, so engineers were asked to generate reports about them.</p>
+<p>The report would have a list of instruments and the number of alarms
+and other events that occurred in a given month.</p>
+<p>To avoid having to manually compile this report from the database
+every month, it was important that the process be automated.</p>
+<hr />
+<h1 id="how-it-was-supposed-to-work">How it was supposed to work</h1>
+<p>The generator was supposed to do the following: - allow the user to
+enter a date range - for each instrument, query the database to
+determine the number of alarms, warnings, and notifications it had
+generated in that range. - then, generate a table summarizing this
+information as a CSV file*.</p>
+<p>Very straightforward. It could be implemented straightforwardly as an
+Excel macro.</p>
+<div class="footnote">
+<ul>
+<li>CSV means “comma separated value. It’s a simple spereadsheet data
+format where each cell’s data is separated by a comma. It’s supported by
+Excel and allows you to generate spreadsheets without needing a
+complicated DOCX library. I strongly recommend learning it if you
+haven’t yet.</li>
+</ul>
+</div>
+<hr />
+<h1 id="my-instructions">My instructions</h1>
+<p>I was told to speak to the engineer at another unit. They already had
+a report generator.</p>
+<p>The engineer was happy to show it off. We sat down to talk. They
+started the report generation process and we had a long conversation
+about other things while we waited…</p>
+<p>About 30 minutes later, it occurred to me that the process should
+have finished by now…</p>
+<p>I was told, “no, it will be another 90 minutes or so. Let’s grab
+lunch!”</p>
+<hr />
+<h1 id="hang-on-a-second">Hang on a second…</h1>
+<p>Generating some reports should not take 2 whole hours.</p>
+<p>It’s a nice feature that it gave me an excuse to get lunch, but that
+was not intentional.</p>
+<p>I asked to take a look at the source code to figure out what was
+taking so long. The engineer who maintained it (a different one) was
+somewhat offended, but they gave in.</p>
+<p>What I’m about to show you is a small, explanatory snippet, written
+in Java* designed to express how it worked.</p>
+<p>Try your best to find the performance bug!</p>
+<div class="footnote">
+<ul>
+<li>The program was originally written writen in a Janky proprietary
+language that no one uses anymore.**</li>
+</ul>
+<p>** Most of the software in the plant was written in and for janky
+proprietary systems. We used like 3 different versions of Unix across
+different units</p>
+</div>
+<hr />
+<h1 id="the-code">The code</h1>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="bu">String</span> <span class="fu">generateReportCsv</span><span class="op">(</span><span class="bu">Date</span> start<span class="op">,</span> <span class="bu">Date</span> end<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    InstrumentEvents<span class="op">[]</span> instrumentEvents <span class="op">=</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        Db<span class="op">.</span><span class="fu">queryInstrumentEvents</span><span class="op">(</span>start<span class="op">,</span> end<span class="op">);</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">String</span> result <span class="op">=</span> <span class="st">&quot;&quot;</span><span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">var</span> inst <span class="op">:</span> instrumentEvents<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        result <span class="op">+=</span> inst<span class="op">.</span><span class="fu">name</span> <span class="op">+</span> <span class="st">&quot;,&quot;</span><span class="op">;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        result <span class="op">+=</span> inst<span class="op">.</span><span class="fu">nAlarms</span> <span class="op">+</span> <span class="st">&quot;,&quot;</span><span class="op">;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        result <span class="op">+=</span> inst<span class="op">.</span><span class="fu">nWarnings</span> <span class="op">+</span> <span class="st">&quot;,&quot;</span><span class="op">;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        result <span class="op">+=</span> inst<span class="op">.</span><span class="fu">nNotifications</span> <span class="op">+</span> <span class="st">&quot;,&quot;</span><span class="op">;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        result <span class="op">+=</span> <span class="st">&quot;,,&quot;</span><span class="op">;</span> <span class="co">// double commas mean end of row</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result<span class="op">;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Try to find what could be making this extremely slow.</p>
+<hr />
+<h1 id="the-bug">The bug</h1>
+<p>The reason I picked Java is that it has the same string semantics as
+the proprietary language the report generator was originally written
+in.</p>
+<p>Specifically, strings are immutable.</p>
+<p>There are good reasons to make strings be immutable.</p>
+<p>However, it poses a problem when we use the “+=” operator…</p>
+<hr />
+<h1 id="concatenating-strings">Concatenating strings</h1>
+<p>Just because the operator for concatenating strings is
+<code>+</code>, it does not mean that it is as fast as integer
+addition.</p>
+<p>This operator is <em>overloaded</em>. It does <em>different
+things</em> depending on its operands.</p>
+<p>In most languages, concatenating strings takes <em>linear time</em>,
+whereas adding numbers takes <em>constant time</em>.*</p>
+<p>We will learn/review what these terms mean, but suffice to say,
+constant time means it always takes the same amount of time (usually
+fast), while linear time means the time it takes is proportional to the
+length of at least one of the strings.</p>
+<p>This is true of Java, too. Concatenating strings is linear time.</p>
+<div class="footnote">
+<ul>
+<li>Fun fact: in Erlang, it takes constant time. How could they manage
+that? If we have time, we can talk about “ropes”.</li>
+</ul>
+</div>
+<hr />
+<h1 id="allocating-strings">Allocating strings</h1>
+<p>Strings are variable length data, and they can depend on information
+outside the program. Therefore, they are typically dynamically
+allocated.</p>
+<p>When you concatenate two dynamically allocated strings, the following
+things happen: - First, the system counts how long the combined string
+will be. This is fast in Java. - Then, a new string is allocated that is
+big enough to hold the combined string. - Then, the characters are
+copied from the first string into the new string. - Finally, the
+characters are copied from the second string into the new string.</p>
+<hr />
+<h1 id="representing-this-time-mathematically">Representing this time
+mathematically</h1>
+<p>Intuitively, this means that the time it takes to concatenate strings
+is something like this:</p>
+<p><span class="math inline">\(T=(n+m)\times k\)</span></p>
+<p>Where <span class="math inline">\(T\)</span> is the total time taken
+<span class="math inline">\(n\)</span> and <span
+class="math inline">\(m\)</span> are the lengths of the first and second
+string respectively <span class="math inline">\(k\)</span> is the
+average amount of time it takes to copy one character*</p>
+<div class="footnote">
+<ul>
+<li>it’s the average because sometimes it’s faster or slower. For
+example, you can load at least 16 ascii characters into one SIMD
+register in many modern CPUs. However, if the string has 17 characters,
+that last character ends up requiring a whole register move just for
+that one character. So the exact time per character goes from being 1/16
+of a SIMD op to a whole SIMD op.</li>
+</ul>
+</div>
+<hr />
+<h1 id="computing-the-time-taken">Computing the time taken</h1>
+<p>Knowing that, let’s look at our code again. Assume k = 1 for
+simplicity:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">String</span> result <span class="op">=</span> <span class="st">&quot;&quot;</span><span class="op">;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">var</span> inst <span class="op">:</span> instrumentEvents<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    result <span class="op">+=</span> inst<span class="op">.</span><span class="fu">name</span> <span class="op">+</span> <span class="st">&quot;,&quot;</span><span class="op">;</span>  <span class="co">// T = len(result) + len(name) + 1</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    result <span class="op">+=</span> inst<span class="op">.</span><span class="fu">nAlarms</span> <span class="op">+</span> <span class="st">&quot;,&quot;</span><span class="op">;</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// T = len(result) + 1 + len(nAlarms) + 1</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    result <span class="op">+=</span> inst<span class="op">.</span><span class="fu">nWarnings</span> <span class="op">+</span> <span class="st">&quot;,&quot;</span><span class="op">;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// T = len(result) + 1 + len(nWarnings) + 1</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    result <span class="op">+=</span> inst<span class="op">.</span><span class="fu">nNotifications</span> <span class="op">+</span> <span class="st">&quot;,&quot;</span><span class="op">;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// T = len(result) + 1 + len(nNotifications) + 1</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    result <span class="op">+=</span> <span class="st">&quot;,,&quot;</span><span class="op">;</span> <span class="co">// T = len(result) + 2</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>See the problem now? Pay attention to <span
+class="math inline">\(len(result)\)</span>.</p>
+<hr />
+<h1 id="the-problem">The problem</h1>
+<p>Result keeps getting longer!</p>
+<p>Suppose all the instrument strings are 5 letters long.</p>
+<p>The first concat is <span class="math inline">\(T = 0 + 5 +
+1\)</span> Then <span class="math inline">\(T = 6 + 5 + 1\)</span> Then
+<span class="math inline">\(T = 12 + 5 + 1\)</span> Then <span
+class="math inline">\(T = 18 + 5 + 1\)</span> Finally <span
+class="math inline">\(T = 24 + 2=26\)</span></p>
+<p>So how much time does the first iteration of the loop take?</p>
+<hr />
+<h1 id="the-problem-2">The problem (2)</h1>
+<p><span class="math inline">\(T_{iter1} = 6 + 12 + 18 + 24 +
+26=86\)</span></p>
+<p>But what about iter 2? It’s different, because it’s still adding to
+the same result. The length <strong>starts</strong> at 26:</p>
+<p><span class="math inline">\(T_{iter2} =\)</span> <span
+class="math inline">\((26 + 6) + (26 + 6 \times 2) + (26 + 6 \times 3) +
+(26 + 6 \times 4) + (26 + 6 \times 4 + 2)= 216\)</span></p>
+<p>And then?</p>
+<p><span class="math inline">\(T_{iter3} =\)</span> <span
+class="math inline">\((52 + 6) + (52 + 6 \times 2) + (52 + 6 \times 3) +
+(52 + 6 \times 4) + (52 + 6 \times 4 + 2)= 346\)</span></p>
+<p><span class="math inline">\(T_{iter4} =\)</span> <span
+class="math inline">\((78 + 6) + (78 + 6 \times 2) + (78 + 6 \times 3) +
+(78 + 6 \times 4) + (78 + 6 \times 4 + 2)= 476\)</span></p>
+<hr />
+<h1 id="the-problem-3">The problem (3)</h1>
+<p>Each iteration takes 130 time units longer than the one before.</p>
+<p>What’s the total time? Say we have <span
+class="math inline">\(I\)</span> instruments.</p>
+<p>Try writing a math expression for <span
+class="math inline">\(T_{total}\)</span></p>
+<hr />
+<h1 id="total-time">Total time</h1>
+<p><span class="math inline">\(T_{total}=
+{\large\sum}_{i=2}^I{(130i)}=130\times{\large\sum}_{i=1}^I{i}=130\times
+{{i (i + 1)} \over 2}\)</span></p>
+<p>I recall something like 10,000 instruments. How many time units is
+that?</p>
+<p><span class="math inline">\(T_{total}= {130\times10{,}000(10{,}000 +
+1) \over 2}≈6.5\)</span> billion units</p>
+<p>If each unit took a microsecond (because it was running in a slowly
+interpreted proprietary language on a slow computer), that’s about <span
+class="math inline">\(108\)</span> minutes.</p>
+<div class="footnote">
+<p>* We’re using the identity that <span
+class="math inline">\(\sum_{i=1}^i = {i*(i+1)\over 2}\)</span></p>
+</div>
+<hr />
+<h1 id="the-fundamental-problem">The fundamental problem</h1>
+<p>Notable software engineer and stack-overflow co-creator Joel Spolsky
+calls this kind of algorithm a <a
+href="https://www.joelonsoftware.com/2001/12/11/back-to-basics/"><em>Shlemiel
+the Painter</em> algorithm</a>.</p>
+<p>Shlemiel is the guy from the joke about a road painter who gets
+slower and slower each day. When his boss asks why, he complains that
+the paint can gets farther away each time he paints a stretch.</p>
+<p>Here, we’re starting over and copying the whole string every
+iteration of the loop. It’s like we’re wandering all the way back to the
+paint can.</p>
+<hr />
+<h1 id="carrying-the-paint-can">Carrying the paint can</h1>
+<p>So how do we do something more sensible?</p>
+<p>No matter what, if there are 10,000 instruments and 6 bytes of data
+per instrument, we expect to copy 60,000 bytes.</p>
+<p>However, we don’t have to re-copy the whole old string over again.
+That was the problem.</p>
+<p>So what if we just made one really big string all at once? Then we
+could copy all the smaller strings into it without re-allocating and
+copying a new string.</p>
+<hr />
+<h1 id="how-to-fix-it">How to fix it</h1>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> result <span class="op">=</span> <span class="kw">new</span> <span class="bu">StringBuilder</span><span class="op">(</span>inst<span class="op">.</span><span class="fu">length</span> <span class="op">*</span> <span class="dv">26</span><span class="op">);</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">var</span> inst <span class="op">:</span> instrumentEvents<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    result<span class="op">.</span><span class="fu">append</span><span class="op">(</span>inst<span class="op">.</span><span class="fu">name</span><span class="op">).</span><span class="fu">append</span><span class="op">(</span><span class="ch">&#39;,&#39;</span><span class="op">)</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>          <span class="op">.</span><span class="fu">append</span><span class="op">(</span>inst<span class="op">.</span><span class="fu">nAlarms</span><span class="op">).</span><span class="fu">append</span><span class="op">(</span><span class="ch">&#39;,&#39;</span><span class="op">)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>          <span class="op">.</span><span class="fu">append</span><span class="op">(</span>inst<span class="op">.</span><span class="fu">nWarnings</span><span class="op">).</span><span class="fu">append</span><span class="op">(</span><span class="ch">&#39;,&#39;</span><span class="op">)</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>          <span class="op">.</span><span class="fu">append</span><span class="op">(</span>inst<span class="op">.</span><span class="fu">nNotifications</span><span class="op">).</span><span class="fu">append</span><span class="op">(</span><span class="ch">&#39;,&#39;</span><span class="op">)</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>          <span class="op">.</span><span class="fu">append</span><span class="op">(</span><span class="st">&quot;,,&quot;</span><span class="op">);</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> result<span class="op">.</span><span class="fu">toString</span><span class="op">();</span></span></code></pre></div>
+<hr />
+<h1 id="what-did-that-do">What did that do?</h1>
+<p>StringBuilder is like string, but it has extra space after it. We can
+decide how much space it starts out with.</p>
+<p>It does one, big allocation at the beginning.</p>
+<p>Those appends just copy each string into the existing buffer without
+re-allocating and without copying the entire string, just the new
+one.</p>
+<p>So now the time used is reasonable.</p>
+<hr />
+<!-- _class: questions invert -->
+<h1 id="questions-3">Questions?</h1>
+<hr />
+<h1 id="conclusion">Conclusion</h1>
+<p>This is a standards-based class. It’s important to know what the
+standards are.</p>
+<p>We will be using C, because knowing every time we might be invoking
+an expensive operation is valuable.</p>
+<p>Knowing how to use algorithms is not enough. As computer scientists,
+we are expected to go deeper.</p>
+<p>We need to really understand what’s going on under the hood.
+Sometimes it has a dramatic impact on performance.</p>
+<hr />
+<h1 id="unworked-practice-problems">Unworked Practice Problems</h1>
+<ol type="1">
+<li>Add comments to the new, StringBuilder-based code to express how
+much time each line takes.</li>
+<li>Calculate the estimated total time using the same assumptions:
+10,000 instruments, 1 op per byte, 1 microsecond per op.</li>
+<li>In java, it would likely take 1 nanosecond per op or less. How long
+would that have taken? Can you imagine how there might not be much of an
+impetus to fix it, even though it’s a serious performance error?</li>
+<li>Why is it worth fixing anyway? What if everyone had the attitude
+that “good enough” was fine, even if they were using vastly more time
+than needed.</li>
+</ol>
+</body>
+</html>
