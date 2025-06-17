@@ -2,7 +2,7 @@
 marp: true
 theme: slides
 paginate: true
-
+math: true
 ---
 
 # Design and Analysis of Algorithms  
