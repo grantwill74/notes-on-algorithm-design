@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>module_1_1</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="design-and-analysis-of-algorithms">Design and Analysis of
+Algorithms</h1>
+<h2 id="module-1-1-introduction">Module 1-1: Introduction</h2>
+<p><br> <br></p>
+<p>Slides © Grant Williams, <a
+href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
+4.0</a>.</p>
+<p><br></p>
+<p>This is an open educational resource. Submit fixes, improvements, and
+new material <a
+href="https://github.com/grantwill74/notes-on-algorithm-design">here</a>.</p>
+<hr />
+<h1 id="welcome">Welcome!</h1>
+<p>Welcome to your senior (or junior year)! You’re at an exciting point
+in your programming life: - You can likely do a programming job - You
+don’t feel as much “blank page” fear when starting out - A lot of the
+inner workings of the computer are less mysterious</p>
+<p>We’ll get to the syllabus, soon, but first, let’s talk about what
+we’re going to learn in this class.</p>
+<hr />
+<h1 id="what-were-going-to-learn">What we’re going to learn</h1>
+<ol type="1">
+<li>More advanced algorithms than you have been exposed to before.</li>
+<li>Situations where algorithms need to be customized, modified, or
+combined (the “design” part).</li>
+<li>How to analyze algorithms, especially their performance,
+mathematically.</li>
+</ol>
+<p>But why?</p>
+<hr />
+<h1 id="why-deepen-our-knowledge-of-algorithms">Why deepen our knowledge
+of algorithms?</h1>
+<p>Someone else already did the hard work of inventing the algorithm,
+why do we need to know how to do what they did? There are a few reasons:
+1. Your technical interview might make you! 2. There are a lot of ways
+to combine or remix algorithms [1]. 3. Algorithms are often published in
+very generic form. If you have more information, you can often make a
+specific version that is better <a
+href="You%20can%20sort%20dramatically%20faster%20than%20the%20standard%20libarary%20if%20the%20distribution%20of%20values%20being%20sorted%20has%20low%20entropy.">2</a>.
+4. Not every algorithm has already been written. We might be waiting on
+you!</p>
+<div class="footnote">
+<p>[1] For example, did you know that there is an intermediate data
+structure between linked-lists and arrays called a <em>rope</em>? It’s
+useful when you want cache-efficiency, but need bounded insertion time
+or don’t want to have to copy over the entire array when growing it.</p>
+</div>
+<hr />
+<h1 id="hard-limitations">Hard Limitations</h1>
+<p>Another important thing we will learn is that some algorithms aren’t
+just empirically fast or slow, they are theoretically fast or slow.</p>
+<p>Some algorithms are just <em>slow</em>.</p>
+<p>You’ve probably already learned about big-O notation. We’ll
+understand more rigorously what it means and how to apply it to know,
+how fast an algorithm is in theory, not just how fast it is on a
+particular computer.</p>
+<p>Understanding this is important. You want to have an immediate
+gut-check when certain decisions will cause an algorithm to be
+<em>fundamentally, mathematically</em> slower.</p>
+<hr />
+<h1 id="so-what-is-an-algorithm">So what is an algorithm?</h1>
+<p>[Give your best answer before moving on]</p>
+<hr />
+<h1 id="a-rigorous-definition-by-donald-knuth">A rigorous definition by
+Donald Knuth</h1>
+<p>An algorithm is a procedure with the following properties: 1.
+Finiteness: it terminates after a finite number of steps. 2.
+Definiteness: each step is precisely defined. 3. Input: an algorithm has
+zero or more inputs, taken from specified sets of objects. 4. Output: an
+algorithm has one or more outputs, quantities that have a specified
+relation to the inputs. 5. Effectiveness: Its operations must all be
+sufficiently basic that they can in principle be done exactly and in a
+finite length of time by someone using a pencil and paper.”</p>
+<p><em>From The Art of Computer Programming, Vol. 1</em></p>
+<hr />
+<h1 id="understanding-the-definition">Understanding the definition</h1>
+<p>Before we continue, let’s be sure we understand why those properties
+are there, what they mean, and why <em>all five</em> are necessary (even
+if some of them look redundant at first glance).</p>
+<p>First of all, procedures don’t <em>have</em> to be algorithms. A
+procedure is just a list of steps to perform. For a computer, maybe, but
+it could also be for a human.</p>
+<p>Sometimes we might even <em>want</em> a procedure that isn’t
+guaranteed to terminate. Knuth calls these procedures, <em>computational
+methods</em>. Video game main-loops are these kinds of procedure (they
+run as long as the game does).</p>
+<p>But algorithms are <em>special</em> procedures: well-defined,
+terminating, mathematical maps between inputs and outputs, which are
+built from elementary steps.</p>
+<hr />
+<h1 id="knuths-rule-1">Knuth’s Rule 1</h1>
+<p><em>Finiteness: it terminates after a finite number of
+steps.</em></p>
+<p>Why? Because if I don’t know that an algorithm terminates, it’s hard
+for me to use it. How long do I give it before I give up?</p>
+<p>Note: there are many useful procedures that <em>don’t</em> terminate
+after a finite number of steps. E.g., cellular automata, video games,
+simulations, decimal expansions of <em>Pi</em>.</p>
+<p>But there are also times when we need something to be terminating.
+Adding two integers for example.</p>
+<p>In fact, Knuth points out that we often don’t want just
+<em>finite</em>, but <em>very</em> finite. We want algorithms that are
+<em>fast</em>, so “finite number of steps” really is the lowest possible
+bar for a procedure to clear.</p>
+<hr />
+<h1 id="what-about-infinite-steps">What about infinite steps?</h1>
+<p>Pay careful attention to the wording. This rule requires that there
+be a finite number of steps. It doesn’t say anything about the steps
+being fast.</p>
+<p>Could an infinite-stepped procedure terminate in a finite amount of
+time?</p>
+<p>[What do you think?]</p>
+<hr />
+<h1 id="what-about-infinite-steps-ctd.">What about infinite steps?
+(ctd.)</h1>
+<p>Yes, it could. We could skip steps, for example.</p>
+<p>However, we could not conveniently encode such an algorithm as a
+program listing for human consumption.</p>
+<p>Additionally, we wouldn’t be able to encode such a procedure in a
+Turing machine (which require finite states). So the mathematical tools
+we will use to analyze algorithms wouldn’t always be useful for such
+procedures.</p>
+<p>So there are two ways of breaking this rule: having an infinite
+number of steps, or doing the same steps without terminating (or both,
+technically).</p>
+<hr />
+<h1 id="knuths-rule-2">Knuth’s Rule 2</h1>
+<p><em>Definiteness: each step is precisely defined.</em></p>
+<p>The idea here is that a procedure is not really <em>an</em> algorithm
+if two people come to two different ideas about what precisely it will
+do.</p>
+<p>If a step is not precisely defined, then different implementations
+can do different things.</p>
+<p>Really, we would have defined a whole family of algorithms rather
+than one.</p>
+<p>So, to be an algorithm, a procedure must be precisely defined,
+including all of its steps.</p>
+<hr />
+<h1 id="knuths-rules-3-and-4">Knuth’s Rules 3 and 4</h1>
+<p><em>Input: an algorithm has zero or more inputs, taken from specified
+sets of objects.</em> <em>Output: an algorithm has one or more outputs,
+quantities that have a specified relation to the inputs.</em></p>
+<p>These rules mainly establish an algorithm as defining some kind of
+<em>relation</em> or <em>function</em> between inputs and outputs.</p>
+<p>Most algorithms we learn are mathematical functions. They always
+return the same output for the same input [What do we call this
+property, Haskell enjoyers?].</p>
+<hr />
+<h1 id="non-determinism-is-fine">Non-determinism is fine</h1>
+<p>Algorithms can also be non-deterministic. For example, a procedure
+that randomly samples a statistical distribution can be an algorithm if
+the other rules are satisfied.</p>
+<p>So why do we need rules 3 and 4?</p>
+<p>Rule 4 requires that a procedure output something to be considered an
+algorithm. So a busy-wait is not an algorithm.</p>
+<p>Rule 4 also requires that what it outputs be related to the inputs.
+If we’re outputting some data from somewhere in memory, that data needs
+to be listed as an input as part of our formalization.</p>
+<hr />
+<h1 id="knuths-rule-5">Knuth’s Rule 5</h1>
+<p><em>Effectiveness: Its operations must all be sufficiently basic that
+they can in principle be done exactly and in a finite length of time by
+someone using a pencil and paper.</em></p>
+<p>Wait, isn’t this a redundant retelling of rules 1 and 2?</p>
+<p>Not quite: rule 1 stated that there are a finite <em>number</em> of
+steps, while this rule states that each step takes finite <em>time</em>.
+Taken together with rule 1, we can infer that algorithms always take
+finite time.</p>
+<hr />
+<h1 id="knuths-rule-5-ctd.">Knuth’s Rule 5 (ctd.)</h1>
+<p>As for rule 2: just because an operation is well defined does not
+mean we know how to do it. For example, suppose a step was “find the
+maximum real number in (1, 2)”.</p>
+<p>This is neither finitely bound, nor something we can actually do. Is
+the answer 1.9? 1.99? 1.999? We could go on forever and there would
+always be a larger number less than 2.*</p>
+<p>A procedure making use of that step could have a finite number of
+steps, but it would still fail rule 5.</p>
+<p>Generally, we think of steps as being short, atomic operations, like
+assembly instructions. Can another algorithm be a step? Well, it could,
+but normally we’d consider <em>invoking</em> that algorithm to be the
+step.</p>
+<div class="footnote">
+<p>*: for my math majors, is this also true of the interval [1, 2]?</p>
+</div>
+<hr />
+<h1 id="summary">Summary</h1>
+<p>So in summary, let’s look at the simpler definition our class
+textbook uses:</p>
+<p><em>An <strong>algorithm</strong> is any well-defined computational
+procedure that takes some value, or set of values, as
+<strong>input</strong> and produces some value, or set of values, as
+<strong>output</strong> in a finite amount of time.</em></p>
+<p>In other words, we want them to be <em>well-defined</em> functions or
+relations that finish in <em>a finite amount of time</em>.</p>
+<hr />
+<h1 id="summary-ctd.">Summary (ctd.)</h1>
+<p>And what differentiates this class from your earlier algorithms
+classes?</p>
+<p>We aren’t just going to be learning them: we will be making custom
+ones and mathematically bounding their time and space (speed and
+memory).</p>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions">Questions?</h1>
+<p><br></p>
+<p>This is our first questions slide. There will be many!</p>
+<p>This is a great place to ask questions.</p>
+<p>If you don’t have any, please take a moment to try to recall what
+we’ve learned since the start of the presentation or since the last
+questions slide.</p>
+<hr />
+<h1 id="the-textbook">The Textbook</h1>
+<figure>
+<img src="introduction_to_algorithms_4th_ed_cover.jpg"
+alt="bg left An image of our class textbook" />
+<figcaption aria-hidden="true">bg left An image of our class
+textbook</figcaption>
+</figure>
+<p>The official textbook is <em>Introduction to Algorithms</em>, 4th
+ed., by Cormen et al. ISBN: 978-0262046305</p>
+<p>However, I will reference other books too. We’ve already seen <em>The
+Art of Computer Programming, Vol. 1</em> by Donald Knuth</p>
+<hr />
+<h1 id="the-textbook-ctd.">The textbook (ctd.)</h1>
+<p>You are not required to have any of these books to participate in the
+class.</p>
+<p>The class is designed so that attending lectures, reading these
+notes, and doing the practice problems will be enough for you to pass
+quizzes, tests, and assignments.</p>
+<p>These notes are original, they aren’t copied or adapted from the
+book. I strongly recommend re-reading them as part of your study
+routine.</p>
+<p>It’s a great textbook, but reading the textbook is not a substitute
+for studying these notes or doing the suggested practice problems.</p>
+<hr />
+<h1 id="new-grading-scheme">New grading scheme</h1>
+<p>One major difference between this class and other classes you may
+have taken: this is a class that uses standards-based grading.</p>
+<p>This is very important to understand, so let’s learn about why the
+class is being graded this way and what it means for you.</p>
+<hr />
+<h1 id="the-old-way">The old way</h1>
+<p>For every class, there was a collection of assignments.</p>
+<p>Your weighted average score on assignments determined your final
+grade.</p>
+<p>Assignments often measured many things, and it wasn’t always clear
+how exactly the score on the assignment was related to your own mastery
+of the material.</p>
+<p>You were usually thinking in terms of “points” instead of mastering
+certain concepts.</p>
+<hr />
+<h1 id="the-problem">The problem</h1>
+<p>The problem is that now we have large language models for which Elo
+score on competitive programming contests is a major evaluation
+criteria.</p>
+<p>I used to heavily rely on take-home assignments to make it easier on
+students who couldn’t make every class, but I cannot do that anymore for
+classes that aren’t based on making massive software systems.</p>
+<p>I still want you to do take-home assignments, so they are worth some
+points, but this issue is that I can’t <em>rely</em> on completing a
+take-home assignment</p>
+<p>Therefore, most of the grade has to come from in-class proctored
+tests, otherwise I can’t prove .</p>
+<hr />
+<h1 id="the-other-problem">The other problem</h1>
+<p>However, we are a commuter campus.</p>
+<p>Many of you are working your way through school, and more power to
+you.</p>
+<p>Sometimes your boss just doesn’t let you leave.</p>
+<p>While I’m technically allowed to require you to be here for tests, I
+made a committment in my self-evaluations to make my classes open to
+flexible attendence.</p>
+<p>So how can I permit flexible attendence while still <em>making
+sure</em> that you know how to prove the runtime performance of an
+algorithm or design a custom sort?</p>
+<hr />
+<h1 id="the-quizzes">The quizzes</h1>
+<p>This class will measure exactly 8 skills (We’ll list them later)</p>
+<p>There will be 8 short, in-class, pen-and-paper quizzes, each
+measuring one skill.</p>
+<p>After the quiz, we will see the answer(s) so you can see how you did,
+and argue for more correct answers to be considered.</p>
+<p>But what if you can’t make the quiz? Or bomb it?</p>
+<hr />
+<h1 id="the-exams">The exams</h1>
+<p>There will be a midterm and endterm exam as well.</p>
+<p>Both of these exams will occur during the term, with the specific
+schedule being on the syllabus (which we’ll look at in a second).</p>
+<p>Each exam will contain 4 problems, which cover the same mastery
+components as the quizzes.</p>
+<p><strong>The exams will be another chance</strong> to demonstrate that
+you have learned the skill. I will take the maximum score between the
+two as your grade for that skill.</p>
+<hr />
+<h1 id="the-final">The final</h1>
+<p>There will also be a final exam.</p>
+<p>It will contain all of the learning-mastery components.</p>
+<p>Your score on each mastery component will be treated similarly: I
+will take the maximum between the quiz, the relevant exam, and the
+final</p>
+<p>Therefore there will be <em>three chances</em> to demonstrate mastery
+on all the components of this class.</p>
+<hr />
+<h1 id="does-that-mean-i-can-skip">Does that mean I can skip?</h1>
+<p>Technically, yes.</p>
+<p>You can skip the quizzes, and just take the in-terms.</p>
+<p>You can skip the quizzes and the in-terms and just take the final.
+Unwise, but you can do it.</p>
+<p>You can ace all the quizzes and skip every test (this one is actually
+cool and you should try to do this).</p>
+<p>But what happens if you miss the in-class quizzes, the in-terms, and
+the final?</p>
+<hr />
+<h1 id="skipping-ctd.">Skipping (ctd.)</h1>
+<p>Then, unfortunately, you will receive a failing grade.</p>
+<p>I can only grant an incomplete with a reasonable excuse, and if a
+certain amount of the course has been attempted (specific amount is in
+the syllabus).</p>
+<p>If there is a medical or other excused reason why you might need to
+miss out on a large chunk of the class, <em>please speak to your
+academic advisor ASAP</em>.</p>
+<p>There do exist excused withdrawals for specific circumstances that
+are permitted after the drop/add period and which do not count against
+your withdraw limit.</p>
+<hr />
+<h1 id="quiz-and-exam-format">Quiz and exam format</h1>
+<p>Quizzes and exams will be pen and paper, but open book and notes.</p>
+<p>You can bring any code-of-conduct-conforming written, drawn, or
+printed material.</p>
+<p>No electronic devices will be permitted. Phones must be off.</p>
+<p>If you need access to an electronic device for accessibility reasons,
+please contact the access center right away. I will ensure that all
+quizzes and exams are made available to you to be proctored at the
+access center.</p>
+<hr />
+<h1 id="quiz-and-exam-format-2">Quiz and exam format (2)</h1>
+<p><strong>Be careful</strong>, just because an exam is open-book does
+not mean it is easy. You will need to study and practice to make sure
+you can finsh in time.</p>
+<p>If you aren’t practicing in the exam format (i.e., pen/pencil and
+paper under a time limit) then you aren’t fully studying.</p>
+<hr />
+<!-- _class: questions invert -->
+<h1 id="questions-1">Questions?</h1>
+<hr />
+<h1 id="lets-look-at-the-syllabus-together">Let’s look at the syllabus
+together</h1>
+<hr />
+<h1 id="the-syllabus-quiz">The syllabus quiz</h1>
+<p>So there’s a quiz on your canvas page…</p>
+<p>It’s not worth anything, and it’s called <em>The Syllabus
+Quiz</em></p>
+<p>Do you have to do it?</p>
+<hr />
+<h1 id="the-syllabus-quiz-ctd.">The syllabus quiz (ctd.)</h1>
+<p>Yes, it is required to pass the class.</p>
+<p>The rest of the class will not unlock until you have gotten 100% on
+the syllabus quiz.</p>
+<p>This means you will not be able to submit assignments, or receive
+credit for quizzes or tests, and you will end up with late penalties if
+you wait too long.</p>
+<p>The syllabus quiz is open for a couple of weeks because the drop/add
+deadline hasn’t closed, but there’s no reason to wait.</p>
+<p>It’s open book with unlimited attempts. Do it with the syllabus open
+right there in another tab.</p>
+<p>Because of this quiz, I may assume that you read and understood the
+syllabus.</p>
+<hr />
+<h1 id="dont-cheat-on-the-syllabus-quiz">Don’t cheat on the syllabus
+quiz</h1>
+<p>Yes, it seems like you could feed the syllabus and quiz to an LLM and
+get 100%.</p>
+<p>However, the quiz requires you to certify that you did it totally by
+yourself, with no help from another person or an LLM.</p>
+<p>If you later get in trouble, either with grades or with class policy,
+you cannot use “I never read the syllabus” as an excuse without
+admitting to academic dishonesty.</p>
+<p>Please forgive the litigousness with which I am treating this
+subject. The rest of the class won’t be like this, I promise. I just
+really need you to read the syllabus, especially because it’s so
+different from previous semesters’. The whole standards-based grading is
+completely new for me and for many of you.</p>
+<h1 id="next-class">Next class</h1>
+<p>Next time, we’ll see what those learning mastery areas are, and
+exactly what we’ll be learning</p>
+<hr />
+<h1 id="self-mastery-questions">Self mastery questions</h1>
+<p>We always want to test ourself after learning new material. Testing
+helps it stick in our brains and reveals misunderstandings for further
+improvement.</p>
+<p>If there’s time, let’s do these together. Otherwise, treat them as
+study work.</p>
+<p>Some practice problems will be worked, others unworked. I recommend
+trying to work the worked problems yourself so you can check the
+answer.</p>
+<hr />
+<h1 id="practice-1-a-procedure-that-is-not-an-algorithm">Practice 1: A
+procedure that is not an algorithm</h1>
+<p>Here’s a procedure [1] that is <em>not</em> an algorithm:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> do_nothing_forever<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(;;)</span> <span class="co">// [2]</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">;</span> <span class="co">// [3] do nothing</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The question: <strong>what is/are the reason(s) this procedure is not
+an algorithm?</strong></p>
+<div class="footnote">
+<p>[1]: As you know, this is called a “function” in C. However,
+functions in C are procedures.</p>
+<p><a
+href="You%20can%20sort%20dramatically%20faster%20than%20the%20standard%20libarary%20if%20the%20distribution%20of%20values%20being%20sorted%20has%20low%20entropy.">2</a>:
+for (;;) is the same as “while (1)”. It’s an infinite loop. [3]: In C, a
+compound statement like “if” or “for” can have a semicolon for a body.
+That’s an empty statement. It’s like { }.</p>
+</div>
+<hr />
+<h1 id="practice-1-answer">Practice 1 answer</h1>
+<p>There are at least <em>two</em> reasons it is not an algorithm.</p>
+<p>First: it does not terminate. Second, and more subtly, it does not
+produce output.</p>
+<hr />
+<h1 id="practice-2-golfing-practice">Practice 2: golfing practice</h1>
+<p>Write a C function which meets the definition of an algorithm with
+the fewest number of keystrokes possible.</p>
+<p>This one is tricky. Try your best.</p>
+<hr />
+<h1 id="practice-2-answer">Practice 2 answer</h1>
+<p>My answer:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>a<span class="op">(){</span><span class="cf">return</span> <span class="dv">7</span><span class="op">;}</span></span></code></pre></div>
+<p>Why it’s an algorithm: 1. It terminates after a finite number of
+steps. 1 step in fact. 2. Each step is precisely defined. (by the C
+standard) 3. The algorithm has zero or more inputs. Exactly zero, in
+fact. 4. The algorithm has at least one output. The are no inputs, so
+the output is related to all of them, vacuously. 5. Each of the one
+operations can be done exactly and in finite time.</p>
+<hr />
+<h1 id="practice-2-wait-is-that-legal">Practice 2: wait, is that
+legal?</h1>
+<p>It depends on the standard. In C89 (and not C99 or beyond), you are
+technically allowed to leave the return type off of a function
+declaration/definition. The return type is assumed to be “int” if you
+do.</p>
+<p>I thought about returning by writing to an int* to avoid the “return”
+keyword, but it ends up being one keystroke longer with the parameter.
+“int” is the <a
+href="https://en.wikipedia.org/wiki/C_data_types#Main_types">shortest
+type built in to the language</a> to use for the pointer.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>b<span class="op">(</span><span class="dt">int</span><span class="op">*</span>p<span class="op">){*</span>p<span class="op">=</span><span class="dv">7</span><span class="op">;}</span></span></code></pre></div>
+<p>(note: we’re also relying on the fact that we can omit the return
+statement and make it undefined. We’re in janky territory.)</p>
+<hr />
+<h1 id="practice-3">Practice 3</h1>
+<p>Create 5 procedures where each one violates a different one of
+Knuth’s rules but satisfies the others. For example, one that breaks
+rule 1 but satisfies rules 2-5; one that breaks rule 2 but satisfies
+rules 1, 2, 4, and 5; etc. These procedures can be in English or any
+other language, it doesn’t have to be C or a formal language.</p>
+<hr />
+<h1 id="practice-4">Practice 4</h1>
+<p>Create or imagine a procedure that is actually useful, but is
+<em>not</em> an algorithm.</p>
+<p>What would you have to do to <em>make</em> it be an algorithm?</p>
+<p>Would it still be useful if you did?</p>
+<hr />
+<h1 id="practice-5-the-oldest-algorithm">Practice 5: the oldest
+algorithm</h1>
+<p>What do you think the oldest algorithm is?</p>
+<hr />
+<h1 id="practice-5-discussion">Practice 5 discussion</h1>
+<p>The earliest known published algorithm written <em>for a
+computer</em> is “<a href="https://en.wikipedia.org/wiki/Note_G">Note
+G</a>”, by Ada Lovelace.</p>
+<p>However, algorithms don’t have to be for a computer. Knuth was
+careful to base his definition of effectiveness on someone using pencil
+and paper.</p>
+<p>The earliest published procedure that is definitely an algorithm is
+probably <a
+href="https://en.wikipedia.org/wiki/Ancient_Egyptian_multiplication">Ancient
+Egyptian Multiplication</a> (2000 to 1700 BC). It’s actually a cool
+algorithm for a computer scientist to know because it’s based on
+decomposing an integer into powers of two.</p>
+<p>However, algorithms don’t have to be published either. So the true
+earliest algorithm is probably a recipe or religious ritual.</p>
+</body>
+</html>

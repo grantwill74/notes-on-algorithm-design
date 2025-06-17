@@ -2,7 +2,6 @@
 marp: true
 theme: slides
 paginate: true
-
 ---
 
 # Design and Analysis of Algorithms  
@@ -214,6 +213,7 @@ And what differentiates this class from your earlier algorithms classes?
 We aren't just going to be learning them: we will be making custom ones and mathematically bounding their time and space (speed and memory).
 
 ---
+
 <!-- _class: invert questions -->
 
 # Questions?
@@ -228,7 +228,7 @@ If you don't have any, please take a moment to try to recall what we've learned 
 ---
 
 # The Textbook
-![bg left](introduction_to_algorithms_4th_ed_cover.jpg)
+![bg left An image of our class textbook](introduction_to_algorithms_4th_ed_cover.jpg)
 
 The official textbook is *Introduction to Algorithms*, 4th ed., by Cormen et al.
 ISBN: 978-0262046305
