@@ -54,10 +54,6 @@ void old_ins_sort(int* arr, size_t n) {
             swap(arr + j - 1, arr + j);
 }
 
-/*
-
-*/
-
 int tests_run;
 char* run_tests(void);
 #define do_unit_tests() do { \
