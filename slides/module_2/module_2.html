@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>module_2</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="design-and-analysis-of-algorithms">Design and Analysis of
+Algorithms</h1>
+<h2 id="module-2-bachmann-landau-notation">Module 2: Bachmann-Landau
+Notation</h2>
+<p><br> <br></p>
+<p>Slides © Grant Williams, <a
+href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
+4.0</a>.</p>
+<p><br></p>
+<p>This is an open educational resource. Submit fixes, improvements, and
+new material <a
+href="https://github.com/grantwill74/notes-on-algorithm-design">here</a>.</p>
+<hr />
+<h1 id="last-class">Last Class</h1>
+<p>We talked about an example of a simple algorithm that was slow.</p>
+<p>Specifically: concatenating multiple strings.</p>
+<p>[Does anyone remember why it was slow?]</p>
+<p>It was a little awkward to describe <em>how</em> slow it was. We had
+to calculate time units and we ended up with an expression like: <span
+class="math inline">\(T = {130*10000*(10000 + 1) \over 2}\)</span></p>
+<hr />
+<h1 id="this-class">This class</h1>
+<p>We’re going to learn Big-O notation!</p>
+<p>This will let us describe the time an algorithm takes much
+faster.</p>
+<p>You’ve probably heard of Big-O before, but there are other big and
+small letters, too: Big-O, small-o, Big-Ω<em>, small-ω</em>, and Big-θ*.
+We will learn the whole family!</p>
+<p>It’s called <em>Bachmann-Landau</em> notation after its inventors.
+<Br></p>
+<div class="footnote">
+<ul>
+<li>Greek letter Omega, which literally means “big O” in Greek,
+confusingly. It’s different from Big-O, mathematically though.</li>
+</ul>
+<p>** This is a lower-case omega. *** This is an upper-case theta. ****
+There is no small-θ</p>
+</div>
+<hr />
+<h1 id="empirical-measurements-are-useful">Empirical measurements are
+useful</h1>
+<p>There’s nothing wrong with measuring how long an algorithm takes.</p>
+<p>In fact: you should do that. It’s a good idea. Sometimes algorithms
+can be theoretically fast an practically slow.</p>
+<p>But there’s a simple problem with that…</p>
+<hr />
+<h1 id="it-depends-on-your-computer.">It depends on your computer.</h1>
+<p>Other people don’t have your computer.*</p>
+<p>Mathematicians don’t want to be like: “proof of running time: go get
+Alice’s computer, then run the algorithm ten times. It will take an
+average of 2 minutes when n = 10000, with a standard deviation of
+1.1.”</p>
+<p>Also, it’s more work to deterine how an algorithm <em>scales</em>
+when doing purely empirical measurement. You have to take multiple
+measurements to determine exponents, plus additional measurements to get
+a feel for how much they vary. It’s a decent amount of work doing
+<em>proper</em> empirical measurement.</p>
+<div class="footnote">
+<ul>
+<li>unless you’re hosting an unsecure SSH or something.</li>
+</ul>
+</div>
+<hr />
+<h1 id="scaling">Scaling</h1>
+<p>What we really care about is modelling how long an algorithm takes.
+Specifically, how it <em>scales</em>.</p>
+<p>We would like a nice time function that lets us plug any input value
+we want and get a rough time estimate.</p>
+<p>We also don’t care about constant multiplication. Your computer may
+be 10 times faster than your phone; that doesn’t change the underlying
+speed of the algorithm</p>
+<hr />
+<h1 id="scaling-2">Scaling (2)</h1>
+<p>But we <em>do</em> care about <em>variable</em> multiplication.</p>
+<p>For example, consider this time function: <span
+class="math inline">\(T(n)={{130\over 2}n(n+1)}=65n(n + 1)\)</span></p>
+<p>What matters more? The 65 at the beginning (the constant factor), or
+the factor of n (the variable factor)?</p>
+<p>Well, let’s say n is 5: <span class="math inline">\(T(n)=65\times 5(5
++ 1)=65\times 5(6)=65\times 30\)</span></p>
+<p>Well 65 is bigger than 30, so it seems more important.</p>
+<hr />
+<h1 id="scaling-3">Scaling (3)</h1>
+<p>But what about when n gets big? Say, 10,000 like before.*</p>
+<p><span class="math inline">\(T(n)=65\times 10{,}000(10{,}000 +
+1)=65\times 10^4(10^4 + 1)=65\times (10^8 + 10^4)\)</span></p>
+<p><span class="math inline">\(10^8 + 10^4\)</span> is a <em>lot</em>
+bigger than <span class="math inline">\(65\)</span>. It’s roughly <span
+class="math inline">\(384{,}654\)</span> times larger in fact.</p>
+<p>And that ratio only gets more wild as n gets bigger.</p>
+<div class="footnote">
+<p>*I moved the denominator of 2 under the 130 to combine the constant
+factors.</p>
+</div>
+<hr />
+<h1 id="scaling-4">Scaling (4)</h1>
+<p>It doesn’t matter what constant we pick. If n gets big enough, it
+will matter more than the constant.</p>
+<p>Even if it’s something like <span class="math inline">\(T(n) = 1000
+n\)</span></p>
+<p>1000 is a large constant, but if n is, say, a million, it’s no longer
+the dominant one.</p>
+<p>So we like to ignore constants, and only focus on the variables.
+Let’s do that now…</p>
+<hr />
+<h1 id="removing-constants">Removing constants</h1>
+<p>So instead of writing <span class="math inline">\(T(n)=65n(n +
+1)\)</span></p>
+<p>We could delete the constant factor <span
+class="math inline">\(T(n)=n(n+1)\)</span></p>
+<p>And let’s expand that multiplication so we can see the exponents:
+<span class="math inline">\(T(n)=n^2+n\)</span></p>
+<p>So now, we can clearly see that this is a quadratic function</p>
+<hr />
+<h1 id="can-we-really-do-this">Can we really do this?</h1>
+<p>It might make you uncomfortable to just remove constant factors like
+that.</p>
+<p>But consider: every machine takes a different amount of time to do
+something.</p>
+<p>If Alice’s computer takes 10 time units to copy a byte, then strcpy
+would have this time: <span
+class="math inline">\(T_{strcpy}(n)=10n\)</span></p>
+<p>But let’s say Bob’s computer is faster: it only takes 2 time units:
+<span class="math inline">\(T_{strcpy}(n)=5n\)</span></p>
+<p>This information is important, but it has nothing to do with the
+algorithm.</p>
+<p>We want to remove machine-specific information from the time
+function.</p>
+<hr />
+<h1 id="taking-it-a-step-further">Taking it a step further</h1>
+<p>If it bothered you that we removed the constant factor, this is
+<em>really</em> going to bother you: we’re going to remove a whole
+variable.</p>
+<p>Consider again <span class="math inline">\(T(n)=n^2 + n\)</span></p>
+<p>What matters more, <span class="math inline">\(n^2\)</span> or <span
+class="math inline">\(n\)</span>?</p>
+<p>Obviously <span class="math inline">\(n^2\)</span>, but let’s really
+see how that plays out.</p>
+<hr />
+<h1 id="comparing-n2-n-to-just-n">Comparing <span
+class="math inline">\(n^2 + n\)</span> to just <span
+class="math inline">\(n\)</span></h1>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th><span class="math inline">\(n^2 + n\)</span></th>
+<th><span class="math inline">\(n^2\)</span></th>
+<th>Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>10</td>
+<td>110</td>
+<td>100</td>
+<td>1.1</td>
+</tr>
+<tr>
+<td>100</td>
+<td>10,100</td>
+<td>10,000</td>
+<td>1.01</td>
+</tr>
+<tr>
+<td><span class="math inline">\(10^3\)</span></td>
+<td>1,001,000</td>
+<td>1,000,000</td>
+<td>1.001</td>
+</tr>
+<tr>
+<td><span class="math inline">\(10^6\)</span></td>
+<td><span class="math inline">\(10^{12} + 10^6\)</span></td>
+<td><span class="math inline">\(10^{12}\)</span></td>
+<td>1.000001</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="that-n-term-just-does-not-matter">That <span
+class="math inline">\(n\)</span> term just does not matter</h1>
+<p>It barely changes the outcome.</p>
+<p>Again, if one algorithm took <span class="math inline">\(n^2 +
+n\)</span> and another took <span class="math inline">\(n^2\)</span>, by
+the time you get to a large input, you can’t tell the difference.</p>
+<p>But we don’t want to abuse mathematical notation and just randomly
+delete variables…</p>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions">Questions?</h1>
+<hr />
+<h1 id="introducing-big-o">Introducing Big-O</h1>
+<p>The Big-O of <span class="math inline">\(f(n)\)</span>, written <span
+class="math inline">\(O(f(n))\)</span> is the set of functions that are
+eventually bounded by <span class="math inline">\(f(n)\)</span> if n is
+large enough and if we multiply by a large enough positive constant
+<span class="math inline">\(C\)</span>.</p>
+<p>For example: - <span class="math inline">\(n \in O(n)\)</span>,
+because <span class="math inline">\(n \leq C \cdot n\)</span> if we
+choose <span class="math inline">\(C=1\)</span> (or 2, or 3, or anything
+<span class="math inline">\(\geq\)</span> 1) - <span
+class="math inline">\(n \in O(2n)\)</span>, because <span
+class="math inline">\(n \leq C \cdot 2n\)</span> if we choose <span
+class="math inline">\(C=1\)</span> (or as small as <span
+class="math inline">\(0.5\)</span>) - <span class="math inline">\(n \in
+O(.25n)\)</span>, because <span class="math inline">\(n \leq C\cdot
+0.25n\)</span> if we choose <span class="math inline">\(C \geq
+4\)</span> - <span class="math inline">\(n \in O(n \log n)\)</span>,
+because <span class="math inline">\(n \leq C\cdot n \log n\)</span> if
+we choose any <span class="math inline">\(C \gt 0\)</span>, as n gets
+large - <span class="math inline">\(n \in O(n^2)\)</span>, because <span
+class="math inline">\(n \leq C \cdot n^2\)</span> if we choose any <span
+class="math inline">\(C\gt 0\)</span>, as n gets large</p>
+<div class="footnote">
+<p>It actually doesn’t matter what base the log is. The log functions
+with different bases all have constant ratios to each other.</p>
+</div>
+<hr />
+<h1 id="a-graph">A graph</h1>
+<figure>
+<img src="big_O_graph.svg"
+alt="A graph showing how plots of 1.25n, n log n, and n-squared all get bigger than the plot of n, either immediately or eventually as n gets large enough." />
+<figcaption aria-hidden="true">A graph showing how plots of 1.25n, n log
+n, and n-squared all get bigger than the plot of n, either immediately
+or eventually as n gets large enough.</figcaption>
+</figure>
+<p>Notice how, eventually all those functions get bigger than <span
+class="math inline">\(f(n)=n\)</span>.</p>
+<p>This would be true even of a smaller linear function, because we can
+multiply by any constant.</p>
+<hr />
+<h1 id="actual-quiz-next-class">Actual quiz next class</h1>
+<p>Next class we will have a quiz on this material.</p>
+<p>This quiz counts! It’s going to measure your understanding of this
+module.</p>
+<p><strong>You must bring paper and a writing implement! This is your
+responsibility! Set six different reminders on your phone!</strong>*</p>
+<hr />
+<h1 id="actual-quiz-next-class-2">Actual quiz next class (2)</h1>
+<p>Start studying now, and try to resolve any feelings of meta-cognitive
+unease. If you feel like “I don’t quite get this”, listen to the
+feeling!</p>
+<p>Test yourself. The quiz will be proctored, pen-and-paper, and timed
+(10 minutes). If you aren’t studying at least a little bit under these
+time and resource controls, you aren’t studying for the quiz!</p>
+<p>The quiz will test the first learning mastery standard: that you can
+understand and prove things using Bachmann-landau notation.</p>
+<hr />
+<h1 id="how-should-i-study">How should I study?</h1>
+<p>Do the following practice exercises! Some are worked, some are
+not.</p>
+<p>Then, rewrite them on a cheat sheet. It’s an open materials quiz. Any
+printed material is acceptable. Composing your own cheat sheet will help
+comprehension a lot.</p>
+<p>Set a practice timer for each problem. Turn off your electronic
+devices. You will have 10 minutes.</p>
+<p>Remember: <em>if you aren’t studying under time controls with pen and
+paper, <strong>you aren’t studying!</strong></em></p>
+<p>And remember to bring pen and paper for the quiz next class!</p>
+</body>
+</html>
