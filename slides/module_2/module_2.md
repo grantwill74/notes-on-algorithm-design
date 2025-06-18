@@ -229,15 +229,39 @@ This would be true even of a smaller linear function, because we can multiply by
 
 ---
 
-# Exercise 1
+# Knowledge check
 
-Give an example of a function $f(n)$ such that $n \notin O(f(n))$
+Give an example of a function $f(n)$, such that $n^3 \in O(f(n))$
+
+That is, find a function $f(n)$ where $n^3 \leq C\cdot f(n)$ as n gets arbitrarily large.
+
+---
+
+# Some answers 
+
+- $f(n)=n^3$
+- $f(n)={n^3 \over 2}$
+- $f(n)=n^4$
+- $f(n)=n^{\pi}$
+- $f(n)=n^3 \log n$
+- $f(n)=n!$
+
+All of these functions can be multiplied by a constant to make them $\geq$ than $n^3$
+
+Yes, even ${n^3 \over 2}$. We can multiply it by 2!
+
+---
+
+# Knowledge check (2)
+
+Give an example of a function $f(n)$, such that $n \notin O(f(n))$
 
 That is, find a function that is too small to have its big-O contain $n$.
 
 ---
 
-# Some exercise 1 answers
+# Some answers (2)
+
 - $f(n)=log (n)$
 - $f(n)=\sqrt{n}$
 - $f(n)=n^{2/3}$
@@ -248,6 +272,82 @@ Example:
 $n \gt 100\sqrt{n}$ when $n>10000$
 $n \gt 10000\sqrt{n}$ when $n>1000000$
 For a large enough n, for all $C$, $n \gt C\sqrt{n}$, so $n \notin O(\sqrt n)$
+
+---
+
+# Knowledge check (3)
+
+Give an example of a function $f(n)$, such that $f(n) \in O(n^3)$
+
+---
+
+# Some answers (3)
+
+- $f(n)=n^3$
+- $f(n)=n^2$
+- $f(n)=n$
+- $f(n)=1$
+- $f(n)=n \log n$
+
+Yes, the functions can just be constants like $1$.
+
+The constant function $f(n)=1 \in O(g(n))$ for any function $g(n) \gt 0$ 
+
+---
+
+# Knowledge check (4)
+
+Is $n^2 \in O(n^2 - n)$?
+
+---
+
+# Some answers (4)
+
+Actually yes. Let $C = 2$. What happens to this when n gets big?
+
+$n^2 \leq 2(n^2 - n)$, distribute the 2
+$n^2 \leq 2n^2 - 2n$, subtract $n^2$ from both sides
+$0 \leq n^2 - 2n$
+can this be made true for every n past a certain point? Add $2n$ to both sides:
+$2n \leq n^2$, we only care what happens when n is big, so we can divide (assume $n>0$)
+$2 \leq n$
+
+So $n^2 - n$ can be made to eventually bound $n^2$ if we multiply it by a large enough constant. Once $n \geq 2$, $2(n^2 - n)$ will always be bigger than $n^2$.
+
+---
+
+<!-- _class: invert questions -->
+# Questions?
+
+---
+
+# The formal definition
+
+Okay, let's get more rigorous. Our definition was good before, but not quite good enough for proofs.
+
+## Rigorous definition:
+$$f(n) \in O(g(n)) \iff
+\exists C \gt 0, \exists n_0 \in ℕ,\forall n \geq n_0, f(n) \leq C\cdot g(n)$$
+
+
+In English: "f is in the order of g", is equivalent to saying that there are a pair of numbers: $C$ and $n_0$ which must be large enough so that $C\times g(n)$ is bigger than $f(n)$ for every choice of $n$ that is larger than $n_0$.
+
+<div class="footnote">
+Note: We're assuming that f and g are functions that return positive values (because they represent times). If you truly wish to allow f to return even negative numbers, you must put absolute value bars around it. We don't need to worry about this in the study of algorithms, but other fields use this notation too.
+</div>
+
+---
+
+# How to think about that
+
+If we want to prove that $f(n) \in O(g(n))$, we have to first choose a $C$ and an $n_0$.
+
+C is our scaling factor. It just needs to be big enough to make $C\cdot g(n)$ large enough.
+
+$n_0$ is our starting point. We don't care what happens for small values of n, we care about how the functions scale at large values. $n_0$ let's us define what "big enough" means for $n$.
+
+Once we've chosen our $C$ and $n_0$, the last part is to prove the rest of the statement:
+
 
 ---
 
