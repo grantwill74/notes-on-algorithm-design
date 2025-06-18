@@ -145,14 +145,14 @@ Let's learn what these areas will be!
 
 1. You will be able to understand Bachmann-Landau notation (i.e., Big-O, Big-ϴ, small-o, etc.). You will be able to demonstrate this understanding by proving that algorithms have a given runtime bound.
 2. You will be able to implement and analyze a self-balancing tree, specifically a scapegoat tree, modify it to fit problem-specific constraints, and compare it to the performance of other data structures.
-3. You will be able to design and implement a custom sorting algorithm that exceeds the speed of standard sorting algorithms on data with certain characteristics.
+3. You will learn the divide and conquer concept, how to recognize such algorithms, and how to prove their runtime using the *master theorem*. 
 4. You will learn about complexity categories, such as P, NP, and NP-complete. You will learn how to determine and prove which category a problem belongs to.
 
 ---
 
 # After the midterm
 
-5. You will be able to identify when a greedy algorithm is appropriate and design one.
+5. You will be able to identify when a greedy algorithm is appropriate to a problem, and when an algorithm is greedy. You will be able to demonstrate these facts. You will be able to implement a greedy algorithm.
 6. You will be able to recognize when pre-computation is appropriate, and will demonstate the *prefix-sums* technique.
 7. You will be able to recognize when to use full dynamic programming, and to solve a dynamic programming problem with a reasonable technique (such as memoization).
 8. You will be able to work with graphs. You will demonstrate the algorithm design technique of "graph modelling", and implement an algorithm using this technique.
