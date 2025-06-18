@@ -348,6 +348,33 @@ $n_0$ is our starting point. We don't care what happens for small values of n, w
 
 Once we've chosen our $C$ and $n_0$, the last part is to prove the rest of the statement:
 
+---
+
+# Let's have an example
+
+Insertion sort is a simple, but surprisingly valuable sorting algorithm.
+
+First, let's see its code:
+
+```c
+void swap(int* a, int* b); // defined elsewhere: you know how to do it!
+
+void ins_sort(int* arr, size_t n) { 
+    for (size_t i = 1; i < n; i++) 
+        for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)
+            swap(arr + j - 1, arr + j);
+}
+```
+
+<div class="footnote">
+This can be slightly sped up by avoiding unecessary copies. Think about what swap does and expand it. Could you optimize the function?
+
+Answer is in the appendix.
+** "arr + i" is equivalent to "&arr[i]". We're doing pointer math to get the ith and jth elements of arr.
+</div>
+
+---
+
 
 ---
 
