@@ -54,13 +54,7 @@ void old_ins_sort(int* arr, size_t n) {
             swap(arr + j - 1, arr + j);
 }
 
-int tests_run;
-char* run_tests(void);
-#define do_unit_tests() do { \
-    char* msg = run_tests(); \
-    if (msg) printf("test failed with message %s.\n", msg); \
-    else printf("ran %d tests sucessfully.\n", tests_run); \
-    } while (0)
+void do_unit_tests();
 
 int main() {
     do_unit_tests();
@@ -151,6 +145,7 @@ char* t_sort_random() {
     return 0;
 }
 
+int tests_run = 0;
 char* run_tests() {
     mu_run(t_sort_empty);
     mu_run(t_sort_single);
@@ -158,5 +153,11 @@ char* run_tests() {
     mu_run(t_sort_triple);
     mu_run(t_sort_random);
     return 0;
+}
+
+void do_unit_tests() {
+    char* msg = run_tests();
+    if (msg) printf("test failed with message %s.\n", msg); \
+    else printf("ran %d tests sucessfully.\n", tests_run); \
 }
 
