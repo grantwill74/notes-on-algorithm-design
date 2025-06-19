@@ -316,6 +316,16 @@ So $n^2 - n$ can be made to eventually bound $n^2$ if we multiply it by a large 
 
 ---
 
+# What Big-O *means*
+
+Intuitively, big-O tells us the upper bound of how long a process will take.
+
+It specifically tells us that upper bound in a way that ignores constants or smaller degree terms.
+
+So it's a mathematically rigorous way of being sort of vague. We get to share a feeling for how slow something is. "This algorithm runs in linear time (i.e., $O(n)$)" conveys a lot of information without bogging down the reader with computer specific information or meaningless time blips.
+
+---
+
 <!-- _class: invert questions -->
 # Questions?
 
@@ -338,7 +348,65 @@ Note: We're assuming that f and g are functions that return positive values (bec
 
 ---
 
-# How to think about that
+# Let's meditate on that
+
+It's a big gnarly definition. Let's think about it.
+
+Anytime someone has shown that $f(n) \in O(g(n))$, they have done the following:
+- Found the scaling factor $C$
+- Found the starting point $n_0$
+- Proved that for every natural number starting at $n_0$ and getting as big as you want, $f(n) \leq C\cdot g(n)$
+
+We'll look at how to write one of these proofs soon, but first, let's assume someone has done the hard work for us.
+
+---
+
+# Subsets example 
+
+Is $O(n) \subseteq O(n^2)$?
+
+Yes, it is. 
+
+But how do we prove it?
+
+--- 
+
+# Subsets example (2)
+
+What does it mean for $A \subseteq B$?
+
+It means $\forall x \in A, x \in B$.
+
+Another way of putting it: $\forall x \in U, x \in A \implies x \in B$
+
+What kind of elements are we interested in? What are the elements of $U$? Functions. $O(f(n))$ is a set of functions $f:N \to R^+$
+
+Therefore, we need to show:
+$$\forall f: N \to R^+, f \in O(n) \implies f \in O(n^2)$$
+
+---
+
+# Proving that statement
+How do we prove $\forall f: N \to R^+, f \in O(n) \implies f \in O(n^2)$?
+
+If your goal starts with $\forall$, a typical way to start your proof is by saying "suppose".
+
+Proof so far: "Suppose we have a function $f: N \to R^+$"
+New goal: show $f \in O(n) \implies f \in O(n^2)$.
+
+Notice: saying "suppose" made the "forall" go away.
+So, how do we prove $f \in O(n) \implies f \in O(n^2)$?
+
+---
+
+
+
+
+
+
+---
+
+# Going the other way: proving $f(n) \in O(g(n))$
 
 If we want to prove that $f(n) \in O(g(n))$, we have to first choose a $C$ and an $n_0$.
 
@@ -346,15 +414,59 @@ C is our scaling factor. It just needs to be big enough to make $C\cdot g(n)$ la
 
 $n_0$ is our starting point. We don't care what happens for small values of n, we care about how the functions scale at large values. $n_0$ let's us define what "big enough" means for $n$.
 
-Once we've chosen our $C$ and $n_0$, the last part is to prove the rest of the statement:
+Once we've chosen our $C$ and $n_0$, the last part is to prove the rest of the statement: $\forall n \geq n_0, f(n) \leq C\cdot g(n)$
+
+
+
+
+---
+
+# Using the formal definition (2)
+
+
+
+---
+
+# Knowledge check (6)
+
+Is this proposition true?
+$$O(n^2) \subseteq O(n)$$
+
+That is, are all the functions that are in $O(n)$ also in $O(n^2)$?
+
+[What do you think?]
+
+---
+
+# Answer (5)
+
+
+---
+
+# Knowledge check (7), one more!
+
+Is $O(n^2 - n) = O(n^2 + n)$?
+
+Prove it one way or the other.
+
+How? Remember: $O(f(n))$ is a set. How do we prove that two sets are equal?
+
+
+
 
 ---
 
 # Let's have an example
 
+Now we know that, if someone proves that an algorithm takes time $t(n) \in O(g(n))$, we have a vague idea of how much time it will take at worst 
+
+---
+
+# Insertion Sort 
+
 Insertion sort is a simple, but surprisingly valuable sorting algorithm.
 
-First, let's see its code:
+First, let's remind ourself of its code:
 
 ```c
 void swap(int* a, int* b); // defined elsewhere: you know how to do it!
@@ -369,11 +481,24 @@ void ins_sort(int* arr, size_t n) {
 <div class="footnote">
 This can be slightly sped up by avoiding unecessary copies. Think about what swap does and expand it. Could you optimize the function?
 
-Answer is in the appendix.
+Answer is in the github.
 ** "arr + i" is equivalent to "&arr[i]". We're doing pointer math to get the ith and jth elements of arr.
 </div>
 
 ---
+
+# But how fast is it?
+
+
+
+
+
+
+
+
+
+
+
 
 
 ---
