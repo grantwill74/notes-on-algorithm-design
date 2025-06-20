@@ -165,6 +165,71 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <script
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
@@ -398,15 +463,351 @@ with different bases all have constant ratios to each other.</p>
 <h1 id="a-graph">A graph</h1>
 <figure>
 <img src="big_O_graph.svg"
-alt="A graph showing how plots of 1.25n, n log n, and n-squared all get bigger than the plot of n, either immediately or eventually as n gets large enough." />
-<figcaption aria-hidden="true">A graph showing how plots of 1.25n, n log
-n, and n-squared all get bigger than the plot of n, either immediately
-or eventually as n gets large enough.</figcaption>
+alt="bg right:60% height:100% A graph showing how plots of 1.25n, n log n, and n-squared all get bigger than the plot of n, either immediately or eventually as n gets large enough." />
+<figcaption aria-hidden="true">bg right:60% height:100% A graph showing
+how plots of 1.25n, n log n, and n-squared all get bigger than the plot
+of n, either immediately or eventually as n gets large
+enough.</figcaption>
 </figure>
 <p>Notice how, eventually all those functions get bigger than <span
 class="math inline">\(f(n)=n\)</span>.</p>
 <p>This would be true even of a smaller linear function, because we can
 multiply by any constant.</p>
+<hr />
+<h1 id="knowledge-check">Knowledge check</h1>
+<p>Give an example of a function <span
+class="math inline">\(f(n)\)</span>, such that <span
+class="math inline">\(n^3 \in O(f(n))\)</span></p>
+<p>That is, find a function <span class="math inline">\(f(n)\)</span>
+where <span class="math inline">\(n^3 \leq C\cdot f(n)\)</span> as n
+gets arbitrarily large.</p>
+<hr />
+<h1 id="some-answers">Some answers</h1>
+<ul>
+<li><span class="math inline">\(f(n)=n^3\)</span></li>
+<li><span class="math inline">\(f(n)={n^3 \over 2}\)</span></li>
+<li><span class="math inline">\(f(n)=n^4\)</span></li>
+<li><span class="math inline">\(f(n)=n^{\pi}\)</span></li>
+<li><span class="math inline">\(f(n)=n^3 \log n\)</span></li>
+<li><span class="math inline">\(f(n)=n!\)</span></li>
+</ul>
+<p>All of these functions can be multiplied by a constant to make them
+<span class="math inline">\(\geq\)</span> than <span
+class="math inline">\(n^3\)</span></p>
+<p>Yes, even <span class="math inline">\({n^3 \over 2}\)</span>. We can
+multiply it by 2!</p>
+<hr />
+<h1 id="knowledge-check-2">Knowledge check (2)</h1>
+<p>Give an example of a function <span
+class="math inline">\(f(n)\)</span>, such that <span
+class="math inline">\(n \notin O(f(n))\)</span></p>
+<p>That is, find a function that is too small to have its big-O contain
+<span class="math inline">\(n\)</span>.</p>
+<hr />
+<h1 id="some-answers-2">Some answers (2)</h1>
+<ul>
+<li><span class="math inline">\(f(n)=log (n)\)</span></li>
+<li><span class="math inline">\(f(n)=\sqrt{n}\)</span></li>
+<li><span class="math inline">\(f(n)=n^{2/3}\)</span></li>
+</ul>
+<p>No matter how much we scale these functions, eventually n will be
+larger than them.</p>
+<p>Example: <span class="math inline">\(n \gt 100\sqrt{n}\)</span> when
+<span class="math inline">\(n&gt;10000\)</span> <span
+class="math inline">\(n \gt 10000\sqrt{n}\)</span> when <span
+class="math inline">\(n&gt;1000000\)</span> For a large enough n, for
+all <span class="math inline">\(C\)</span>, <span
+class="math inline">\(n \gt C\sqrt{n}\)</span>, so <span
+class="math inline">\(n \notin O(\sqrt n)\)</span></p>
+<hr />
+<h1 id="knowledge-check-3">Knowledge check (3)</h1>
+<p>Give an example of a function <span
+class="math inline">\(f(n)\)</span>, such that <span
+class="math inline">\(f(n) \in O(n^3)\)</span></p>
+<hr />
+<h1 id="some-answers-3">Some answers (3)</h1>
+<ul>
+<li><span class="math inline">\(f(n)=n^3\)</span></li>
+<li><span class="math inline">\(f(n)=n^2\)</span></li>
+<li><span class="math inline">\(f(n)=n\)</span></li>
+<li><span class="math inline">\(f(n)=1\)</span></li>
+<li><span class="math inline">\(f(n)=n \log n\)</span></li>
+</ul>
+<p>Yes, the functions can just be constants like <span
+class="math inline">\(1\)</span>.</p>
+<p>The constant function <span class="math inline">\(f(n)=1 \in
+O(g(n))\)</span> for any function <span class="math inline">\(g(n) \gt
+0\)</span></p>
+<hr />
+<h1 id="knowledge-check-4">Knowledge check (4)</h1>
+<p>Is <span class="math inline">\(n^2 \in O(n^2 - n)\)</span>?</p>
+<hr />
+<h1 id="some-answers-4">Some answers (4)</h1>
+<p>Actually yes. Let <span class="math inline">\(C = 2\)</span>. What
+happens to this when n gets big?</p>
+<p><span class="math inline">\(n^2 \leq 2(n^2 - n)\)</span>, distribute
+the 2 <span class="math inline">\(n^2 \leq 2n^2 - 2n\)</span>, subtract
+<span class="math inline">\(n^2\)</span> from both sides <span
+class="math inline">\(0 \leq n^2 - 2n\)</span> can this be made true for
+every n past a certain point? Add <span
+class="math inline">\(2n\)</span> to both sides: <span
+class="math inline">\(2n \leq n^2\)</span>, we only care what happens
+when n is big, so we can divide (assume <span
+class="math inline">\(n&gt;0\)</span>) <span class="math inline">\(2
+\leq n\)</span></p>
+<p>So <span class="math inline">\(n^2 - n\)</span> can be made to
+eventually bound <span class="math inline">\(n^2\)</span> if we multiply
+it by a large enough constant. Once <span class="math inline">\(n \geq
+2\)</span>, <span class="math inline">\(2(n^2 - n)\)</span> will always
+be bigger than <span class="math inline">\(n^2\)</span>.</p>
+<hr />
+<h1 id="what-big-o-means">What Big-O <em>means</em></h1>
+<p>Intuitively, big-O tells us the upper bound of how long a process
+will take.</p>
+<p>It specifically tells us that upper bound in a way that ignores
+constants or smaller degree terms.</p>
+<p>So it’s a mathematically rigorous way of being sort of vague. We get
+to share a feeling for how slow something is. “This algorithm runs in
+linear time (i.e., <span class="math inline">\(O(n)\)</span>)” conveys a
+lot of information without bogging down the reader with computer
+specific information or meaningless time blips.</p>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-1">Questions?</h1>
+<hr />
+<h1 id="the-formal-definition">The formal definition</h1>
+<p>Okay, let’s get more rigorous. Our definition was good before, but
+not quite good enough for proofs.</p>
+<h2 id="rigorous-definition">Rigorous definition:</h2>
+<p><span class="math display">\[f(n) \in O(g(n)) \iff
+\exists C \gt 0, \exists n_0 \in ℕ,\forall n \geq n_0, f(n) \leq C\cdot
+g(n)\]</span></p>
+<p>In English: “f is in the order of g”, is equivalent to saying that
+there are a pair of numbers: <span class="math inline">\(C\)</span> and
+<span class="math inline">\(n_0\)</span> which must be large enough so
+that <span class="math inline">\(C\times g(n)\)</span> is bigger than
+<span class="math inline">\(f(n)\)</span> for every choice of <span
+class="math inline">\(n\)</span> that is larger than <span
+class="math inline">\(n_0\)</span>.</p>
+<div class="footnote">
+<p>Note: We’re assuming that f and g are functions that return positive
+values (because they represent times). If you truly wish to allow f to
+return even negative numbers, you must put absolute value bars around
+it. We don’t need to worry about this in the study of algorithms, but
+other fields use this notation too.</p>
+</div>
+<hr />
+<h1 id="lets-meditate-on-that">Let’s meditate on that</h1>
+<p>It’s a big gnarly definition. Let’s think about it.</p>
+<p>Anytime someone has shown that <span class="math inline">\(f(n) \in
+O(g(n))\)</span>, they have done the following: - Found the scaling
+factor <span class="math inline">\(C\)</span> - Found the starting point
+<span class="math inline">\(n_0\)</span> - Proved that for every natural
+number starting at <span class="math inline">\(n_0\)</span> and getting
+as big as you want, that <span class="math inline">\(f(n) \leq C\cdot
+g(n)\)</span></p>
+<p>We’ll look at how to write one of these proofs soon, but first, let’s
+assume someone has done the hard work for us.</p>
+<hr />
+<h1 id="subsets-example-the-question">Subsets example: the question</h1>
+<h2 id="is-on-subseteq-on2">Is <span class="math inline">\(O(n)
+\subseteq O(n^2)\)</span>?</h2>
+<hr />
+<h1 id="subsets-example-the-answer">Subsets example: the answer</h1>
+<p>Yes, it is.</p>
+<p>But how do we prove it?</p>
+<hr />
+<h1 id="subsets-example-work-1">Subsets example: work (1)</h1>
+<p>What does it mean for <span class="math inline">\(A \subseteq
+B\)</span>?</p>
+<p>It means <span class="math inline">\(\forall x \in A, x \in
+B\)</span>.</p>
+<p>Another way of putting it: <span class="math inline">\(\forall x \in
+U, x \in A \implies x \in B\)</span></p>
+<p>What kind of elements are we interested in? What are the elements of
+<span class="math inline">\(U\)</span>? Functions. <span
+class="math inline">\(O(f(n))\)</span> is a set of functions <span
+class="math inline">\(f:N \to R^+\)</span></p>
+<p>Therefore, we need to show: <span class="math display">\[\forall f: N
+\to R^+, f \in O(n) \implies f \in O(n^2)\]</span></p>
+<hr />
+<h1 id="proving-that-statement">Proving that statement</h1>
+<p>How do we prove <span class="math inline">\(\forall f: N \to R^+, f
+\in O(n) \implies f \in O(n^2)\)</span>?</p>
+<p>If your goal starts with <span
+class="math inline">\(\forall\)</span>, a typical way to start your
+proof is by saying “suppose”.</p>
+<p>To make it easier to track, let’s track the goal, and the proof so
+far, at the same time.</p>
+<p>Proof: <em>empty</em> Goal: <span class="math inline">\(\forall f: N
+\to R^+, f \in O(n) \implies f \in O(n^2)\)</span></p>
+<hr />
+<h1 id="proving-that-statement-2">Proving that statement (2)</h1>
+<p>Now we “suppose” to “peel off” the forall at the beginning of the
+goal.</p>
+<p>Proof: “Suppose we have a function <span class="math inline">\(f: N
+\to R^+\)</span>” goal: <span class="math inline">\(\cancel {\forall f:
+N \to R^+}, f \in O(n) \implies f \in O(n^2)\)</span>.</p>
+<p>So, how do we prove <span class="math inline">\(f \in O(n) \implies f
+\in O(n^2)\)</span>?</p>
+<hr />
+<h1 id="proving-implications">Proving implications</h1>
+<p>So how, do we prove that <span class="math inline">\(P \implies
+Q\)</span>?</p>
+<p>We have two options: 1. Assume that <span
+class="math inline">\(P\)</span> (aka, the hypothesis) is true, and show
+that you can prove <span class="math inline">\(Q\)</span> (the
+conclusion). 2. Show that <span class="math inline">\(P\)</span> is
+false. (i.e., <span class="math inline">\(P \implies Q\)</span> is
+vacuously true)*</p>
+<p>We certainly can’t prove that some random function <span
+class="math inline">\(f \in O(n)\)</span> is not also <span
+class="math inline">\(\in O(n^2)\)</span>, so we have to take option
+1.</p>
+<div class="footnote">
+<ul>
+<li>Giant footnote: see appendix A</li>
+</ul>
+</div>
+<hr />
+<h1 id="subsets-example-work-2">Subsets example: work (2)</h1>
+<p>Proof so far: “Suppose we have a function <span
+class="math inline">\(f: N \to R^+\)</span>” Goal: <span
+class="math inline">\(f \in O(n) \implies f \in O(n^2)\)</span>.</p>
+<p>Okay, so now we “suppose” again. “Suppose” peels off an implication
+the same way that it peels off a “<span
+class="math inline">\(\forall\)</span>”.</p>
+<p>Proof so far: - Suppose we have a function <span
+class="math inline">\(f: N \to R^+\)</span> - suppose that <span
+class="math inline">\(f \in O(n)\)</span></p>
+<p>Goal: <span class="math inline">\(\cancel {f \in O(n) \implies} f \in
+O(n^2)\)</span></p>
+<p>Now we have a hypothesis we can use: <span class="math inline">\(f
+\in O(n)\)</span>. Let’s use it by applying the definition of <span
+class="math inline">\(O\)</span>.</p>
+<hr />
+<h1 id="applying-the-definition">Applying the definition</h1>
+<p>Recall the definition of big-O: <span class="math display">\[f(n) \in
+O(g(n)) \iff \exists C \gt 0, \exists n_0 \geq 0, \forall n\in N, f(n)
+\leq C\cdot g(n)\]</span></p>
+<p>And recall that our proof so far looks like this: “Suppose we have a
+function <span class="math inline">\(f: N \to R^+\)</span> and suppose
+there is some <span class="math inline">\(f \in O(n)\)</span>”</p>
+<p>Implications are the logical version of functions*. We can “call” our
+definition on <span class="math inline">\(f \in O(n)\)</span> and
+replace it with the other side of the <span
+class="math inline">\(\iff\)</span></p>
+<p>So now, we can use this fact: <span class="math inline">\(\exists C
+\gt 0, \exists n_0 \geq 0, \forall n\in N, f(n) \leq C\cdot
+g(n)\)</span></p>
+<p>How does that help?</p>
+<div class="footnote">
+<p>* It’s not a coincidence that F: P =&gt; Q looks like f : N -&gt; R.
+Functions are isomorphic with implications. Search for the “Curry-Howard
+correspondance” if this is interesting to you.</p>
+</div>
+<hr />
+<h1 id="subsets-example-work-3">Subsets example: work (3)</h1>
+<p>We can replace the <span class="math inline">\(g(n)\)</span> in the
+definition with the actual function: <span
+class="math inline">\(n\)</span>. Let’s expand the definition in the
+goal, too.</p>
+<p>Proof so far: - Suppose we have a function <span
+class="math inline">\(f: N \to R^+\)</span> - Suppose <span
+class="math inline">\(f \in O(n)\)</span>. - Applying the definition of
+big-O to both the above hypothesis and goal, we derive <span
+class="math inline">\(\exists C \gt 0, \exists n_0 \geq 0, \forall n\in
+N, f(n) \leq C\cdot n\)</span>”</p>
+<p>Goal so far: Show <span class="math inline">\(\exists C \gt 0,
+\exists n_0 \geq 0,  \forall n \in N, f(n) \leq C \cdot
+n^2\)</span>”</p>
+<hr />
+<h1 id="subsets-example-6-heres-the-main-part">Subsets example (6):
+here’s the main part</h1>
+<p>Remember how saying “suppose” in our proof removed a <span
+class="math inline">\(\forall\)</span> from the goal? To remove a <span
+class="math inline">\(\exists x\)</span> from the goal, we have to say
+“choose <span class="math inline">\(y\)</span> for x”. But that requires
+us to actually pick a value <span class="math inline">\(y\)</span>…what
+should we pick?</p>
+<p>We already have that <span class="math inline">\(\exists C \gt 0,
+\exists n_0 \geq 0, \forall n\in N, f(n) \leq C\cdot n\)</span> Does
+anything change if <span class="math inline">\(n\)</span> becomes <span
+class="math inline">\(n^2\)</span>?</p>
+<p>Well, certainly <span class="math inline">\(C \cdot n \le C \cdot
+n^2\)</span>, because <span class="math inline">\(C\)</span> is positive
+and <span class="math inline">\(n\)</span> is non-negative. Therefore,
+<span class="math inline">\(f(n) \le C \cdot n \le C \cdot
+n^2\)</span></p>
+<p>So we choose the same <span class="math inline">\(C\)</span> and
+<span class="math inline">\(n_0\)</span> that we already have. <span
+class="math inline">\(\forall n, f(n) \le C \cdot n^2\)</span> follows
+by transitivity of <span class="math inline">\(\le\)</span>. That’s it;
+we proved the goal.</p>
+<hr />
+<h1 id="final-proof">Final proof</h1>
+<hr />
+<h1 id="going-the-other-way-proving-fn-in-ogn">Going the other way:
+proving <span class="math inline">\(f(n) \in O(g(n))\)</span></h1>
+<p>If we want to prove that <span class="math inline">\(f(n) \in
+O(g(n))\)</span>, we have to first choose a <span
+class="math inline">\(C\)</span> and an <span
+class="math inline">\(n_0\)</span>.</p>
+<p>C is our scaling factor. It just needs to be big enough to make <span
+class="math inline">\(C\cdot g(n)\)</span> large enough.</p>
+<p><span class="math inline">\(n_0\)</span> is our starting point. We
+don’t care what happens for small values of n, we care about how the
+functions scale at large values. <span
+class="math inline">\(n_0\)</span> let’s us define what “big enough”
+means for <span class="math inline">\(n\)</span>.</p>
+<p>Once we’ve chosen our <span class="math inline">\(C\)</span> and
+<span class="math inline">\(n_0\)</span>, the last part is to prove the
+rest of the statement: <span class="math inline">\(\forall n \geq n_0,
+f(n) \leq C\cdot g(n)\)</span></p>
+<hr />
+<h1 id="using-the-formal-definition-2">Using the formal definition
+(2)</h1>
+<hr />
+<h1 id="knowledge-check-6">Knowledge check (6)</h1>
+<p>Is this proposition true? <span class="math display">\[O(n^2)
+\subseteq O(n)\]</span></p>
+<p>That is, are all the functions that are in <span
+class="math inline">\(O(n)\)</span> also in <span
+class="math inline">\(O(n^2)\)</span>?</p>
+<p>[What do you think?]</p>
+<hr />
+<h1 id="answer-5">Answer (5)</h1>
+<hr />
+<h1 id="knowledge-check-7-one-more">Knowledge check (7), one more!</h1>
+<p>Is <span class="math inline">\(O(n^2 - n) = O(n^2 + n)\)</span>?</p>
+<p>Prove it one way or the other.</p>
+<p>How? Remember: <span class="math inline">\(O(f(n))\)</span> is a set.
+How do we prove that two sets are equal?</p>
+<hr />
+<h1 id="lets-have-an-example">Let’s have an example</h1>
+<p>Now we know that, if someone proves that an algorithm takes time
+<span class="math inline">\(t(n) \in O(g(n))\)</span>, we have a vague
+idea of how much time it will take at worst</p>
+<hr />
+<h1 id="insertion-sort">Insertion Sort</h1>
+<p>Insertion sort is a simple, but surprisingly valuable sorting
+algorithm.</p>
+<p>First, let’s remind ourself of its code:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span><span class="op">*</span> a<span class="op">,</span> <span class="dt">int</span><span class="op">*</span> b<span class="op">);</span> <span class="co">// defined elsewhere: you know how to do it!</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span> </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="footnote">
+<p>This can be slightly sped up by avoiding unecessary copies. Think
+about what swap does and expand it. Could you optimize the function?</p>
+<p>Answer is in the github. ** “arr + i” is equivalent to “&amp;arr[i]”.
+We’re doing pointer math to get the ith and jth elements of arr.</p>
+</div>
+<hr />
+<h1 id="but-how-fast-is-it">But how fast is it?</h1>
 <hr />
 <h1 id="actual-quiz-next-class">Actual quiz next class</h1>
 <p>Next class we will have a quiz on this material.</p>
@@ -430,11 +831,63 @@ understand and prove things using Bachmann-landau notation.</p>
 not.</p>
 <p>Then, rewrite them on a cheat sheet. It’s an open materials quiz. Any
 printed material is acceptable. Composing your own cheat sheet will help
-comprehension a lot.</p>
+comprehension a lot. I recommend 1 sheet per learning standard.</p>
 <p>Set a practice timer for each problem. Turn off your electronic
 devices. You will have 10 minutes.</p>
 <p>Remember: <em>if you aren’t studying under time controls with pen and
 paper, <strong>you aren’t studying!</strong></em></p>
 <p>And remember to bring pen and paper for the quiz next class!</p>
+<hr />
+<hr />
+<h1 id="appendix-a-principle-of-explosion">Appendix A: principle of
+explosion</h1>
+<p>Regarding the equivalence of ~P and P → Q.</p>
+<p>This is called the principle of explosion, and it often throws people
+for a loop. 2 + 2 = 5 → Unicorns are real, because 2 + 2 is not 5. The
+principle of explosion is sometimes called “ex falso quodlibet”, meaning
+“from false, whatever you like.” It comes from the fact that if a
+contradiction is true, e.g., P and ~P, we can create disjunctions out of
+thin air: P → P or Q, and then eliminate them ~P → (P or Q) -&gt; Q,
+thereby proving Q from a contradiction.</p>
+<p>We will use it sometimes, so I want to make sure it doesn’t seem too
+weird.</p>
+<hr />
+<h1 id="appendix-a-2">Appendix A (2)</h1>
+<p>It may be upsetting, but remember, it requires us to have a proof of
+something that is contradictory, which should be impossible if our logic
+is sound. If it is still upsetting, you are in good company: some
+logicians and philosophers are concerned that a single untrue fact that
+we believe to be true can blow up our whole logical system. What if
+there is a true contradiction? Therefore, logicians have developed
+<em>paraconsistent</em> logics which do not allow the principle of
+explosion.</p>
+<hr />
+<h1 id="appendix-a-3">Appendix A (3)</h1>
+<p>There is a nice thing about the principle of explosion: it’s like a
+logical equivalent to an early return.</p>
+<p>Suppose we have some statement like <span class="math inline">\(n \gt
+5 \implies P(n)\)</span> and we want to prove it. Our statement only
+applies to numbers greater than 5, so our base case for induction is
+easy:</p>
+<p>by induction on n, - when n = 0, <span class="math inline">\(0 \gt 5
+\implies P(n)\)</span> is vacuously true (we early returned: sub-goal
+done) - suppose <span class="math inline">\(P(n)\)</span>, … (pretend we
+proved <span class="math inline">\(P(n+1)\)</span>)</p>
+<hr />
+<h1 id="appendix-a-4">Appendix A (4)</h1>
+<p>If we weren’t allowed to explode, we’d have to modify our implication
+<span class="math inline">\(n \gt 5 \implies P(n)\)</span> to something
+like <span class="math inline">\(P(n) \lor n \leq 5\)</span></p>
+<p>If we wanted to use this more complicated fact in a later proof, we’d
+have to consider both cases: <span class="math inline">\(P(n)\)</span>
+and <span class="math inline">\(n \leq 5\)</span> and complete that
+proof both ways.</p>
+<p>Different paraconsistent logical systems have different ways of
+dealing with this. However, the fact remains that explosion is very
+convenient.</p>
+<p>Compare this to programming languages where you can early return
+vs. languages where you have to carry out computation for every branch
+of an if-statement. It’s kind of nice to bail as soon as something is
+bogus and focus on the happy path.</p>
 </body>
 </html>
