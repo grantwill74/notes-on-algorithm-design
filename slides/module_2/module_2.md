@@ -626,52 +626,29 @@ Once you see the mechanical nature of proofs, and how we say things like "suppos
 
 It really is like writing a computer program. In fact, when Donald Knuth was introducing computer programming, he said it was like writing a proof!
 
-Stay with me; we have one more technique to learn. The proof equivalent of a for-loop.
+Stay with me; we have one more technique to review. The proof version of a for-loop.
 
 I'm going to work one more exercise for you to study. The rest will be unworked. When you revisit these slides to study, make sure you can do the unworked practice exercises next slide.
 
 ---
 
-# Unworked practice
+# Practice
 
-1. Prove that $n^2 \notin O(n)$. I've worked this one in the appendix.
-1. Prove that $n^2 \in O(n^2)$
-    This is easier, because it's not a subset proof, so we don't have a $\forall f \cdots$ 
-2. Prove that $n \in O(n \lg n)$. $lg$ is another way of writing $log_2$
+1. Prove that $n^2 \notin O(n)$. I've worked this one in appendix C.
+2. Prove that $n^2 \in O(n^2)$
+    This is similar, but it's not a subset proof. Does that make a big difference?
+3. Prove that $n \in O(n \lg n)$. $\lg$ is another way of writing $\log_2$
     This one is trickier. Remember that $\log_n 0$ is undefined, and $\log_n 1= 0$
     Be careful about your choise of $n_0$!
-3. Prove that 
+4. Prove that $O(n^2 - n) = O(n^2 + n)$. I worked this one in appendix D. This one is perfect for showing what a test answer would look like.
+    
+Over time, you'll naturally get more comfortable with making larger leaps. Follow the long-form proof/goal method we've been using until you feel confident, but it's okay to make proofs much shorter. See appendix D for a short proof example.
 
 ---
 
 # Questions?
 
 <!-- _class: invert questions -->
-
----
-
-
-
----
-
-# Going the other way: proving $f(n) \in O(g(n))$
-
-If we want to prove that $f(n) \in O(g(n))$, we have to first choose a $C$ and an $n_0$.
-
-C is our scaling factor. It just needs to be big enough to make $C\cdot g(n)$ large enough.
-
-$n_0$ is our starting point. We don't care what happens for small values of n, we care about how the functions scale at large values. $n_0$ let's us define what "big enough" means for $n$.
-
-Once we've chosen our $C$ and $n_0$, the last part is to prove the rest of the statement: $\forall n \geq n_0, f(n) \leq C\cdot g(n)$
-
-
-
-
----
-
-# Using the formal definition (2)
-
-
 
 ---
 
@@ -688,19 +665,8 @@ That is, are all the functions that are in $O(n)$ also in $O(n^2)$?
 
 # Answer (5)
 
-
----
-
-# Knowledge check (7), one more!
-
-Is $O(n^2 - n) = O(n^2 + n)$?
-
-Prove it one way or the other.
-
-How? Remember: $O(f(n))$ is a set. How do we prove that two sets are equal?
-
-
-
+No, because $n^2 \in O(n^2)$, but $n^2 \notin O(n)$
+(And you will prove these facts in practice!)
 
 ---
 
@@ -717,7 +683,7 @@ Insertion sort is a simple, but surprisingly valuable sorting algorithm.
 First, let's remind ourself of its code:
 
 ```c
-void swap(int* a, int* b); // defined elsewhere: you know how to do it!
+void swap(int* a, int* b);
 
 void ins_sort(int* arr, size_t n) { 
     for (size_t i = 1; i < n; i++) 
@@ -737,13 +703,67 @@ Answer is in the github.
 
 # But how fast is it?
 
+How do we determine the big-O of insertion sort?
+
+First, we need to estimate its time. Let's look at the code and try to figure out how much time it takes.
+
+The loops take a variable amount of time depending on the input. But there's one thing that always takes the same amount of time: swap.
+
+Why?
+
+---
+
+# Swap
+
+Here's a reasonable implementation of swap. There is a fancier version using xor, but this is fine too:
 
 
+```c
+void swap(int* i, int* j) {
+    int t = *i;
+    *i = *j;
+    *j = t;
+}
+```
 
+This is what it compiles into with clang, target x64, with -O2:
+```asm
+swap:   mov     eax, dword ptr [rdi]
+        mov     ecx, dword ptr [rsi]
+        mov     dword ptr [rdi], ecx
+        mov     dword ptr [rsi], eax
+        ret
+```
 
+---
 
+# Swap (2)
 
+The swap is 5 assembly instructions.
 
+Those are just moves and a return.
+Those are 1-2 micro-op moves, and a 1-3 micro-op return.
+This whole thing will typically take a few cycles or so.
+
+It takes a few cycles no matter what inputs it gets. It's not like swapping big numbers is slower than swapping small ones.
+
+Therefore we say that swap takes *constant time*.
+
+---
+
+# Constant time
+
+Constant time is written as $O(1)$. 
+
+It might seem weird writing big-O without a variable, but the rules still apply. If your function always takes 100 time units, then with C = 100, $100 \le 100 \cdot 1$, and so $100 = O(1)$. 
+
+Constant time fundamentally means "the time it takes does not depend on the input."
+
+Many machine operations are constant time.
+
+---
+
+# Showing constant time
 
 
 
@@ -936,13 +956,13 @@ Goal: $\forall C \gt 0, \forall n_0 \geq 0, \exists n \geq n_0, n^2 \gt C\cdot n
 Proof:
 - Suppose we have some $C$ and $n_0$, $C \gt 0$, $n_0 \geq 0$.
   We must show: $\exists n \geq n_0, n^2 \gt C \cdot n$
-  
+
 Note: we can't just choose anything here. It has to work for *any* choice of C *and* it has to be at least as big as $n_0$ *and* it has to be a natural number. 
 
 What should we pick?
 
 <div class="footnote">
-Note: Technically, it doesn't *have* to be as big as n0. If it's smaller, then the statement will be vacuously true. But, then we'd have to consider both cases. It's easier to pick something we know is bigger, because then there is only one case to consider.
+Note: Technically, it doesn't *have* to be as big as n0. If it's smaller, then the statement will be vacuously true. But, we don't get to pick n0, so then we'd have to the case where n0 is smaller separately. It's easier to pick something we know is bigger, because then there is only one case to prove.
 </div>
 
 ---
@@ -969,3 +989,19 @@ Note: if you don't agree that it's clearly true, try writing an intermediate val
 # Appendix C (4)
 
 In other words, we have shown that $n^2 \notin O(n)$, because no matter what values of $C$ and $n_0$ we chose, there is always a value of $n$ that makes $n^2 \gt C \cdot n$.
+
+---
+
+# Appendix D
+
+Prove that $O(n^2 - n) = O(n^2 + n)$.
+
+Goal 1: show $n^2 - n \in O(n^2 + n)$.
+Proof 1: choose $C = 1, n_0 = 0$, then $n \geq 0 \implies n^2 - n \leq 1\cdot (n^2 + n)$ by simple arithmetic.
+Goal 2: show $n^2 + n \in O(n^2 - n)$.
+Proof 2: choose $C = 2, n_0=3$. Suppose $n \geq 3$.
+Then, the goal is $n^2 + n \leq 2\cdot (n^2 - n)$, using $\impliedby$ to mean "follows from":
+$$
+Goal \impliedby n^2 + n \leq 2n^2 - 2n \impliedby 0 \leq n^2 - 3n \impliedby3n \leq n^2 \impliedby 3 \leq n
+$$ 
+Which is an assumption. ▯
