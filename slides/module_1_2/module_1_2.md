@@ -143,9 +143,9 @@ Let's learn what these areas will be!
 
 # Before the midterm
 
-1. You will be able to understand Bachmann-Landau notation (i.e., Big-O, Big-ϴ, small-o, etc.). You will be able to demonstrate this understanding by proving that algorithms have a given runtime bound.
-2. You will be able to implement and analyze a self-balancing tree, specifically a scapegoat tree, modify it to fit problem-specific constraints, and compare it to the performance of other data structures.
-3. You will learn the divide and conquer concept, how to recognize such algorithms, and how to prove their runtime using the *master theorem*. 
+1. You will be able to write relevant set-theoretic and inductive proofs for this class, both to prove correctness and to prove runtime-bounds. You will be able to demonstrate understand Bachmann-Landau notation (i.e., Big-O, Big-ϴ, small-o, etc.) needed to describe the latter. 
+2. You will learn the divide and conquer concept, how to recognize such algorithms, and how to prove their runtime using the *master theorem*. 
+3. You will be able to implement and analyze a self-balancing tree, specifically a scapegoat tree, modify it to fit problem-specific constraints, and compare it to the performance of other data structures.
 4. You will learn about complexity categories, such as P, NP, and NP-complete. You will learn how to determine and prove which category a problem belongs to.
 
 ---
