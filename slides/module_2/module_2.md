@@ -626,23 +626,76 @@ Once you see the mechanical nature of proofs, and how we say things like "suppos
 
 It really is like writing a computer program. In fact, when Donald Knuth was introducing computer programming, he said it was like writing a proof!
 
-Stay with me; we have one more technique to review. The proof version of a for-loop.
+---
 
-I'm going to work one more exercise for you to study. The rest will be unworked. When you revisit these slides to study, make sure you can do the unworked practice exercises next slide.
+# How to think about proofs
+
+If you're struggling, I really recommend thinking about proofs in terms of "what is the proof so far" and "what is the goal so far". This is how proof assistants like [Roqc](https://rocq-prover.org/) work, so if you get used to this paradigm, you'll find it easy to write formal proofs if you want.
+
+Everything you do in the proof either modifies an assumption (i.e., something we supposed) or modifies the goal (i.e., "this follows from").
+
+Instead of trying to hold the whole proof in your brain, try to ask yourself: "okay, the proof looks like $\forall x \in Z, \ldots something$", so the next step is to say "suppose we have some $x \in Z$" and that removes the "$\forall x \in Z$ from the proof.
+
+Just focus on one step at a time. Some steps do seem to require creativity, but you can often solve them with trial and error. Your intuition will improve with practice.
+
+---
+
+# Proof tactic summary so far
+
+- If your goal looks like $\forall x \in S, P(x)$, then say "suppose we have an $x \in S$". Now your new goal is $P(x)$ and you can use the variable you just supposed.
+- You can rename a variable when you say "suppose". It's important to avoid name conflicts. You can also rename any $\forall$-bound variable as long as you are consistent.
+- If your goal looks like $P \implies Q \ldots$, then add "suppose $P$". Now your goal is $Q$.
+- If you have an assumption that looks like $\exists x \in S, P(x)$, you can say "suppose we have an $x \in S$ and suppose $P(x)$". Now you can use $x$ and $P(x)$ as needed.
+
+---
+
+# Proof tactic summary (2)
+
+Proving $\lnot P$ is fundamentally the same as proving $P \implies False$, so you can start by supposing $P$, and then deriving a contradiction.*
+
+You can also invert the proposition and prove the inverse is true. Here is how quantified propositions get inverted:
+1. $\lnot \exists x, P \implies \forall x, \lnot Q$
+2. $\lnot \forall x, P \implies \exists x, \lnot Q$
+
+(Note: the second one relies on non-constructive logic, so it's not as convenient with proof assistants, but we don't have to restrict ourselves in this class)
+
+<div class="footnote">
+
+\* We can think of "not P" as saying "there cannot be a proof of P". So if you had a proof of P, it would necessarily cause a contradiction.
+</div>
+
+---
+
+# Proof tactic summary (3)
+
+Sometimes it's easier to work backwards than forwards. If I have a goal to show $Q$, and I have an assumption $P \implies Q$, I can say "$Q$ follows from $P$", and now my goal is to prove $P$. 
+
+I can also write: $Q \impliedby P$ which means the same thing: I used to want to prove $Q$, but now it's enough to prove $P$, because we know that if I have a proof of $P$, I can get $Q$.
+
+Just like solving a maze, it's sometimes way easier to go backwards. Appendix E shows an example (the quadratic formula) where going backwards makes it clear what you have to do, whereas going forwards requires you to be creative.
 
 ---
 
 # Practice
 
-1. Prove that $n^2 \notin O(n)$. I've worked this one in appendix C.
-2. Prove that $n^2 \in O(n^2)$
+1. Prove that $1000 \in O(1)$
+2. Prove that $n^2 \notin O(n)$. I've worked this one in appendix C.
+3. Prove that $n^2 \in O(n^2)$
     This is similar, but it's not a subset proof. Does that make a big difference?
-3. Prove that $n \in O(n \lg n)$. $\lg$ is another way of writing $\log_2$
+4. Prove that $n \in O(n \lg n)$. $\lg$ is another way of writing $\log_2$
     This one is trickier. Remember that $\log_n 0$ is undefined, and $\log_n 1= 0$
     Be careful about your choise of $n_0$!
-4. Prove that $O(n^2 - n) = O(n^2 + n)$. I worked this one in appendix D. This one is perfect for showing what a test answer would look like.
+5. Prove that $O(n^2 - n) = O(n^2 + n)$. I worked this one in appendix D.
     
-Over time, you'll naturally get more comfortable with making larger leaps. Follow the long-form proof/goal method we've been using until you feel confident, but it's okay to make proofs much shorter. See appendix D for a short proof example.
+---
+
+# Practice encouragement
+
+Over time, you'll naturally get more comfortable with making larger leaps, and your proofs will get shorter.
+
+Follow the long-form proof/goal method we've been using until you feel confident.
+
+Be sure to check your work: using my worked examples when they're there, office hours/email, or AI for convenience.
 
 ---
 
@@ -652,6 +705,7 @@ Over time, you'll naturally get more comfortable with making larger leaps. Follo
 
 ---
 
+<!--
 # Knowledge check (6)
 
 Is this proposition true?
@@ -669,18 +723,136 @@ No, because $n^2 \in O(n^2)$, but $n^2 \notin O(n)$
 (And you will prove these facts in practice!)
 
 ---
+-->
+
+# Simplified notation
+
+It gets a little tedious proving facts about big-O. It's nice to have simple rules to apply.
+
+For example, suppose we have some algorithm that is recursive. For example, the running time of merge-sort looks like this:
+
+$T_{ms}(0)=1$
+$T_{ms}(n)=2T_{ms}({n \over 2}) + f(n)$
+where $f(n) \in O(n)$
+
+We'll show how this is derived next module, but notice how inconvenient it is to always say "$f$, where $f$ is an element of the big-O of ..."
+
+---
+
+# Simplified notation (2)
+
+It would be much nicer to just write this:
+$T_{ms}(n)=2T_{ms}({n \over 2}) + O(n)$
+
+And that's, in fact, what we do.
+
+First, instead of saying "$f \in O(g(n))$", we say "$f = O(g(n))$"
+
+This is an abuse of notation. It does not mean "$f$ *is* the order of $g(n)$". It means "$f$ is some function in $O(g(n))$.
+
+You've probably seen statements like $f = O(n^2)$ online. Hopefully this makes it clear that $O(n^2)$ really is a set, but we usually prefer to treat the function as a member of that set.
+
+---
+
+# Simplified notation (3)
+
+Why do we abuse the notation? Because it's nice to say $O(n) + O(n^2) = O(n^2)$ and we can only do that if $O(n)$ is treated as a member of a set instead of a set.
+
+So here's the rule:
+- When there's one big O and it's the entire right hand side:
+  "$f(n) = O(g(n))$" means "$f(n) \in O(g(n))$"
+- When it's a term or a factor:
+  "$O(n) + O(n^2) = O(n^2)$" means
+  the $O(g(n))$ terms are actually elements of that $O$'s set.
+
+So $O(n) + O(n^2) = O(n^2)$ from now on really means
+$f + g \in O(n^2)$ where $f \in O(n)$ and $g \in O(n^2)$.
+
+---
+
+# Big-O addition and multiplication simplification 
+
+There are two useful rules we will apply frequently:
+1. $O(f(n)) + O(g(n)) = O(f(n) + g(n))$
+2. $O(f(n)) \times O(g(n)) = O(f(n) \times g(n))$
+
+Remember that $O(f(n))$ and $O(g(n))$ are really *members* of a set in the above rules. Not the set itself. But $O(f(n)+g(n))$ and $O(f(n)\cdot g(n))$ *are* the sets themselves. 
+
+**Practice exercise**: Prove these. Choose an $n_0$ that is guaranteed to be larger than the $n_0$ for either $f$ or $g$, and choose $C$ that is guaranteed to be larger than either $f'(n) + g'(n)$ or $f'(n) \cdot g'(n)$ for any $f' \in O(f(n))$ and $g' \in O(g(n))$
+
+---
+
+# Using the rules
+
+1. Simplify $O(n) + O(n^2)$ 
+   By the first rule, $O(n) + O(n^2) = O(n + n^2) = O(n^2)$
+
+Notice how the higher degree term *swallows* the lower degree term.
+
+2. Simplify $O(n) \times O(\lg n)$
+   By the second rule, $O(n) \times O(\lg n) = O(n \lg n)$
+
+---
+
+# Warning \#1
+
+We *cannot* combine $O$ over subtraction or division.
+
+$O(n^2) - O(n^2)$ looks like $0$, but it's not true for $(n^2 - n) - n^2$! Likewise for division.
+
+---
+
+# Warning \#2
+
+Be *very careful* going backwards. It's sometimes reasonable to say $O(n + m) = O(n) + O(m), but you can get in trouble doing this.
+
+Later we will see recursive time-functions where adding a constant factor to one expression ends up adding a linear factor to the whole function.
+
+In that case, It's wrong to use $O$ to arbitrarily generate terms like this: $O(n) = O(n + 1) = O(n) + O(1)$
+
+Remember that we are abusing notation here. Try to keep track of when $O(f(n))$ is a set versus a function in the set.
+
+---
+
+# Constant time
+
+One more rule: if something always takes the same amount of time, we say it is $O(1)$
+
+What if it takes $1000$ time units?
+
+Then choose $C = 1000, n_0 = 0$, $1000 \leq 1000 \cdot 1$
+Therefore $1000 = O(1)$ 
+
+---
+
+# Wrapping up big-O definitions and rules
+
+Now we know that, if someone proves that an algorithm takes time $t(n) = O(g(n))$, we have a vague idea of how much time it will take at worst.
+
+$O$ gives us an upper bound on its runtime.
+
+Hopefully you can see why it's useful. There are also $Ω$ for lower bound, and $Θ$ for both lower and upper.
+
+---
+
+<!-- _class: questions invert -->
+# Questions?
+
+---
 
 # Let's have an example
 
-Now we know that, if someone proves that an algorithm takes time $t(n) \in O(g(n))$, we have a vague idea of how much time it will take at worst 
+
+Okay, enough abstract math. Let's look at a real algorithm!
+
+Insertion sort is a simple, but surprisingly valuable sorting algorithm.
+
+First, let's remind ourself of its code:
 
 ---
 
 # Insertion Sort 
 
-Insertion sort is a simple, but surprisingly valuable sorting algorithm.
-
-First, let's remind ourself of its code:
 
 ```c
 void swap(int* a, int* b);
@@ -693,11 +865,150 @@ void ins_sort(int* arr, size_t n) {
 ```
 
 <div class="footnote">
-This can be slightly sped up by avoiding unecessary copies. Think about what swap does and expand it. Could you optimize the function?
 
+Note: this can be slightly sped up by avoiding unecessary copies. Think about what swap does and expand it. Could you optimize the function?
 Answer is in the github.
 ** "arr + i" is equivalent to "&arr[i]". We're doing pointer math to get the ith and jth elements of arr.
 </div>
+
+--- 
+
+# Why it works
+
+Insertion sort tracks which part of the array is sorted and which part isn't.
+$i$ points to the *first index of the unsorted part*.
+
+Suppose we have an array like this `4, 7, 5, 1, 3, 2, 6`
+We split it into a sorted part and an unsorted part: `4` | `7, 5, 1, 3, 2, 6`
+There are two arrays: `[4]` and `[7, 5, 1, 3, 2, 6]`
+The first array is sorted. Singleton arrays are always sorted.
+
+---
+
+# Why it works (2)
+
+Consider the second loop:
+```c
+for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)
+    swap(arr + j - 1, arr + j);
+```
+
+This loop moves the unsorted element to the left until it is no longer out of order.
+
+Starting with `[4]` and `[7, 5, 1, 3, 2, 6]`, this loop will examine `4` and `7`.
+They are in-order, so it will not swap them.
+
+Then the loop will run on `[4, 7]` and `[5, 1, 3, 2, 6]`
+7 and 5 are out of order, so they will be swapped. 4 and 5 are in order, so we stop.
+
+Then the loop will run on `[4, 5, 7]` and `[1, 3, 2, 6]`
+**Practice: finish the procedure. Follow the for-loop as you do it.**
+
+---
+
+# Why it works (3)
+
+Every time the inner loop finishes, one more element is in the correct place, and the sorted list grows by one.
+
+Eventually the sorted list includes the whole list.
+
+But how do we know? Can we prove it more rigorously?
+
+---
+
+# Inductive reasoning
+
+Now it's time for the big one! We have to use induction.
+
+We'll review it first, but...
+
+What is induction? Can anyone tell me?
+
+---
+
+# Principles of induction
+
+Natural numbers are a useful, simple datatype that is inductive. An inductive data type has a *finite number of constructors*.
+
+Wait, constructors? Remember programming language design: a datatype consists of a number of constructors. Natural numbers have two:
+1. $0$
+2. $n \implies n + 1$ (this means given a natural number, add 1 to it to get the next one)
+
+Because natural numbers are inductive, there is an algorithm that gives you a way to prove propositions about them. That is, propositions of the form, $\forall n \in N, P(n)$. This algorithm is called an "inductive principle".
+
+---
+
+# Weak induction
+
+There are many inductive principles for each inductive datatype. The most basic inductive principle for natural numbers is called *weak induction*\*.
+
+Weak induction is a proof algorithm. If you give it two proofs, it will spit out a proof of $P(n)$ for any n. 
+
+Here are the proofs we must give it:
+1. $P(0)$
+2. $\forall n, P(n) \implies P(n + 1)$
+
+These proofs each correspond to one of the constructors of natural numbers.
+
+<div class="footnote">
+
+\* yes, there is also "strong induction". We will use it when we start working with trees and divide and conquer algorithms.
+
+---
+
+# The weak induction algorithm
+
+Because this (half-functional psuedocode) is the function that weak induction requires*
+
+```c
+P(n) weak_induction(n, P(0) base, P(forall n, P(n) -> (n + 1)) ind) {
+    case n of
+    | 0 => return base
+    | n' + 1 =>                                     // n' is the number before n
+        n'_proof = weak_induction(n', base, ind);   // get proof for P(n -1)
+        return ind(n, n'_proof); // use proof for P(n - 1) to get P(n)
+}
+```
+
+This is a proof machine. If you say, "give me the proof that $P$ is true for $0$, it spits out $P(0)$. If you say, "give me the proof of $P(1)$", it recursively gets the proof of $P(0)$ (the base case), then it applies the inductive proof to generate $P(1)$. Works for any $n$.
+
+<div class="footnote">
+
+\* In a proof assistant like Roqc, weak induction is *literally* a function. It has source code. You can write your own principle of induction and use that instead, as long as it is provably total. Again, there are times when other inductive principles are more convenient, so we will see some.
+
+</div>
+
+---
+
+# The proposition we want to prove
+
+```c
+void ins_sort(int* arr, size_t n) { 
+    for (size_t i = 1; i < n; i++) 
+        for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)
+            swap(arr + j - 1, arr + j);
+}
+```
+
+- **Show** $\forall n, arr,$ after calling `ins_sort(arr, n)`, `arr[0..n)` will be sorted.
+- Because this proposition starts with $\forall n$, we can use induction.
+- Is it true for $n = 0$? Yes, the for loop gets skipped, and `arr[0..0)` is sorted.
+- Now we need to show that if it sorts `arr[0..n)`, it sorts `arr[0..n+1)`
+
+**Notation**: `arr[a .. b)` means the range starting at `a` and ending at `b - 1`. This is called a "half-open" interval. A closed interval will be written `arr[a..b]`, which means `b` is included in the interval.
+
+---
+
+# Induction on loops
+
+We were able to show $P(0)$ pretty quickly, but $P(n) \implies P(n+1)$ is more involved.
+
+We want to "wrap" our loop with a property. We want that if $P(n)$ is true before entering the loop, then $P(n+1)$ will be true after.
+
+Usually this means something like:
+"if `arr[0..n)` is sorted ... one iteration happens ... now `arr[0..n+1)` is sorted
+
+We want a property of `arr[i]`, that, if true entering the loop
 
 ---
 
@@ -715,7 +1026,8 @@ Why?
 
 # Swap
 
-Here's a reasonable implementation of swap. There is a fancier version using xor, but this is fine too:
+Here's a reasonable implementation of swap.
+(You may know the fancier version using xor, but it's not faster and it has an edge case):
 
 
 ```c
@@ -742,7 +1054,7 @@ swap:   mov     eax, dword ptr [rdi]
 The swap is 5 assembly instructions.
 
 Those are just moves and a return.
-Those are 1-2 micro-op moves, and a 1-3 micro-op return.
+Those are 1-2 micro-op moves, and a 1-3 micro-op return. Two dependencies.
 This whole thing will typically take a few cycles or so.
 
 It takes a few cycles no matter what inputs it gets. It's not like swapping big numbers is slower than swapping small ones.
@@ -751,21 +1063,139 @@ Therefore we say that swap takes *constant time*.
 
 ---
 
-# Constant time
+# Big assumption
 
-Constant time is written as $O(1)$. 
+There are two common ways we can bound a simple operation, like a move or add.
+1. It's contant time.
+2. It depends on how big it is.
 
-It might seem weird writing big-O without a variable, but the rules still apply. If your function always takes 100 time units, then with C = 100, $100 \le 100 \cdot 1$, and so $100 = O(1)$. 
+Both of these assumptions make sense. If $x$ and $y$ are two registers, then $x + y$ takes constant time. A couple of cycles at most. And it doesn't depend on the values.
 
-Constant time fundamentally means "the time it takes does not depend on the input."
-
-Many machine operations are constant time.
+But if $x$ and $y$ are megabytes long Bigints, it depends. They would have to be broken down into a multi-step addition with carries. It would take an amount of time propositional to the length of the shorter int.
 
 ---
 
-# Showing constant time
+# Ram model vs bit length model
+
+We have to choose a model for how much time operations will take, and our choice will affect the $O$.
+
+We can choose the RAM model, which basically states that every time you access RAM (or a register), that counts as 1 operation. Virtually every assembly instruction does this a constant number of times, so it's reasonable to say $O(1)$ ops per instruction.
+
+Addition is $O(1)$, because it takes 2 RAM accesses (one for each operand), and $O(2) = O(1)$.
+
+Alternatively, there's the bit model. This treats every number as if it were an array of bits, and each bit modified is one op. This means adding a number to itself is $O(\lg n)$, because the number $n$ requires at least $log_2(n)$ bits.
+
+---
+
+# Ram model vs bit length model
+
+There is a time and a place for both, but in this class
+**we will be using the RAM model unless otherwise noted**.
+
+Put simply: we will treat each assembly instruction as $O(1)$ (aka "constant time")
+
+This will make it easy to compute $O$, and make it pretty accurate to the performance on reasonable values for $n$.
+
+However, if $n$ doesn't describe the length of an array, but rather a really large integer (e.g., in RSA encryption), the bit length model ends up being a better representation of how the algorithm scales. There are reasons to use either one.
+
+---
+
+# Back to insertion sort
+
+We saw that swap was $5$ assembly instructions in sequence.
+$O(1) + O(1) + O(1) + O(1) + O(1) = O(5) = O(1)$.
+
+So lets annotate how long insertion sort takes with that knowledge:
+
+```c
+void ins_sort(int* arr, size_t n) {                             // O(?) 
+    for (size_t i = 1; i < n; i++)                              // O(?)
+        for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)   // O(?)
+            swap(arr + j - 1, arr + j);                         // O(1)
+}
+```
+
+---
+
+# The outer loop
+
+```c
+    for (size_t i = 1; i < n; i++)
+```
+
+How many times will this run?
+
+[Class]
+
+---
+
+# The outer loop (2)
+
+It will run exactly $n-1$ times. $n-1=O(n)$
+
+Does that mean this algorithm is $O(n)$? *No!*
+
+It means that the outer loop multiplies the $O$ of the inner loop by a factor of $O(n)$.
+
+---
+
+# The inner loop
+
+What about the inner loop?
+
+```c
+for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)   // O(?)
+    swap(arr + j - 1, arr + j);                         // O(1)
+```
+
+$O$ is about upper bounds, so we need to ask: "what is the most possible number of times this loop will run?"
+
+Let's assume that 
+
+Let's count precisely how many times this loop will run at most:
+
+${\large\sum_{i=j}^{}}$ 
 
 
+
+---
+
+# Proving the bound isn't tight
+
+---
+
+# Be reasonable about constant time
+
+Consider this function
+```c
+void linear_time_function(int n) {
+    for (int i = 0; i < n; i++)
+        do_constant_time_thing();
+}
+```
+
+Most people would consider this to be $O(n)$.
+
+However, the more litigious among you might say "well, n $\leq 2^31-1$, so therefore, choose that times the time for `do_constant_time_thing` and it will be $O(1)$.
+
+Consider $O$ something that applies to abstract algorithms, not implementations. The algorithm will be parameterized by natural numbers which are infinite, not machine-specific fixed-width ints.
+
+---
+
+# Example table of Big-O's
+
+Remember, we use $O$ (and the other notations we'll introduce soon)
+
+Here are some common big-O's and the kinds of problems they tend to emerge from:
+
+| Big-O     | Kind of problem 
+|-----------|----------------------------------------------
+| $1$       | simple machine operation (arithmetic on int, boolean expression eval., etc.)
+| $\lg n$   | binary search
+| $n$         | linear search, many string operations, arithmetic on BigInts, tons of things
+| $
+
+---
 
 
 
@@ -1005,3 +1435,47 @@ $$
 Goal \impliedby n^2 + n \leq 2n^2 - 2n \impliedby 0 \leq n^2 - 3n \impliedby3n \leq n^2 \impliedby 3 \leq n
 $$ 
 Which is an assumption. ▯
+
+---
+
+# Appendix E: when backwards proofs are easier
+
+Consider the quadratic formula:
+$$
+\forall (x, a, b, c) \in R, a \neq 0, 
+$$
+$$
+    ax + bx + c = 0 \iff x = {-b \pm \sqrt{b^2 - 4ac} \over 2a}
+$$
+
+This is normally proved by starting with $ax + bx + c = 0$, and then applying reversable operations until we end up with ${-b \pm \sqrt{b^2 - 4ac} \over 2a}$.
+
+The main steps are to multiply $ax + bx + c = 0$ by $4a$, and then complete the square.
+
+This requires creativity. How were you supposed to know to do this? Try working backwards instead. It's much easier.
+
+---
+
+# Appendix E (2): Proof
+- Suppose we have $x, a, b, c$, all reals, and suppose $a \neq 0$.
+  We must show: $ax^2 + bx + c = 0 \iff x = {-b \pm \sqrt{b^2 - 4ac} \over 2a}$
+  Every operation will be invertible, and will modify the right hand side of the $\iff$.
+- Multiply both sides by $2a$, $x = {-b \pm \sqrt{b^2 - 4ac} \over 2a} \equiv2ax = -b \pm \sqrt{b^2 - 4ac}$.
+  We have assumed $a \neq 0$, so this is invertable.
+- Add $b$ to both sides, this is equivalent to $2ax + b = \pm sqrt(b^2 - 4ac)$
+- Square both sides, this is equivalent to $(2ax + b)^2=b^2-4ac$
+- Expand $(2ax + b)^2$, this is equivalent to $4a^2x^2 + 4abx + b^2=b^2-4ac$
+- Subtract $(b^2 - 4ac)$ from both sides, we get: $4a^2x^2 + 4abx + 4ac= 0$
+- Divide both sides by $4a$. We assumed $a \neq 0$. We get: $ax^2 + bx + c = 0$
+- So now we have $ax^2+bx+c = 0 \iff ax^2 + bx + c = 0$ ▯
+
+---
+
+# Appendix E (3)
+
+The traditional proof is better for communicating *why* the quadratic formula is true.
+
+However, we can derive the traditional proof by taking our reverse proof and then flipping it around!
+
+So we didn't need creativity to come up with it, we just needed to start from the end.
+
