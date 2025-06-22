@@ -33,9 +33,7 @@ $T = {130*10000*(10000 + 1) \over 2}$
 
 # This class
 
-We're going to learn Big-O notation! 
-
-This will let us describe the time an algorithm takes without extra details.
+We're going to learn Big-O notation, so that we can express times like that more clearly.
 
 You've probably heard of Big-O before, but there are other big and small letters, too: Big-O, small-o, Big-Ω*, small-ω*, and Big-θ*. We will eventually learn the whole family!
 
@@ -58,7 +56,9 @@ There's nothing wrong with measuring how long an algorithm takes.
 
 In fact: you should do that. It's a good idea. Sometimes algorithms can be theoretically fast an practically slow.
 
-But there's a simple problem with that...
+For example, [there are ways of multiplying matrices that are theoretically faster than the iterative way you learned](https://en.wikipedia.org/wiki/Computational_complexity_of_matrix_multiplication), but they are only *actually* faster if the matrix is huge.
+
+But there's a simple problem with measuring algorithms empirically...
 
 ---
 
@@ -68,7 +68,9 @@ Other people don't have your computer.*
 
 Mathematicians don't want to be like: "proof of running time: go get Alice's computer, then run the algorithm ten times. It will take an average of 2 minutes when n = 10000, with a standard deviation of 1.1."
 
-Also, it's more work to deterine how an algorithm *scales* when doing purely empirical measurement. You have to take multiple measurements to determine exponents, plus additional measurements to get a feel for how much they vary. It's a decent amount of work doing *proper* empirical measurement.
+Also, it's more work to deterine how an algorithm *scales* when doing purely empirical measurement. You have to take multiple measurements to determine exponents, plus additional measurements to get a feel for how much they vary.
+
+Doing high quality empirical benchmarks is surprisingly involved.
 
 <div class="footnote">
 * unless you're hosting an unsecure SSH or something.
@@ -78,10 +80,10 @@ Also, it's more work to deterine how an algorithm *scales* when doing purely emp
 
 # Scaling
 
-What we really care about is modelling how long an algorithm takes. 
+What we really care about is *modelling* how long an algorithm takes. 
 Specifically, how it *scales*.
 
-We would like a nice time function that lets us plug any input value we want and get a rough time estimate.
+We would like a nice time function that lets us plug any input value we want and get a number that lets us compare to other input values, even if the units aren't actual time.
 
 We also don't care about constant multiplication. Your computer may be 10 times faster than your phone; that doesn't change the underlying speed of the algorithm
 
@@ -94,7 +96,7 @@ But we *do* care about some kinds of *variable* multiplication.
 For example, consider this time function:
 $T(n)={{130\over 2}n(n+1)}=65n(n + 1)$
 
-What matters more? The 65 at the beginning (the constant factor), or the factor of n (the variable factor)?
+What matters more? The 65 at the beginning (the constant factor), or the $n$s (the variable factor)?
 
 Well, let's say n is 5:
 $T(n)=65\times 5(5 + 1)=65\times 5(6)=65\times 30$
@@ -123,11 +125,9 @@ And that ratio only gets more wild as n gets bigger.
 
 It doesn't matter what constant we pick. If n gets big enough, it will matter more than the constant.
 
-Even if it's something like $T(n) = 1000 n$ 
+Even if the time function is something like $T(n) = 1000 n$ 
 
 1000 is a large constant, but if n is, say, a million, it's no longer the dominant one.
-
-So we like to ignore constants, and only focus on the variables. Let's do that now...
 
 ---
 
@@ -137,7 +137,7 @@ $T(n)=65n(n + 1)$
 
 We could delete the constant factor $T(n)=n(n+1)$
 
-And let's expand that multiplication so we can see the exponents:
+And let's distribute the $n$ so we can see the exponents:
 $T(n)=n^2+n$
 
 So now, we can clearly see that this is a quadratic function
@@ -156,7 +156,7 @@ $T_{strcpy}(n)=10n$
 But let's say Bob's computer is faster: it only takes 2 time units:
 $T_{strcpy}(n)=2n$
 
-This information is important, but it has nothing to do with the algorithm. 
+This information is important, but it has nothing to do with the underlying algorithm. 
 
 We want to remove machine-specific information from the time function.
 
@@ -164,7 +164,7 @@ We want to remove machine-specific information from the time function.
 
 # Taking it a step further
 
-If it bothered you that we removed the constant factor, this is *really* going to bother you: we're going to remove a whole variable.
+If it bothered you that we removed the constant factor, this is *really* going to bother you: we're going to remove a whole variable term.
 
 Consider again $T(n)=n^2 + n$
 
@@ -176,13 +176,13 @@ Obviously $n^2$, but let's really see how that plays out.
 
 # Comparing $n^2 + n$ to just $n$
 
-| n    | $n^2 + n$        | $n^2$     | Ratio   |
-|------|------------------|-----------|---------|
-| 1    | 2                | 1         | 2       |
-| 10   | 110              | 100       | 1.1     |
-| 100  | 10,100           | 10,000    | 1.01    |
-|$10^3$| 1,001,000        | 1,000,000 | 1.001   |
-|$10^6$| $10^{12} + 10^6$ | $10^{12}$ | 1.000001|  
+| n    | $n^2 + n$        | $n^2$     | Ratio: ${n^2 + n} \over n^2$   |
+|------|------------------|-----------|--------------------------------|
+| 1    | 2                | 1         | 2                              |
+| 10   | 110              | 100       | 1.1                            |
+| 100  | 10,100           | 10,000    | 1.01                           |
+|$10^3$| 1,001,000        | 1,000,000 | 1.001                          |
+|$10^6$| $10^{12} + 10^6$ | $10^{12}$ | 1.000001                       | 
 
 ---
 
@@ -192,7 +192,7 @@ It barely changes the outcome.
 
 Again, if one algorithm took $n^2 + n$ and another took $n^2$, by the time you get to a large input, you can't tell the difference.
 
-But we don't want to abuse mathematical notation and just randomly delete variables...
+But we don't want to abuse mathematical notation and just randomly delete variables. Without a good mathematical foundation, that could let us derive erroneous statements.
 
 ---
 
@@ -256,7 +256,7 @@ Yes, even ${n^3 \over 2}$. We can multiply it by 2!
 
 Give an example of a function $f(n)$, such that $n \notin O(f(n))$
 
-That is, find a function that is too small to have its big-O contain $n$.
+That is, find a function that is too small to have its big-O contain $g(n)=n$.
 
 ---
 
@@ -285,6 +285,7 @@ Give an example of a function $f(n)$, such that $f(n) \in O(n^3)$
 
 - $f(n)=n^3$
 - $f(n)=n^2$
+- $f(n)=n^{2/3}$
 - $f(n)=n$
 - $f(n)=1$
 - $f(n)=n \log n$
@@ -320,9 +321,9 @@ So $n^2 - n$ can be made to eventually bound $n^2$ if we multiply it by a large 
 
 Intuitively, big-O tells us the upper bound of how long a process will take.
 
-It specifically tells us that upper bound in a way that ignores constants or smaller degree terms.
+It specifically tells us that upper bound in a way that ignores constant factors or slower growing terms.
 
-So it's a mathematically rigorous way of being sort of vague. We get to share a feeling for how slow something is. "This algorithm runs in linear time (i.e., $O(n)$)" conveys a lot of information without bogging down the reader with computer specific information or meaningless time blips.
+So it's a mathematically rigorous way of removing unimportant details. "This algorithm runs in linear time (i.e., $O(n)$)" conveys a lot of information without bogging down the reader with computer specific information or meaningless time blips.
 
 ---
 
@@ -352,10 +353,10 @@ Note: We're assuming that f and g are functions that return positive values (bec
 
 It's a big gnarly definition. Let's think about it.
 
-Anytime someone has shown that $f(n) \in O(g(n))$, they have done the following:
-- Found the scaling factor $C$
-- Found the starting point $n_0$
-- Proved that for every natural number starting at $n_0$ and getting as big as you want, that $f(n) \leq C\cdot g(n)$
+Anytime someone proves $f(n) \in O(g(n))$ constructively, they must:
+- Find the scaling factor $C$
+- Find the starting point $n_0$
+- Prove that for every natural number starting at $n_0$ and getting as big as you want, that $f(n) \leq C\cdot g(n)$
 
 We'll look at how to write one of these proofs soon, but first, let's assume someone has done the hard work for us.
 
@@ -444,7 +445,7 @@ Okay, so now we "suppose" again. "Suppose" peels off an implication the same way
 
 Proof so far: 
 - Suppose we have a function $f: N \to R^+$
-- suppose that $f \in O(n)$
+- Suppose that $f \in O(n)$
 
 Goal: $\cancel {f \in O(n) \implies} f \in O(n^2)$
 
@@ -538,12 +539,12 @@ Honestly, $n^2$ grows much faster than $n$, so we can pick pretty much anything 
 
 Proof so far:
 - Suppose we have a function $f: N \to R^+$, $f \in O(n)$.
-- Apply the definition of big-O.
-- Suppose $C \gt 0$, $n_0 \geq 0$, then $\forall n \geq n_0, f(n) \leq C \cdot n$,
+- Apply the definition of big-O to $f\in O(n)$.
+- Suppose $C \gt 0$, $n_0 \geq $, then $\forall n \geq n_0, f(n) \leq C \cdot n$,
   We must show $\exists C' \gt 0, \exists n_0' \geq 0, \forall n' \geq n_0', f(n') \leq C' \cdot n'$*
 - Choose $C'=C$ and $n_0'=n_0$
 
-Goal: $\cancel{\exists C' \gt 0, \exists n_0',} \forall n' \geq 0, f(n') \leq C \cdot n^2$ 
+Goal: $\cancel{\exists C' \gt 0, \exists n_0',} \forall n' \geq n_0, f(n') \leq C \cdot n^2$ 
 
 See how we replaced the $C'$ and the $n_0'$ in the goal with $C$ and $n_0$? Now what to do?
 
@@ -561,28 +562,34 @@ We can handle both the "$\forall$" and the $n \geq 0$ hypothesis by saying "supp
 
 Proof so far:
 - Suppose we have a function $f: N \to R^+$, $f \in O(n)$.
-- Apply the definition of big-O.
+- Apply the definition of big-O to $f \in O(n)$ to obtain $C$ and $n_0$.
 - Suppose $C \gt 0$, $n_0 \geq 0$, then $\forall n, n \geq n_0 \implies f(n) \leq C \cdot n$,
   We must show $\exists C' \gt 0, \exists n_0' \geq 0, \forall n' \geq n_0', f(n') \leq C' \cdot n'$*
 - Choose $C'=C$ and $n_0'=n_0$, and suppose we have some $n'$, $n' \geq n_0$
 
 Goal: $\cancel{\forall n' \geq n_0,} f(n') \leq C \cdot n^2$ 
 
+<div class="footnote">
+
+\* Here I'm repeating the goal so that the "choose" doesn't come out of nowhere.
+
+</div>
+
 ---
 
 # Subsets example: what now?
 
-Notice that we have some natural number named $n'$.
+Notice that we have some natural number named $n'$ in our context.
 
 And notice that we have an assumption: $\forall n, n \ge n_0 \implies f(n) \leq C \cdot n$
 
 The "$\forall$" in the assumption means that we can apply it to any natural number we want.
 
-Apply it to $n'$: $n' \geq n_0 \implies f(n') \leq C \cdot n$
+Apply it to $n'$: $n' \geq n_0 \implies f(n') \leq C \cdot n'$
 
-Is it true that $n' \geq n_0$? Yes, we supposed it last slide. That's why we picked $n_0' = n_0$.
+Is it true that $n' \geq n_0$? Yes, we supposed it last slide. That's why we picked $n_0' = n_0$. If it were not the case that $n \geq n_0$, we would not be allowed to apply this implication.
 
-So now the implication simplifies to just $\cancel{n' \geq n_0 \implies} f(n') \leq C \cdot n'$
+So now the implication gives us the hypothesis: $f(n') \leq C \cdot n'$
 
 Now, can we *finally* show that $f(n') \leq C \cdot (n')^2$.
 
@@ -614,7 +621,7 @@ Goal: $\forall f: N \to R^+, f \in O(n) \implies f \in O(n^2)$
   Goal: $\exists C' \gt 0, \exists n_0' \geq 0, \forall n', n'\geq n_0' \implies f(n') \leq C' \cdot n'$
 - Choose $C'=C$ and $n_0'=n_0$, and suppose we have some $n'$, $n' \geq n_0$
   Goal: $f(n') \leq C \cdot (n')^2$
-- Apply our assumption $\forall n, n\geq n_0 \implies f(n) \leq C \cdot n$ to $n'$ and $n' \geq n_0$, we derive $f(n') \leq C \cdot n'$, from which the goal, $f(n') \leq C \cdot (n')^2$ follows by transitivity of $\leq$. ▯
+- Apply our assumption $\forall n, n\geq n_0 \implies f(n) \leq C \cdot n$ to $n'$. We have that $n' \geq n_0$, so the rule applies. We derive $f(n') \leq C \cdot n'$, from which the goal, $f(n') \leq C \cdot (n')^2$ follows by transitivity of $\leq$. ▯
 
 ---
 
@@ -643,9 +650,11 @@ Just focus on one step at a time. Some steps do seem to require creativity, but 
 # Proof tactic summary so far
 
 - If your goal looks like $\forall x \in S, P(x)$, then say "suppose we have an $x \in S$". Now your new goal is $P(x)$ and you can use the variable you just supposed.
-- You can rename a variable when you say "suppose". It's important to avoid name conflicts. You can also rename any $\forall$-bound variable as long as you are consistent.
+- You can rename a variable when you say "suppose". It's important to avoid name conflicts. If you have already "supposed" a variable named $x$, you cannot introduce a new variable named $x$.
+- You can rename any $\forall$-bound variable as long as you are consistent.
 - If your goal looks like $P \implies Q \ldots$, then add "suppose $P$". Now your goal is $Q$.
-- If you have an assumption that looks like $\exists x \in S, P(x)$, you can say "suppose we have an $x \in S$ and suppose $P(x)$". Now you can use $x$ and $P(x)$ as needed.
+- If you have an **assumption** that looks like $\exists x \in S, P(x)$, you can say "suppose we have an $x \in S$ and suppose $P(x)$". Now you can use $x$ and $P(x)$ as needed.
+- If you have a **goal** that looks like $\exists x \in S, P(x)$, then you say "choose $y$" for some $y \in S$. Then rewrite your goal to replace $x$'s with $y$'s.
 
 ---
 
@@ -654,8 +663,8 @@ Just focus on one step at a time. Some steps do seem to require creativity, but 
 Proving $\lnot P$ is fundamentally the same as proving $P \implies False$, so you can start by supposing $P$, and then deriving a contradiction.*
 
 You can also invert the proposition and prove the inverse is true. Here is how quantified propositions get inverted:
-1. $\lnot \exists x, P \implies \forall x, \lnot Q$
-2. $\lnot \forall x, P \implies \exists x, \lnot Q$
+1. $\lnot \exists x, P \implies \forall x, \lnot P$
+2. $\lnot \forall x, P \implies \exists x, \lnot P$
 
 (Note: the second one relies on non-constructive logic, so it's not as convenient with proof assistants, but we don't have to restrict ourselves in this class)
 
@@ -668,7 +677,7 @@ You can also invert the proposition and prove the inverse is true. Here is how q
 
 # Proof tactic summary (3)
 
-Sometimes it's easier to work backwards than forwards. If I have a goal to show $Q$, and I have an assumption $P \implies Q$, I can say "$Q$ follows from $P$", and now my goal is to prove $P$. 
+Sometimes it's easier to work backwards than forwards. If I have a goal to show $Q$, and I have an assumption $P \implies Q$, I can say in my proof: "$Q$ follows from $P$", and now my goal is to prove $P$. 
 
 I can also write: $Q \impliedby P$ which means the same thing: I used to want to prove $Q$, but now it's enough to prove $P$, because we know that if I have a proof of $P$, I can get $Q$.
 
@@ -679,7 +688,7 @@ Just like solving a maze, it's sometimes way easier to go backwards. Appendix E 
 # Practice
 
 1. Prove that $1000 \in O(1)$
-2. Prove that $n^2 \notin O(n)$. I've worked this one in appendix C.
+2. Prove that $n^2 \notin O(n)$. I've worked this one in appendix C. I proved it by inverting quantifiers. Maybe try proving it by deriving a contradiction instead.
 3. Prove that $n^2 \in O(n^2)$
     This is similar, but it's not a subset proof. Does that make a big difference?
 4. Prove that $n \in O(n \lg n)$. $\lg$ is another way of writing $\log_2$
@@ -696,6 +705,8 @@ Over time, you'll naturally get more comfortable with making larger leaps, and y
 Follow the long-form proof/goal method we've been using until you feel confident.
 
 Be sure to check your work: using my worked examples when they're there, office hours/email, or AI for convenience.
+
+Let's check the assignments to see if one is ready for us!
 
 ---
 
@@ -748,7 +759,7 @@ And that's, in fact, what we do.
 
 First, instead of saying "$f \in O(g(n))$", we say "$f = O(g(n))$"
 
-This is an abuse of notation. It does not mean "$f$ *is* the order of $g(n)$". It means "$f$ is some function in $O(g(n))$.
+This is an abuse of notation. It does not mean "$f$ *is* the order of $g(n)$ (i.e., a set)". It means "$f$ is some function in $O(g(n))$.
 
 You've probably seen statements like $f = O(n^2)$ online. Hopefully this makes it clear that $O(n^2)$ really is a set, but we usually prefer to treat the function as a member of that set.
 
@@ -810,6 +821,8 @@ Later we will see recursive time-functions where adding a constant factor to one
 
 In that case, It's wrong to use $O$ to arbitrarily generate terms like this: $O(n) = O(n + 1) = O(n) + O(1)$
 
+This is even more wrong: $O(n)=O(n^2)=O(n^2 + n)= O(n^2) + O(n)$
+
 Remember that we are abusing notation here. Try to keep track of when $O(f(n))$ is a set versus a function in the set.
 
 ---
@@ -822,6 +835,8 @@ What if it takes $1000$ time units?
 
 Then choose $C = 1000, n_0 = 0$, $1000 \leq 1000 \cdot 1$
 Therefore $1000 = O(1)$ 
+
+It was a practice exercise to prove this earlier, but I wanted to re-iterate it.
 
 ---
 
@@ -932,7 +947,8 @@ Natural numbers are a useful, simple datatype that is inductive. An inductive da
 
 Wait, constructors? Remember programming language design: a datatype consists of a number of constructors. Natural numbers have two:
 1. $0$
-2. $n \implies n + 1$ (this means given a natural number, add 1 to it to get the next one)
+2. $\forall n \in N, n \implies n + 1$
+   (i.e., given a natural number, add 1 to it to get the next one)
 
 Because natural numbers are inductive, there is an algorithm that gives you a way to prove propositions about them. That is, propositions of the form, $\forall n \in N, P(n)$. This algorithm is called an "inductive principle".
 
@@ -961,7 +977,7 @@ These proofs each correspond to one of the constructors of natural numbers.
 Because this (half-functional psuedocode) is the function that weak induction requires*
 
 ```c
-P(n) weak_induction(n, P(0) base, P(forall n, P(n) -> (n + 1)) ind) {
+P(n) weak_induction(P, n, P(0) base, P(forall n, P(n) -> P(n + 1)) ind) {
     case n of
     | 0 => return base
     | n' + 1 =>                                     // n' is the number before n
@@ -981,6 +997,7 @@ This is a proof machine. If you say, "give me the proof that $P$ is true for $0$
 ---
 
 # The proposition we want to prove
+<small>
 
 ```c
 void ins_sort(int* arr, size_t n) { 
@@ -989,13 +1006,14 @@ void ins_sort(int* arr, size_t n) {
             swap(arr + j - 1, arr + j);
 }
 ```
+</small>
 
-- **Show** $\forall n, arr,$ after calling `ins_sort(arr, n)`, `arr[0..n)` will be sorted.
-- Because this proposition starts with $\forall n$, we can use induction.
+- **Want to show** $\forall n, arr,$ after calling `ins_sort(arr, n)`, `arr[0..n)` will be sorted.
+- Because this proposition starts with $\forall n$, we can use induction on natural numbers.
 - Is it true for $n = 0$? Yes, the for loop gets skipped, and `arr[0..0)` is sorted.
 - Now we need to show that if it sorts `arr[0..n)`, it sorts `arr[0..n+1)`
 
-**Notation**: `arr[a .. b)` means the range starting at `a` and ending at `b - 1`. This is called a "half-open" interval. A closed interval will be written `arr[a..b]`, which means `b` is included in the interval.
+**Notation**: `arr[a .. b)` means the range starting at `a` and ending at `b - 1` inclusive. This is called a "half-open" interval. A closed interval will be written `arr[a..b]`, which means `b` is included in the interval.
 
 ---
 
@@ -1008,7 +1026,7 @@ We want to "wrap" our loop with a property. We want that if $P(n)$ is true befor
 Usually this means something like:
 "if `arr[0..n)` is sorted ... one iteration happens ... now `arr[0..n+1)` is sorted
 
-It's important that the first part *stay true after the loop*. It doesn't help us if `arr[0..n)` stops being sorted, because then we're not making progress towards `arr[0..n+1)`.
+It's important that the first part *stay true before the loop, and after each iteration of the loop*. It doesn't help us if `arr[0..n)` stops being sorted, because then we're not making progress towards `arr[0..n+1)`. 
 
 This kind of property, one that is true before a loop and after each iteration, and therefore also immediately after the loop, is called a *loop invariant*.
 
@@ -1024,7 +1042,7 @@ void ins_sort(int* arr, size_t n) {
     for (size_t i = 1; i < n; i++) 
         for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)
             swap(arr + j - 1, arr + j);
-    // now arr[0..i + 1) is sorted (we hope)
+        // now arr[0..i + 1) is sorted (we hope)
 }
 ```
 
@@ -1066,9 +1084,9 @@ Even with all this swapping: `arr[0..j)` is still sorted because we don't access
 And, the values from `arr[j + 1..i)` were sorted before, and remain sorted after swap.
 So these can be invariants.
 
-The only issue is `arr[j] ++ arr[j + 1]`, which is not necessarily sorted. But after the swap, that particular pair will be sorted.
+The only issue is `arr[j-1] ++ arr[j]`, which is not sorted. But after the swap, that particular pair will be sorted.
 
-Notation: `++` means concatinate. It's not a C operator, but the proofs would be much jankier without a nice operator like that.
+**Notation:** `++` means concatinate. It's not a C operator, but the proofs would be much jankier without a nice operator like that.
 
 ---
 
@@ -1076,19 +1094,21 @@ Notation: `++` means concatinate. It's not a C operator, but the proofs would be
 
 ```c
 // Pre: arr[0..i) is sorted
-// I: arr[0..j) is sorted /\ arr[j + 1 .. i] is sorted
+// I: arr[0..j) is sorted /\ arr[j .. i + 1) is sorted
 for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)
     // arr[0..j) is sorted /\ arr[j] < arr[j - 1] < arr[j + 1..i)
-    // arr[0..j) < arr[j + 1..i]
+    // arr[0..j) < arr[j + 1..i + 1)
     swap(arr + j - 1, arr + j);
-    // arr[0..j) is sorted /\ arr[j - i] < arr[j..i) is sorted 
-    //                                     ^^^^^^^^^^^^^^^^^^^ important bit
-    // alternatively: arr[j - 1] <= arr[j]. still: arr[j..i) is sorted
-// Post: arr[0..i + 1) is sorted
+    // arr[0..j - 1) is sorted, arr[j - 1..i + 1) is sorted 
+    //                        ^^^^^^^^^^^^^^^^^^^^^^ important bit
+// After termination: if arr[j] >= arr[j - 1], then 
+//  arr[0..j-1] sorted => arr[j..i + 1) sorted => arr[j-1] <= arr[j] => 
+//  arr[0..i + 1) is sorted. If j = 0, the same applies. 
 ```
 
-Notice that after each swap, the `arr[j]` joins `arr[j + 1..i)`, so `arr[j..i)` is sorted.
-So by the time we're done, and `j = 0`, `arr[0..i + 1)` is now sorted, the goal.
+Notice that after each swap, the right partition gets larger and the left partition gets smaller. Eventually, the left partition is empty.
+
+Our termination proof shows that no matter which way the loop terminated, we can always show that the whole array up to and including $i$ is sorted.
 
 ---
 
@@ -1103,8 +1123,8 @@ void ins_sort(int* arr, size_t n) {
         //I: arr[0..j) is sorted, arr[j+1..i) is sorted, arr[0..j) < arr[j+1..i]
         for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)
             swap(arr + j - 1, arr + j);
-            // arr [0..j - 1) sorted, arr[j..i + 1) sorted
-    // now arr[0..i + 1) is sorted
+            // => arr [0..j - 1) sorted, arr[j..i + 1) sorted
+        // now arr[0..i + 1) is sorted
 }
 ```
 
@@ -1142,6 +1162,7 @@ Not quite:
 - We could have made a logic error in the proof.
 - We could have made a typo in the code
 - Some aspect of C semantics may be different than we expect.
+- I had bugs in both my proof and code making these slides.
 
 ---
 
@@ -1163,7 +1184,7 @@ Feel free to copy my unit testing solution for your assignments.
 
 Proofs force you to deeply understand the code.
 
-Once you've proven it, even if it's wrong, when you step through it with a debugger, it will be much easier to understand where the error is.
+Once you've proven it, even if the proof is wrong, when you step through the code with a debugger, it will be much easier to understand where the error is (and you can use the proof to generate asserts).
 
 The deep understanding you get from proofs is tremendously valuable.
 
@@ -1179,7 +1200,6 @@ This is selection sort:
 ```c
 // finds the index of the minimum element within first n characters
 int arg_min(int* arr, size_t n);
-
 void sel_sort(int* arr, size_t n) {
     if (n == 0) return;
     for (int i = 0; i < n; i++) {
@@ -1190,7 +1210,7 @@ void sel_sort(int* arr, size_t n) {
 ```
 arr[i] is swapped with the minimum value of the array to the right.
 Apply the same analysis we did to insertion sort.
-You'll need to implement arg_min, and prove that it works, too.
+You'll need to implement arg_min, and prove that it works, too. If you use a loop, consider that from `[0..i)`, your variable storing the max index is correct.
 
 ---
 
@@ -1249,7 +1269,7 @@ swap:   mov     eax, dword ptr [rdi]
 The swap is 5 assembly instructions.
 
 Those are just moves and a return.
-Those are 1-2 micro-op moves, and a 1-3 micro-op return. Two dependencies.
+Specifically 1-2 micro-op moves, and a 1-3 micro-op return. Two dependencies.
 This whole thing will typically take a few cycles or so.
 
 It takes a few cycles no matter what inputs it gets. It's not like swapping big numbers is slower than swapping small ones.
@@ -1274,11 +1294,11 @@ But if $x$ and $y$ are megabytes long Bigints, it depends. They would have to be
 
 We have to choose a model for how much time operations will take, and our choice will affect the $O$.
 
-We can choose the RAM model, which basically states that every time you access RAM (or a register), that counts as 1 operation. Virtually every assembly instruction does this a constant number of times, so it's reasonable to say $O(1)$ ops per instruction.
+We can choose the **RAM model**, which basically states that every time you access RAM (or a register), that counts as 1 operation. Virtually every assembly instruction does this a constant number of times, so it's reasonable to say $O(1)$ ops per instruction.
 
 Addition is $O(1)$, because it takes 2 RAM accesses (one for each operand), and $O(2) = O(1)$.
 
-Alternatively, there's the bit model. This treats every number as if it were an array of bits, and each bit modified is one op. This means adding a number to itself is $O(\lg n)$, because the number $n$ requires at least $log_2(n)$ bits.
+Alternatively, there's the **bit model**. This treats every number as if it were an array of bits, and each bit modified is one op. This means adding a number to itself is $O(\lg n)$, because the number $n$ requires at least $log_2(n)$ bits.
 
 ---
 
@@ -1289,7 +1309,7 @@ There is a time and a place for both, but in this class
 
 Put simply: we will treat each assembly instruction as $O(1)$ (aka "constant time")
 
-This will make it easy to compute $O$, and make it pretty accurate to the performance on reasonable values for $n$.
+This will make it easy to compute $O$, and make it pretty accurate to the performance on a desktop computer for reasonable values for $n$.
 
 However, if $n$ doesn't describe the length of an array, but rather a really large integer (e.g., in RSA encryption), the bit length model ends up being a better representation of how the algorithm scales. There are reasons to use either one.
 
@@ -1367,10 +1387,18 @@ void ins_sort(int* arr, size_t n) {                             // O(?)
 
 So it runs an outer loop $O(n)$ times, and an inner loop $O(i)$ times. Does that mean it runs $O(ni)$ times?
 
-Yes, but remember, $i$ depends on $n$. What is the largest $i$ could be?
+Technically yes, but remember, $i$ depends on $n$. What is the largest $i$ could be?
 $i = O(n)$
 
+---
+
+# Big-O warning: variables must be independent
+
 We don't want an extra variable unless they are *independent*. We'll talk about how to deal with multiple independent variables next module!
+
+I will not give full credit to $O(ni)$, because it forces the reader to know what $i$ is, which they won't know unless they read the source.
+
+The Bachmann-Landau statements you make must be based only on inputs to the algorithm. They should not depend on computations internal to the algorithm. The reader shouldn't have to know about $i$ to understand the runtime bound.
 
 ---
 
@@ -1385,6 +1413,8 @@ $$
 Half of a quadratic function is still a quadratic function.
 
 So we're not missing anything important. It is accurate and reasonable to say that insertion sort is $O(n^2)$. We don't need or want to say $O({n^2 - n \over 2})$ because that $=O(n^2)$
+
+However, if you're comparing two $O(n^2)$ algorithms, that factor of $1\over 2$ might *empirically* matter. It's still important, and an algorithm that is $2$ times faster is still $2$ times faster even if the big-$O$ is the same. That's great! But when reporting the big-$O$, we omit it.
 
 ---
 
@@ -1479,7 +1509,7 @@ You might want to say $O(\mathrm{chunks}\cdot \mathrm{CHUNK\_LEN})$, but that wo
 
 This code is actually just $O(\mathrm{chunks})$. 
 
-It's also $O(n)$, where `n` is the length of the string, because that is proportional to the number of chunks.
+It's also $O(n)$, where `n` is the length of the string, because that is proportional to the number of chunks. This is a *linear* algorithm! We only touch each character once.
 
 Why do this? Lots of operations are faster if we can do them on a chunk of adjacent memory. The above was a goofy example, but chunking absolutely happens.
 Don't be fooled about the big-$O$
@@ -1498,9 +1528,9 @@ void linear_time_function(int n) {
 
 Most people would consider this to be $O(n)$.
 
-However, the more litigious among you might say "well, n $\leq 2^31-1$, so therefore, choose that times the time for `do_constant_time_thing` and it will be $O(1)$.
+However, the more litigious among you might say "well, n $\leq 2^{31}-1$, so therefore, choose that times the time for `do_constant_time_thing` and it will be $O(1)$.
 
-Consider $O$ something that applies to abstract algorithms, not implementations. The algorithm will be parameterized by natural numbers which are infinite, not machine-specific fixed-width ints.
+Consider $O$ something that applies to abstract algorithms, not implementations. The algorithm will be parameterized by natural numbers which are infinite, not machine-specific fixed-width ints. So this is correctly stated $O(n).$
 
 ---
 
