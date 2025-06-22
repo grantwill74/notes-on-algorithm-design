@@ -1512,6 +1512,7 @@ Consider $O$ something that applies to abstract algorithms, not implementations.
 - Go back to your selection and bubble sort code. Annotate their big-$O$.
 - Go back and do the other practice exercises, especially the proof ones. 
   You can do it!
+- Read the appendices!
 
 ---
 
@@ -1523,11 +1524,20 @@ Consider $O$ something that applies to abstract algorithms, not implementations.
 
 # Appendix A: principle of explosion
 
-Regarding the equivalence of ~P and P → Q.
+Regarding $\lnot P \implies P \implies Q$.*
 
 This is called the principle of explosion, and it often throws people for a loop. 2 + 2 = 5 → Unicorns are real, because 2 + 2 is not 5. The principle of explosion is sometimes called "ex falso quodlibet", meaning "from false, whatever you like." It comes from the fact that if a contradiction is true, e.g., P and ~P, we can create disjunctions out of thin air: P → P or Q, and then eliminate them ~P → (P or Q) -> Q, thereby proving Q from a contradiction. 
 
 We will use it sometimes, so I want to make sure it doesn't seem too weird.
+
+<div class="footnote">
+
+\* This logic is curried. In the same way that a Haskell function can be written so that it can be called $f\ p\ q$ or $f (p, q)$, logic is the same way. $(P \implies Q \implies R) \iff P\land Q \implies R$
+
+Note also: implication associates to the right:
+$(P \implies Q \implies R) \iff P \implies (Q \implies R)$
+
+</div>
 
 ---
 
