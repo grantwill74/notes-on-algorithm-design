@@ -1510,6 +1510,28 @@ Consider $O$ something that applies to abstract algorithms, not implementations.
 - Write a C function that multiplies an $n \times n$ matrix by an $n$ length vector.
   Annotate its big-$O$. 
 - Go back to your selection and bubble sort code. Annotate their big-$O$.
+
+---
+
+# More induction practice
+
+Prove the following propositions by induction:
+
+- $\forall n \in N, 1 + 3 + \ldots + (2n + 1) = n^2$
+  i.e., that the first $n$ odd numbers have the sum $n^2$. This one has a [cool visual proof](https://en.wikipedia.org/wiki/File:Proofwithoutwords.svg).
+- $\forall n \in N, 1 + 2 + \ldots + n = {n(n+1) \over 2}$
+
+- $\forall (n, a, b) \in N, n \cdot (a + b) = n\cdot a + n\cdot b$
+  Hint, do induction on n. Your remaining goals will be
+  - $\forall (a, b) \in N, 0 \cdot (a + b) = 0 \cdot a + 0 \cdot b$  and  
+  - $\forall (a, b) \in N, n \cdot (a + b) = n \cdot a + n \cdot b \implies$ 
+    $(n+1)\cdot (a + b) = (n+1)\cdot a + (n+1) \cdot b$
+    <small>You can subsitute any $a$ and $b$ in the inductive hypothesis, but must use the given $n$.</small>
+    <small>You can assume $\forall (n, m)\in N,(n + 1)(m) = n\cdot m + m$ </small>
+---
+
+# Finally
+
 - Go back and do the other practice exercises, especially the proof ones. 
   You can do it!
 - Read the appendices!
