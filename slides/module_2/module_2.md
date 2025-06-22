@@ -37,7 +37,7 @@ We're going to learn Big-O notation!
 
 This will let us describe the time an algorithm takes without extra details.
 
-You've probably heard of Big-O before, but there are other big and small letters, too: Big-O, small-o, Big-Ω*, small-ω*, and Big-θ*. We will learn the whole family!
+You've probably heard of Big-O before, but there are other big and small letters, too: Big-O, small-o, Big-Ω*, small-ω*, and Big-θ*. We will eventually learn the whole family!
 
 These conventions are called *Bachmann-Landau* notation after its inventors.
 <Br>
@@ -1008,7 +1008,202 @@ We want to "wrap" our loop with a property. We want that if $P(n)$ is true befor
 Usually this means something like:
 "if `arr[0..n)` is sorted ... one iteration happens ... now `arr[0..n+1)` is sorted
 
-We want a property of `arr[i]`, that, if true entering the loop
+It's important that the first part *stay true after the loop*. It doesn't help us if `arr[0..n)` stops being sorted, because then we're not making progress towards `arr[0..n+1)`.
+
+This kind of property, one that is true before a loop and after each iteration, and therefore also immediately after the loop, is called a *loop invariant*.
+
+---
+
+# Loop invariants
+
+```c
+void ins_sort(int* arr, size_t n) { 
+    // base case: arr[0..1) is sorted
+    
+    // invariant: arr[0..i) is sorted
+    for (size_t i = 1; i < n; i++) 
+        for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)
+            swap(arr + j - 1, arr + j);
+    // now arr[0..i + 1) is sorted (we hope)
+}
+```
+
+We clearly want the array to be sorted after the loop.
+But there's a pesky loop inside. It needs to have this property:
+`arr[0..i)` is sorted $\implies$ `arr[0..i + 1)` is sorted.
+
+---
+
+# Loop invariants (2)
+
+```c
+for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)
+    swap(arr + j - 1, arr + j);
+```
+
+This inner loop swaps elements into place, but it's a little complicated.
+
+It has two termination conditions:
+1. either it reaches the beginning of the array...
+2. ...or it finds that arr[j] is in the right place.
+
+Remember, we want: `arr[0..i)` is sorted $\implies$ `arr[0..i + 1)` is sorted.
+
+Is there any way to relate that to the new variable, `j`?
+
+---
+
+# Loop invariants (3)
+
+```c
+for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)
+    swap(arr + j - 1, arr + j);
+```
+
+`j` partitions the array between sorted and unsorted.
+
+Even with all this swapping: `arr[0..j)` is still sorted because we don't access $\lt$ j.
+And, the values from `arr[j + 1..i)` were sorted before, and remain sorted after swap.
+So these can be invariants.
+
+The only issue is `arr[j] ++ arr[j + 1]`, which is not necessarily sorted. But after the swap, that particular pair will be sorted.
+
+Notation: `++` means concatinate. It's not a C operator, but the proofs would be much jankier without a nice operator like that.
+
+---
+
+# Loop invariants (4)
+
+```c
+// Pre: arr[0..i) is sorted
+// I: arr[0..j) is sorted /\ arr[j + 1 .. i] is sorted
+for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)
+    // arr[0..j) is sorted /\ arr[j] < arr[j - 1] < arr[j + 1..i)
+    // arr[0..j) < arr[j + 1..i]
+    swap(arr + j - 1, arr + j);
+    // arr[0..j) is sorted /\ arr[j - i] < arr[j..i) is sorted 
+    //                                     ^^^^^^^^^^^^^^^^^^^ important bit
+    // alternatively: arr[j - 1] <= arr[j]. still: arr[j..i) is sorted
+// Post: arr[0..i + 1) is sorted
+```
+
+Notice that after each swap, the `arr[j]` joins `arr[j + 1..i)`, so `arr[j..i)` is sorted.
+So by the time we're done, and `j = 0`, `arr[0..i + 1)` is now sorted, the goal.
+
+---
+
+# Annotated loops
+
+```c
+void ins_sort(int* arr, size_t n) { 
+    // base case: arr[0..1) is sorted
+    
+    // I: arr[0..i) is sorted
+    for (size_t i = 1; i < n; i++)
+        //I: arr[0..j) is sorted, arr[j+1..i) is sorted, arr[0..j) < arr[j+1..i]
+        for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)
+            swap(arr + j - 1, arr + j);
+            // arr [0..j - 1) sorted, arr[j..i + 1) sorted
+    // now arr[0..i + 1) is sorted
+}
+```
+
+---
+
+# Final proof
+
+Get ready for a big, gnarly proof by induction!
+
+---
+
+# Just kidding
+
+Goal: $\forall n\in N, a \in$ `int[]`, after `ins_sort(a, n)`, `a` is sorted.
+Proof:
+By induction on $n$
+- Goal: show after `ins_sort([], 0), [] is sorted
+  Proof: the loop is skipped and [] is always sorted.
+- Goal: show $\forall a \in$`int[]`,
+  after `ins_sort(a, n)` is sorted $\implies$ after `ins_sort(a, n + 1)` is sorted
+  (i.e., if the first `n` characters are sorted, the `n+1`th will be too)
+  Proof, by loop invariant (it shows `arr[0..n)` sorted $\implies$ `arr[0..n+1)` sorted)
+
+---
+
+# Do not succomb to hubris
+
+>Beware of bugs in the above code; I have only proved it correct, not tried it. 
+>\- Donald Knuth
+
+"Awesome, we proved it! That means I don't need unit tests!"
+
+Not quite:
+- Our proof could be formalized incorrectly. I.e., we picked the wrong goal.
+- We could have made a logic error in the proof.
+- We could have made a typo in the code
+- Some aspect of C semantics may be different than we expect.
+
+---
+
+# Unit testing in C
+
+Check the code on the [GitHub](https://github.com/grantwill74/notes-on-algorithm-design). Go to `slides/module_2/code/sorts.c`. 
+
+I'm using a unit testing framework based on [minunit](https://jera.com/techinfo/jtns/jtn002).
+
+It takes like, 10 lines of code to add unit testing. Just copy paste.
+
+Feel free to copy my unit testing solution for your assignments. 
+
+---
+
+# Proofs are still valuable
+
+"Then why bother with proofs?"
+
+Proofs force you to deeply understand the code.
+
+Once you've proven it, even if it's wrong, when you step through it with a debugger, it will be much easier to understand where the error is.
+
+The deep understanding you get from proofs is tremendously valuable.
+
+It's an awful feeling to go around tweaking signs and flipping inequalities to try to find the bug. Focus on understanding the inductive reasoning instead.
+
+One more thing: most competitive and technical interview problems start from a proof.
+
+---
+
+# Proof practice
+
+This is selection sort:
+```c
+// finds the index of the minimum element within first n characters
+int arg_min(int* arr, size_t n);
+
+void sel_sort(int* arr, size_t n) {
+    if (n == 0) return;
+    for (int i = 0; i < n; i++) {
+        int min_i = i + arg_min(arr + i, n - i); // add i, because ptr offset
+        swap(arr + min_i, arr + i);
+    }
+}
+```
+arr[i] is swapped with the minimum value of the array to the right.
+Apply the same analysis we did to insertion sort.
+You'll need to implement arg_min, and prove that it works, too.
+
+---
+
+# Proof practice (2)
+
+Look up bubble-sort. Isn't it pretty similar to insertion sort?
+
+Implement it, then prove that your implementation is correct.
+
+---
+
+<!-- _class: questions invert -->
+# Questions
 
 ---
 
@@ -1137,6 +1332,8 @@ Does that mean this algorithm is $O(n)$? *No!*
 
 It means that the outer loop multiplies the $O$ of the inner loop by a factor of $O(n)$.
 
+So it's *at least* $O(n)$, but in fact, it's worse than that.
+
 ---
 
 # The inner loop
@@ -1150,17 +1347,142 @@ for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)   // O(?)
 
 $O$ is about upper bounds, so we need to ask: "what is the most possible number of times this loop will run?"
 
-Let's assume that 
+It would be if `arr[j]` is smaller than anything in `arr[0..j)`, so it has to swap `i` times.
 
-Let's count precisely how many times this loop will run at most:
-
-${\large\sum_{i=j}^{}}$ 
-
-
+Therefore, this loop will run, at most, $i$ times. It is $O(i)$.
 
 ---
 
-# Proving the bound isn't tight
+# The whole thing
+
+Now we can finish annotating the function:
+
+```c
+void ins_sort(int* arr, size_t n) {                             // O(?) 
+    for (size_t i = 1; i < n; i++)                              // O(n)
+        for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)   // O(i)
+            swap(arr + j - 1, arr + j);                         // O(1)
+}
+```
+
+So it runs an outer loop $O(n)$ times, and an inner loop $O(i)$ times. Does that mean it runs $O(ni)$ times?
+
+Yes, but remember, $i$ depends on $n$. What is the largest $i$ could be?
+$i = O(n)$
+
+We don't want an extra variable unless they are *independent*. We'll talk about how to deal with multiple independent variables next module!
+
+---
+
+# Did we lose something?
+
+Can we really just eliminate $i$ like that? Yes.
+
+$$
+\sum_{i=1}^{n-1}\sum_{j=0}^{i - 1}1=\sum_{i=1}^{n-1}i={n(n-1) \over 2}={n^2-n \over 2}
+$$
+
+Half of a quadratic function is still a quadratic function.
+
+So we're not missing anything important. It is accurate and reasonable to say that insertion sort is $O(n^2)$. We don't need or want to say $O({n^2 - n \over 2})$ because that $=O(n^2)$
+
+---
+
+# Finishing up: multiply the big-$O$s
+
+```c
+void ins_sort(int* arr, size_t n) {                             // O(?) 
+    for (size_t i = 1; i < n; i++)                              // O(n)
+        for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)   // O(n)
+            swap(arr + j - 1, arr + j);                         // O(1)
+}
+```
+
+We can now say this code is $O(n)\times O(n)\times O(1)=O(n \times n \times 1)=O(n^2)$
+
+Because the outer loop runs $O(n)$ times, and the inner loop runs $O(n)$ times, the whole thing runs $O(n^2)$ times.
+
+So that's it, $n^2$ is an upper bound on the time of insertion sort.
+
+---
+
+# Multiply the Big-$O$s?
+
+But what about this?
+
+```c
+for (int i = 0; i < n; i++) // O(n)
+    constant_time_thing();
+
+for (int i = 0; i < n; i++) // O(n)
+    constant_time_thing();
+```
+
+[Class?]
+
+---
+
+# Add the big-$O$s
+```c
+for (int i = 0; i < n; i++) // O(n)
+    constant_time_thing();
+
+for (int i = 0; i < n; i++) // O(n)
+    constant_time_thing();
+```
+
+The code runs in sequence. So this is $O(n) + O(n) = O(n + n) = O(2n) = O(n)$
+
+Code in sequence adds the time, code nested in loops multiplies the time.
+
+---
+
+# But wait: isn't $n^2$ bad?
+
+Earlier we stated that insertion sort had some nice properties.
+
+But it looks awful. Insertion sorting an array of a million elements would take a trillion time units!? Impossible.
+
+Think about this for next time: what if the array is already almost sorted. Then what happens to insertion sort?
+
+And it turns out: this is a very common occurence!
+
+So even though this seems like an academic exercise: you've actually learned to analyze a very useful algorithm.
+
+<div class="footnote">
+
+Footnote: selection sort still sucks though.
+</div>
+
+---
+
+# Careful! It's not always $n^\mathrm{n\_nested\_loops}$!
+
+Quick! What's the big-O of this code!
+
+```c
+#define CHUNK_LEN ... //some number
+
+int (char* str, int chunks) {
+    // each chunk is CHUNK_LEN chars
+    for (int i = 0; i < chunks; i++)
+        for (int j = 0; j < CHUNK_LEN; j++)
+            do_something_to_char(str + i * CHUNK_LEN + j); // O(1)
+}
+```
+
+---
+
+# Careful! It's not always $n^\mathrm{n\_nested\_loops}$! (2)
+
+You might want to say $O(\mathrm{chunks}\cdot \mathrm{CHUNK\_LEN})$, but that would imply that `CHUNK_LEN` is a variable. It's not, it's a constant.
+
+This code is actually just $O(\mathrm{chunks})$. 
+
+It's also $O(n)$, where `n` is the length of the string, because that is proportional to the number of chunks.
+
+Why do this? Lots of operations are faster if we can do them on a chunk of adjacent memory. The above was a goofy example, but chunking absolutely happens.
+Don't be fooled about the big-$O$
 
 ---
 
@@ -1182,61 +1504,22 @@ Consider $O$ something that applies to abstract algorithms, not implementations.
 
 ---
 
-# Example table of Big-O's
+# Practice:
 
-Remember, we use $O$ (and the other notations we'll introduce soon)
-
-Here are some common big-O's and the kinds of problems they tend to emerge from:
-
-| Big-O     | Kind of problem 
-|-----------|----------------------------------------------
-| $1$       | simple machine operation (arithmetic on int, boolean expression eval., etc.)
-| $\lg n$   | binary search
-| $n$         | linear search, many string operations, arithmetic on BigInts, tons of things
-| $
+- Write a C function that is $O(n^3)$
+- Write a C function that multiplies an $n \times n$ matrix by an $n$ length vector.
+  Annotate its big-$O$. 
+- Go back to your selection and bubble sort code. Annotate their big-$O$.
+- Go back and do the other practice exercises, especially the proof ones. 
+  You can do it!
 
 ---
 
-
-
----
-
-# Actual quiz next class
-
-Next class we will have a quiz on this material.
-
-This quiz counts! It's going to measure your understanding of this module.
-
-**You must bring paper and a writing implement! This is your responsibility! Set six different reminders on your phone!***
+<!-- _class: questions invert -->
+# Questions?
 
 ---
 
-# Actual quiz next class (2)
-
-Start studying now, and try to resolve any feelings of meta-cognitive unease. If you feel like "I don't quite get this", listen to the feeling!
-
-Test yourself. The quiz will be proctored, pen-and-paper, and timed (10 minutes). If you aren't studying at least a little bit under these time and resource controls, you aren't studying for the quiz!
-
-The quiz will test the first learning mastery standard: that you can understand and prove things using Bachmann-landau notation.
-
----
-
-# How should I study?
-
-Do the following practice exercises! Some are worked, some are not.
-
-Then, rewrite them on a cheat sheet. It's an open materials quiz. Any printed material is acceptable. Composing your own cheat sheet will help comprehension a lot. I recommend 1 sheet per learning standard.
-
-Set a practice timer for each problem. Turn off your electronic devices. You will have 10 minutes.
-
-Remember: *if you aren't studying under time controls with pen and paper, **you aren't studying!***
-
-And remember to bring pen and paper for the quiz next class!
-
----
-
-
----
 
 # Appendix A: principle of explosion
 
@@ -1342,7 +1625,7 @@ Instead of "look, the midpoint is between x and y." we're saying "well, suppose 
 
 ---
 
-# Appendix B (5): other benefits
+# Appendix B (5)
 
 We can guarantee that our proofs are constructive if we take classical logic but avoid using the law of excluded middle (LEM). The LEM states:
 $$
