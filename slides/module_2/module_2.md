@@ -6,7 +6,7 @@ paginate: true
 
 # Design and Analysis of Algorithms  
 
-## Module 2: Bachmann-Landau Notation
+## Module 2: Introduction to Big-$O$ and Correctness Proofs
 
 <br>
 <br>
