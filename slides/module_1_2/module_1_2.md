@@ -16,7 +16,7 @@ Slides © Grant Williams, [CC BY-SA 4.0](https://creativecommons.org/licenses/by
 <br>
 
 This is an open educational resource.
-Submit fixes, improvements, and new material [here](https://github.com/grantwill74/notes-on-algorithm-design).
+Feel free to submit fixes, improvements, and new material [here](https://github.com/grantwill74/notes-on-algorithm-design).
 
 
 ---
