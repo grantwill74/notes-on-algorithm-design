@@ -167,9 +167,9 @@ void do_unit_tests() {
 
 // my simple benchmarking
 #define DONT_OPTIMIZE(x) \
-    __asm__ __volatile__("" : "+r"(x) : : "memory")
+    __asm__ __volatile__("" : "+m"(x) : : "memory")
 
-typedef void (*bencher)(int* arr, size_t n, int* acc);
+typedef void (*bencher)(int* arr, size_t n, volatile int* sink);
 
 typedef struct bench_result_t {
     double mean_nanos;
@@ -184,18 +184,20 @@ void shuffle(int* arr, size_t n) {
     }
 }
 
-bench_result time_bench(bencher b, int* arr, size_t n, size_t n_iters){
+bench_result time_bench(bencher b, 
+    int* arr, size_t n, size_t n_iters, volatile int* snk)
+{
     assert (n_iters >= 2);
 
     uint64_t sum_nanos = 0;
     long double sum_sq_d = 0;
-    int sink = 0;
     for (size_t i = 0; i < n_iters; i++) {
         shuffle(arr, n);
 
         struct timespec start, end;
         clock_gettime(CLOCK_MONOTONIC, &start);
-        b(arr, n, &sink);
+        b(arr, n, snk);
+        DONT_OPTIMIZE(snk);
         clock_gettime(CLOCK_MONOTONIC, &end);
         
         uint64_t delta = (end.tv_sec - start.tv_sec) * 1000000000ull +
@@ -212,31 +214,32 @@ bench_result time_bench(bencher b, int* arr, size_t n, size_t n_iters){
         sqrtl(variance),
     };
 
-    DONT_OPTIMIZE(sink);
+    DONT_OPTIMIZE(*snk);
 
     return result;
 }
 
-void bench_ins_sort(int* arr, size_t n, int* sink) {
-    *sink += arr[rand() % n];
+void bench_ins_sort(int* arr, size_t n, volatile int* sink) {
     ins_sort(arr, n);
+    *sink += arr[rand() % n];
 }
 
-void bench_ins_sort_rec(int* arr, size_t n, int* sink) {
-    *sink += arr[rand() % n];
+void bench_ins_sort_rec(int* arr, size_t n, volatile int* sink) {
     ins_sort_rec(arr, n);
+    *sink += arr[rand() % n];
 }
 
 
 int do_benchmarks() {
-    size_t n_iters = 10000;
+    size_t n_iters = 1000;
     size_t lengths[] = {10, 100, 1000};
     bencher benches[] = {bench_ins_sort, bench_ins_sort_rec};
     char* bench_names[] = {"insertion sort", "insertion sort (recursive)"};
     size_t n_benches = sizeof benches / sizeof (bencher);
     size_t n_lengths = sizeof lengths / sizeof(size_t);
+    volatile int sink = 0;
     int arr[1000];
-    srand(42);
+    srand(time(NULL));
 
     for(size_t i = 0; i < 1000; i++) {
         arr[i] = i;
@@ -250,12 +253,15 @@ int do_benchmarks() {
         printf("benching %s\n", bench_names[i_bench]);
         for (size_t i_length = 0; i_length < n_lengths; i_length++) {
             bencher bench = benches[i_bench];
-            bench_result res=time_bench(bench, arr, lengths[i_length], n_iters);
+            bench_result res = 
+                time_bench(bench, arr, lengths[i_length], n_iters, &sink);
             printf("length %lu: %lf mean microseconds, stdev: %lf\n", 
                 lengths[i_length], res.mean_nanos / 1e3, res.stdev / 1e3);
         }
         puts("");
     }
+
+    DONT_OPTIMIZE(sink);
 
     return 0;
 }
