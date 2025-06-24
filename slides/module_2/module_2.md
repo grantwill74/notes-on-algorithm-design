@@ -970,6 +970,8 @@ These proofs each correspond to one of the constructors of natural numbers.
 
 \* yes, there is also "strong induction". We will use it when we start working with trees and divide and conquer algorithms.
 
+</div>
+
 ---
 
 # The weak induction algorithm
@@ -1652,8 +1654,10 @@ Well, we could prove it directly:
 - ${x + y \over 2} \lt y$ follows from $x + y \lt 2y$, which follows $x \lt y$, which was assumed.▯
 
 <div class="footnote">
-We're saying "follows from" because we're modifying the goal. If I have P ⇒ Q and P in my assumptions, then I can say "Q follows from P". However, if my goal is Q and I have the assumption P ⇒ Q, then I can say "we must show Q, which follows from P" and now my new goal is P. 
 
+Note: We're saying "follows from" because we're modifying the goal. If I have P ⇒ Q and P in my assumptions, then I can say "Q follows from P". However, if my goal is Q and I have the assumption P ⇒ Q, then I can say "we must show Q, which follows from P" and now my new goal is P. 
+
+</div>
 
 ---
 

@@ -238,34 +238,34 @@
 <body>
 <h1 id="design-and-analysis-of-algorithms">Design and Analysis of
 Algorithms</h1>
-<h2 id="module-2-bachmann-landau-notation">Module 2: Bachmann-Landau
-Notation</h2>
+<h2 id="module-2-introduction-to-big-o-and-correctness-proofs">Module 2:
+Introduction to Big-<span class="math inline">\(O\)</span> and
+Correctness Proofs</h2>
 <p><br> <br></p>
 <p>Slides © Grant Williams, <a
 href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
 4.0</a>.</p>
 <p><br></p>
-<p>This is an open educational resource. Submit fixes, improvements, and
-new material <a
+<p>This is an open educational resource. Feel free to submit fixes,
+improvements, and new material <a
 href="https://github.com/grantwill74/notes-on-algorithm-design">here</a>.</p>
 <hr />
 <h1 id="last-class">Last Class</h1>
 <p>We talked about an example of a simple algorithm that was slow.</p>
-<p>Specifically: concatenating multiple strings.</p>
-<p>[Does anyone remember why it was slow?]</p>
+<p>Specifically: concatenating multiple strings without being smart
+about where we start copying.</p>
 <p>It was a little awkward to describe <em>how</em> slow it was. We had
 to calculate time units and we ended up with an expression like: <span
 class="math inline">\(T = {130*10000*(10000 + 1) \over 2}\)</span></p>
 <hr />
 <h1 id="this-class">This class</h1>
-<p>We’re going to learn Big-O notation!</p>
-<p>This will let us describe the time an algorithm takes much
-faster.</p>
+<p>We’re going to learn Big-O notation, so that we can express times
+like that more clearly.</p>
 <p>You’ve probably heard of Big-O before, but there are other big and
 small letters, too: Big-O, small-o, Big-Ω<em>, small-ω</em>, and Big-θ*.
-We will learn the whole family!</p>
-<p>It’s called <em>Bachmann-Landau</em> notation after its inventors.
-<Br></p>
+We will eventually learn the whole family!</p>
+<p>These conventions are called <em>Bachmann-Landau</em> notation after
+its inventors. <Br></p>
 <div class="footnote">
 <ul>
 <li>Greek letter Omega, which literally means “big O” in Greek,
@@ -280,7 +280,13 @@ useful</h1>
 <p>There’s nothing wrong with measuring how long an algorithm takes.</p>
 <p>In fact: you should do that. It’s a good idea. Sometimes algorithms
 can be theoretically fast an practically slow.</p>
-<p>But there’s a simple problem with that…</p>
+<p>For example, <a
+href="https://en.wikipedia.org/wiki/Computational_complexity_of_matrix_multiplication">there
+are ways of multiplying matrices that are theoretically faster than the
+iterative way you learned</a>, but they are only <em>actually</em>
+faster if the matrix is huge.</p>
+<p>But there’s a simple problem with measuring algorithms
+empirically…</p>
 <hr />
 <h1 id="it-depends-on-your-computer.">It depends on your computer.</h1>
 <p>Other people don’t have your computer.*</p>
@@ -291,8 +297,8 @@ average of 2 minutes when n = 10000, with a standard deviation of
 <p>Also, it’s more work to deterine how an algorithm <em>scales</em>
 when doing purely empirical measurement. You have to take multiple
 measurements to determine exponents, plus additional measurements to get
-a feel for how much they vary. It’s a decent amount of work doing
-<em>proper</em> empirical measurement.</p>
+a feel for how much they vary.</p>
+<p>Doing high quality empirical benchmarks is surprisingly involved.</p>
 <div class="footnote">
 <ul>
 <li>unless you’re hosting an unsecure SSH or something.</li>
@@ -300,20 +306,22 @@ a feel for how much they vary. It’s a decent amount of work doing
 </div>
 <hr />
 <h1 id="scaling">Scaling</h1>
-<p>What we really care about is modelling how long an algorithm takes.
-Specifically, how it <em>scales</em>.</p>
+<p>What we really care about is <em>modelling</em> how long an algorithm
+takes. Specifically, how it <em>scales</em>.</p>
 <p>We would like a nice time function that lets us plug any input value
-we want and get a rough time estimate.</p>
+we want and get a number that lets us compare to other input values,
+even if the units aren’t actual time.</p>
 <p>We also don’t care about constant multiplication. Your computer may
 be 10 times faster than your phone; that doesn’t change the underlying
 speed of the algorithm</p>
 <hr />
 <h1 id="scaling-2">Scaling (2)</h1>
-<p>But we <em>do</em> care about <em>variable</em> multiplication.</p>
+<p>But we <em>do</em> care about some kinds of <em>variable</em>
+multiplication.</p>
 <p>For example, consider this time function: <span
 class="math inline">\(T(n)={{130\over 2}n(n+1)}=65n(n + 1)\)</span></p>
 <p>What matters more? The 65 at the beginning (the constant factor), or
-the factor of n (the variable factor)?</p>
+the <span class="math inline">\(n\)</span>s (the variable factor)?</p>
 <p>Well, let’s say n is 5: <span class="math inline">\(T(n)=65\times 5(5
 + 1)=65\times 5(6)=65\times 30\)</span></p>
 <p>Well 65 is bigger than 30, so it seems more important.</p>
@@ -334,20 +342,19 @@ factors.</p>
 <h1 id="scaling-4">Scaling (4)</h1>
 <p>It doesn’t matter what constant we pick. If n gets big enough, it
 will matter more than the constant.</p>
-<p>Even if it’s something like <span class="math inline">\(T(n) = 1000
-n\)</span></p>
+<p>Even if the time function is something like <span
+class="math inline">\(T(n) = 1000 n\)</span></p>
 <p>1000 is a large constant, but if n is, say, a million, it’s no longer
 the dominant one.</p>
-<p>So we like to ignore constants, and only focus on the variables.
-Let’s do that now…</p>
 <hr />
 <h1 id="removing-constants">Removing constants</h1>
 <p>So instead of writing <span class="math inline">\(T(n)=65n(n +
 1)\)</span></p>
 <p>We could delete the constant factor <span
 class="math inline">\(T(n)=n(n+1)\)</span></p>
-<p>And let’s expand that multiplication so we can see the exponents:
-<span class="math inline">\(T(n)=n^2+n\)</span></p>
+<p>And let’s distribute the <span class="math inline">\(n\)</span> so we
+can see the exponents: <span
+class="math inline">\(T(n)=n^2+n\)</span></p>
 <p>So now, we can clearly see that this is a quadratic function</p>
 <hr />
 <h1 id="can-we-really-do-this">Can we really do this?</h1>
@@ -359,16 +366,16 @@ something.</p>
 would have this time: <span
 class="math inline">\(T_{strcpy}(n)=10n\)</span></p>
 <p>But let’s say Bob’s computer is faster: it only takes 2 time units:
-<span class="math inline">\(T_{strcpy}(n)=5n\)</span></p>
+<span class="math inline">\(T_{strcpy}(n)=2n\)</span></p>
 <p>This information is important, but it has nothing to do with the
-algorithm.</p>
+underlying algorithm.</p>
 <p>We want to remove machine-specific information from the time
 function.</p>
 <hr />
 <h1 id="taking-it-a-step-further">Taking it a step further</h1>
 <p>If it bothered you that we removed the constant factor, this is
 <em>really</em> going to bother you: we’re going to remove a whole
-variable.</p>
+variable term.</p>
 <p>Consider again <span class="math inline">\(T(n)=n^2 + n\)</span></p>
 <p>What matters more, <span class="math inline">\(n^2\)</span> or <span
 class="math inline">\(n\)</span>?</p>
@@ -384,7 +391,7 @@ class="math inline">\(n\)</span></h1>
 <th>n</th>
 <th><span class="math inline">\(n^2 + n\)</span></th>
 <th><span class="math inline">\(n^2\)</span></th>
-<th>Ratio</th>
+<th>Ratio: <span class="math inline">\({n^2 + n} \over n^2\)</span></th>
 </tr>
 </thead>
 <tbody>
@@ -428,7 +435,8 @@ class="math inline">\(n\)</span> term just does not matter</h1>
 n\)</span> and another took <span class="math inline">\(n^2\)</span>, by
 the time you get to a large input, you can’t tell the difference.</p>
 <p>But we don’t want to abuse mathematical notation and just randomly
-delete variables…</p>
+delete variables. Without a good mathematical foundation, that could let
+us derive erroneous statements.</p>
 <hr />
 <!-- _class: invert questions -->
 <h1 id="questions">Questions?</h1>
@@ -489,6 +497,7 @@ gets arbitrarily large.</p>
 <li><span class="math inline">\(f(n)=n^4\)</span></li>
 <li><span class="math inline">\(f(n)=n^{\pi}\)</span></li>
 <li><span class="math inline">\(f(n)=n^3 \log n\)</span></li>
+<li><span class="math inline">\(f(n)=2^n\)</span></li>
 <li><span class="math inline">\(f(n)=n!\)</span></li>
 </ul>
 <p>All of these functions can be multiplied by a constant to make them
@@ -502,7 +511,7 @@ multiply it by 2!</p>
 class="math inline">\(f(n)\)</span>, such that <span
 class="math inline">\(n \notin O(f(n))\)</span></p>
 <p>That is, find a function that is too small to have its big-O contain
-<span class="math inline">\(n\)</span>.</p>
+<span class="math inline">\(g(n)=n\)</span>.</p>
 <hr />
 <h1 id="some-answers-2">Some answers (2)</h1>
 <ul>
@@ -529,6 +538,7 @@ class="math inline">\(f(n) \in O(n^3)\)</span></p>
 <ul>
 <li><span class="math inline">\(f(n)=n^3\)</span></li>
 <li><span class="math inline">\(f(n)=n^2\)</span></li>
+<li><span class="math inline">\(f(n)=n^{2/3}\)</span></li>
 <li><span class="math inline">\(f(n)=n\)</span></li>
 <li><span class="math inline">\(f(n)=1\)</span></li>
 <li><span class="math inline">\(f(n)=n \log n\)</span></li>
@@ -565,12 +575,12 @@ be bigger than <span class="math inline">\(n^2\)</span>.</p>
 <p>Intuitively, big-O tells us the upper bound of how long a process
 will take.</p>
 <p>It specifically tells us that upper bound in a way that ignores
-constants or smaller degree terms.</p>
-<p>So it’s a mathematically rigorous way of being sort of vague. We get
-to share a feeling for how slow something is. “This algorithm runs in
-linear time (i.e., <span class="math inline">\(O(n)\)</span>)” conveys a
-lot of information without bogging down the reader with computer
-specific information or meaningless time blips.</p>
+constant factors or slower growing terms.</p>
+<p>So it’s a mathematically rigorous way of removing unimportant
+details. “This algorithm runs in linear time (i.e., <span
+class="math inline">\(O(n)\)</span>)” conveys a lot of information
+without bogging down the reader with computer specific information or
+meaningless time blips.</p>
 <hr />
 <!-- _class: invert questions -->
 <h1 id="questions-1">Questions?</h1>
@@ -599,12 +609,12 @@ other fields use this notation too.</p>
 <hr />
 <h1 id="lets-meditate-on-that">Let’s meditate on that</h1>
 <p>It’s a big gnarly definition. Let’s think about it.</p>
-<p>Anytime someone has shown that <span class="math inline">\(f(n) \in
-O(g(n))\)</span>, they have done the following: - Found the scaling
-factor <span class="math inline">\(C\)</span> - Found the starting point
-<span class="math inline">\(n_0\)</span> - Proved that for every natural
-number starting at <span class="math inline">\(n_0\)</span> and getting
-as big as you want, that <span class="math inline">\(f(n) \leq C\cdot
+<p>Anytime someone proves <span class="math inline">\(f(n) \in
+O(g(n))\)</span> constructively, they must: - Find the scaling factor
+<span class="math inline">\(C\)</span> - Find the starting point <span
+class="math inline">\(n_0\)</span> - Prove that for every natural number
+starting at <span class="math inline">\(n_0\)</span> and getting as big
+as you want, that <span class="math inline">\(f(n) \leq C\cdot
 g(n)\)</span></p>
 <p>We’ll look at how to write one of these proofs soon, but first, let’s
 assume someone has done the hard work for us.</p>
@@ -616,6 +626,7 @@ assume someone has done the hard work for us.</p>
 <h1 id="subsets-example-the-answer">Subsets example: the answer</h1>
 <p>Yes, it is.</p>
 <p>But how do we prove it?</p>
+<p>[What do you think?]</p>
 <hr />
 <h1 id="subsets-example-work-1">Subsets example: work (1)</h1>
 <p>What does it mean for <span class="math inline">\(A \subseteq
@@ -654,20 +665,25 @@ N \to R^+}, f \in O(n) \implies f \in O(n^2)\)</span>.</p>
 <h1 id="proving-implications">Proving implications</h1>
 <p>So how, do we prove that <span class="math inline">\(P \implies
 Q\)</span>?</p>
-<p>We have two options: 1. Assume that <span
+<p>We have three options: 1. Assume that <span
 class="math inline">\(P\)</span> (aka, the hypothesis) is true, and show
 that you can prove <span class="math inline">\(Q\)</span> (the
-conclusion). 2. Show that <span class="math inline">\(P\)</span> is
-false. (i.e., <span class="math inline">\(P \implies Q\)</span> is
-vacuously true)*</p>
-<p>We certainly can’t prove that some random function <span
-class="math inline">\(f \in O(n)\)</span> is not also <span
-class="math inline">\(\in O(n^2)\)</span>, so we have to take option
-1.</p>
+conclusion). This is a direct proof. 2. Prove the contrapositive: <span
+class="math inline">\(\lnot Q \implies \lnot P\)</span>. This is a kind
+of indirect proof, and it is sometimes considered less satisfying than
+if we could prove <span class="math inline">\(P\implies Q\)</span>
+directly. 3. Show that <span class="math inline">\(P\)</span> is false.
+(i.e., <span class="math inline">\(P \implies Q\)</span> is vacuously
+true)*. Also indirect.</p>
+<p>#3 won’t work, because we have no reason to believe <span
+class="math inline">\(f \notin O(n)\)</span>. #2 would work but indirect
+proofs are less “enlightening”**. Let’s do #1.</p>
 <div class="footnote">
 <ul>
 <li>Giant footnote: see appendix A</li>
 </ul>
+<p>** Another footnote: see appendix B to understand why we like direct,
+“constructive” proofs, especially in computer science.</p>
 </div>
 <hr />
 <h1 id="subsets-example-work-2">Subsets example: work (2)</h1>
@@ -678,18 +694,18 @@ class="math inline">\(f \in O(n) \implies f \in O(n^2)\)</span>.</p>
 the same way that it peels off a “<span
 class="math inline">\(\forall\)</span>”.</p>
 <p>Proof so far: - Suppose we have a function <span
-class="math inline">\(f: N \to R^+\)</span> - suppose that <span
+class="math inline">\(f: N \to R^+\)</span> - Suppose that <span
 class="math inline">\(f \in O(n)\)</span></p>
 <p>Goal: <span class="math inline">\(\cancel {f \in O(n) \implies} f \in
 O(n^2)\)</span></p>
 <p>Now we have a hypothesis we can use: <span class="math inline">\(f
-\in O(n)\)</span>. Let’s use it by applying the definition of <span
+\in O(n)\)</span>. Let’s use it: apply the definition of <span
 class="math inline">\(O\)</span>.</p>
 <hr />
 <h1 id="applying-the-definition">Applying the definition</h1>
 <p>Recall the definition of big-O: <span class="math display">\[f(n) \in
-O(g(n)) \iff \exists C \gt 0, \exists n_0 \geq 0, \forall n\in N, f(n)
-\leq C\cdot g(n)\]</span></p>
+O(g(n)) \iff \exists C \gt 0, \exists n_0 \geq 0, \forall n \geq n_0,
+f(n) \leq C\cdot g(n)\]</span></p>
 <p>And recall that our proof so far looks like this: “Suppose we have a
 function <span class="math inline">\(f: N \to R^+\)</span> and suppose
 there is some <span class="math inline">\(f \in O(n)\)</span>”</p>
@@ -697,103 +713,500 @@ there is some <span class="math inline">\(f \in O(n)\)</span>”</p>
 definition on <span class="math inline">\(f \in O(n)\)</span> and
 replace it with the other side of the <span
 class="math inline">\(\iff\)</span></p>
+<p>So use that big <span class="math inline">\(\iff\)</span> at the top
+on <span class="math inline">\(f(n) \in O(g(n))\)</span>, but replace
+<span class="math inline">\(g(n)\)</span> with just <span
+class="math inline">\(n\)</span>.</p>
 <p>So now, we can use this fact: <span class="math inline">\(\exists C
-\gt 0, \exists n_0 \geq 0, \forall n\in N, f(n) \leq C\cdot
+\gt 0, \exists n_0 \geq 0, \forall n \geq n_0, f(n) \leq C\cdot
 g(n)\)</span></p>
 <p>How does that help?</p>
 <div class="footnote">
-<p>* It’s not a coincidence that F: P =&gt; Q looks like f : N -&gt; R.
+<p>* It’s not a coincidence that F: P ⇒ Q looks like f : N → R.
 Functions are isomorphic with implications. Search for the “Curry-Howard
 correspondance” if this is interesting to you.</p>
 </div>
 <hr />
 <h1 id="subsets-example-work-3">Subsets example: work (3)</h1>
-<p>We can replace the <span class="math inline">\(g(n)\)</span> in the
-definition with the actual function: <span
-class="math inline">\(n\)</span>. Let’s expand the definition in the
-goal, too.</p>
+<p>Now we have a <span class="math inline">\(C\)</span> and <span
+class="math inline">\(n_0\)</span> to work with. Let’s expand the
+definition in the goal, too.</p>
 <p>Proof so far: - Suppose we have a function <span
 class="math inline">\(f: N \to R^+\)</span> - Suppose <span
 class="math inline">\(f \in O(n)\)</span>. - Applying the definition of
 big-O to both the above hypothesis and goal, we derive <span
-class="math inline">\(\exists C \gt 0, \exists n_0 \geq 0, \forall n\in
-N, f(n) \leq C\cdot n\)</span>”</p>
-<p>Goal so far: Show <span class="math inline">\(\exists C \gt 0,
-\exists n_0 \geq 0,  \forall n \in N, f(n) \leq C \cdot
-n^2\)</span>”</p>
+class="math inline">\(\exists C \gt 0, \exists n_0 \geq 0, \forall n
+\geq n_0, f(n) \leq C\cdot n\)</span>”</p>
+<p>Goal so far: <span class="math inline">\(\cancel{f \in O(n^2)}
+\exists C \gt 0, \exists n_0 \geq 0,  \forall n \geq n_0, f(n) \leq C
+\cdot n^2\)</span>”</p>
 <hr />
-<h1 id="subsets-example-6-heres-the-main-part">Subsets example (6):
-here’s the main part</h1>
+<h1 id="dealing-with-exists-in-an-assumption">Dealing with <span
+class="math inline">\(\exists\)</span> in an assumption</h1>
+<p>We deal with <span class="math inline">\(\exists\)</span> and <span
+class="math inline">\(\forall\)</span> differently when they’re in our
+“context”, aka “set of assumptions” than when they are in the goal.</p>
+<p>When an <span class="math inline">\(\exists\)</span> is in our set of
+assumptions, we can give it a name by also saying “suppose”, or just
+break it off the proposition.</p>
+<p>So we say “suppose” to prove a <span
+class="math inline">\(\forall\)</span> in the goal, and we say “suppose”
+to break off a <span class="math inline">\(\exists\)</span> in a
+hypothesis.</p>
+<p>Let’s break apart the assumption in our proof:</p>
+<hr />
+<h1 id="subsets-example-work-4">Subsets example: work (4)</h1>
+<p>Proof so far: - Suppose we have a function <span
+class="math inline">\(f: N \to R^+\)</span> - Suppose <span
+class="math inline">\(f \in O(n)\)</span>. - Apply the definition of
+big-O to both the above hypothesis and goal, we derive <span
+class="math inline">\(\exists C \gt 0, \exists n_0 \geq 0, \forall n\geq
+n_0, f(n) \leq C\cdot n\)</span>” - Suppose we have a <span
+class="math inline">\(C \gt 0\)</span>, <span class="math inline">\(n_0
+\geq 0\)</span> - We now have <span class="math inline">\(\forall n \geq
+n_0, f(n) \leq C \cdot n\)</span></p>
+<p>Goal so far: <span class="math inline">\(\exists C \gt 0, \exists n_0
+\geq 0,  \forall n \geq n_0, f(n) \leq C \cdot n^2\)</span>”</p>
+<hr />
+<h1 id="subsets-example-work-5">Subsets example: work (5)</h1>
 <p>Remember how saying “suppose” in our proof removed a <span
 class="math inline">\(\forall\)</span> from the goal? To remove a <span
 class="math inline">\(\exists x\)</span> from the goal, we have to say
 “choose <span class="math inline">\(y\)</span> for x”. But that requires
 us to actually pick a value <span class="math inline">\(y\)</span>…what
 should we pick?</p>
-<p>We already have that <span class="math inline">\(\exists C \gt 0,
-\exists n_0 \geq 0, \forall n\in N, f(n) \leq C\cdot n\)</span> Does
-anything change if <span class="math inline">\(n\)</span> becomes <span
-class="math inline">\(n^2\)</span>?</p>
-<p>Well, certainly <span class="math inline">\(C \cdot n \le C \cdot
-n^2\)</span>, because <span class="math inline">\(C\)</span> is positive
-and <span class="math inline">\(n\)</span> is non-negative. Therefore,
-<span class="math inline">\(f(n) \le C \cdot n \le C \cdot
+<p>Remember, once we pick something, our goal will be to show <span
+class="math inline">\(\forall n \geq n_0&#39;, f(n) \leq C&#39; \cdot
+n^2\)</span>, for some <span class="math inline">\(C&#39;\)</span></p>
+<p>And we currently have an assumption that <span
+class="math inline">\(\forall n \geq n_0, f(n) \leq C \cdot
+n\)</span></p>
+<p>What value of <span class="math inline">\(C&#39;\)</span> should we
+pick so that <span class="math inline">\(f(n) \leq C \cdot n \leq C&#39;
+\cdot n^2\)</span>?</p>
+<p>Honestly, <span class="math inline">\(n^2\)</span> grows much faster
+than <span class="math inline">\(n\)</span>, so we can pick pretty much
+anything <span class="math inline">\(\gt 0\)</span>. Let’s pick <span
+class="math inline">\(C\)</span> so the <span
+class="math inline">\(Cs\)</span> cancel out when you replace the <span
+class="math inline">\(C&#39;\)</span> with it. As for <span
+class="math inline">\(n_0&#39;\)</span>, we have to pick <span
+class="math inline">\(n_0\)</span>, because there’s a hypothesis that
+says <span class="math inline">\(\forall n \geq n_0\)</span> that we
+want to use. We could have chosen <span class="math inline">\(n_0 =
+0\)</span> at the very beginning instead.</p>
+<hr />
+<h1 id="subsets-example-work-7">Subsets example: work (7)</h1>
+<p>Proof so far: - Suppose we have a function <span
+class="math inline">\(f: N \to R^+\)</span>, <span
+class="math inline">\(f \in O(n)\)</span>. - Apply the definition of
+big-O to <span class="math inline">\(f\in O(n)\)</span>. - Suppose <span
+class="math inline">\(C \gt 0\)</span>, $n_0 $, then <span
+class="math inline">\(\forall n \geq n_0, f(n) \leq C \cdot n\)</span>,
+We must show <span class="math inline">\(\exists C&#39; \gt 0, \exists
+n_0&#39; \geq 0, \forall n&#39; \geq n_0&#39;, f(n&#39;) \leq C&#39;
+\cdot n&#39;\)</span>* - Choose <span
+class="math inline">\(C&#39;=C\)</span> and <span
+class="math inline">\(n_0&#39;=n_0\)</span></p>
+<p>Goal: <span class="math inline">\(\cancel{\exists C&#39; \gt 0,
+\exists n_0&#39;,} \forall n&#39; \geq n_0, f(n&#39;) \leq C \cdot
 n^2\)</span></p>
-<p>So we choose the same <span class="math inline">\(C\)</span> and
-<span class="math inline">\(n_0\)</span> that we already have. <span
-class="math inline">\(\forall n, f(n) \le C \cdot n^2\)</span> follows
-by transitivity of <span class="math inline">\(\le\)</span>. That’s it;
-we proved the goal.</p>
+<p>See how we replaced the <span class="math inline">\(C&#39;\)</span>
+and the <span class="math inline">\(n_0&#39;\)</span> in the goal with
+<span class="math inline">\(C\)</span> and <span
+class="math inline">\(n_0\)</span>? Now what to do?</p>
+<div class="footnote">
+<p>* We added “primes” (the quotes after the variable names) to
+distinguish the variables in the goal</p>
+</div>
 <hr />
-<h1 id="final-proof">Final proof</h1>
+<h1 id="subsets-example-work-8">Subsets example: work (8)</h1>
+<p>That’s right, “suppose”! <span class="math inline">\(\forall n&#39;
+\geq n_0, P(n)\)</span> is shorthand for <span
+class="math inline">\(\forall n, n \geq n_0 \implies P(n)\)</span>. We
+can handle both the “<span class="math inline">\(\forall\)</span>” and
+the <span class="math inline">\(n \geq 0\)</span> hypothesis by saying
+“suppose”.</p>
+<p>Proof so far: - Suppose we have a function <span
+class="math inline">\(f: N \to R^+\)</span>, <span
+class="math inline">\(f \in O(n)\)</span>. - Apply the definition of
+big-O to <span class="math inline">\(f \in O(n)\)</span> to obtain <span
+class="math inline">\(C\)</span> and <span
+class="math inline">\(n_0\)</span>. - Suppose <span
+class="math inline">\(C \gt 0\)</span>, <span class="math inline">\(n_0
+\geq 0\)</span>, then <span class="math inline">\(\forall n, n \geq n_0
+\implies f(n) \leq C \cdot n\)</span>, We must show <span
+class="math inline">\(\exists C&#39; \gt 0, \exists n_0&#39; \geq 0,
+\forall n&#39; \geq n_0&#39;, f(n&#39;) \leq C&#39; \cdot
+n&#39;\)</span>* - Choose <span class="math inline">\(C&#39;=C\)</span>
+and <span class="math inline">\(n_0&#39;=n_0\)</span>, and suppose we
+have some <span class="math inline">\(n&#39;\)</span>, <span
+class="math inline">\(n&#39; \geq n_0\)</span></p>
+<p>Goal: <span class="math inline">\(\cancel{\forall n&#39; \geq n_0,}
+f(n&#39;) \leq C \cdot n^2\)</span></p>
+<div class="footnote">
+<p>* Here I’m repeating the goal so that the “choose” doesn’t come out
+of nowhere.</p>
+</div>
 <hr />
-<h1 id="going-the-other-way-proving-fn-in-ogn">Going the other way:
-proving <span class="math inline">\(f(n) \in O(g(n))\)</span></h1>
-<p>If we want to prove that <span class="math inline">\(f(n) \in
-O(g(n))\)</span>, we have to first choose a <span
-class="math inline">\(C\)</span> and an <span
-class="math inline">\(n_0\)</span>.</p>
-<p>C is our scaling factor. It just needs to be big enough to make <span
-class="math inline">\(C\cdot g(n)\)</span> large enough.</p>
-<p><span class="math inline">\(n_0\)</span> is our starting point. We
-don’t care what happens for small values of n, we care about how the
-functions scale at large values. <span
-class="math inline">\(n_0\)</span> let’s us define what “big enough”
-means for <span class="math inline">\(n\)</span>.</p>
-<p>Once we’ve chosen our <span class="math inline">\(C\)</span> and
-<span class="math inline">\(n_0\)</span>, the last part is to prove the
-rest of the statement: <span class="math inline">\(\forall n \geq n_0,
-f(n) \leq C\cdot g(n)\)</span></p>
+<h1 id="subsets-example-what-now">Subsets example: what now?</h1>
+<p>Notice that we have some natural number named <span
+class="math inline">\(n&#39;\)</span> in our context.</p>
+<p>And notice that we have an assumption: <span
+class="math inline">\(\forall n, n \ge n_0 \implies f(n) \leq C \cdot
+n\)</span></p>
+<p>The “<span class="math inline">\(\forall\)</span>” in the assumption
+means that we can apply it to any natural number we want.</p>
+<p>Apply it to <span class="math inline">\(n&#39;\)</span>: <span
+class="math inline">\(n&#39; \geq n_0 \implies f(n&#39;) \leq C \cdot
+n&#39;\)</span></p>
+<p>Is it true that <span class="math inline">\(n&#39; \geq n_0\)</span>?
+Yes, we supposed it last slide. That’s why we picked <span
+class="math inline">\(n_0&#39; = n_0\)</span>. If it were not the case
+that <span class="math inline">\(n \geq n_0\)</span>, we would not be
+allowed to apply this implication.</p>
+<p>So now the implication gives us the hypothesis: <span
+class="math inline">\(f(n&#39;) \leq C \cdot n&#39;\)</span></p>
+<p>Now, can we <em>finally</em> show that <span
+class="math inline">\(f(n&#39;) \leq C \cdot (n&#39;)^2\)</span>.</p>
+<p>How?</p>
 <hr />
-<h1 id="using-the-formal-definition-2">Using the formal definition
-(2)</h1>
+<h1 id="subsets-example-by-transitivity">Subsets example: by
+transitivity</h1>
+<p>We already have that <span class="math inline">\(f(n&#39;) \leq C
+\cdot n&#39;\)</span>, and it’s true that <span class="math inline">\(C
+\cdot n&#39; \leq C \cdot (n&#39;)^2\)</span>, so, transitively, <span
+class="math inline">\(f(n&#39;) \leq C \cdot n&#39; \leq C \cdot
+(n&#39;)^2 \implies f(n&#39;) \leq C \cdot (n&#39;)^2\)</span>, which
+was the goal</p>
+<p>You can put the cool tombstone at the end: ▯, or write *QED** if
+you’re fancy.</p>
+<div class="footnote">
+<p>* QED is an acronym which stands for “quod erat demonstratum”, which
+means “which was to be demonstrated” in Latin.</p>
+</div>
 <hr />
-<h1 id="knowledge-check-6">Knowledge check (6)</h1>
-<p>Is this proposition true? <span class="math display">\[O(n^2)
-\subseteq O(n)\]</span></p>
-<p>That is, are all the functions that are in <span
-class="math inline">\(O(n)\)</span> also in <span
-class="math inline">\(O(n^2)\)</span>?</p>
-<p>[What do you think?]</p>
+<h1 id="subsets-final-annotated-proof">Subsets final annotated
+proof</h1>
+<p>Goal: <span class="math inline">\(\forall f: N \to R^+, f \in O(n)
+\implies f \in O(n^2)\)</span> - Suppose we have a function <span
+class="math inline">\(f: N \to R^+\)</span>, <span
+class="math inline">\(f \in O(n)\)</span>. Goal: <span
+class="math inline">\(f \in O(n^2)\)</span> - Apply the definition of
+big-O to <span class="math inline">\(f \in O(n)\)</span> and <span
+class="math inline">\(f \in O(n^2)\)</span> Suppose we have <span
+class="math inline">\(C \gt 0\)</span>, <span class="math inline">\(n_0
+\geq 0, \forall n, n\geq n_0 \implies f(n) \leq C \cdot n\)</span> Goal:
+<span class="math inline">\(\exists C&#39; \gt 0, \exists n_0&#39; \geq
+0, \forall n&#39;, n&#39;\geq n_0&#39; \implies f(n&#39;) \leq C&#39;
+\cdot n&#39;\)</span> - Choose <span
+class="math inline">\(C&#39;=C\)</span> and <span
+class="math inline">\(n_0&#39;=n_0\)</span>, and suppose we have some
+<span class="math inline">\(n&#39;\)</span>, <span
+class="math inline">\(n&#39; \geq n_0\)</span> Goal: <span
+class="math inline">\(f(n&#39;) \leq C \cdot (n&#39;)^2\)</span> - Apply
+our assumption <span class="math inline">\(\forall n, n\geq n_0 \implies
+f(n) \leq C \cdot n\)</span> to <span
+class="math inline">\(n&#39;\)</span>. We have that <span
+class="math inline">\(n&#39; \geq n_0\)</span>, so the rule applies. We
+derive <span class="math inline">\(f(n&#39;) \leq C \cdot
+n&#39;\)</span>, from which the goal, <span
+class="math inline">\(f(n&#39;) \leq C \cdot (n&#39;)^2\)</span> follows
+by transitivity of <span class="math inline">\(\leq\)</span>. ▯</p>
 <hr />
-<h1 id="answer-5">Answer (5)</h1>
+<h1 id="feeling-the-tension">Feeling the tension</h1>
+<p>We’ve already seen how to prove things in discrete math, but you may
+not have had to do it too many times since then.</p>
+<p>Once you see the mechanical nature of proofs, and how we say things
+like “suppose” in the proof to remove a hypothesis or “<span
+class="math inline">\(\forall\)</span>” in the goal, I hope it will feel
+more comfortable.</p>
+<p>It really is like writing a computer program. In fact, when Donald
+Knuth was introducing computer programming, he said it was like writing
+a proof!</p>
 <hr />
-<h1 id="knowledge-check-7-one-more">Knowledge check (7), one more!</h1>
-<p>Is <span class="math inline">\(O(n^2 - n) = O(n^2 + n)\)</span>?</p>
-<p>Prove it one way or the other.</p>
-<p>How? Remember: <span class="math inline">\(O(f(n))\)</span> is a set.
-How do we prove that two sets are equal?</p>
+<h1 id="how-to-think-about-proofs">How to think about proofs</h1>
+<p>If you’re struggling, I really recommend thinking about proofs in
+terms of “what is the proof so far” and “what is the goal so far”. This
+is how proof assistants like <a href="https://rocq-prover.org/">Roqc</a>
+work, so if you get used to this paradigm, you’ll find it easy to write
+formal proofs if you want.</p>
+<p>Everything you do in the proof either modifies an assumption (i.e.,
+something we supposed) or modifies the goal (i.e., “this follows
+from”).</p>
+<p>Instead of trying to hold the whole proof in your brain, try to ask
+yourself: “okay, the proof looks like <span
+class="math inline">\(\forall x \in Z, \ldots something\)</span>”, so
+the next step is to say “suppose we have some <span
+class="math inline">\(x \in Z\)</span>” and that removes the “<span
+class="math inline">\(\forall x \in Z\)</span> from the proof.</p>
+<p>Just focus on one step at a time. Some steps do seem to require
+creativity, but you can often solve them with trial and error. Your
+intuition will improve with practice.</p>
+<hr />
+<h1 id="proof-tactic-summary-so-far">Proof tactic summary so far</h1>
+<ul>
+<li>If your goal looks like <span class="math inline">\(\forall x \in S,
+P(x)\)</span>, then say “suppose we have an <span
+class="math inline">\(x \in S\)</span>”. Now your new goal is <span
+class="math inline">\(P(x)\)</span> and you can use the variable you
+just supposed.</li>
+<li>You can rename a variable when you say “suppose”. It’s important to
+avoid name conflicts. If you have already “supposed” a variable named
+<span class="math inline">\(x\)</span>, you cannot introduce a new
+variable named <span class="math inline">\(x\)</span>.</li>
+<li>You can rename any <span
+class="math inline">\(\forall\)</span>-bound variable as long as you are
+consistent.</li>
+<li>If your goal looks like <span class="math inline">\(P \implies Q
+\ldots\)</span>, then add “suppose <span
+class="math inline">\(P\)</span>”. Now your goal is <span
+class="math inline">\(Q\)</span>.</li>
+<li>If you have an <strong>assumption</strong> that looks like <span
+class="math inline">\(\exists x \in S, P(x)\)</span>, you can say
+“suppose we have an <span class="math inline">\(x \in S\)</span> and
+suppose <span class="math inline">\(P(x)\)</span>”. Now you can use
+<span class="math inline">\(x\)</span> and <span
+class="math inline">\(P(x)\)</span> as needed.</li>
+<li>If you have a <strong>goal</strong> that looks like <span
+class="math inline">\(\exists x \in S, P(x)\)</span>, then you say
+“choose <span class="math inline">\(y\)</span>” for some <span
+class="math inline">\(y \in S\)</span>. Then rewrite your goal to
+replace <span class="math inline">\(x\)</span>’s with <span
+class="math inline">\(y\)</span>’s.</li>
+</ul>
+<hr />
+<h1 id="proof-tactic-summary-2">Proof tactic summary (2)</h1>
+<p>Proving <span class="math inline">\(\lnot P\)</span> is fundamentally
+the same as proving <span class="math inline">\(P \implies
+False\)</span>, so you can start by supposing <span
+class="math inline">\(P\)</span>, and then deriving a
+contradiction.*</p>
+<p>You can also invert the proposition and prove the inverse is true.
+Here is how quantified propositions get inverted: 1. <span
+class="math inline">\(\lnot \exists x, P \implies \forall x, \lnot
+P\)</span> 2. <span class="math inline">\(\lnot \forall x, P \implies
+\exists x, \lnot P\)</span></p>
+<p>(Note: the second one relies on non-constructive logic, so it’s not
+as convenient with proof assistants, but we don’t have to restrict
+ourselves in this class)</p>
+<div class="footnote">
+<p>* We can think of “not P” as saying “there cannot be a proof of P”.
+So if you had a proof of P, it would necessarily cause a
+contradiction.</p>
+</div>
+<hr />
+<h1 id="proof-tactic-summary-3">Proof tactic summary (3)</h1>
+<p>Sometimes it’s easier to work backwards than forwards. If I have a
+goal to show <span class="math inline">\(Q\)</span>, and I have an
+assumption <span class="math inline">\(P \implies Q\)</span>, I can say
+in my proof: “<span class="math inline">\(Q\)</span> follows from <span
+class="math inline">\(P\)</span>”, and now my goal is to prove <span
+class="math inline">\(P\)</span>.</p>
+<p>I can also write: <span class="math inline">\(Q \impliedby P\)</span>
+which means the same thing: I used to want to prove <span
+class="math inline">\(Q\)</span>, but now it’s enough to prove <span
+class="math inline">\(P\)</span>, because we know that if I have a proof
+of <span class="math inline">\(P\)</span>, I can get <span
+class="math inline">\(Q\)</span>.</p>
+<p>Just like solving a maze, it’s sometimes way easier to go backwards.
+Appendix E shows an example (the quadratic formula) where going
+backwards makes it clear what you have to do, whereas going forwards
+requires you to be creative.</p>
+<hr />
+<h1 id="practice">Practice</h1>
+<ol type="1">
+<li>Prove that <span class="math inline">\(1000 \in O(1)\)</span></li>
+<li>Prove that <span class="math inline">\(n^2 \notin O(n)\)</span>.
+I’ve worked this one in appendix C. I proved it by inverting
+quantifiers. Maybe try proving it by deriving a contradiction
+instead.</li>
+<li>Prove that <span class="math inline">\(n^2 \in O(n^2)\)</span> This
+is similar, but it’s not a subset proof. Does that make a big
+difference?</li>
+<li>Prove that <span class="math inline">\(n \in O(n \lg n)\)</span>.
+<span class="math inline">\(\lg\)</span> is another way of writing <span
+class="math inline">\(\log_2\)</span> This one is trickier. Remember
+that <span class="math inline">\(\log_n 0\)</span> is undefined, and
+<span class="math inline">\(\log_n 1= 0\)</span> Be careful about your
+choise of <span class="math inline">\(n_0\)</span>!</li>
+<li>Prove that <span class="math inline">\(O(n^2 - n) = O(n^2 +
+n)\)</span>. I worked this one in appendix D.</li>
+</ol>
+<hr />
+<h1 id="practice-encouragement">Practice encouragement</h1>
+<p>Over time, you’ll naturally get more comfortable with making larger
+leaps, and your proofs will get shorter.</p>
+<p>Follow the long-form proof/goal method we’ve been using until you
+feel confident.</p>
+<p>Be sure to check your work: using my worked examples when they’re
+there, office hours/email, or AI for convenience.</p>
+<p>Let’s check the assignments to see if one is ready for us!</p>
+<hr />
+<h1 id="questions-2">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<!--
+# Knowledge check (6)
+
+Is this proposition true?
+$$O(n^2) \subseteq O(n)$$
+
+That is, are all the functions that are in $O(n)$ also in $O(n^2)$?
+
+[What do you think?]
+
+---
+
+# Answer (5)
+
+No, because $n^2 \in O(n^2)$, but $n^2 \notin O(n)$
+(And you will prove these facts in practice!)
+
+---
+-->
+<h1 id="simplified-notation">Simplified notation</h1>
+<p>It gets a little tedious proving facts about big-O. It’s nice to have
+simple rules to apply.</p>
+<p>For example, suppose we have some algorithm that is recursive. For
+example, the running time of merge-sort looks like this:</p>
+<p><span class="math inline">\(T_{ms}(0)=1\)</span> <span
+class="math inline">\(T_{ms}(n)=2T_{ms}({n \over 2}) + f(n)\)</span>
+where <span class="math inline">\(f(n) \in O(n)\)</span></p>
+<p>We’ll show how this is derived next module, but notice how
+inconvenient it is to always say “<span
+class="math inline">\(f\)</span>, where <span
+class="math inline">\(f\)</span> is an element of the big-O of …”</p>
+<hr />
+<h1 id="simplified-notation-2">Simplified notation (2)</h1>
+<p>It would be much nicer to just write this: <span
+class="math inline">\(T_{ms}(n)=2T_{ms}({n \over 2}) + O(n)\)</span></p>
+<p>And that’s, in fact, what we do.</p>
+<p>First, instead of saying “<span class="math inline">\(f \in
+O(g(n))\)</span>”, we say “<span class="math inline">\(f =
+O(g(n))\)</span>”</p>
+<p>This is an abuse of notation. It does not mean “<span
+class="math inline">\(f\)</span> <em>is</em> the order of <span
+class="math inline">\(g(n)\)</span> (i.e., a set)”. It means “<span
+class="math inline">\(f\)</span> is some function in <span
+class="math inline">\(O(g(n))\)</span>.</p>
+<p>You’ve probably seen statements like <span class="math inline">\(f =
+O(n^2)\)</span> online. Hopefully this makes it clear that <span
+class="math inline">\(O(n^2)\)</span> really is a set, but we usually
+prefer to treat the function as a member of that set.</p>
+<hr />
+<h1 id="simplified-notation-3">Simplified notation (3)</h1>
+<p>Why do we abuse the notation? Because it’s nice to say <span
+class="math inline">\(O(n) + O(n^2) = O(n^2)\)</span> and we can only do
+that if <span class="math inline">\(O(n)\)</span> is treated as a member
+of a set instead of a set.</p>
+<p>So here’s the rule: - When there’s one big O and it’s the entire
+right hand side: “<span class="math inline">\(f(n) = O(g(n))\)</span>”
+means “<span class="math inline">\(f(n) \in O(g(n))\)</span>” - When
+it’s a term or a factor: “<span class="math inline">\(O(n) + O(n^2) =
+O(n^2)\)</span>” means the <span class="math inline">\(O(g(n))\)</span>
+terms are actually elements of that <span
+class="math inline">\(O\)</span>’s set.</p>
+<p>So <span class="math inline">\(O(n) + O(n^2) = O(n^2)\)</span> from
+now on really means <span class="math inline">\(f + g \in
+O(n^2)\)</span> where <span class="math inline">\(f \in O(n)\)</span>
+and <span class="math inline">\(g \in O(n^2)\)</span>.</p>
+<hr />
+<h1 id="big-o-addition-and-multiplication-simplification">Big-O addition
+and multiplication simplification</h1>
+<p>There are two useful rules we will apply frequently: 1. <span
+class="math inline">\(O(f(n)) + O(g(n)) = O(f(n) + g(n))\)</span> 2.
+<span class="math inline">\(O(f(n)) \times O(g(n)) = O(f(n) \times
+g(n))\)</span></p>
+<p>Remember that <span class="math inline">\(O(f(n))\)</span> and <span
+class="math inline">\(O(g(n))\)</span> are really <em>members</em> of a
+set in the above rules. Not the set itself. But <span
+class="math inline">\(O(f(n)+g(n))\)</span> and <span
+class="math inline">\(O(f(n)\cdot g(n))\)</span> <em>are</em> the sets
+themselves.</p>
+<p><strong>Practice exercise</strong>: Prove these. Choose an <span
+class="math inline">\(n_0\)</span> that is guaranteed to be larger than
+the <span class="math inline">\(n_0\)</span> for either <span
+class="math inline">\(f\)</span> or <span
+class="math inline">\(g\)</span>, and choose <span
+class="math inline">\(C\)</span> that is guaranteed to be larger than
+either <span class="math inline">\(f&#39;(n) + g&#39;(n)\)</span> or
+<span class="math inline">\(f&#39;(n) \cdot g&#39;(n)\)</span> for any
+<span class="math inline">\(f&#39; \in O(f(n))\)</span> and <span
+class="math inline">\(g&#39; \in O(g(n))\)</span></p>
+<hr />
+<h1 id="using-the-rules">Using the rules</h1>
+<ol type="1">
+<li>Simplify <span class="math inline">\(O(n) + O(n^2)\)</span> By the
+first rule, <span class="math inline">\(O(n) + O(n^2) = O(n + n^2) =
+O(n^2)\)</span></li>
+</ol>
+<p>Notice how the higher degree term <em>swallows</em> the lower degree
+term.</p>
+<ol start="2" type="1">
+<li>Simplify <span class="math inline">\(O(n) \times O(\lg n)\)</span>
+By the second rule, <span class="math inline">\(O(n) \times O(\lg n) =
+O(n \lg n)\)</span></li>
+</ol>
+<hr />
+<h1 id="warning-1">Warning #1</h1>
+<p>We <em>cannot</em> combine <span class="math inline">\(O\)</span>
+over subtraction or division.</p>
+<p><span class="math inline">\(O(n^2) - O(n^2)\)</span> looks like <span
+class="math inline">\(0\)</span>, but it’s not true for <span
+class="math inline">\((n^2 - n) - n^2\)</span>! Likewise for
+division.</p>
+<hr />
+<h1 id="warning-2">Warning #2</h1>
+<p>Be <em>very careful</em> going backwards. It’s sometimes reasonable
+to say $O(n + m) = O(n) + O(m), but you can get in trouble doing
+this.</p>
+<p>Later we will see recursive time-functions where adding a constant
+factor to one expression ends up adding a linear factor to the whole
+function.</p>
+<p>In that case, It’s wrong to use <span
+class="math inline">\(O\)</span> to arbitrarily generate terms like
+this: <span class="math inline">\(O(n) = O(n + 1) = O(n) +
+O(1)\)</span></p>
+<p>This is even more wrong: <span
+class="math inline">\(O(n)=O(n^2)=O(n^2 + n)= O(n^2) + O(n)\)</span></p>
+<p>Remember that we are abusing notation here. Try to keep track of when
+<span class="math inline">\(O(f(n))\)</span> is a set versus a function
+in the set.</p>
+<hr />
+<h1 id="constant-time">Constant time</h1>
+<p>One more rule: if something always takes the same amount of time, we
+say it is <span class="math inline">\(O(1)\)</span></p>
+<p>What if it takes <span class="math inline">\(1000\)</span> time
+units?</p>
+<p>Then choose <span class="math inline">\(C = 1000, n_0 = 0\)</span>,
+<span class="math inline">\(1000 \leq 1000 \cdot 1\)</span> Therefore
+<span class="math inline">\(1000 = O(1)\)</span></p>
+<p>It was a practice exercise to prove this earlier, but I wanted to
+re-iterate it.</p>
+<hr />
+<h1 id="wrapping-up-big-o-definitions-and-rules">Wrapping up big-O
+definitions and rules</h1>
+<p>Now we know that, if someone proves that an algorithm takes time
+<span class="math inline">\(t(n) = O(g(n))\)</span>, we have a vague
+idea of how much time it will take at worst.</p>
+<p><span class="math inline">\(O\)</span> gives us an upper bound on its
+runtime.</p>
+<p>Hopefully you can see why it’s useful. There are also <span
+class="math inline">\(Ω\)</span> for lower bound, and <span
+class="math inline">\(Θ\)</span> for both lower and upper.</p>
+<hr />
+<!-- _class: questions invert -->
+<h1 id="questions-3">Questions?</h1>
 <hr />
 <h1 id="lets-have-an-example">Let’s have an example</h1>
-<p>Now we know that, if someone proves that an algorithm takes time
-<span class="math inline">\(t(n) \in O(g(n))\)</span>, we have a vague
-idea of how much time it will take at worst</p>
-<hr />
-<h1 id="insertion-sort">Insertion Sort</h1>
+<p>Okay, enough abstract math. Let’s look at a real algorithm!</p>
 <p>Insertion sort is a simple, but surprisingly valuable sorting
 algorithm.</p>
 <p>First, let’s remind ourself of its code:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span><span class="op">*</span> a<span class="op">,</span> <span class="dt">int</span><span class="op">*</span> b<span class="op">);</span> <span class="co">// defined elsewhere: you know how to do it!</span></span>
+<hr />
+<h1 id="insertion-sort">Insertion Sort</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span><span class="op">*</span> a<span class="op">,</span> <span class="dt">int</span><span class="op">*</span> b<span class="op">);</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span> </span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> </span>
@@ -801,47 +1214,632 @@ algorithm.</p>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <div class="footnote">
-<p>This can be slightly sped up by avoiding unecessary copies. Think
-about what swap does and expand it. Could you optimize the function?</p>
-<p>Answer is in the github. ** “arr + i” is equivalent to “&amp;arr[i]”.
-We’re doing pointer math to get the ith and jth elements of arr.</p>
+<p>Note: this can be slightly sped up by avoiding unecessary copies.
+Think about what swap does and expand it. Could you optimize the
+function? Answer is in the github. ** “arr + i” is equivalent to
+“&amp;arr[i]”. We’re doing pointer math to get the ith and jth elements
+of arr.</p>
 </div>
 <hr />
+<h1 id="why-it-works">Why it works</h1>
+<p>Insertion sort tracks which part of the array is sorted and which
+part isn’t. <span class="math inline">\(i\)</span> points to the
+<em>first index of the unsorted part</em>.</p>
+<p>Suppose we have an array like this <code>4, 7, 5, 1, 3, 2, 6</code>
+We split it into a sorted part and an unsorted part: <code>4</code> |
+<code>7, 5, 1, 3, 2, 6</code> There are two arrays: <code>[4]</code> and
+<code>[7, 5, 1, 3, 2, 6]</code> The first array is sorted. Singleton
+arrays are always sorted.</p>
+<hr />
+<h1 id="why-it-works-2">Why it works (2)</h1>
+<p>Consider the second loop:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span></span></code></pre></div>
+<p>This loop moves the unsorted element to the left until it is no
+longer out of order.</p>
+<p>Starting with <code>[4]</code> and <code>[7, 5, 1, 3, 2, 6]</code>,
+this loop will examine <code>4</code> and <code>7</code>. They are
+in-order, so it will not swap them.</p>
+<p>Then the loop will run on <code>[4, 7]</code> and
+<code>[5, 1, 3, 2, 6]</code> 7 and 5 are out of order, so they will be
+swapped. 4 and 5 are in order, so we stop.</p>
+<p>Then the loop will run on <code>[4, 5, 7]</code> and
+<code>[1, 3, 2, 6]</code> <strong>Practice: finish the procedure. Follow
+the for-loop as you do it.</strong></p>
+<hr />
+<h1 id="why-it-works-3">Why it works (3)</h1>
+<p>Every time the inner loop finishes, one more element is in the
+correct place, and the sorted list grows by one.</p>
+<p>Eventually the sorted list includes the whole list.</p>
+<p>But how do we know? Can we prove it more rigorously?</p>
+<hr />
+<h1 id="inductive-reasoning">Inductive reasoning</h1>
+<p>Now it’s time for the big one! We have to use induction.</p>
+<p>We’ll review it first, but…</p>
+<p>What is induction? Can anyone tell me?</p>
+<hr />
+<h1 id="principles-of-induction">Principles of induction</h1>
+<p>Natural numbers are a useful, simple datatype that is inductive. An
+inductive data type has a <em>finite number of constructors</em>.</p>
+<p>Wait, constructors? Remember programming language design: a datatype
+consists of a number of constructors. Natural numbers have two: 1. <span
+class="math inline">\(0\)</span> 2. <span class="math inline">\(\forall
+n \in N, n \implies n + 1\)</span> (i.e., given a natural number, add 1
+to it to get the next one)</p>
+<p>Because natural numbers are inductive, there is an algorithm that
+gives you a way to prove propositions about them. That is, propositions
+of the form, <span class="math inline">\(\forall n \in N, P(n)\)</span>.
+This algorithm is called an “inductive principle”.</p>
+<hr />
+<h1 id="weak-induction">Weak induction</h1>
+<p>There are many inductive principles for each inductive datatype. The
+most basic inductive principle for natural numbers is called <em>weak
+induction</em>*.</p>
+<p>Weak induction is a proof algorithm. If you give it two proofs, it
+will spit out a proof of <span class="math inline">\(P(n)\)</span> for
+any n. </p>
+<p>Here are the proofs we must give it: 1. <span
+class="math inline">\(P(0)\)</span> 2. <span
+class="math inline">\(\forall n, P(n) \implies P(n + 1)\)</span></p>
+<p>These proofs each correspond to one of the constructors of natural
+numbers.</p>
+<div class="footnote">
+<p>* yes, there is also “strong induction”. We will use it when we start
+working with trees and divide and conquer algorithms.</p>
+</div>
+<hr />
+<h1 id="the-weak-induction-algorithm">The weak induction algorithm</h1>
+<p>Because this (half-functional psuedocode) is the function that weak
+induction requires*</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>P<span class="op">(</span>n<span class="op">)</span> weak_induction<span class="op">(</span>P<span class="op">,</span> n<span class="op">,</span> P<span class="op">(</span><span class="dv">0</span><span class="op">)</span> base<span class="op">,</span> P<span class="op">(</span>forall n<span class="op">,</span> P<span class="op">(</span>n<span class="op">)</span> <span class="op">-&gt;</span> P<span class="op">(</span>n <span class="op">+</span> <span class="dv">1</span><span class="op">))</span> ind<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> n of</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">|</span> <span class="dv">0</span> <span class="op">=&gt;</span> <span class="cf">return</span> base</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">|</span> n<span class="ch">&#39; </span><span class="er">+ 1 =&gt;                                     // n</span><span class="ch">&#39;</span> is the number before n</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        n<span class="ch">&#39;_</span><span class="er">proof = weak_induction(n</span><span class="ch">&#39;</span><span class="op">,</span> base<span class="op">,</span> ind<span class="op">);</span>   <span class="co">// get proof for P(n -1)</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> ind<span class="op">(</span>n<span class="op">,</span> n<span class="ch">&#39;_</span><span class="er">proof); // use proof for P(n - 1) to get P(n)</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This is a proof machine. If you say, “give me the proof that <span
+class="math inline">\(P\)</span> is true for <span
+class="math inline">\(0\)</span>, it spits out <span
+class="math inline">\(P(0)\)</span>. If you say,”give me the proof of
+<span class="math inline">\(P(1)\)</span>“, it recursively gets the
+proof of <span class="math inline">\(P(0)\)</span> (the base case), then
+it applies the inductive proof to generate <span
+class="math inline">\(P(1)\)</span>. Works for any <span
+class="math inline">\(n\)</span>.</p>
+<div class="footnote">
+<p>* In a proof assistant like Roqc, weak induction is
+<em>literally</em> a function. It has source code. You can write your
+own principle of induction and use that instead, as long as it is
+provably total. Again, there are times when other inductive principles
+are more convenient, so we will see some.</p>
+</div>
+<hr />
+<h1 id="the-proposition-we-want-to-prove">The proposition we want to
+prove</h1>
+<p><small></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p></small></p>
+<ul>
+<li><strong>Want to show</strong> <span class="math inline">\(\forall n,
+arr,\)</span> after calling <code>ins_sort(arr, n)</code>,
+<code>arr[0..n)</code> will be sorted.</li>
+<li>Because this proposition starts with <span
+class="math inline">\(\forall n\)</span>, we can use induction on
+natural numbers.</li>
+<li>Is it true for <span class="math inline">\(n = 0\)</span>? Yes, the
+for loop gets skipped, and <code>arr[0..0)</code> is sorted.</li>
+<li>Now we need to show that if it sorts <code>arr[0..n)</code>, it
+sorts <code>arr[0..n+1)</code></li>
+</ul>
+<p><strong>Notation</strong>: <code>arr[a .. b)</code> means the range
+starting at <code>a</code> and ending at <code>b - 1</code> inclusive.
+This is called a “half-open” interval. A closed interval will be written
+<code>arr[a..b]</code>, which means <code>b</code> is included in the
+interval.</p>
+<hr />
+<h1 id="induction-on-loops">Induction on loops</h1>
+<p>We were able to show <span class="math inline">\(P(0)\)</span> pretty
+quickly, but <span class="math inline">\(P(n) \implies P(n+1)\)</span>
+is more involved.</p>
+<p>We want to “wrap” our loop with a property. We want that if <span
+class="math inline">\(P(n)\)</span> is true before entering the loop,
+then <span class="math inline">\(P(n+1)\)</span> will be true after.</p>
+<p>Usually this means something like: “if <code>arr[0..n)</code> is
+sorted … one iteration happens … now <code>arr[0..n+1)</code> is
+sorted</p>
+<p>It’s important that the first part <em>stay true before the loop, and
+after each iteration of the loop</em>. It doesn’t help us if
+<code>arr[0..n)</code> stops being sorted, because then we’re not making
+progress towards <code>arr[0..n+1)</code>.</p>
+<p>This kind of property, one that is true before a loop and after each
+iteration, and therefore also immediately after the loop, is called a
+<em>loop invariant</em>.</p>
+<hr />
+<h1 id="loop-invariants">Loop invariants</h1>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// base case: arr[0..1) is sorted</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// invariant: arr[0..i) is sorted</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">// now arr[0..i + 1) is sorted (we hope)</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>We clearly want the array to be sorted after the loop. But there’s a
+pesky loop inside. It needs to have this property:
+<code>arr[0..i)</code> is sorted <span
+class="math inline">\(\implies\)</span> <code>arr[0..i + 1)</code> is
+sorted.</p>
+<hr />
+<h1 id="loop-invariants-2">Loop invariants (2)</h1>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span></span></code></pre></div>
+<p>This inner loop swaps elements into place, but it’s a little
+complicated.</p>
+<p>It has two termination conditions: 1. either it reaches the beginning
+of the array… 2. …or it finds that arr[j] is in the right place.</p>
+<p>Remember, we want: <code>arr[0..i)</code> is sorted <span
+class="math inline">\(\implies\)</span> <code>arr[0..i + 1)</code> is
+sorted.</p>
+<p>Is there any way to relate that to the new variable,
+<code>j</code>?</p>
+<hr />
+<h1 id="loop-invariants-3">Loop invariants (3)</h1>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span></span></code></pre></div>
+<p><code>j</code> partitions the array between sorted and unsorted.</p>
+<p>Even with all this swapping: <code>arr[0..j)</code> is still sorted
+because we don’t access <span class="math inline">\(\lt\)</span> j. And,
+the values from <code>arr[j + 1..i)</code> were sorted before, and
+remain sorted after swap. So these can be invariants.</p>
+<p>The only issue is <code>arr[j-1] ++ arr[j]</code>, which is not
+sorted. But after the swap, that particular pair will be sorted.</p>
+<p><strong>Notation:</strong> <code>++</code> means concatinate. It’s
+not a C operator, but the proofs would be much jankier without a nice
+operator like that.</p>
+<hr />
+<h1 id="loop-invariants-4">Loop invariants (4)</h1>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Pre: arr[0..i) is sorted</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">// I: arr[0..j) is sorted /\ arr[j .. i + 1) is sorted</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// arr[0..j) is sorted /\ arr[j] &lt; arr[j - 1] &lt; arr[j + 1..i)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// arr[0..j) &lt; arr[j + 1..i + 1)</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// arr[0..j - 1) is sorted, arr[j - 1..i + 1) is sorted </span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">//                        ^^^^^^^^^^^^^^^^^^^^^^ important bit</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">// After termination: if arr[j] &gt;= arr[j - 1], then </span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">//  arr[0..j-1] sorted =&gt; arr[j..i + 1) sorted =&gt; arr[j-1] &lt;= arr[j] =&gt; </span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">//  arr[0..i + 1) is sorted. If j = 0, the same applies. </span></span></code></pre></div>
+<p>Notice that after each swap, the right partition gets larger and the
+left partition gets smaller. Eventually, the left partition is
+empty.</p>
+<p>Our termination proof shows that no matter which way the loop
+terminated, we can always show that the whole array up to and including
+<span class="math inline">\(i\)</span> is sorted.</p>
+<hr />
+<h1 id="annotated-loops">Annotated loops</h1>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// base case: arr[0..1) is sorted</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// I: arr[0..i) is sorted</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">//I: arr[0..j) is sorted, arr[j+1..i) is sorted, arr[0..j) &lt; arr[j+1..i]</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">// =&gt; arr [0..j - 1) sorted, arr[j..i + 1) sorted</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">// now arr[0..i + 1) is sorted</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="final-proof">Final proof</h1>
+<p>Get ready for a big, gnarly proof by induction!</p>
+<hr />
+<h1 id="just-kidding">Just kidding</h1>
+<p>Goal: <span class="math inline">\(\forall n\in N, a \in\)</span>
+<code>int[]</code>, after <code>ins_sort(a, n)</code>, <code>a</code> is
+sorted. Proof: By induction on <span class="math inline">\(n\)</span> -
+Goal: show after
+<code>ins_sort([], 0), [] is sorted   Proof: the loop is skipped and [] is always sorted. - Goal: show $\forall a \in$</code>int[]<code>,   after</code>ins_sort(a,
+n)<code>is sorted $\implies$ after</code>ins_sort(a, n +
+1)<code>is sorted   (i.e., if the first</code>n<code>characters are sorted, the</code>n+1<code>th will be too)   Proof, by loop invariant (it shows</code>arr[0..n)<code>sorted $\implies$</code>arr[0..n+1)`
+sorted)</p>
+<hr />
+<h1 id="do-not-succomb-to-hubris">Do not succomb to hubris</h1>
+<blockquote>
+<p>Beware of bugs in the above code; I have only proved it correct, not
+tried it. - Donald Knuth</p>
+</blockquote>
+<p>“Awesome, we proved it! That means I don’t need unit tests!”</p>
+<p>Not quite: - Our proof could be formalized incorrectly. I.e., we
+picked the wrong goal. - We could have made a logic error in the proof.
+- We could have made a typo in the code - Some aspect of C semantics may
+be different than we expect. - I had bugs in both my proof and code
+making these slides.</p>
+<hr />
+<h1 id="unit-testing-in-c">Unit testing in C</h1>
+<p>Check the code on the <a
+href="https://github.com/grantwill74/notes-on-algorithm-design">GitHub</a>.
+Go to <code>slides/module_2/code/sorts.c</code>.</p>
+<p>I’m using a unit testing framework based on <a
+href="https://jera.com/techinfo/jtns/jtn002">minunit</a>.</p>
+<p>It takes like, 10 lines of code to add unit testing. Just copy
+paste.</p>
+<p>Feel free to copy my unit testing solution for your assignments.</p>
+<hr />
+<h1 id="proofs-are-still-valuable">Proofs are still valuable</h1>
+<p>“Then why bother with proofs?”</p>
+<p>Proofs force you to deeply understand the code.</p>
+<p>Once you’ve proven it, even if the proof is wrong, when you step
+through the code with a debugger, it will be much easier to understand
+where the error is (and you can use the proof to generate asserts).</p>
+<p>The deep understanding you get from proofs is tremendously
+valuable.</p>
+<p>It’s an awful feeling to go around tweaking signs and flipping
+inequalities to try to find the bug. Focus on understanding the
+inductive reasoning instead.</p>
+<p>One more thing: most competitive and technical interview problems
+start from a proof.</p>
+<hr />
+<h1 id="proof-practice">Proof practice</h1>
+<p>This is selection sort:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// finds the index of the minimum element within first n characters</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> arg_min<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">);</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> sel_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> min_i <span class="op">=</span> i <span class="op">+</span> arg_min<span class="op">(</span>arr <span class="op">+</span> i<span class="op">,</span> n <span class="op">-</span> i<span class="op">);</span> <span class="co">// add i, because ptr offset</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        swap<span class="op">(</span>arr <span class="op">+</span> min_i<span class="op">,</span> arr <span class="op">+</span> i<span class="op">);</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>arr[i] is swapped with the minimum value of the array to the right.
+Apply the same analysis we did to insertion sort. You’ll need to
+implement arg_min, and prove that it works, too. If you use a loop,
+consider that from <code>[0..i)</code>, your variable storing the max
+index is correct.</p>
+<hr />
+<h1 id="proof-practice-2">Proof practice (2)</h1>
+<p>Look up bubble-sort. Isn’t it pretty similar to insertion sort?</p>
+<p>Implement it, then prove that your implementation is correct.</p>
+<hr />
+<!-- _class: questions invert -->
+<h1 id="questions-4">Questions</h1>
+<hr />
 <h1 id="but-how-fast-is-it">But how fast is it?</h1>
+<p>How do we determine the big-O of insertion sort?</p>
+<p>First, we need to estimate its time. Let’s look at the code and try
+to figure out how much time it takes.</p>
+<p>The loops take a variable amount of time depending on the input. But
+there’s one thing that always takes the same amount of time: swap.</p>
+<p>Why?</p>
 <hr />
-<h1 id="actual-quiz-next-class">Actual quiz next class</h1>
-<p>Next class we will have a quiz on this material.</p>
-<p>This quiz counts! It’s going to measure your understanding of this
-module.</p>
-<p><strong>You must bring paper and a writing implement! This is your
-responsibility! Set six different reminders on your phone!</strong>*</p>
+<h1 id="swap">Swap</h1>
+<p>Here’s a reasonable implementation of swap. (You may know the fancier
+version using xor, but it’s not faster and it has an edge case):</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span><span class="op">*</span> i<span class="op">,</span> <span class="dt">int</span><span class="op">*</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> t <span class="op">=</span> <span class="op">*</span>i<span class="op">;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>i <span class="op">=</span> <span class="op">*</span>j<span class="op">;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>j <span class="op">=</span> t<span class="op">;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This is what it compiles into with clang, target x64, with -O2:</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode asm"><code class="sourceCode fasm"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">swap:</span>   <span class="bu">mov</span>     <span class="kw">eax</span><span class="op">,</span> <span class="dt">dword</span> <span class="dt">ptr</span> <span class="op">[</span><span class="kw">rdi</span><span class="op">]</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>        <span class="bu">mov</span>     <span class="kw">ecx</span><span class="op">,</span> <span class="dt">dword</span> <span class="dt">ptr</span> <span class="op">[</span><span class="kw">rsi</span><span class="op">]</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">mov</span>     <span class="dt">dword</span> <span class="dt">ptr</span> <span class="op">[</span><span class="kw">rdi</span><span class="op">],</span> <span class="kw">ecx</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">mov</span>     <span class="dt">dword</span> <span class="dt">ptr</span> <span class="op">[</span><span class="kw">rsi</span><span class="op">],</span> <span class="kw">eax</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">ret</span></span></code></pre></div>
 <hr />
-<h1 id="actual-quiz-next-class-2">Actual quiz next class (2)</h1>
-<p>Start studying now, and try to resolve any feelings of meta-cognitive
-unease. If you feel like “I don’t quite get this”, listen to the
-feeling!</p>
-<p>Test yourself. The quiz will be proctored, pen-and-paper, and timed
-(10 minutes). If you aren’t studying at least a little bit under these
-time and resource controls, you aren’t studying for the quiz!</p>
-<p>The quiz will test the first learning mastery standard: that you can
-understand and prove things using Bachmann-landau notation.</p>
+<h1 id="swap-2">Swap (2)</h1>
+<p>The swap is 5 assembly instructions.</p>
+<p>Those are just moves and a return. Specifically 1-2 micro-op moves,
+and a 1-3 micro-op return. Two dependencies. This whole thing will
+typically take a few cycles or so.</p>
+<p>It takes a few cycles no matter what inputs it gets. It’s not like
+swapping big numbers is slower than swapping small ones.</p>
+<p>Therefore we say that swap takes <em>constant time</em>.</p>
 <hr />
-<h1 id="how-should-i-study">How should I study?</h1>
-<p>Do the following practice exercises! Some are worked, some are
-not.</p>
-<p>Then, rewrite them on a cheat sheet. It’s an open materials quiz. Any
-printed material is acceptable. Composing your own cheat sheet will help
-comprehension a lot. I recommend 1 sheet per learning standard.</p>
-<p>Set a practice timer for each problem. Turn off your electronic
-devices. You will have 10 minutes.</p>
-<p>Remember: <em>if you aren’t studying under time controls with pen and
-paper, <strong>you aren’t studying!</strong></em></p>
-<p>And remember to bring pen and paper for the quiz next class!</p>
+<h1 id="big-assumption">Big assumption</h1>
+<p>There are two common ways we can bound a simple operation, like a
+move or add. 1. It’s contant time. 2. It depends on how big it is.</p>
+<p>Both of these assumptions make sense. If <span
+class="math inline">\(x\)</span> and <span
+class="math inline">\(y\)</span> are two registers, then <span
+class="math inline">\(x + y\)</span> takes constant time. A couple of
+cycles at most. And it doesn’t depend on the values.</p>
+<p>But if <span class="math inline">\(x\)</span> and <span
+class="math inline">\(y\)</span> are megabytes long Bigints, it depends.
+They would have to be broken down into a multi-step addition with
+carries. It would take an amount of time propositional to the length of
+the shorter int.</p>
 <hr />
+<h1 id="ram-model-vs-bit-length-model">Ram model vs bit length
+model</h1>
+<p>We have to choose a model for how much time operations will take, and
+our choice will affect the <span class="math inline">\(O\)</span>.</p>
+<p>We can choose the <strong>RAM model</strong>, which basically states
+that every time you access RAM (or a register), that counts as 1
+operation. Virtually every assembly instruction does this a constant
+number of times, so it’s reasonable to say <span
+class="math inline">\(O(1)\)</span> ops per instruction.</p>
+<p>Addition is <span class="math inline">\(O(1)\)</span>, because it
+takes 2 RAM accesses (one for each operand), and <span
+class="math inline">\(O(2) = O(1)\)</span>.</p>
+<p>Alternatively, there’s the <strong>bit model</strong>. This treats
+every number as if it were an array of bits, and each bit modified is
+one op. This means adding a number to itself is <span
+class="math inline">\(O(\lg n)\)</span>, because the number <span
+class="math inline">\(n\)</span> requires at least <span
+class="math inline">\(log_2(n)\)</span> bits.</p>
+<hr />
+<h1 id="ram-model-vs-bit-length-model-1">Ram model vs bit length
+model</h1>
+<p>There is a time and a place for both, but in this class <strong>we
+will be using the RAM model unless otherwise noted</strong>.</p>
+<p>Put simply: we will treat each assembly instruction as <span
+class="math inline">\(O(1)\)</span> (aka “constant time”)</p>
+<p>This will make it easy to compute <span
+class="math inline">\(O\)</span>, and make it pretty accurate to the
+performance on a desktop computer for reasonable values for <span
+class="math inline">\(n\)</span>.</p>
+<p>However, if <span class="math inline">\(n\)</span> doesn’t describe
+the length of an array, but rather a really large integer (e.g., in RSA
+encryption), the bit length model ends up being a better representation
+of how the algorithm scales. There are reasons to use either one.</p>
+<hr />
+<h1 id="back-to-insertion-sort">Back to insertion sort</h1>
+<p>We saw that swap was <span class="math inline">\(5\)</span> assembly
+instructions in sequence. <span class="math inline">\(O(1) + O(1) + O(1)
++ O(1) + O(1) = O(5) = O(1)\)</span>.</p>
+<p>So lets annotate how long insertion sort takes with that
+knowledge:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span>                             <span class="co">// O(?) </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span>                              <span class="co">// O(?)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span>   <span class="co">// O(?)</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span>                         <span class="co">// O(1)</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="the-outer-loop">The outer loop</h1>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span></code></pre></div>
+<p>How many times will this run?</p>
+<p>[Class]</p>
+<hr />
+<h1 id="the-outer-loop-2">The outer loop (2)</h1>
+<p>It will run exactly <span class="math inline">\(n-1\)</span> times.
+<span class="math inline">\(n-1=O(n)\)</span></p>
+<p>Does that mean this algorithm is <span
+class="math inline">\(O(n)\)</span>? <em>No!</em></p>
+<p>It means that the outer loop multiplies the <span
+class="math inline">\(O\)</span> of the inner loop by a factor of <span
+class="math inline">\(O(n)\)</span>.</p>
+<p>So it’s <em>at least</em> <span class="math inline">\(O(n)\)</span>,
+but in fact, it’s worse than that.</p>
+<hr />
+<h1 id="the-inner-loop">The inner loop</h1>
+<p>What about the inner loop?</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span>   <span class="co">// O(?)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span>                         <span class="co">// O(1)</span></span></code></pre></div>
+<p><span class="math inline">\(O\)</span> is about upper bounds, so we
+need to ask: “what is the most possible number of times this loop will
+run?”</p>
+<p>It would be if <code>arr[j]</code> is smaller than anything in
+<code>arr[0..j)</code>, so it has to swap <code>i</code> times.</p>
+<p>Therefore, this loop will run, at most, <span
+class="math inline">\(i\)</span> times. It is <span
+class="math inline">\(O(i)\)</span>.</p>
+<hr />
+<h1 id="the-whole-thing">The whole thing</h1>
+<p>Now we can finish annotating the function:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span>                             <span class="co">// O(?) </span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span>                              <span class="co">// O(n)</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span>   <span class="co">// O(i)</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span>                         <span class="co">// O(1)</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>So it runs an outer loop <span class="math inline">\(O(n)\)</span>
+times, and an inner loop <span class="math inline">\(O(i)\)</span>
+times. Does that mean it runs <span class="math inline">\(O(ni)\)</span>
+times?</p>
+<p>Technically yes, but remember, <span class="math inline">\(i\)</span>
+depends on <span class="math inline">\(n\)</span>. What is the largest
+<span class="math inline">\(i\)</span> could be? <span
+class="math inline">\(i = O(n)\)</span></p>
+<hr />
+<h1 id="big-o-warning-variables-must-be-independent">Big-O warning:
+variables must be independent</h1>
+<p>We don’t want an extra variable unless they are <em>independent</em>.
+We’ll talk about how to deal with multiple independent variables next
+module!</p>
+<p>I will not give full credit to <span
+class="math inline">\(O(ni)\)</span>, because it forces the reader to
+know what <span class="math inline">\(i\)</span> is, which they won’t
+know unless they read the source.</p>
+<p>The Bachmann-Landau statements you make must be based only on inputs
+to the algorithm. They should not depend on computations internal to the
+algorithm. The reader shouldn’t have to know about <span
+class="math inline">\(i\)</span> to understand the runtime bound.</p>
+<hr />
+<h1 id="did-we-lose-something">Did we lose something?</h1>
+<p>Can we really just eliminate <span class="math inline">\(i\)</span>
+like that? Yes.</p>
+<p><span class="math display">\[
+\sum_{i=1}^{n-1}\sum_{j=0}^{i - 1}1=\sum_{i=1}^{n-1}i={n(n-1) \over
+2}={n^2-n \over 2}
+\]</span></p>
+<p>Half of a quadratic function is still a quadratic function.</p>
+<p>So we’re not missing anything important. It is accurate and
+reasonable to say that insertion sort is <span
+class="math inline">\(O(n^2)\)</span>. We don’t need or want to say
+<span class="math inline">\(O({n^2 - n \over 2})\)</span> because that
+<span class="math inline">\(=O(n^2)\)</span></p>
+<p>However, if you’re comparing two <span
+class="math inline">\(O(n^2)\)</span> algorithms, that factor of <span
+class="math inline">\(1\over 2\)</span> might <em>empirically</em>
+matter. It’s still important, and an algorithm that is <span
+class="math inline">\(2\)</span> times faster is still <span
+class="math inline">\(2\)</span> times faster even if the big-<span
+class="math inline">\(O\)</span> is the same. That’s great! But when
+reporting the big-<span class="math inline">\(O\)</span>, we omit
+it.</p>
+<hr />
+<h1 id="finishing-up-multiply-the-big-os">Finishing up: multiply the
+big-<span class="math inline">\(O\)</span>s</h1>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span>                             <span class="co">// O(?) </span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span>                              <span class="co">// O(n)</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span>   <span class="co">// O(n)</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span>                         <span class="co">// O(1)</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>We can now say this code is <span class="math inline">\(O(n)\times
+O(n)\times O(1)=O(n \times n \times 1)=O(n^2)\)</span></p>
+<p>Because the outer loop runs <span class="math inline">\(O(n)\)</span>
+times, and the inner loop runs <span class="math inline">\(O(n)\)</span>
+times, the whole thing runs <span class="math inline">\(O(n^2)\)</span>
+times.</p>
+<p>So that’s it, <span class="math inline">\(n^2\)</span> is an upper
+bound on the time of insertion sort.</p>
+<hr />
+<h1 id="multiply-the-big-os">Multiply the Big-<span
+class="math inline">\(O\)</span>s?</h1>
+<p>But what about this?</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="co">// O(n)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    constant_time_thing<span class="op">();</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="co">// O(n)</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    constant_time_thing<span class="op">();</span></span></code></pre></div>
+<p>[Class?]</p>
+<hr />
+<h1 id="add-the-big-os">Add the big-<span
+class="math inline">\(O\)</span>s</h1>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="co">// O(n)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    constant_time_thing<span class="op">();</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="co">// O(n)</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    constant_time_thing<span class="op">();</span></span></code></pre></div>
+<p>The code runs in sequence. So this is <span
+class="math inline">\(O(n) + O(n) = O(n + n) = O(2n) = O(n)\)</span></p>
+<p>Code in sequence adds the time, code nested in loops multiplies the
+time.</p>
+<hr />
+<h1 id="but-wait-isnt-n2-bad">But wait: isn’t <span
+class="math inline">\(n^2\)</span> bad?</h1>
+<p>Earlier we stated that insertion sort had some nice properties.</p>
+<p>But it looks awful. Insertion sorting an array of a million elements
+would take a trillion time units!? Impossible.</p>
+<p>Think about this for next time: what if the array is already almost
+sorted. Then what happens to insertion sort?</p>
+<p>And it turns out: this is a very common occurence!</p>
+<p>So even though this seems like an academic exercise: you’ve actually
+learned to analyze a very useful algorithm.</p>
+<div class="footnote">
+<p>Footnote: selection sort still sucks though.</p>
+</div>
+<hr />
+<h1 id="careful-its-not-always-nmathrmn_nested_loops">Careful! It’s not
+always <span
+class="math inline">\(n^\mathrm{n\_nested\_loops}\)</span>!</h1>
+<p>Quick! What’s the big-O of this code!</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CHUNK_LEN </span><span class="op">...</span><span class="pp"> </span><span class="co">//some number</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">(</span><span class="dt">char</span><span class="op">*</span> str<span class="op">,</span> <span class="dt">int</span> chunks<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// each chunk is CHUNK_LEN chars</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> chunks<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> CHUNK_LEN<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>            do_something_to_char<span class="op">(</span>str <span class="op">+</span> i <span class="op">*</span> CHUNK_LEN <span class="op">+</span> j<span class="op">);</span> <span class="co">// O(1)</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="careful-its-not-always-nmathrmn_nested_loops-2">Careful! It’s
+not always <span
+class="math inline">\(n^\mathrm{n\_nested\_loops}\)</span>! (2)</h1>
+<p>You might want to say <span
+class="math inline">\(O(\mathrm{chunks}\cdot
+\mathrm{CHUNK\_LEN})\)</span>, but that would imply that
+<code>CHUNK_LEN</code> is a variable. It’s not, it’s a constant.</p>
+<p>This code is actually just <span
+class="math inline">\(O(\mathrm{chunks})\)</span>.</p>
+<p>It’s also <span class="math inline">\(O(n)\)</span>, where
+<code>n</code> is the length of the string, because that is proportional
+to the number of chunks. This is a <em>linear</em> algorithm! We only
+touch each character once.</p>
+<p>Why do this? Lots of operations are faster if we can do them on a
+chunk of adjacent memory. The above was a goofy example, but chunking
+absolutely happens. Don’t be fooled about the big-<span
+class="math inline">\(O\)</span></p>
+<hr />
+<h1 id="be-reasonable-about-constant-time">Be reasonable about constant
+time</h1>
+<p>Consider this function</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> linear_time_function<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>        do_constant_time_thing<span class="op">();</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Most people would consider this to be <span
+class="math inline">\(O(n)\)</span>.</p>
+<p>However, the more litigious among you might say “well, n <span
+class="math inline">\(\leq 2^{31}-1\)</span>, so therefore, choose that
+times the time for <code>do_constant_time_thing</code> and it will be
+<span class="math inline">\(O(1)\)</span>.</p>
+<p>Consider <span class="math inline">\(O\)</span> something that
+applies to abstract algorithms, not implementations. The algorithm will
+be parameterized by natural numbers which are infinite, not
+machine-specific fixed-width ints. So this is correctly stated <span
+class="math inline">\(O(n).\)</span></p>
+<hr />
+<h1 id="practice-1">Practice:</h1>
+<ul>
+<li>Write a C function that is <span
+class="math inline">\(O(n^3)\)</span></li>
+<li>Write a C function that multiplies an <span class="math inline">\(n
+\times n\)</span> matrix by an <span class="math inline">\(n\)</span>
+length vector. Annotate its big-<span
+class="math inline">\(O\)</span>.</li>
+<li>Go back to your selection and bubble sort code. Annotate their
+big-<span class="math inline">\(O\)</span>.</li>
+</ul>
+<hr />
+<h1 id="more-induction-practice">More induction practice</h1>
+<p>Prove the following propositions by induction:</p>
+<ul>
+<li><p><span class="math inline">\(\forall n \in N, 1 + 3 + \ldots + (2n
++ 1) = n^2\)</span> i.e., that the first <span
+class="math inline">\(n\)</span> odd numbers have the sum <span
+class="math inline">\(n^2\)</span>. This one has a <a
+href="https://en.wikipedia.org/wiki/File:Proofwithoutwords.svg">cool
+visual proof</a>.</p></li>
+<li><p><span class="math inline">\(\forall n \in N, 1 + 2 + \ldots + n =
+{n(n+1) \over 2}\)</span></p></li>
+<li><p><span class="math inline">\(\forall (n, a, b) \in N, n \cdot (a +
+b) = n\cdot a + n\cdot b\)</span> Hint, do induction on n. Your
+remaining goals will be</p>
+<ul>
+<li><span class="math inline">\(\forall (a, b) \in N, 0 \cdot (a + b) =
+0 \cdot a + 0 \cdot b\)</span> and<br />
+</li>
+<li><span class="math inline">\(\forall (a, b) \in N, n \cdot (a + b) =
+n \cdot a + n \cdot b \implies\)</span> <span
+class="math inline">\((n+1)\cdot (a + b) = (n+1)\cdot a + (n+1) \cdot
+b\)</span> <small>You can subsitute any <span
+class="math inline">\(a\)</span> and <span
+class="math inline">\(b\)</span> in the inductive hypothesis, but must
+use the given <span class="math inline">\(n\)</span>.</small> <small>You
+can assume <span class="math inline">\(\forall (n, m)\in N,(n + 1)(m) =
+n\cdot m + m\)</span> </small> —</li>
+</ul></li>
+</ul>
+<h1 id="finally">Finally</h1>
+<ul>
+<li>Go back and do the other practice exercises, especially the proof
+ones. You can do it!</li>
+<li>Read the appendices!</li>
+</ul>
+<hr />
+<!-- _class: questions invert -->
+<h1 id="questions-5">Questions?</h1>
 <hr />
 <h1 id="appendix-a-principle-of-explosion">Appendix A: principle of
 explosion</h1>
-<p>Regarding the equivalence of ~P and P → Q.</p>
+<p>Regarding <span class="math inline">\(\lnot P \implies P \implies
+Q\)</span>.*</p>
 <p>This is called the principle of explosion, and it often throws people
 for a loop. 2 + 2 = 5 → Unicorns are real, because 2 + 2 is not 5. The
 principle of explosion is sometimes called “ex falso quodlibet”, meaning
@@ -851,6 +1849,16 @@ thin air: P → P or Q, and then eliminate them ~P → (P or Q) -&gt; Q,
 thereby proving Q from a contradiction.</p>
 <p>We will use it sometimes, so I want to make sure it doesn’t seem too
 weird.</p>
+<div class="footnote">
+<p>* This logic is curried. In the same way that a Haskell function can
+be written so that it can be called <span class="math inline">\(f\ p\
+q\)</span> or <span class="math inline">\(f (p, q)\)</span>, logic is
+the same way. <span class="math inline">\((P \implies Q \implies R) \iff
+P\land Q \implies R\)</span></p>
+<p>Note also: implication associates to the right: <span
+class="math inline">\((P \implies Q \implies R) \iff P \implies (Q
+\implies R)\)</span></p>
+</div>
 <hr />
 <h1 id="appendix-a-2">Appendix A (2)</h1>
 <p>It may be upsetting, but remember, it requires us to have a proof of
@@ -889,5 +1897,252 @@ convenient.</p>
 vs. languages where you have to carry out computation for every branch
 of an if-statement. It’s kind of nice to bail as soon as something is
 bogus and focus on the happy path.</p>
+<hr />
+<h1 id="appendix-b-why-we-like-direct-proofs">Appendix B: why we like
+direct proofs</h1>
+<p>The purpose of a proof is to convince you that a statement is
+true.</p>
+<p>However, just because you are convinced doesn’t necessarily mean that
+you deeply understand why something is true.</p>
+<p>For example, I can make a statement like “if you have two real
+numbers, <span class="math inline">\(x\)</span> and <span
+class="math inline">\(y\)</span>, and <span class="math inline">\(x \lt
+y\)</span>, there exists a number between them”</p>
+<p>This statement is clearly true. But how should I prove it?</p>
+<hr />
+<h1 id="appendix-b-2">Appendix B (2)</h1>
+<p>First, let’s formalize it. <span class="math display">\[
+\forall x, y \in R; x \lt y \implies \exists z \in R, x \lt z \lt y
+\]</span></p>
+<p>Well, we could prove it directly: - Suppose there are real numbers
+<span class="math inline">\(x\)</span> and <span
+class="math inline">\(y\)</span>, and <span class="math inline">\(x \lt
+y\)</span> We must show <span class="math inline">\(\exists z \in R, x
+\lt z \lt y\)</span> - Choose <span class="math inline">\(z = {x + y
+\over 2}\)</span> We must show <span class="math inline">\(x \lt {x + y
+\over 2} \lt y\)</span>, which follows from <span
+class="math inline">\(x \lt {x + y \over 2} \land {x + y \over 2} \lt
+y\)</span> - <span class="math inline">\(x \lt {x + y \over 2}\)</span>
+follows from <span class="math inline">\(2x \lt x + y\)</span>, which
+follows <span class="math inline">\(x \lt y\)</span>, which was assumed.
+- <span class="math inline">\({x + y \over 2} \lt y\)</span> follows
+from <span class="math inline">\(x + y \lt 2y\)</span>, which follows
+<span class="math inline">\(x \lt y\)</span>, which was assumed.▯</p>
+<div class="footnote">
+<p>Note: We’re saying “follows from” because we’re modifying the goal.
+If I have P ⇒ Q and P in my assumptions, then I can say “Q follows from
+P”. However, if my goal is Q and I have the assumption P ⇒ Q, then I can
+say “we must show Q, which follows from P” and now my new goal is P.</p>
+</div>
+<hr />
+<h1 id="appendix-b-3">Appendix B (3)</h1>
+<p>That proof is nice. It doesn’t just prove that there is a number
+between <span class="math inline">\(x\)</span> and <span
+class="math inline">\(y\)</span>, it constructs one. It says “here’s the
+midpoint. Notice that it’s bigger than x and smaller than y for any
+choice of x and y where <span class="math inline">\(x \lt
+y\)</span>.”</p>
+<p>We can visualize it in our heads. We have a good understanding for
+why it’s true.</p>
+<p>Now, imagine that we proved the contrapositive. That is, instead of:
+<span class="math inline">\(\forall x, y \in R; P \implies Q\)</span> We
+showed: <span class="math inline">\(\forall x, y \in R; \lnot Q \implies
+\lnot P\)</span></p>
+<div class="footnote">
+<p>Careful: you might think “oh, we need to find some x and y where it’s
+not true, and prove the opposite”. That’s how we would prove that the
+whole proposition is false. This proposition is true, so you won’t be
+able to do that. The contrapositive comes after we introduce x and y, so
+we still have a “forall” around them.</p>
+</div>
+<hr />
+<h1 id="appendix-b-4">Appendix B (4)</h1>
+<ul>
+<li>Suppose there are real numbers <span
+class="math inline">\(x\)</span> and <span
+class="math inline">\(y\)</span> We must show: <span
+class="math inline">\(\lnot (\exists z \in R, x \lt z \lt y) \implies x
+\geq y\)</span></li>
+<li>By negation of <span class="math inline">\(\exists\)</span> and
+de-morgans laws, this follows from <span class="math inline">\(\forall z
+\in R, x \geq z \geq y \implies x \geq y\)</span></li>
+<li>This follows from transitivity of <span
+class="math inline">\(\geq\)</span>▯</li>
+</ul>
+<p>It’s actually shorter, but does it really explain why the original
+proposition is true?</p>
+<p>Instead of “look, the midpoint is between x and y.” we’re saying
+“well, suppose there is no point between x and y, then I guess x is
+bigger than y”. It’s less direct and it doesn’t give us as good of an
+intuition as to what’s going on.</p>
+<hr />
+<h1 id="appendix-b-5">Appendix B (5)</h1>
+<p>We can guarantee that our proofs are constructive if we take
+classical logic but avoid using the law of excluded middle (LEM). The
+LEM states: <span class="math display">\[
+\forall P, P \lor \lnot P
+\]</span> Where P is a proposition.</p>
+<p>The LEM allows us to summon any proposition we want, as long as we
+consider its opposite. It is actually the LEM that allows us to do
+proofs by contrapositive. If we want to show <span
+class="math inline">\(P \implies Q\)</span>, we can assume <span
+class="math inline">\(Q \lor \lnot Q\)</span>. If <span
+class="math inline">\(Q\)</span> is true, then <span
+class="math inline">\(P \implies Q\)</span> is true. If <span
+class="math inline">\(\lnot Q\)</span> is the case, then we show <span
+class="math inline">\(\lnot P\)</span>, and that makes <span
+class="math inline">\(P \implies Q\)</span> vacuously true.</p>
+<hr />
+<h1 id="appendix-b-6">Appendix B (6)</h1>
+<p>Fundamentally, the law of excluded middle lets us treat propositions
+as if they have boolean values, and we can do case matching on them.</p>
+<p>However, when using most computer proof assistants, propositions are
+types, and most proofs are actually functions. That is, a proof of <span
+class="math inline">\(P \implies Q\)</span> is actually a function that
+takes a proof of <span class="math inline">\(P\)</span> and returns a
+proof of <span class="math inline">\(Q\)</span>. This is cool because it
+means our proofs are actually executable computer programs that operate
+on proofs.</p>
+<p>A function that takes a proof of a false statement and returns a
+proof of a false statement is not actually as interesting: it can never
+be called (because you cannot obtain proof of a false statement).
+Therefore, there is no useful function to extract.</p>
+<hr />
+<h1 id="appendix-c-worked-example">Appendix C: worked example</h1>
+<p>Prove that <span class="math inline">\(n^2 \notin O(n)\)</span></p>
+<p>Here we need to prove the opposite of the normal big-O statement.
+If:</p>
+<p><span class="math display">\[f(n) \in O(g(n)) \iff \exists C \gt 0,
+\exists n_0 \geq 0, \forall n \geq n_0, f(n) \leq C\cdot
+g(n)\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[f(n) \notin O(g(n)) \iff \forall C \gt
+0, \forall n_0 \geq 0, \exists n \geq n_0, f(n) \gt C\cdot
+g(n)\]</span></p>
+<p>Let’s apply our techniques and prove this for <span
+class="math inline">\(n^2\)</span> and <span
+class="math inline">\(n\)</span>.</p>
+<hr />
+<h1 id="appendix-c-2">Appendix C (2)</h1>
+<p>Goal: <span class="math inline">\(\forall C \gt 0, \forall n_0 \geq
+0, \exists n \geq n_0, n^2 \gt C\cdot n\)</span> Proof: - Suppose we
+have some <span class="math inline">\(C\)</span> and <span
+class="math inline">\(n_0\)</span>, <span class="math inline">\(C \gt
+0\)</span>, <span class="math inline">\(n_0 \geq 0\)</span>. We must
+show: <span class="math inline">\(\exists n \geq n_0, n^2 \gt C \cdot
+n\)</span></p>
+<p>Note: we can’t just choose anything here. It has to work for
+<em>any</em> choice of C <em>and</em> it has to be at least as big as
+<span class="math inline">\(n_0\)</span> <em>and</em> it has to be a
+natural number.</p>
+<p>What should we pick?</p>
+<div class="footnote">
+<p>Note: Technically, it doesn’t <em>have</em> to be as big as n0. If
+it’s smaller, then the statement will be vacuously true. But, we don’t
+get to pick n0, so then we’d have to the case where n0 is smaller
+separately. It’s easier to pick something we know is bigger, because
+then there is only one case to prove.</p>
+</div>
+<hr />
+<h1 id="appendix-c-3">Appendix C (3)</h1>
+<p>Let’s choose <span class="math inline">\(n = \lceil C \rceil + n_0 +
+1\)</span>. This satisfies all the requirements: it’s a natural number,
+it’s certainly bigger than <span class="math inline">\(n_0\)</span>, and
+it is bigger than C, too.</p>
+<p>After choosing that value of n, our new goal is: <span
+class="math inline">\((\lceil C \rceil + n_0 + 1)^2 \gt C \cdot (\lceil
+C \rceil + n_0 + 1)\)</span></p>
+<p>We can safely divide both sides by <span
+class="math inline">\((\lceil C \rceil + n_0 + 1)\)</span>, because it’s
+clearly <span class="math inline">\(\gt 0\)</span>. Our old goal follows
+from our new goal:</p>
+<p><span class="math inline">\((\lceil C \rceil + n_0 + 1) \gt
+C\)</span></p>
+<p>Which is clearly true. ▯</p>
+<div class="footnote">
+<p>Note: if you don’t agree that it’s clearly true, try writing an
+intermediate value in between the two sides where it’s more obvious. The
+goal will follow by transitivity.</p>
+</div>
+<hr />
+<h1 id="appendix-c-4">Appendix C (4)</h1>
+<p>In other words, we have shown that <span class="math inline">\(n^2
+\notin O(n)\)</span>, because no matter what values of <span
+class="math inline">\(C\)</span> and <span
+class="math inline">\(n_0\)</span> we chose, there is always a value of
+<span class="math inline">\(n\)</span> that makes <span
+class="math inline">\(n^2 \gt C \cdot n\)</span>.</p>
+<hr />
+<h1 id="appendix-d">Appendix D</h1>
+<p>Prove that <span class="math inline">\(O(n^2 - n) = O(n^2 +
+n)\)</span>.</p>
+<p>Goal 1: show <span class="math inline">\(n^2 - n \in O(n^2 +
+n)\)</span>. Proof 1: choose <span class="math inline">\(C = 1, n_0 =
+0\)</span>, then <span class="math inline">\(n \geq 0 \implies n^2 - n
+\leq 1\cdot (n^2 + n)\)</span> by simple arithmetic. Goal 2: show <span
+class="math inline">\(n^2 + n \in O(n^2 - n)\)</span>. Proof 2: choose
+<span class="math inline">\(C = 2, n_0=3\)</span>. Suppose <span
+class="math inline">\(n \geq 3\)</span>. Then, the goal is <span
+class="math inline">\(n^2 + n \leq 2\cdot (n^2 - n)\)</span>, using
+<span class="math inline">\(\impliedby\)</span> to mean “follows from”:
+<span class="math display">\[
+Goal \impliedby n^2 + n \leq 2n^2 - 2n \impliedby 0 \leq n^2 - 3n
+\impliedby3n \leq n^2 \impliedby 3 \leq n
+\]</span> Which is an assumption. ▯</p>
+<hr />
+<h1 id="appendix-e-when-backwards-proofs-are-easier">Appendix E: when
+backwards proofs are easier</h1>
+<p>Consider the quadratic formula: <span class="math display">\[
+\forall (x, a, b, c) \in R, a \neq 0,
+\]</span> <span class="math display">\[
+    ax + bx + c = 0 \iff x = {-b \pm \sqrt{b^2 - 4ac} \over 2a}
+\]</span></p>
+<p>This is normally proved by starting with <span
+class="math inline">\(ax + bx + c = 0\)</span>, and then applying
+reversable operations until we end up with <span
+class="math inline">\({-b \pm \sqrt{b^2 - 4ac} \over 2a}\)</span>.</p>
+<p>The main steps are to multiply <span class="math inline">\(ax + bx +
+c = 0\)</span> by <span class="math inline">\(4a\)</span>, and then
+complete the square.</p>
+<p>This requires creativity. How were you supposed to know to do this?
+Try working backwards instead. It’s much easier.</p>
+<hr />
+<h1 id="appendix-e-2-proof">Appendix E (2): Proof</h1>
+<ul>
+<li>Suppose we have <span class="math inline">\(x, a, b, c\)</span>, all
+reals, and suppose <span class="math inline">\(a \neq 0\)</span>. We
+must show: <span class="math inline">\(ax^2 + bx + c = 0 \iff x = {-b
+\pm \sqrt{b^2 - 4ac} \over 2a}\)</span> Every operation will be
+invertible, and will modify the right hand side of the <span
+class="math inline">\(\iff\)</span>.</li>
+<li>Multiply both sides by <span class="math inline">\(2a\)</span>,
+<span class="math inline">\(x = {-b \pm \sqrt{b^2 - 4ac} \over 2a}
+\equiv2ax = -b \pm \sqrt{b^2 - 4ac}\)</span>. We have assumed <span
+class="math inline">\(a \neq 0\)</span>, so this is invertable.</li>
+<li>Add <span class="math inline">\(b\)</span> to both sides, this is
+equivalent to <span class="math inline">\(2ax + b = \pm sqrt(b^2 -
+4ac)\)</span></li>
+<li>Square both sides, this is equivalent to <span
+class="math inline">\((2ax + b)^2=b^2-4ac\)</span></li>
+<li>Expand <span class="math inline">\((2ax + b)^2\)</span>, this is
+equivalent to <span class="math inline">\(4a^2x^2 + 4abx +
+b^2=b^2-4ac\)</span></li>
+<li>Subtract <span class="math inline">\((b^2 - 4ac)\)</span> from both
+sides, we get: <span class="math inline">\(4a^2x^2 + 4abx + 4ac=
+0\)</span></li>
+<li>Divide both sides by <span class="math inline">\(4a\)</span>. We
+assumed <span class="math inline">\(a \neq 0\)</span>. We get: <span
+class="math inline">\(ax^2 + bx + c = 0\)</span></li>
+<li>So now we have <span class="math inline">\(ax^2+bx+c = 0 \iff ax^2 +
+bx + c = 0\)</span> ▯</li>
+</ul>
+<hr />
+<h1 id="appendix-e-3">Appendix E (3)</h1>
+<p>The traditional proof is better for communicating <em>why</em> the
+quadratic formula is true.</p>
+<p>However, we can derive the traditional proof by taking our reverse
+proof and then flipping it around!</p>
+<p>So we didn’t need creativity to come up with it, we just needed to
+start from the end.</p>
 </body>
 </html>
