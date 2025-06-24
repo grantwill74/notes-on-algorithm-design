@@ -1,3 +1,5 @@
+#define _POSIX_C_SOURCE 199309L
+
 #include <bits/time.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -46,9 +48,11 @@ void ins_sort_rec(int* arr, size_t n) {
 }
 
 void do_unit_tests(void);
+int do_benchmarks(void);
 
 int main() {
-    do_unit_tests();
+    // do_unit_tests();
+    do_benchmarks();
     return 0;
 }
 
@@ -162,22 +166,36 @@ void do_unit_tests() {
 
 
 // my simple benchmarking
-typedef void (*bencher)(void*, int* acc);
+#define DONT_OPTIMIZE(x) \
+    __asm__ __volatile__("" : "+r"(x) : : "memory")
+
+typedef void (*bencher)(int* arr, size_t n, int* acc);
 
 typedef struct bench_result_t {
     double mean_nanos;
     double stdev;
 } bench_result;
 
-bench_result time_bench(bencher b, void* data, int* acc, size_t n_iters){
+void shuffle(int* arr, size_t n) {
+    // durstenfield shuffle
+    for (size_t i = 0; i < n - 1; i++) {
+        int index = i + rand() % (n - i);
+        swap(arr + i, arr + index);
+    }
+}
+
+bench_result time_bench(bencher b, int* arr, size_t n, size_t n_iters){
     assert (n_iters >= 2);
 
     uint64_t sum_nanos = 0;
     long double sum_sq_d = 0;
+    int sink = 0;
     for (size_t i = 0; i < n_iters; i++) {
+        shuffle(arr, n);
+
         struct timespec start, end;
         clock_gettime(CLOCK_MONOTONIC, &start);
-        b(data, acc);
+        b(arr, n, &sink);
         clock_gettime(CLOCK_MONOTONIC, &end);
         
         uint64_t delta = (end.tv_sec - start.tv_sec) * 1000000000ull +
@@ -194,11 +212,50 @@ bench_result time_bench(bencher b, void* data, int* acc, size_t n_iters){
         sqrtl(variance),
     };
 
+    DONT_OPTIMIZE(sink);
+
     return result;
+}
+
+void bench_ins_sort(int* arr, size_t n, int* sink) {
+    *sink += arr[rand() % n];
+    ins_sort(arr, n);
+}
+
+void bench_ins_sort_rec(int* arr, size_t n, int* sink) {
+    *sink += arr[rand() % n];
+    ins_sort_rec(arr, n);
 }
 
 
 int do_benchmarks() {
+    size_t n_iters = 10000;
+    size_t lengths[] = {10, 100, 1000};
+    bencher benches[] = {bench_ins_sort, bench_ins_sort_rec};
+    char* bench_names[] = {"insertion sort", "insertion sort (recursive)"};
+    size_t n_benches = sizeof benches / sizeof (bencher);
+    size_t n_lengths = sizeof lengths / sizeof(size_t);
+    int arr[1000];
+    srand(42);
+
+    for(size_t i = 0; i < 1000; i++) {
+        arr[i] = i;
+    }
+
+    printf("running %lu benches with %lu iterations each:\n", 
+        n_benches, n_iters);
+    puts("");
+
+    for (size_t i_bench = 0; i_bench < n_benches; i_bench++) {
+        printf("benching %s\n", bench_names[i_bench]);
+        for (size_t i_length = 0; i_length < n_lengths; i_length++) {
+            bencher bench = benches[i_bench];
+            bench_result res=time_bench(bench, arr, lengths[i_length], n_iters);
+            printf("length %lu: %lf mean microseconds, stdev: %lf\n", 
+                lengths[i_length], res.mean_nanos / 1e3, res.stdev / 1e3);
+        }
+        puts("");
+    }
 
     return 0;
 }
