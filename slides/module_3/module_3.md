@@ -46,7 +46,7 @@ We learned how to prove correctness. We showed that an iterative version of inse
 # This class
 
 We're going to learn about the rest of the Bachmann-Landau family:
-small-$o$, big-$\Omega$, small-$\omega$, and big-$\Theta$
+little-$o$, big-$\Omega$, little-$\omega$, and big-$\Theta$
 
 We're going to learn how to analyze recursive algorithms: both for correctness and for runtime complexity bounds.
 
@@ -135,7 +135,7 @@ When you need to sort transparent objects* in a 3D computer graphics scene, but 
 
 When you want to sort objects by their distance to a point in a physics simulation, but their relative orders rarely change from frame to frame. Example: a billiards game
 
-When you want a server to respond to requests in order of priority, but most requests have the same priority.
+When you want a server to respond to requests in order of priority, but almost all requests have the same priority except for a constant number.
 
 <div class="footnote">
 
@@ -155,7 +155,7 @@ So this is *really* good. But the big-$O$ doesn't tell us that. The big-$O$ tell
 
 <div class="footnote">
 
-\* In the example of inserting a constant number of items into a list, if we also knew the locations at which they were inserted, and we knew the rest of the list were sorted, then we could sort in $O(1)$ time by just sorting those exact items.
+\* In the example of inserting a constant number of items into a list, if we also knew the locations at which they were inserted, and we knew the rest of the list were sorted, then we could sort in $O(1)$ time by just sorting those exact items. Since there are a constant number, it would be O(1).
 
 </div>
 
@@ -163,7 +163,7 @@ So this is *really* good. But the big-$O$ doesn't tell us that. The big-$O$ tell
 
 # Big-$\Omega$
 
-That's a Greek capital letter $\Omega$, whose name confusingly means "Big 'O'" in Greek.
+That's a Greek capital letter Omega, whose name confusingly means "Big 'O'" in Greek.
 
 If I hadn't told you that, it wouldn't be confusing. I'm sorry.
 
@@ -182,21 +182,479 @@ In the same way that Big-$O$ gives us an *upper* bound\* of a function, Big-$\Om
 
 # The definition of Big-$\Omega$
 
+$$
+f(n) = \Omega(g(n)) \iff
+\exists C \gt 0, \exists n_0 \in \mathbb{N},\forall n \geq n_0, f(n) \geq C\cdot g(n)
+$$
 
+
+Look familiar?
+
+<div class="footnote">
+
+\* Note: Again, we're assuming that $f(x)$ and $g(x)$ have a positive co-domain. If either can be negative we need magnitude bars around them:
+$|f(n)| \geq C \cdot |g(n)|$
+
+</div>
+
+---
+
+# Comparison between Big-$\Omega$ and Big-O
+
+$$f(n) = \Omega(g(n)) \iff
+\exists C \gt 0, \exists n_0 \in \mathbb{N},\forall n \geq n_0, f(n) \geq C\cdot g(n)$$
+
+$$f(n) = O(g(n)) \iff
+\exists C \gt 0, \exists n_0 \in ℕ,\forall n \geq n_0, f(n) \leq C\cdot g(n)$$
+
+What's the difference?
+
+---
+
+# The only difference
+
+Big-$\Omega$ requires $f(n) \ge C \cdot g(n)$, while Big-$O$ requires $f(n) \le C \cdot g(n)$ 
+
+This means that proofs of big-$\Omega$ use the same techniques.
+
+But first, let's make sure we understand what it means for $f(n) = \Omega(g(n))$
+
+---
+
+# Knowledge Check
+
+Find $f(n)$ such that the following statement is true: 
+$$f(n) = \Omega(n)$$
 
 
 ---
 
+# Knowledge check answers:
+
+Some acceptable answers:
+- $f(n)=n$
+- $f(n)={n \over 2}$
+- $f(n)=2n$
+- $f(n)=n^2$
+- $f(n)=n \lg n$
+- $f(n)=n^{3/2}$
+- $f(n)=2^n$
+- $f(n)=n!$
+
+---
+
+# Knowledge check (2)
+
+Find $g(n)$ such that $n \lg n = \Omega(g(n))$
+
+---
+
+# Knowledge check answers (2)
+
+Some correct answers:
+- $g(n) = n \lg n$
+- $g(n) = {n \lg (n / 2) \over 2}$ 
+- $g(n) = n$
+- $g(n) = \lg n$
+- $g(n) = (\lg n)^2$
+- $g(n) = (\lg n)^k$ for any k
+- $g(n) = 1
+
+---
+
+# Compare to our earlier knowledge check
+
+Last module, I asked you to find $f(n)$ and $g(n)$ such that $f(n) = O(g(n))$
+
+It turns out, you already understood big-$\Omega$, because $f(n)$ and $g(n)$ have this relationship: 
+$$f = O(g(n)) \iff g = \Omega(f(n))$$
+
+We're going to prove this, but how? Walk me through how we prove that proposition?
+
+---
+
+# Proving it:
+
+Let's follow this strategy:
+- Apply the definitions of $O(g(n))$ and $\Omega(f(n)))$
+- Break the $\iff$ into two implications
+- Break down the assumptions for their $C$ and $n_0$ in each implication.
+- Show that the resulting implications about inequalities follow.
+
+---
+
+# Proving similarity between $O$ and $\Omega$
+
+Subgoal: $f = O(g(n)) \implies g = \Omega(f(n))$
+- Apply the definitions of $O(g(n))$ and $\Omega(f(n))$
+  Now we must show:
+  $\exists C \gt 0, \exists n_0 \in \mathbb{N}, \forall n \ge n_0, f(n) \leq C \cdot g(n) \implies$ $\exists C' \gt 0, \exists n'_0 \in \mathbb{N}, \forall n \ge n'_0, g(n) \geq C' \cdot f(n)$ 
+- Suppose\* we have a $C > 0$, an $n_0 \geq 0$, and that $\forall n \geq n_0, f(n) \leq C \cdot g(n)$
+  We must show: $\exists C' \gt 0, \exists n'_0 \in \mathbb{N}, \forall n \ge n'_0, g(n) \geq C' \cdot f(n)$ 
+- Choose $C' = {1 \over C}$, $n'_0=n_0$, now we must show $\forall n \geq n_0,g(n)\geq{1 \over C}\cdot f(n)$ 
+- This follows from our earlier assumption, after multiplying both sides by $C$.
 
 
+<div class="footnote">
+
+\* Remember that if our goal is $P \implies Q$, we "suppose" $P$. If we have an assumption of the type $\exists a, P(a)$, we also "suppose" we have some $a$ named whatever we want. So we're skipping right to that: we're supposing the whole hypothesis and then supposing we get the values of $C$ and $n_0$ out of it. This is the kind of shortcut you can take once you're comfortable writing proofs.
+
+</div>
+
+---
+
+# Back to insertion sort
+
+Now that we've learned about big-$\Omega$, let's show that insertion sort is $\Omega(n)$:
+
+```c
+void ins_sort(int* arr, size_t n) {
+    for (int i = 1; i < n; i++) {               // Omega(n)
+        int t = arr[i]; int j = i;
+        for (; j > 0 && arr[j - 1] > t; j--)    // Omega(1)
+            arr[j] = arr[j-1];
+        arr[j] = t;
+    }
+}
+```
+
+We can justify these annotations as following:
+- The outer loop always runs $n$ times, so let $C = 1$: it always runs *at least* $C \cdot n$ times
+- The inner loop might terminate immediately, so it might never run. However, the little test that checks whether it should run still takes $\Omega(1)$ time.
+
+---
+
+# Practice
+
+We've only proved one goal: $f = O(g(n)) \implies g = \Omega(f(n))$
+If we want to show $f = O(g(n)) \iff g = \Omega(f(n))$, we must also prove $g = \Omega(f(n)) \implies f = O(g(n))$
+**Do this as a practice exercise.**
+
+Also, prove the following from the definition: $n^2 = \Omega(n \lg n)$ 
+
+---
+
+
+# Practice (2)
+Practice, annotate this code for big-$O$ and big-$\Omega$:
+```c
+void arg_min(int* arr, size_t n);
+void sel_sort(int* arr, size_t n) {
+    if (n == 0) return;
+    for (int i = 0; i < n; i++) {
+        int min_i = i + arg_min(arr + i, n - i);
+        swap(arr + min_i, arr + i);
+    }
+}
+```
+
+Write an `arg_min` and annotate it for big-$O$ and big-$\Omega$ also.
+
+The answer should be $O(n^2)$ and $\Omega(n^2)$ in total for the whole sort.
+
+---
+
+<!-- _class: invert questions -->
+# Questions?
 
 ---
 
 # The classic joke
 
-If I ask a question like "what is the big-$O$ 
+If I ask a question like "what is the big-$O$ of this algorithm", there is usually someone who enjoys saying "it's $O(n!!)$" (i.e., "factorial factorial") or something. 
 
-small o
+This is technically true and completely useless, which is what makes it funny. 
+
+You can do the same thing with $\Omega$: technically every algorithm we learn is $\Omega(0)$, so saying "it's $\Omega(0)$ is technically correct. It also gives no information at all.
+
+---
+
+# Bounds that can be tighter
+
+Of course computer scientists are aware of this, which is why there are rigorous ways of saying "you could have a tighter bound".
+
+Let's consider two statements of big-$O$:
+1. $10n = O(n)$
+2. $10n = O(n^2)$
+
+First, let's give these a brief proof. What is a choice of $C$ and $n_0$ that will demonstrate membership in the order for both statements?
+
+---
+
+# Bounds that can be tighter (2)
+
+Here are some answers:
+1. For $10n = O(n)$, we can choose $n_0 = 0$, and then we have to be careful: we have to then choose some $C \geq 10$. Let's choose $10$, it follows: $\forall n \ge 0, 10n \leq 10n$.
+
+2. For $10n = O(n^2)$, we can choose *any positive C we want*. It doesn't matter, it will just change our choice of $n_0$. $n^2$ grows so much faster than $n$, that we can choose $C = .001$, and: 
+$\exists n_0 \in \mathbb{N}, \forall n \ge n_0, 10n = O(n^2) \impliedby$
+$\exists n_0 \in \mathbb{N}, \forall n \ge n_0, 10n \le .001 \cdot n^2 \impliedby$ 
+$\exists n_0 \in \mathbb{N}, \forall n \ge n_0,10 \le .001\cdot n \impliedby$
+$\exists n_0 \in \mathbb{N}, \forall n \ge n_0, 10000 \le n$
+
+So choose $n_0=10000$ and you're done. Clearly there's an $n_0$ even for $C=10^{-100}$
+
+---
+
+# Bounds that can be tighter (3)
+
+Why does this happen? Why is the proof so much more flexible for $O(n)$ vs. $O(n^2)$?
+
+Because the bound of $n = O(n)$ is tight. There are some choices of $C$ that will work and some that won't. So *some* linear functions bound $f(n)=n$, but some don't.
+
+We can't chose a smaller power of $n$ or some other sub-linear function. This is as "good" a statement of $O$ as we can obtain for $f(n) = n$
+
+But for $n = O(n^2)$, the bound has room for improvement. We could improve it to $n = O(n^{1.5})$ or $n = O(n \lg n)$, but the best choice is $O(n)$.
+
+---
+
+# Expressing that rigorously
+
+We can understand intuitively what it means to say "that big-$O$ can be tighter".
+
+But how can we express that mathematically?
+- It's not good enough to say something like "it's not tight if $f(n)=O(n^k)$, but $\exists k' \le k,f(n)=O(n^{k'})$, because what if the function isn't a polynomial?
+- It's also not good enough to say something like "it's not tight if $\exists g'(n), f(n)=O(g'n) \land \forall n, g'(n) < g(n)$, i.e., "if we can find a smaller function that is also in the order of $g(n)$. The reason this definition is not useful is that it would mean $n = O(n)$ is not tight, because $n=O(n / 2)$ (and so on).
+
+So we want to express "that big-$O$ can be tighter" in a way that is rigorous, which could potentially apply to any kind of function, and which still has reflexivity (i.e., $f(n)=O(f(n))$ should be tight)
+
+---
+
+# little-$o$
+
+For this, we introduce a new notation: $o(g(n))$. Its definition:
+$$
+f(n)=o(g(n)) \iff \forall c \gt 0, \exists n_0 \in \mathbb{N}, \forall n \ge n_0,f(n) \leq c \cdot g(n)
+$$
+
+Compare this to the definition of $O(g(n))$:
+
+$$
+f(n)=O(g(n)) \iff \exists C \gt 0, \exists n_0 \in \mathbb{N}, \forall n \ge n_0,f(n) \leq C \cdot g(n)
+$$
+
+What's the difference?
+
+---
+
+# little-$o$ (2)
+
+$$
+f(n)=o(g(n)) \iff \forall c \gt 0, \exists n_0 \in \mathbb{N}, \forall n \ge n_0,f(n) \leq c \cdot g(n)
+$$
+
+There are two differences:
+1. We changed the $\exists$ to a $\forall$
+2. We lowercased the $C$ into  a $c$ (to make it clear that it is quantified differently)
+
+(The book's definition uses strict $\lt$ rather than $\le$. It doesn't really matter, and some of the proofs are slightly easier with $\le$, so that's the one I use.)
+
+---
+
+# Knowledge check 
+
+Is $n = o(n^2)$? If so, prove it, if not, prove that it isn't.
+
+[Take a second, how would we prove it?]
+
+---
+
+# Knowledge check (2)
+
+It is. We can choose *any* $c \gt 0$, and eventually $n \le c n^2$.
+
+Let's apply the definition to the goal. We must show:
+$\forall c \gt 0, \exists n_0 \in \mathbb{N}, \forall n \ge n_0,n \leq c \cdot n^2$
+
+There's a $\forall$ in front, so let's start with "suppose"
+
+---
+
+# Knowledge check (3)
+
+- suppose we have a $c \gt 0$
+  we must show $\exists n_0 \in \mathbb{N}, \forall n \ge n_0, n \leq c \cdot n^2$
+- choose $n_0 = \lceil {1 \over c} \rceil$. New goal: $\forall n \ge \lceil {1 \over c} \rceil, n \leq c \cdot n^2$
+- It is safe to divide both sides by $n$, because we know it is $\gt 0$,
+  so our goal becomes $1 \le c \cdot n$
+- Our assumption is $\lceil {1 \over c} \rceil \le n$. We can multiply both sides by $c$.
+- $1 \le c\lceil {1 \over c} \rceil \le cn$, from which the goal follows. $\square$
+
+---
+
+# Important note about little-$o$ proofs
+
+It's pretty important that, when choosing $n_0$, to incorporate $c$ in some way.
+
+Remember, the goal needs to hold *for all possible choices of c*. Suppose we need to show $1 = o(n)$. If we just choose $n_0 = 0$ or $n_0 = 1$ like we did with the big-$O$ proofs, it won't work:
+
+$\forall n \ge 1, \forall c > 0, 1 \le cn$ is not a true statement. What if $c=0.0001$? 
+
+We need $n_0$ to be big enouch so that we can divide out the $c$, but also have it be a natural number. So we often choose some function of $c$ but rounded up.
+
+---
+
+# Little-$o$ practice
+
+1. Show that $1 = o(n)$
+2. Show that $1 = o(\lg n)$. Hint: consider if $n_0 = 2^{(1 / c)}$. Does a natural number work?
+3. Use the previous result to show $n = o(n \lg n)$
+4. Show that $\lnot (n = o(n))$
+5. Is this true? Prove it one way or another:
+   $f(n) = o(g(n)) \implies g(n) = o(h(n)) \implies f(n) = o(h(n))$
+
+<div class="footnote">
+
+Reminder: this is curried logic. $(P \implies Q \implies R) \iff (P \land Q \implies R)$
+Note: $\implies$ is right associative, so this is also true: $(P \implies (Q \implies R)) \iff (P \land Q \implies R)$
+However, this is **not** true: $((P \implies Q) \implies R) \iff (P \land Q \implies R)$
+
+---
+
+<!-- _class: invert questions -->
+# Questions?
+
+---
+
+# What about loose $\Omega$ bounds?
+
+Now we have a mechanism for showing that a big-$O$ bound could be tighter. What about big-$\Omega$ though?
+
+Yes, and as you might expect, it's little-$\omega$.
+
+We won't spend as much time on it, because if you understand little-$o$, you understand little-$\omega$, but for completeness sake, let's see the definition.
+
+---
+
+# Definition of little-$\omega$
+
+$$
+f(n)=\omega(g(n)) \iff \forall c \gt 0, \exists n_0 \in \mathbb{N}, \forall n \ge n_0,f(n) \geq c \cdot g(n)
+$$
+
+<br>
+
+<div class="footnote">
+
+Note: again, as usual, $f(n)$ and $g(n)$ represent times, so they are non-negative.
+
+---
+
+# little-$\omega$ practice
+
+1. Prove that it is impossible that for some functions $f$ and $g$, that $f(n)=o(g(n)) \land f(n)=\omega(g(n))$?
+  Hint: The easiest proof is probably to suppose that it's true and derive a contradiction. What does it mean for $\forall c, f(n) \le c\cdot g(n)$ and $\forall c, f(n) \ge c \cdot g(n)$? Remember that $f(n)\gt 0$ and $g(n) \gt 0$ was implied in our definition.
+2. Prove that $f(n) = o(g(n)) \iff g(n) = \omega(f(n))$
+   Hint: choose the same $n_0$, but apply the assumption to a different $c$
+3. prove that $n = \omega(1)$. You can use your result from the little-$o$ practice and the previous answer here.
+
+
+---
+
+<!-- _class: invert questions -->
+# Questions
+
+---
+
+# One more: big-$\Theta$
+
+This one is super useful. Let's first look at the definition:
+
+$f(n) = \Theta(g(n)) \iff$
+$\exists C_1 \gt 0, \exists C_2 \gt 0, \exists n_0 \in \mathbb{N}, \forall n \ge n_0, C_1 \cdot g(n) \le f(n) \le C_2 \cdot g(n)$
+
+<div class="footnote">
+
+Note: as always, both functions are positive.
+
+</div>
+
+---
+
+# Big-$\Theta$ (2)
+
+Big-$\Theta$ is like a combination of big-$O$ and big-$\Omega$ at the same time. "$f(x) = \Theta(g(x))$ means that $f(x)$ and $g(x)$ differ by only a constant factor.
+
+![bg right:55% height:100% a graph of Big-Theta. It shows that a weirdly oscillating sinusoid is contained between f(x)=(3/2)x and f(x)=(2/3)x, confirming that it is Big-Theta of x, despite its strange behavior.](big-theta.svg)
+
+Notice how the wacky sinusoid is still contained between the two linear functions. Therefore, it's $\Theta(x)$. As x gets big, it's hard to distinguish it from a line.
+
+---
+
+# Why is it useful?
+
+Because of this identity: $f(n)=\Theta(n) \iff f(n)=O(n) \land f(n)=\Omega(n)$
+This follows immediately from using the same constants.
+
+If I say $f(n)=\Theta(g(n))$, I have told you the big-O and big-$\Omega$ *at the same time*.
+
+And there's one other reason why it's even more useful than just big-$O$ and big-$\Omega$ put together:
+
+$f(n) = \Theta(g(n)) \implies \lnot(f(n) = o(g(n)) \lor f(n) = \omega(g(n))$
+
+That is, $f(n) = \Theta(g(n))$ tells us not only that $f(n)$ is bounded by a constant factor of $g(n)$, but that this bound is *tight*. 
+
+---
+
+# Proof of big-$\Theta$ having a tight bound
+
+$f(n) = \Theta(g(n)) \implies \lnot(f(n) = o(g(n)) \lor f(n) = \omega(g(n))$
+
+suppose $f(n) = \Theta(g(n))$, by definition $\exists (C_1\gt 0, C_2\gt 0, n_0 \in \mathbb{N}), \forall n \ge n_0, C_1 \cdot g(n) \le f(n) \le C_2 \cdot g(n)$ \*
+
+suppose we have some $C_1\gt 0, C_2\gt 0, n_0 \in \mathbb{N}$,
+then we have the hypothesis $\forall n \ge n_0, C_1 g(n) \le f(n) \le C_2 g(n)$
+we must show: $\lnot(f(n) = o(g(n)) \lor f(n) = \omega(g(n))$
+Remember that $\lnot P$ is equivalent to proving $P \implies \mathrm{contradiction}$.
+
+<div class="footnote">
+
+\* We can combine "foralls" and "exists" together using tuple notation: $\exists(a, b, c, \ldots)$
+
+</div>
+
+---
+
+# Proof of big-$\Theta$ having a tight bound (2)
+
+So assume: $f(n) = o(g(n)) \lor f(n) = \omega(g(n)$
+When you have an assumption of the form $P \lor Q$, you can break your proof into two subgoals, one where you assume $P$, and one where you assume $Q$.
+
+So "suppose" $f(n) = o(g(n))$.
+Let's show that assuming $f(n) = o(g(n))$ leads to a contradiction.
+
+---
+
+# Proof of big-$\Theta$ having a tight bound (3)
+$f(n) = o(g(n))$ means $\forall c \gt 0, \exists n'_0 \in \mathbb{N},\forall n \ge n'_0, f(n) \le c \cdot g(n)$
+and we have from our earlier assumption: $\exists (C_1\ge 0, C_2\ge 0, n_0 \in \mathbb{N}), \forall n \ge n_0, C_1 \cdot g(n) \le f(n) \le C_2 \cdot g(n)$
+
+in the same way that we "suppose" a "$\forall$" in the goal and an "$\exists$" in an assumption, we "choose" a "$\exists$" in the goal and a "$\forall$" in an assumption.
+
+Choose some $n' \ge n_0 + n'_0$
+Choose $c={C_1 \over 2}$, from $c$ and $n'$ and the $o$ assumption, $f(n) \leq {C_1 \over 2} \cdot g(n)$
+This implies that $\forall n \ge n'_0, C_1 \cdot g(n) \le f(n) \le {C_1 \over 2} \cdot g(n)$
+
+---
+
+# Proof of big-$\Theta$ having a tight bound (4)
+
+$\forall n \ge n'_0, C_1 \cdot g(n) \le f(n) \le {C_1 \over 2} \cdot g(n)$
+implies by transitivity, $\forall n \ge n'_0, C_1 \cdot g(n) \le {C_1 \over 2} \cdot g(n)$
+and $g(n) \ge 0$, so this implies $C_1 \leq {C_1 \over 2}$
+while implies $1 \le {1 \over 2}$, a contradiction. $\square?$
+
+Not quite $\square$, we showed that $f(n) = \Theta(g(n)) \implies \lnot (f(n)=o(g(n)))$.
+
+What about $\lnot(f(n) = \omega(f(n)))$?
+
+---
+
+# Big-$\Theta$ practice
+
+1. We didn't finish the proof of big-$\Theta$ having a tight bound. We showed that $f(n) = \Theta(g(n)$ and $f(n) = o(g(n))$ were incompatible. Now prove $\lnot(f(n) = \omega(g(n))$
+
+2. Prove this equivalence: $f(n)=\Theta(n) \iff f(n)=O(n) \land f(n)=\Omega(n)$
 
 ---
 
