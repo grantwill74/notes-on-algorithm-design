@@ -654,22 +654,247 @@ What about $\lnot(f(n) = \omega(f(n)))$?
 
 1. We didn't finish the proof of big-$\Theta$ having a tight bound. We showed that $f(n) = \Theta(g(n)$ and $f(n) = o(g(n))$ were incompatible. Now prove $\lnot(f(n) = \omega(g(n))$
 
-2. Prove this equivalence: $f(n)=\Theta(n) \iff f(n)=O(n) \land f(n)=\Omega(n)$
+2. Prove this equivalence: $f(n)=\Theta(g(n)) \iff f(n)=O(g(n)) \land f(n)=\Omega(g(n))$
+
+3. From 1 and 2, show:
+$f(n)=\Theta(g(n)) \iff$
+$f(n)=O(g(n)) \land f(n)=\Omega(g(n)) \land \lnot ( f(n) = o(g(n))) \land \lnot(f(n) = \omega(g(n)))$
 
 ---
 
-# Example table of Big-O's
+<!-- _class: questions invert -->
+# Questions?
 
-Remember, we use $O$ (and the other notations we'll introduce soon)
+---
 
-Here are some common big-O's and the kinds of problems they tend to emerge from:
+# But we can't always use big-$\Theta$
 
-| Big-O     | Kind of problem 
+Ideally, we'd always use big-$\Theta$ because of how much information it gives us.
+
+But we *can't* always use it. Here are some facts about insertion sort:
+- $T(n) = O(n^2)$
+- $\lnot (T(n) = o(n^2))$
+- $T(n) = \Omega(n)$
+- $\lnot (T(n) = \omega(n))$
+
+The $1^{st}$ two mean there are a $C_1$ and a $C_2$, $T(n) \le C_1 \cdot n^2$, but $T(n) \gt C_2 \cdot n^2$
+The $2^{nd}$ two mean there are a $C_3$ and a $C_4$, $C_3 \cdot n \le T(n)$, but $C_4 \cdot n \gt T(n)$ 
+
+From that, we get contradictions like $\forall n \ge n_0, C_4 \cdot n \gt T(n) \gt C_2 \cdot n^2$, which is clearly not true.
+
+---
+
+# Some algorithms don't have a general big-$\Theta$
+
+And ain't that a shame; big-$\Theta$ is useful.
+
+Is there some way we can redefine our problem so we can use it?
+
+---
+
+# Introducing cases
+
+We can consider the *best*, *worst*, and *average* cases for an algorithm. 
+
+This lets us acknowledge that there are certain kinds of inputs that will have very regular runtimes from the algorithm.
+
+If we constrain our inputs like this, we can be much more precise with our bounds. So precise that we can usually use big-$\Theta$!
+
+---
+
+# Cases for insertion sort: best case
+
+We know that if the list is sorted, the outer loop runs for every $n$ and the inner loop never runs. 
+
+We already showed that this results in it being $\Omega(n)$.
+
+However, if we say, ahead of time, "we're assuming the list is sorted", then it is also $O(n)$, because we know it will not go through the list more than once.
+
+Therefore, if we say "best case" or "the list is sorted", we can say insertion sort is $\Theta(n)$.
+
+---
+
+# Cases for insertion sort: worst case
+
+If the list is in exactly reverse order,
+the inner loop runs $i$ times and the outer loop runs $n$ times.
+
+We showed that this was $O(n^2)$, but now, because we specified explicitly that the list was out of order, we also know that it is $\Omega(n^2)$ as well.
+
+Therefore it is $\Theta(n^2)$
+
+---
+
+# Cases for insertion sort: average case
+
+This is the toughest one. What does average mean? There are different ways of defining it. The simplest is the expected time taken of a uniform-randomly chosen input.
+
+This kind of analysis is tough and sometimes requires higher math. However in this case, we can observe that a randomly sorted list is likely to have some proportion of its pairs out of order.
+
+This means that the inner loop will run a random, but proportional amount of iters. So $i/q$ iters for some $q$. This ends up being related by a constant to $n^2$.
+
+So we can say, on average, insertion sort is $\Theta(n^2)$
+
+---
+
+# Practice
+
+1. Is selection sort $\Theta(n^2)$ in all cases, or is there some case where it has a different bound? Support your answer.
+2. What about linear search? 
+2. Think of another algorithm that has no big-$\Theta$ in general, but does when you narrow the cases down.
+
+---
+
+<!-- _class: invert questions -->
+# Questions?
+
+---
+
+# Switching gears
+
+What is the worst-case big-$\Theta$ of this function?
+
+```c
+void ins_sort_rec(int* arr, size_t n) {
+    if (n <= 1) return;
+
+    ins_sort_rec(arr, n - 1);                   // Theta(???)
+    int j = n - 1, t = arr[j];
+    for (; j > 0 && arr[j - 1] > t; j--) {      // Theta(n)
+        arr[j] = arr[j-1];
+    }
+
+    arr[j] = t;
+}
+```
+
+---
+
+# Recursive inseriton sort analysis
+
+This is a fun one because in order to know the big-$\Theta$ of the recursive function, we have to know the big-$\Theta$ of the recursive function.
+
+Let's start by showing the time function:
+$T(0) = \Theta(1)$
+$T(1) = \Theta(1)$
+$T(n)= T(n - 1) + \Theta(n), \mathrm{if}\ n \ge 0$
+
+Here, we're saying that running the function on the empty array or a singleton array just returns (which takes constant time). But running on $n$ means we first run on $n - 1$, which takes $T(n - 1)$, and then we have a loop that takes $\Theta(n)$.
+
+---
+
+# Don't bother with substitution
+
+Obviously we could substitute if we wanted:
+$T(n)= T(n - 1) + \Theta(n), \mathrm{if}\ n \ge 0$
+$T(n)= T(n - 2) + \Theta(n) + \Theta(n), \mathrm{if}\ n \ge 0$
+$T(n)= T(n - 3) + \Theta(n) + \Theta(n) + \Theta(n), \mathrm{if}\ n \ge 0$
+
+But we're not getting anywhere. We *know* that there's an endpoint for any $n$ 
+
+Whenever we see this kind of infinite substitution happen, where we know that if we had something to fill in for $P(n-1)$, we could show $P(n)$, that's a sign that we need induction.
+
+---
+
+# Deciding on the proposition
+
+But induction is called "induction" because you have to determine the proposition before you do the proof. It's different from "deduction" where it just follows.
+
+So how do we get an idea of what the worst case big-$\Theta$ should be?
+
+It can be helpful to draw a diagram
+
+---
+
+![bg height:95% a diagram showing the time behavior of recursive insertion sort. There are 4 columns. One for i = 1 shows that one Theta of one comparison happens. Then, its neighbor, i = 2 shows that two Theta of one comparisons happen. Then, its neighbor, i = 3 has three Theta of one comparisons inside of it. Lastly, there is a column for i = 4+, showing more comparisons. The overall shape is triangular, justifying a quadratic number of comparisons.](ins_sort_rec_time.svg)
+
+---
+
+# The diagram
+
+There is a column for each place in the array, and each column has that many comparisons in it.  
+
+As a result, the shape is triangular.
+
+And a triangle has half the area of a square, so we're justified in thinking that this will end up being $\Theta(n^2)$.
+
+But how do we prove it?
+
+---
+
+# Induction for big-$\Theta$
+
+Remember the time function:
+$T(0) = \Theta(1)$
+$T(n)= T(n - 1) + \Theta(n), \mathrm{if}\ n \ge 0$
+
+First, induction requires a goal. That goal is that in the worst case: $T(n) = \Theta(n^2)$
+
+Then, it requires two proofs. One for $P(0)$, and one for $\forall n, P(n) \implies P(n + 1)$
+
+Let's start with $P(0)$
+
+---
+
+# Induction for big-$\Theta$ (2)
+
+$P(0): T(0) = \Theta(0)$
+But $T(0)$ actually is $Theta(1)$.
+
+So...that's not true. We're not off to a great start.
+
+We don't actually care about how long it takes at $T(0)$ though. We care about it as the time gets big. And big-$\Theta$ lets us pick whatever $n_0$ we want.
+
+Let's modify our hypothesis: $n \ge 1 \implies T(n) = \Theta(n^2)$
+
+---
+
+# Induction for big-$\Theta$ (3)
+
+Okay, one more shot:
+
+Base case: $n=0$, show $0 \ge 1 \implies T(n) = \Theta(n^2)$
+  Wait...what? Yes, this statement is true: vacuously true. Because $0$ is not $\ge 1$.
+  If you recall to our principal of induction algorithm, it didn't care whether the proof of $P(n-1)$ was vacuous or not. True is true.
+
+Remember that in classical logic, $P \implies Q$ is equivalent to saying $\lnot P \lor Q$. So $n \ge 2 \implies T(n) = \Theta(n^2)$ is the same as saying "either $n$ isn't big enough or $T(n) = \Theta(n^2)$. In this case, $n$ isn't big enough, which is fine.
+
+---
+
+# Induction for big-$\Theta$ (4)
+
+Inductive case: $n \ge 1 \implies T(n) = \Theta(n^2) \implies T(n + 1) = \Theta((n + 1)^2)$  
+
+Suppose $n \ge 1$ and $T(n) = \Theta(n^2)$
+We must show $T(n + 1) = \Theta((n+1)^2) = \Theta(n^2 + 2n + 1) = \Theta(n^2)$
+
+We were able to simplify all the way down to the expression on the right because big-$\Theta$ follows the same rules as big-$O$ and big-$\Omega$. Adding terms subsumes smaller terms.
+
+$T(n+1) = T(n) + \Theta(n)$ by definition. By the inductive hypothesis, $T(n)=\Theta(n^2)$, so $T(n+1) = \Theta(n^2) + \Theta(n) = \Theta(n^2)$. $\square$
+
+---
+
+
+
+problems
+
+1. 
+
+---
+
+# Example table of Big-$\Theta$'s
+
+
+| Big-$\Theta$| Kind of problem 
 |-----------|----------------------------------------------
 | $1$       | simple machine operation (arithmetic on int, boolean expression eval., etc.)
-| $\lg n$   | binary search
-| $n$         | linear search, many string operations, arithmetic on BigInts, tons of things
-| $
+| $\lg n$   | binary search, search tree traversal
+| $n$       | linear search, many string operations, arithmetic on BigInts, counting sort
+| $n \lg n$ | fast comparison sorts
+| $n^2$     | slow comparison sorts, vector matrix multiplication, convolution
+| $n^3$     | linear optimization, simple matrix multiplication
+| $2^n$     | any operation on all combinations of something
+| $n!$      | any operation on all permutations (orderings) of something
 
 ---
 
@@ -679,7 +904,7 @@ Next class we will have a quiz on this material.
 
 This quiz counts! It's going to measure your understanding of this module.
 
-**You must bring paper and a writing implement! This is your responsibility! Set six different reminders on your phone!***
+**You must bring paper and a writing implement! This is your responsibility! Set six different reminders on your phone!**
 
 ---
 
@@ -706,3 +931,41 @@ Remember: *if you aren't studying under time controls with pen and paper, **you 
 And remember to bring pen and paper for the quiz next class!
 
 ---
+
+
+# Source code for mermaid diagram
+
+```mermaid
+mermaid:
+graph TB
+  direction LR
+
+  subgraph row4
+    direction TB
+    i4["i = 4+"] --> c41["Θ(1)"]
+    c41 --> c42["..."]
+    c42 --> c43["..."]
+    c43 --> c44["..."]
+  end
+
+  subgraph row3
+    direction TB
+    i3["i = 3"] --> c31["Θ(1)"]
+    c31 --> c32["Θ(1)"]
+    c32 --> c33["Θ(1)"]
+  end
+
+  subgraph row2
+    direction TB
+    i2["i = 2"] --> c21["Θ(1)"]
+    c21 --> c22["Θ(1)"]
+  end
+
+  subgraph row1
+    direction TB
+    i1["i = 1"] --> c11["Θ(1)"]
+  end
+
+  i4 --> i3 --> i2 --> i1 
+  -->
+```
