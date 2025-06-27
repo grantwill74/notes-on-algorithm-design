@@ -47,11 +47,61 @@ void ins_sort_rec(int* arr, size_t n) {
     // sorted arr[0..n)
 }
 
-void do_unit_tests(void);
+
+// Generate an array of counts.
+// assumes that size(counts) >= maximum(arr)
+// assumes that counts has been zeroed
+void csort_count(int* arr, size_t n, int* counts) {
+    // I: forall v, counts[v] = count of v in arr[0..i)
+    // I: sum(counts) = length(arr[0..i))
+    for (size_t i = 0; i < n; i++) {
+        counts[arr[i]]++;
+    }
+
+    // now sum(counts) = length(arr)
+    // forall v, counts[v] = count of v in arr
+}
+
+// Converts an array of counts into an array of numbers
+void csort_expand(int* out, int* counts, size_t n_counts) {
+    // let 'arr' refer to the original pointer in "out".
+    //  let s0(i) = sum[counts[(.. i -1)]]
+    //  let s(i) = sum[counts[(..i)]]
+    //  arr[s0(i)]  <= arr[s(i)] 
+    for (size_t i = 0; i < n_counts; i++) {
+        // I: arr[s..j] == [i, i, ..., j times]
+        for (size_t j = 0; j < counts[i]; j++) {
+            *out++ = i;
+        }
+        // each arr[s..counts[i]] = i
+        // i - 1 <= i, so the array remains sorted
+    }
+    // forall i, arr[s0(i)] <= arr[s(i)]
+    //      arr[s0(i) .. arr[s(i)) == [i, i, i, ...]
+}
+
+size_t heap_parent(size_t i) {
+    assert (i > 0); return (i - 1) >> 1;
+}
+
+size_t heap_leftchild(size_t i) {
+    
+}
+
+void heap_up(int* heap, size_t i) {
+    
+}
+
+void heap_down(int* heap, size_t i) {
+
+}
+
+
+int do_unit_tests(void);
 int do_benchmarks(void);
 
 int main() {
-    // do_unit_tests();
+    //do_unit_tests();
     do_benchmarks();
     return 0;
 }
@@ -67,6 +117,14 @@ int main() {
 
 typedef void (*sorter)(int* arr, size_t n);
 
+#define COUNT_MAX_VAL 1000
+
+void count_sort(int* arr, size_t n) {
+    int counts[COUNT_MAX_VAL + 1] = {};
+    csort_count(arr, n, counts);
+    csort_expand(arr, counts, COUNT_MAX_VAL + 1);
+}
+
 char* t_sort_empty(sorter sort) {
     int arr[3] = { 0xf00d1, 0xf00d2, 0xf00d3 };
     sort(arr + 1, 0);
@@ -77,9 +135,9 @@ char* t_sort_empty(sorter sort) {
 }
 
 char* t_sort_single(sorter sort) {
-    int arr[1] = { 0xabcdef };
+    int arr[1] = { 999 };
     sort(arr, 1);
-    mu_assert("bad singleton sort", arr[0]==0xabcdef);
+    mu_assert("bad singleton sort", arr[0]==999);
     return 0;
 }
 
@@ -144,8 +202,9 @@ char* t_sort_random(sorter sort) {
 
 int tests_run = 0;
 char* run_tests() {
-    sorter sorts[] = { ins_sort, ins_sort_rec };
-    char* sort_names[] = { "insertion sort", "insertion sort (rec)"  };
+    sorter sorts[] = { ins_sort, ins_sort_rec, count_sort };
+    char* sort_names[] = { 
+        "insertion sort", "insertion sort (rec)", "counting sort"  };
 
     for (int i = 0; i < sizeof(sorts) / sizeof(sorter); i++) {
         printf("testing '%s'\n", sort_names[i]);
@@ -158,10 +217,12 @@ char* run_tests() {
     return 0;
 }
 
-void do_unit_tests() {
+int do_unit_tests() {
     char* msg = run_tests();
-    if (msg) printf("test failed with message %s.\n", msg); \
-    else printf("ran %d tests sucessfully.\n", tests_run); \
+    if (msg) printf("test failed with message %s.\n", msg);
+    else printf("ran %d tests sucessfully.\n", tests_run);
+
+    return 0;
 }
 
 
@@ -230,11 +291,21 @@ void bench_ins_sort_rec(int* arr, size_t n, volatile int* sink) {
 }
 
 
+void bench_csort(int* arr, size_t n, volatile int* sink) {
+    // this might be faster as static data
+    int counts[COUNT_MAX_VAL + 1] = {};
+    csort_count(arr, n, counts);
+    csort_expand(arr, counts, COUNT_MAX_VAL + 1);
+    *sink += arr[rand() % n];
+}
+
+
 int do_benchmarks() {
     size_t n_iters = 1000;
     size_t lengths[] = {10, 100, 1000};
-    bencher benches[] = {bench_ins_sort, bench_ins_sort_rec};
-    char* bench_names[] = {"insertion sort", "insertion sort (recursive)"};
+    bencher benches[] = {bench_ins_sort, bench_ins_sort_rec, bench_csort};
+    char* bench_names[] = 
+        {"insertion sort", "insertion sort (recursive)", "counting sort"};
     size_t n_benches = sizeof benches / sizeof (bencher);
     size_t n_lengths = sizeof lengths / sizeof(size_t);
     volatile int sink = 0;
