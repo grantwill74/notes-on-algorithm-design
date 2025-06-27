@@ -828,57 +828,313 @@ Remember the time function:
 $T(0) = \Theta(1)$
 $T(n)= T(n - 1) + \Theta(n), \mathrm{if}\ n \ge 0$
 
-First, induction requires a goal. That goal is that in the worst case: $T(n) = \Theta(n^2)$
+First, let's replace those $\Theta$ expressions with expressions for functions *in* that $\Theta$. This is rigorous if we make sure that our expressions can match the leading terms of every function in the set.
 
-Then, it requires two proofs. One for $P(0)$, and one for $\forall n, P(n) \implies P(n + 1)$
-
-Let's start with $P(0)$
+We'll replace $\Theta(1)$ with $c$ for some constant, and we know that $\Theta(n)$ is a linear function, so we'll call it $an$. To match every linear function, it could be $an + d$, but we only need to match the leading term. Adding $n + 1$ will have the same $\Theta$ effect as adding $n$. We also don't have to consider negative functions, because they represent time taken.
 
 ---
 
 # Induction for big-$\Theta$ (2)
 
-$P(0): T(0) = \Theta(0)$
-But $T(0)$ actually is $Theta(1)$.
+$T(0) = c, c \gt 0$
+$T(n)= T(n - 1) + an, a \gt 0$
 
-So...that's not true. We're not off to a great start.
+First, induction requires a goal. That goal is that in the worst case: $T(n) = \Theta(n^2)$
 
-We don't actually care about how long it takes at $T(0)$ though. We care about it as the time gets big. And big-$\Theta$ lets us pick whatever $n_0$ we want.
-
-Let's modify our hypothesis: $n \ge 1 \implies T(n) = \Theta(n^2)$
+Is this a proposition that is inductive?
 
 ---
+
+# Inductive propositions
+
+Recall that propositions eligible for natural number induction look like this: $\forall n, P(n)$
+But $T(n)=\Theta(n^2)$ looks like this: 
+$\exists C_1 \gt 0, C_2 \gt 0, n_0 \in \mathbb{N}, \forall n \ge n_0,C_1 \cdot n^2 \le T(n) \le C_2 \cdot n^2$
+
+It has a part that could be inductive, there really is a "$\forall$" buried in there. But if we tried to do induction here, we'd be committing a fallacy.
+
+We're supposed to choose 3 constants *first*. If we did the "$\forall$" part first, we could make the constants different for each $n$, and we could prove that $T$ has any big-$\Theta$ whatsoever.
+
+So what do we choose for the constants?
+
+---
+
+# Induction for big-$\Theta$ (2)
+
+First, let's think about $n_0$, even though it's the third constant. 
+
+They don't depend on one another, so we can move their order around mutually.
+
+$n_0$ is a constant that is important for the base case. Consider $P(0)$:
+
+Is it true that $C_1 \cdot 0^2 \le (T(0) = c) \le C_2 \cdot 0^2$?
+
+No, and there are no positive $C_1$ and $C_2$ that will make that work. 
+
+But $C_1 \cdot 1^2 \le (T(1) = c + an) \le C_2 \cdot 1^2$  does have solutions. So let's choose $n_0 = 1$.
+
+---
+
 
 # Induction for big-$\Theta$ (3)
 
-Okay, one more shot:
+$T(0) = c, c \gt 0$
+$T(n)= T(n - 1) + an, a \gt 0$
 
-Base case: $n=0$, show $0 \ge 1 \implies T(n) = \Theta(n^2)$
-  Wait...what? Yes, this statement is true: vacuously true. Because $0$ is not $\ge 1$.
-  If you recall to our principal of induction algorithm, it didn't care whether the proof of $P(n-1)$ was vacuous or not. True is true.
+We need to make sure that our choices of $C_n$ have enough "give" to accomodate $\Theta(n)$
 
-Remember that in classical logic, $P \implies Q$ is equivalent to saying $\lnot P \lor Q$. So $n \ge 2 \implies T(n) = \Theta(n^2)$ is the same as saying "either $n$ isn't big enough or $T(n) = \Theta(n^2)$. In this case, $n$ isn't big enough, which is fine.
+Here's the thing: I could just tell you straight up that the correct choice is $a \over 2$ for $C_1$, and $a$ for $C_2$, but that looks like magic.
+
+In reality, when writing proofs, we often let constants stay longer to figure out what to plug in. Let's just pretend we picked $C_1$ and $C_2$. We don't know what they are yet, but they're *constants*, not variables, so we can't pretend they can change.
 
 ---
+
 
 # Induction for big-$\Theta$ (4)
 
-Inductive case: $n \ge 1 \implies T(n) = \Theta(n^2) \implies T(n + 1) = \Theta((n + 1)^2)$  
+Now that we "chose" $C_1$, $C_2$ and $n_0$, we have a nice proposition for induction:
+$\forall n \in \mathbb{N}, n \ge 1 \implies C_1 \cdot n^2 \le T(n) \le C_2 \cdot n^2$
 
-Suppose $n \ge 1$ and $T(n) = \Theta(n^2)$
-We must show $T(n + 1) = \Theta((n+1)^2) = \Theta(n^2 + 2n + 1) = \Theta(n^2)$
-
-We were able to simplify all the way down to the expression on the right because big-$\Theta$ follows the same rules as big-$O$ and big-$\Omega$. Adding terms subsumes smaller terms.
-
-$T(n+1) = T(n) + \Theta(n)$ by definition. By the inductive hypothesis, $T(n)=\Theta(n^2)$, so $T(n+1) = \Theta(n^2) + \Theta(n) = \Theta(n^2)$. $\square$
+The proof starts with "By induction on $n$, we have two subgoals":
+1. $0 \ge 1 \implies C_1 \cdot 0^2 \le T(0) \le C_2 \cdot 0^2$
+2. $C_1 \cdot n^2 \le T(n) \le C_2 \cdot n^2 \implies C_1 \cdot (n+1)^2 \le T(n + 1) \le C_2 \cdot (n+1)^2$
 
 ---
 
+# Induction for big-$\Theta$ (5)
+
+Base case: $0 \ge 1 \implies C_1 \cdot 0^2 \le T(0) \le C_2 \cdot 0^2$
+  Wait...what? Yes, this statement is true: vacuously true. Because $0$ is not $\ge 1$.
+  If you recall to our principal of induction algorithm, it didn't care whether the proof of $P(n-1)$ was vacuous or not. True is true.
+
+Remember that in classical logic, $P \implies Q$ is equivalent to saying $\lnot P \lor Q$. So $0 \ge 1 \implies C_1 \cdot 0^2 \le T(0) \le C_2 \cdot 0^2$ is the same as saying "either $n$ isn't big enough or $C_1 \cdot 0^2 \le T(0) \le C_2 \cdot 0^2$. In this case, $n$ isn't big enough, which is fine.
+
+---
+
+# Induction for big-$\Theta$ (6)
+
+Now for the inductive case:
+$C_1 \cdot n^2 \le T(n) \le C_2 \cdot n^2 \implies C_1 \cdot (n+1)^2 \le T(n + 1) \le C_2 \cdot (n+1)^2$
+
+Suppose $C_1 \cdot n^2 \le T(n) \le C_2 \cdot n^2$ and simplify the goal:
+$C_1 \cdot (n^2 + 2n + 1) \le T(n) + a(n + 1) \le C_2 \cdot (n^2 + 2n +1 )$
+
+For this to be true, we need for $C_1 \cdot (n^2 + 2n + 1) - a(n + 1) \le C_1\cdot n^2$
+If the lower bound gets even smaller, it's fine. But if it gets bigger, we can't justify the inductive argument: $C_1$ needs to be small enough that the lower bound can hold $n+1$
+
+So this is the inequality that tells us valid choices of $C_1$:
+$C_1 \cdot n^2 + C_1 (2n + 1) - a(n + 1) \le C_1 \cdot n^2$. Subtract $C_1 \cdot n^2$:
+$C_1 (2n + 1) - a(n + 1) \le 0 \equiv C_1 (2n + 1) \le a(n + 1)\equiv C_1 \le {a(n + 1) \over (2n + 1)}$
+
+---
+
+# Induction for big-$\Theta$ (6)
+
+But $C_1$ cannot depend on $n$. Luckily, we can bound it.
+
+$C_1 \le {a(n + 1) \over (2n + 1)} \le {a(n+1) \over 2n + 2} \le{a(n+1) \over 2(n + 1)} \le {a \over 2}$. So we will go back and choose $C_1 = {a \over 2}$.
+
+What about $C_2$? It's basically the same:
+$T(n) \le C_2 \cdot n^2 \implies T(n) + a(n + 1) \le C_2 \cdot (n^2 +2n +1)$
+We need $a(n + 1) \le C_2 \cdot (2n +1)\equiv {a(n + 1) \over(2n + 1)} \le C_2$ which is satisfied by $a(n + 1) \over (n + 1)$
+
+We could choose $C_2 = a$
+
+(Warning: remember the assumption that $a \gt 0$. If $a$ could be negative, these bounds would not hold. Luckily we don't have to worry about that)
+
+---
+
+# Induction for big-$\Theta$ (7)
+
+That's the work done. The actual proof is short.
+
+Goal: Given this definition of $T$:
+$T(0) = c, c \gt 0$
+$T(n)= T(n - 1) + an, a \ne 0$
+
+Show that $T(n) = \Theta(n^2)$.
+That is: $\exists C_1 \gt 0, \exists C_2 \gt 0, \exists n_0 \in \mathbb{N}, \forall n \ge n_0, C_1 \cdot n^2 \le T(n) \le C_2 \cdot n^2$
 
 
-problems
+---
 
-1. 
+# Induction for big-$\Theta$: proof
+
+Choose $C_1 = {a \over 2}, C_2 = a, n_0 = 1$
+By induction on $n$:
+- $n = 0, 0 \ge 1 \implies {a \over 2} n^2 \le T(n) \le a n^2$
+  This is vacuously true.
+- ${an^2 \over 2} \le T(n) \le an^2 \implies { a(n + 1)^2 \over 2} \le T(n + 1) \le a (n + 1)^2$
+  Suppose the inductive hypothesis and simplify the goal:
+  ${ a(n + 1)^2 \over 2} \le T(n) + a(n + 1) \le a (n + 1)^2 \equiv {an^2 \over 2} - {1 \over 2} \le T(n)\le an^2 + 3an$
+  Which follows immediately from the inductive hypothesis (the bounds got wider).
+
+$\square$
+
+---
+
+# Functional code and induction
+
+This proof is a lot more complicated than the imperative one. We eyeballed the answer fairly quickly, but it took a lot of effort finding constants to prove it.
+
+Rather than torture ourselves every time we want to do this, let's make an observation:
+
+If a recurrence looks like this:
+$T(0) = c$
+$T(n) = T(n-1) + f(n)$, where $f: \mathbb{N} \to \mathbb{N}$ is non-decreasing, $f(n / 2) = \Theta(f(n))$\*
+
+Then $T(n) = \Theta(nf(n))$
+
+How can we prove this? Believe it or not, the proof is simpler than the previous one.
+
+(Important note: that requirement that $f(n/2)=\Theta(f(n))$ holds for polynomials and logs, but not exponentials. They grow too fast. You'll see why we need this.)
+
+<div class="footnote">
+
+
+</div>
+
+---
+
+# Telescoping
+
+Observe that our $T$ function is a sum.
+$T(0) = c$
+$T(1) = T(0) + f(1) = c + f(1)$
+$T(2) = T(1) + f(2) = T(0) + f(1) + f(2) = c + f(1) + f(2)$
+$\vdots$
+$T(n) = c + \sum_{k = 1}^{n} f(k)$
+
+This makes sense from the diagram, but let's make it rigorous with induction.
+
+
+---
+
+# Proof of T(n) as a telescoping sum
+
+Show $\forall n \in \mathbb{N}, T(n) = c + \sum_{k = 1}^{n} f(k)$ 
+Proof: by induction on $n$:
+- $n = 0$, show $T(0) = c + 0$. This follows from the definition of $T(0)$
+- show $T(n) = c + \sum_{k = 1}^{n} f(k) \implies T(n + 1) = c + \sum_{k = 1}^{n + 1} f(k)$
+  suppose the inductive hypothesis. Simplify the goal to:
+  $T(n) + f(n + 1) = c + f(n + 1) + \sum_{k = 1}^{n} f(k)$
+  Simplify further by subtracting the $f(n + 1)$:
+  $T(n) = c + \sum_{k = 1}^{n} f(k)$
+  
+  This is the inductive hypothesis.
+
+$\square$
+
+---
+
+# Now what?
+
+Now that we've proved $\forall n \in \mathbb{N}, T(n) = c + \sum_{k = 1}^{n} f(k)$.
+
+Our goal was to show that $T(n) = \Theta(nf(n))$
+Let's break that into $T(n) = O(nf(n))$ and $T(n) = \Omega(nf(n))$.
+
+Recall that $f(n)$ was non-decreasing. Therefore, $f(k) \le f(k+1)$.
+This means: $\sum_{k = 1}^{n}f(k) \le \sum_{k = 1}^{n}f(n)=nf(n)$
+
+Because big-$O$ is reflexive, and because $f(n)=O(g(n))$ if $f(n) \le g(n)$ we can conclude T(n)=O($\sum_{k = 1}^{n}f(k)) \le O(\sum_{k = 1}^{n}f(n))=O(nf(n))$
+
+This won't work for big-$\Omega$, though. Just because $f(n)=\Omega(\mathrm{smaller\ function})$ does not mean $f(n)=\Omega(\mathrm{bigger\ function})$.
+
+---
+
+# Big $\Omega$ proof
+
+Okay, so $T(n) = c + \sum_{k = 1}^{n} f(k)$
+
+We want to find a smaller function than $\sum_{k = 1}^{n} f(k)$ that also gets rid of the $k$.
+
+There's a cool trick we can use: Take the sum of only the last half of terms:
+$\sum_{k = 1}^{n} f(k) \ge \sum_{k = \lfloor n / 2 \rfloor}^{n} f(k)$
+
+Imagine the sum looks like this: $f(1) + f(2) + f(3) + f(4) + f(5) + f(6)$
+If we only take the last half: $f(4) + f(5) + f(6)$
+Because $f$ is non-decreasing, all of those terms are $\le f(6)$, and the sum $\le 3\cdot f(6)$
+So we obtain this bound: 
+$\sum_{k = 1}^{n} f(k) \ge \sum_{k = \lfloor n / 2 \rfloor}^{n} f(k) \ge {n \over 2} \cdot f({n \over 2}) = \Omega(n f(n))$
+
+Remember that we assumed $f(n/2) = \Theta(f(n))$. This is true for polys and logs.
+
+---
+
+# Wrapping it up
+
+If T has a recurrence relation like this:
+T(0) = c
+T(n) = T(n - 1) + f(n)
+
+We have shown: $T(n) = O(n\cdot f(n))$ and $T(n) = \Omega(n \cdot f(n))$
+
+Therefore, $T(n) = \Theta(n \cdot f(n))$
+
+There are many, many functions that have a recurrence relation like this. You can use this theorem any time one is on a test.  We will see another one soon.
+
+---
+
+# Practice
+
+1. Consider your version of selection sort.
+    1. Rewrite it as a recursive function. You can separate the arg_max function.
+    2. Prove its correctness. (If you separated arg_max, prove it separately)
+    3. Guess its big-$\Theta$ like you did before
+    4. Prove it.
+
+2. Write a recursive "maximum" function, which returns the largest value in an array.
+    1. Prove that it's correct using induction.
+    2. Determine its running bound in big-$\Theta$
+    3. Prove its running bound.
+
+---
+
+<!-- _class: invert questions -->
+# Questions
+
+---
+
+# Sorting *fast*
+
+So far we've seen sorting algorithms that are $\Theta(n^2)$ in the worst case.
+
+You've also seen quicksort, mergesort, and heapsort in the past. Those were $n \lg n$ average case. (Also worst case except quicksort, which is $n^2$ worst case).
+
+---
+
+# Functional code and induction (2)
+
+Suppose the code is purely functional. No side effects, full referential transparency, etc.
+
+It's actually much cleaner to prove things about. We don't have to worry about loop invariants or expressing side effects in proofs.
+
+Once you get used to proving your code, you'll really start to appreciate side-effect-free code. Some of the stuff we did in Haskell will start to make sense.
+
+
+
+---
+
+<!-- _class: invert questions -->
+# Questions?
+
+---
+
+# More advanced recursion
+
+Most of the algorithms we've seen so far have been pretty simple.
+
+Let's get serious with a popular and useful data structure, combined with a useful sorting 
+
+
+
+---
+
+# Stability
+
+Insertion sort has one thing over heapsort: insertion sort is stable.
+
 
 ---
 
