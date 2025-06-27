@@ -13,6 +13,7 @@ paginate: true
 ### The Bachmann-Landau family
 ### Best/worst/average case
 ### recursive algorithms
+### Linear-time sorting
 
 </center>
 
@@ -537,6 +538,8 @@ $$
 <div class="footnote">
 
 Note: again, as usual, $f(n)$ and $g(n)$ represent times, so they are non-negative.
+
+</div>
 
 ---
 
@@ -1102,17 +1105,259 @@ So far we've seen sorting algorithms that are $\Theta(n^2)$ in the worst case.
 
 You've also seen quicksort, mergesort, and heapsort in the past. Those were $n \lg n$ average case. (Also worst case except quicksort, which is $n^2$ worst case).
 
+It's possible to sort in $O(n)$. Not even possible, it's actually pretty easy.
+
+Let's see how.
+
 ---
 
-# Functional code and induction (2)
+# Comparison vs. Distribution sorting
 
-Suppose the code is purely functional. No side effects, full referential transparency, etc.
+All the sorts we've talked about are comparison sorts. They work by comparing values and moving or swapping them based on the results of the comparison.
 
-It's actually much cleaner to prove things about. We don't have to worry about loop invariants or expressing side effects in proofs.
+Comparison sorts are actually proven to be $\Omega(n \lg n)$. You can't do better than that.
 
-Once you get used to proving your code, you'll really start to appreciate side-effect-free code. Some of the stuff we did in Haskell will start to make sense.
+But there's a different kind of sort: a distribution-based sorting algorithm.
 
+---
 
+# Distribution sorts
+
+Distribution sorts involve trying to place the value by only looking at a property of that value, rather than comparing it to another value.
+
+For example, sorting all the values with a particular digit in one array.
+
+We'll cover more distribution sorts in the *divide-and-conquer* module. But for now, let's cover one in particular.
+
+It's called counting sort, and it has a strange big-$\Theta$.
+
+---
+
+# Counting sort
+
+Consider this array:
+`0, 0, 1, 2, 4, 4, 2, 2, 1, 1`
+
+Notice that all the values are between $0$ and $4$.
+
+Let's create an array of counts. This array will store the number of each value. For example, `counts[0]` will store the number of 0s, `counts[1]` will store the number of 1s, etc.
+
+How do we generate this array?
+
+---
+
+# Counting sort (2)
+
+Imagine that the array of counts starts out empty: `[0, 0, 0, 0, 0]`
+
+We iterate over the array of numbers, and add 1 to the count of whatever we point to.
+
+`0, 0, 1, 2, 4, 4, 2, 2, 1, 1`, update `counts` to `[1, 0, 0, 0, 0]`
+`^                           `  because we saw a $0$
+
+`0, 0, 1, 2, 4, 4, 2, 2, 1, 1`, update `counts` to `[2, 0, 0, 0, 0]`
+`    ^                         ` because we saw a $0$
+
+`0, 0, 1, 2, 4, 4, 2, 2, 1, 1`, update `counts` to `[2, 1, 0, 0, 0]`
+`       ^                      ` because we saw a $1$
+
+The counts array of `[2, 1, 0, 0, 0]` means that so far, there are 2 zeros and 1 one.
+
+---
+
+# Counting sort (2)
+
+`0, 0, 1, 2, 4, 4, 2, 2, 1, 1`, update `counts` to `[2, 1, 1, 0, 0]`
+`          ^                   ` because we saw a $2$
+
+`0, 0, 1, 2, 4, 4, 2, 2, 1, 1`, update `counts` to `[2, 1, 1, 0, 2]`
+`             ~~~^             ` then 2 fours...
+
+`0, 0, 1, 2, 4, 4, 2, 2, 1, 1`, update `counts` to `[2, 3, 3, 0, 2]`
+`                   ~~~~~~~~~^             ` then 2 more twos and ones each.
+
+So in total there were 2 zeros, 3 ones, 3 twos, no threes, and 2 fours.
+
+But we didn't want an array of counts, we wanted a sorted array...
+
+---
+
+# Expanding the counts
+
+Now we expand the counts down to an array of values.
+
+So for our count array: `[2, 3, 3, 0, 2]`
+We write 2 zeros: `[0, 0]`
+Three ones: `[0, 0, 1, 1, 1]`
+Three twos: `[0, 0, 1, 1, 1, 2, 2, 2]`
+Skip the threes, and 2 fours: `[0, 0, 1, 1, 1, 2, 2, 2, 4, 4]`
+
+Which is the sorted version of: `[0, 0, 1, 2, 4, 4, 2, 2, 1, 1]`
+
+---
+
+# The code
+
+Here is my version of counting sort:
+```c
+// assumes that size(counts) >= maximum(arr)
+// assumes that counts has been zeroed
+void csort_count(size_t* arr, size_t n, int* counts) {
+    for (size_t i = 0; i < n; i++)
+        counts[arr[i]]++;
+}
+
+void csort_expand(size_t* out, size_t* counts, size_t n_counts) {
+    for (size_t i = 0; i < n_counts; i++)
+        for (size_t j = 0; j < counts[i]; j++) 
+            *out++ = i;
+}
+```
+---
+
+# Using the code
+
+To use it, you must create an array of counts. It's the job of the caller to allocate this array. It's possible to make a wrapper that does this for us:
+```c
+void csort(size_t* arr, size_t n) {
+    int n_counts = maximum(arr, n) + 1; // you'll need to define 'maximum'
+    int* counts = malloc(n_counts * sizeof(size_t));
+    csort_count(arr, n, counts); csort_expand(arr, counts, n_counts);
+    free(counts);
+}
+```
+
+However, I actually prefer to not do this. IMO, if you don't know ahead of time what the maximum is, you probably shouldn't be using counting sort. Are you going to allocate a 1 billion element array if the number 999999999 appears? \*
+
+<div class="footnote">
+
+\* on Linux you can actually do this. The system doesn't commit pages to the process until they are actually accessed, so if you have lots of numbers in a small range and then lots of numbers around 1 billion, it will only use one extra page for the billion.
+
+---
+
+# Count performance
+
+When we count, we loop through each element of the array. Let the array be size $n$.
+
+It seems straightforward that generating the counts would be $\Theta(n)$.
+
+Any disagreement?
+
+---
+
+# Expand performance
+
+This one is more interesting: we loop over each cell in the $counts$ array.
+
+How many elements are in the counts array? As many as you want. Usually we store the counts in an array of length $m + 1$, where $m$ is the maximum value in the input array.
+
+Then, within each counts array element, we output that many integers. However, the total sum of outputs across all inputs is bounded by $n$. If the array has $100$ elements, we will output $100$ counts, whether they're split up between all the counts or there are $100$ of one value.
+
+---
+
+# Expand performance (2)
+
+Therefore, we write this as $\Theta(n + m)$
+We first do a $\Theta(n)$ operation, then we do something over every count, so it could be $\Theta(m)$, but if there are more elements of the array then counts, it's $\Theta(n)$. So really, it's $\Theta(\max(n, m))$
+
+$\Theta(n) + \Theta(\max(n, m)) \equiv \Theta(n + m)$.
+
+But how do we formalize that? How do we handle Bachmann-Landau notation with more than one variable?
+
+---
+
+# Definition of $\Theta(f(n, m))$
+
+We add an extra "forall" to our definition. Here's what it was before:
+$$
+f(n) = \Theta(g(n)) \iff \exists C_1 \gt 0, \exists C_2 \gt 0, \exists n_0 \in \mathbb{N}, \forall n \ge n_0, C_1 \cdot g(n) \le f(n) \le C_2 \cdot g(n)
+$$
+
+Here's what it is with two variables:
+$f(n, m) = \Theta(g(n, m)) \iff$ 
+$\exists C_1 \gt 0, \exists C_2 \gt 0, \exists n_0 \in \mathbb{N}, \exists m_0 \in \mathbb{N},$
+$\forall n \ge n_0, \forall m \ge m_0, C_1 \cdot g(n, m) \le f(n, m) \le C_2 \cdot g(n, m)$
+
+---
+
+# 2 variable big-$\Theta$ for expand
+
+```c
+for (size_t i = 0; i < n_counts; i++)       // Theta(m)
+    for (size_t j = 0; j < counts[i]; j++)  // Theta(n), does not depend on m
+        *out++ = i;                         // Theta(n + m). Don't multiply them! 
+```
+
+The outer loop clearly runs $m$ times.
+
+The inner loop is a little strange. It runs once for every count. Luckily, we know that sum(counts) = len(array) = n, so The inner loop runs, in total, n times (regardless of how many times the outer loop runs).
+
+Because the inner loop always  takes $\Theta(n)$ time, regardless of the time the outer loop takes, *we do not multiply them*!
+
+---
+
+# What if it were recursive?
+
+The recurrence relation could look like this:
+$T(0) = c, c \gt 0$
+$T(i) = T(i - 1) + \mathrm{counts}[i] + d, d \gt 0$
+
+$c$ is the base-cost of calling the function. $d$ is the base cost of the loop to expand.
+
+We can't use our theorem from earlier here, though. `counts[m]` is not a non-decreasing function.
+
+We can express it as a sum, though:
+$T(m) = c + \sum_{i = 0}^{i = m}\mathrm{counts}[i] + dm$
+
+---
+
+# What if it were recursive? (2)
+
+$T(m) = c + \sum_{i = 0}^{i = m}\mathrm{counts}[i] + dm$
+
+Luckily, there's a nice equivalence here:
+$\sum_{i = 0}^{i = m}\mathrm{counts}[i] = n$. There's one count for every element of the array.
+
+So $T(m) = c + n + dm$
+
+Can we prove this is $\Theta(n + m)$?
+
+---
+
+# Solving for the constants
+
+Choose some $C_1$, $C_2$, $n_0$, and $m_0$.
+By induction on $m$:
+- Base case: $m \ge m_0 \implies \forall n \ge n_0, C_1(n + 0) \le c + n + 0 \le C_2(n + 0)$
+
+Notice that we still have a $\forall$ in our proposition. We "peeled-off" the $\forall m$, but there's still a $\forall n$. We are allowed to mutually re-arrange adjacent non-dependent foralls, so we could have done induction on $n$ instead of $m$. Then our base case would start with $\forall m,$
+
+I like doing induction on $m$ more, because of the $dm$ term. You'll see why it's easier.
+
+To prove this sub goal, our proof will need to start with "suppose". We'll have to assume we have $n \ge n_0$ and that $m$ is an arbitrary natural number.
+
+---
+
+# Solving for the constants (2)
+
+The inductive case is interesting. It gives us a "$\forall m$" in the inductive hypothesis:
+
+$m \ge m_0 \implies \forall n \ge n_0, C_1(n + m) \le c + n + dm \le C_2(n + m) \implies$
+$m + 1 \ge m_0 \implies \forall n \ge n_0, C_1(n + m + 1) \le c + n + d(m + 1) \le C_2(n + m + 1)$
+
+Now there's enough information to choose good values of $C_1$ and $C_2$ and fully express the proof.
+
+This is a practice exercise, but the answer is in Appendix A.
+There is another approach, though. It is listed in Appendix B.
+
+---
+
+# Practice
+
+- Finish the proof in the previous slides
+- Read the appendices A and B to check your work
+- Then, read appendix D for practice quizzes. 
+- There will be a quiz for a grade next week!
 
 ---
 
@@ -1121,20 +1366,220 @@ Once you get used to proving your code, you'll really start to appreciate side-e
 
 ---
 
-# More advanced recursion
+# Why don't we use counting sort all the time?
 
-Most of the algorithms we've seen so far have been pretty simple.
+Because you need the range of values to be quite limited. It's not general-purpose!
 
-Let's get serious with a popular and useful data structure, combined with a useful sorting 
+But, if the distribution of values is skewed, even if it's not 100% limited to a range, you can use it. Even if it's only a hybrid sort.
 
+It's simple, elegant, useful, but not commonly used. A great opportunity for optimization!
+
+---
+
+# Appendix A: recursive counting sort is $\Theta(n + m)$
+
+Let $C_1=\min(1, d)$, $C_2=\max(1, c, d)$, $n_0 = 0$, $m_0 = 0$
+- Base case: $m \ge 0 \implies \forall n \ge 0, \min(1, d) \cdot (n + 0) \le c + n + 0 \le \max(1, c, d) \cdot (n + 0)$
+  If $d \lt 1$, the lower bound is $dn \le c + n$, which is true, otherwise $n \le c + n$ (True). The upper bound follows the same way.
+- Inductive case (ignoring the $m_0$ and $n_0$ hypotheses which are tautologies):
+  $\forall n, (\min(1,d)\cdot(n + m) \le c + n + dm \le \max(1, c)\cdot(n + m) \implies$
+  $\forall n, (\min(1,d)\cdot(n + 1 + m) \le c + n + 1 + dm \le (\max (1, c, d))\cdot(n + 1 + m)$
+  The goal follows from the inductive hypothesis with some minor arithmetic.
+
+$\square$
+
+---
+
+# Appendix B: nicer proof
+
+This proof avoids the 2-variable induction.
+
+We start with $T(m) = c + n + dm$
+Goal: $T(m) = \Theta(n + m)\impliedby T(m)=O(n+m)\land T(m)=\Omega(n + m)$
+
+Start by showing $T(m)=O(n + m)$. 
+If $d \lt 1$, then $T(m) = c + n + dm \le c + n +m$, so $T(m)=O(n + m)$
+If $d \ge 1$, $T(m) = c + n + dm \le c + dn + dm \le c + d(n + m) = O(d(n+m)) = O(n+m)$
+
+To show $T(m)=\Omega(n + m)$, 
+If $d < 1$, $T(m) = c + n + dm \ge c + dn + dm = \Omega(n + m)$
+If $d \ge 1$, $T(m) = c + n + dm \ge c + n + m = \Omega(n + m)$
+$\square$
+
+---
+
+# Appendix C: Microbenchmark results
+
+```
+running 3 benches with 1000 iterations each:
+
+benching insertion sort
+length 10: 0.073548 mean microseconds, stdev: 0.009183
+length 100: 1.232503 mean microseconds, stdev: 0.311345
+length 1000: 84.942303 mean microseconds, stdev: 32.327609
+
+benching insertion sort (recursive)
+length 10: 0.084384 mean microseconds, stdev: 0.009791
+length 100: 1.666998 mean microseconds, stdev: 0.766676
+length 1000: 112.733062 mean microseconds, stdev: 33.704407
+
+benching counting sort
+length 10: 0.280840 mean microseconds, stdev: 0.301999
+length 100: 0.304964 mean microseconds, stdev: 0.007011
+length 1000: 0.760517 mean microseconds, stdev: 0.026178
+```
 
 
 ---
 
-# Stability
 
-Insertion sort has one thing over heapsort: insertion sort is stable.
+# Appendix D: Actual quiz next class
 
+Next class we will have a quiz on this material.
+
+This quiz counts! It's going to measure your understanding of this module.
+
+**You must bring paper and a writing implement! This is your responsibility! Set six different reminders on your phone!**
+
+---
+
+# Appendix D: Actual quiz next class (2)
+
+Start studying now, and try to resolve any feelings of meta-cognitive unease. If you feel like "I don't quite get this", listen to the feeling!
+
+Test yourself. The quiz will be proctored, pen-and-paper, and timed (15 minutes). If you aren't studying at least a little bit under these time and resource controls, you aren't studying for the quiz!
+
+The quiz will test the first learning mastery standard.
+
+---
+
+# Appendix D: How should I study?
+
+Do all the practice exercises from this week and last week.
+
+Then, take the following practice quzzes. Time yourself!
+
+You will have a base-time of 15 minutes (unless accomodations were made in advance). If you aren't doing the practice sessions under the same time you will have in class, you aren't actually practicing for the quiz.
+
+This is an open-written-materials quiz. You can bring your book, notes, a cheat sheet you printed off or wrote, anything written. No electronic devices
+
+---
+
+# Appendix D: How should I study? (2)
+
+Remember: *if you aren't studying under time controls with pen and paper, **you aren't studying!*** So actually take these like quizzes.
+
+The first practice quiz is worked. The others aren't.
+
+And remember to bring pen and paper for the quiz next week!
+
+---
+
+# Appendix D: Practice Quiz 1
+
+1. (20 points) Write a function in C that returns the smallest magnitude negative int in a given list, or 0 if there are no negative numbers.
+ For example `lsmall({-2, -5, 2, 5, 7, -100}, 6) == -2`. `lsmall({}, 0) == 0`
+
+2. (20 points) Prove that it is correct.
+3. (20 points) Determine its big-$\Theta$
+4. (20 points) Prove that it has that big-$\Theta$
+5. (20 points) for accurate self grading. Rubric after answers.
+
+---
+
+# Appendix D: Quiz 1 answers
+
+```c
+int lsmall(int* arr, size_t n) {
+    if (n == 0) return 0;
+    int c = lsmall(arr + 1, n - 1);
+    return arr[0] < 0 && (c == 0 || arr[0] > c) ? arr[0] : c;
+}
+```
+
+Proof: by induction on n, if n == 0, it returns 0 as required.
+If `lsmall(arr + 1, n - 1)` is correct, then we determine whether the new head is negative, if it is, we use it if it is larger than c, which will be negative.
+
+It is $\Theta(n)$
+
+Its recurrence relation is, $T(0) = c$, $T(n) = T(n - 1) + d$, which is $\Theta(n\cdot 1)=\Theta(n)$ by the linear recurrence relation lemma.
+
+---
+
+# Appendix D: Quiz 1 answers (2)
+
+You could also do it iteratively:
+```c
+int lsmall(int* arr, size_t n) {
+    int res = 0;
+    // I: res = lsmall(arr[0..i), i)
+    // I: res = maximum (filter negatives (arr))
+    for (size_t i = 0; i < n; i++)                          // Theta(n)
+        // if we found a negative, if it's the first one or it's > res
+        if (arr[i] < 0 && (res == 0 || arr[i] > res))       // Theta(1)
+            res = arr[i];
+    return res;
+}
+```
+
+---
+
+# Appendix D: Quiz 1 self-grading rubric
+
+1. give yourself 4 points for each edge case:
+    1. `lsmall({}, 0) == 0`
+    2. `lsmall({1, 2, 3, -20}, 4) == -20`
+    3. `lsmall({-20, 1, 2, -21}, 4) == -20`
+    4. `lsmall({-20, 1, 2, -19}, 4) == -19`
+    5. `lsmall({1, 2, 3, 4}, 4) == 0`
+    
+2. If you used a loop invariant *or* and inductive hypothesis, give yourself 5 points base. The loop invariant or inductive hypotheses must be related to the returned value: give yourself 5 points if it is. You will have to be the judge of the remaining 10 points. Check for fallacies. If you randomly wrote something without trying to convince yourself, please do not award credit.
+
+---
+
+# Appendix D: Quiz 1 self-grading rubric (2)
+
+3. You'll have to be the judge of big-$\Theta$, and we'll check. If you sorted the array first, you should have assumed that it took either $n + m$, $n \lg n$, or $n^2$ time. Otherwise you should expect $\Theta(n)$. This one is normally all or nothing. If you sorted first and made a bad assumption about the sort, deduct 10 points if that is your *only* error. Otherwise deduct all 20.
+
+4. The proof should follow either from our linear recurrence lemma or from simple iterative multiplication. 20 points if so. If you went the hard route and tried to find $C_1$, $C_2$, etc., check for fallacies the same way as you did for number 2. If you did not state the recurrence correctly, -10. If you did not annotate a loop correctly, -10.
+
+---
+
+# Appendix D: Quiz 2
+
+1. (20 points) Write a function in C that returns the sum of every even-index element, starting with index 0. e.g., `even_sum({1, 2, 3, 4}, 4) == 4`, `even_sum({}, 0) == 0`
+
+2. (20 points) Prove that it is correct.
+3. (20 points) Determine its big-$\Theta$
+4. (20 points) Prove that it has that big-$\Theta$
+5. (20 points) for accurate self grading. Try to be consistent with Quiz 1's rubric.
+
+---
+
+# Appendix D: Quiz 3
+
+1. (20 points) Write a function in C that returns the largest sum of adjacent pairs of an array. For example, `{1,2,3,1}` has adjacent pairs (1, 2); (2, 3); and (3, 1). (2, 3) has the largest sum, 5, so it would return 5.
+`max_adj_sum({1,2,3,4}, 4) == 3 + 4 == 7`
+`max_adj_sum({1}, 1) == 0`
+`max_adj_sum({}, 0) == 0`
+
+2. (20 points) Prove that it is correct.
+3. (20 points) Determine its big-$\Theta$
+4. (20 points) Prove that it has that big-$\Theta$
+5. (20 points) for accurate self grading. Try to be consistent with Quiz 1's rubric.
+
+---
+
+# Appendix D: Quiz 4
+
+1. (20 points) Write a function in C that finds the last zero-based index of the lowercase letter 'q' in an ascii string. If the letter 'q' is not present, return -1. Otherwise, return the index of the last 'q'.
+`rscan_q("hello world") == -1`
+`rscan_q("quello quorld") == 7`
+`rscan_q("") == -1`
+2. (20 points) Prove that it is correct.
+3. (20 points) Determine its big-$\Theta$
+4. (20 points) Prove that it has that big-$\Theta$
+5. (20 points) for accurate self grading. Try to be consistent with Quiz 1's rubric.
 
 ---
 
@@ -1152,39 +1597,6 @@ Insertion sort has one thing over heapsort: insertion sort is stable.
 | $2^n$     | any operation on all combinations of something
 | $n!$      | any operation on all permutations (orderings) of something
 
----
-
-# Actual quiz next class
-
-Next class we will have a quiz on this material.
-
-This quiz counts! It's going to measure your understanding of this module.
-
-**You must bring paper and a writing implement! This is your responsibility! Set six different reminders on your phone!**
-
----
-
-# Actual quiz next class (2)
-
-Start studying now, and try to resolve any feelings of meta-cognitive unease. If you feel like "I don't quite get this", listen to the feeling!
-
-Test yourself. The quiz will be proctored, pen-and-paper, and timed (10 minutes). If you aren't studying at least a little bit under these time and resource controls, you aren't studying for the quiz!
-
-The quiz will test the first learning mastery standard: that you can understand and prove things using Bachmann-landau notation.
-
----
-
-# How should I study?
-
-Do the following practice exercises! Some are worked, some are not.
-
-Then, rewrite them on a cheat sheet. It's an open materials quiz. Any printed material is acceptable. Composing your own cheat sheet will help comprehension a lot. I recommend 1 sheet per learning standard.
-
-Set a practice timer for each problem. Turn off your electronic devices. You will have 10 minutes.
-
-Remember: *if you aren't studying under time controls with pen and paper, **you aren't studying!***
-
-And remember to bring pen and paper for the quiz next class!
 
 ---
 
