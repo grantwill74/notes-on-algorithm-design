@@ -510,6 +510,8 @@ Reminder: this is curried logic. $(P \implies Q \implies R) \iff (P \land Q \imp
 Note: $\implies$ is right associative, so this is also true: $(P \implies (Q \implies R)) \iff (P \land Q \implies R)$
 However, this is **not** true: $((P \implies Q) \implies R) \iff (P \land Q \implies R)$
 
+</div>
+
 ---
 
 <!-- _class: invert questions -->
@@ -1232,6 +1234,8 @@ However, I actually prefer to not do this. IMO, if you don't know ahead of time 
 <div class="footnote">
 
 \* on Linux you can actually do this. The system doesn't commit pages to the process until they are actually accessed, so if you have lots of numbers in a small range and then lots of numbers around 1 billion, it will only use one extra page for the billion.
+
+</div>
 
 ---
 
