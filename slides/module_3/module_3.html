@@ -1,0 +1,2046 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>module_3</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="design-and-analysis-of-algorithms">Design and Analysis of
+Algorithms</h1>
+<h2 id="module-3">Module 3:</h2>
+<center>
+<h3 id="the-bachmann-landau-family">The Bachmann-Landau family</h3>
+<h3 id="bestworstaverage-case">Best/worst/average case</h3>
+<h3 id="recursive-algorithms">recursive algorithms</h3>
+<h3 id="linear-time-sorting">Linear-time sorting</h3>
+</center>
+<p><br> <br></p>
+<p>Slides © Grant Williams, <a
+href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
+4.0</a>.</p>
+<p><br></p>
+<p>This is an open educational resource. Feel free to submit fixes,
+improvements, and new material <a
+href="https://github.com/grantwill74/notes-on-algorithm-design">here</a>.</p>
+<hr />
+<h1 id="last-class">Last Class</h1>
+<p>We talked about the definition of big-<span
+class="math inline">\(O\)</span>: <span class="math display">\[f(n) \in
+O(g(n)) \iff
+\exists C \gt 0, \exists n_0 \in ℕ,\forall n \geq n_0, f(n) \leq C\cdot
+g(n)\]</span></p>
+<p>Then we used it to prove that certain functions had the big-<span
+class="math inline">\(O\)</span> we wanted.</p>
+<p>We learned how to annotate big-<span
+class="math inline">\(O\)</span>, too, for iterative procedures.</p>
+<p>We learned how to prove correctness. We showed that an iterative
+version of insertion sort was correct.</p>
+<hr />
+<h1 id="this-class">This class</h1>
+<p>We’re going to learn about the rest of the Bachmann-Landau family:
+little-<span class="math inline">\(o\)</span>, big-<span
+class="math inline">\(\Omega\)</span>, little-<span
+class="math inline">\(\omega\)</span>, and big-<span
+class="math inline">\(\Theta\)</span></p>
+<p>We’re going to learn how to analyze recursive algorithms: both for
+correctness and for runtime complexity bounds.</p>
+<p>We’re going to get even sharper with induction.</p>
+<hr />
+<h1 id="back-to-insertion-sort">Back to insertion sort</h1>
+<p>Remember when I said insertion sort was very useful?</p>
+<p>But we proved that it was <span
+class="math inline">\(O(n^2)\)</span></p>
+<p>That is not great. We’ll see mergesort next module, and it is <span
+class="math inline">\(O(n \lg n)\)</span>.</p>
+<p>So if insertion sort is slower than another simple, widespread
+algorithm, why would anyone use it?</p>
+<hr />
+<h1 id="when-is-insertion-sort-useful">When is insertion sort
+useful?</h1>
+<p>Let’s look at the code for insertion sort again. This is using the
+faster version that I suggested writing as a practice exercise:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> t <span class="op">=</span> arr<span class="op">[</span>i<span class="op">];</span> <span class="dt">int</span> j <span class="op">=</span> i<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(;</span> j <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">&gt;</span> t<span class="op">;</span> j<span class="op">--)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>            arr<span class="op">[</span>j<span class="op">]</span> <span class="op">=</span> arr<span class="op">[</span>j<span class="op">-</span><span class="dv">1</span><span class="op">];</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        arr<span class="op">[</span>j<span class="op">]</span> <span class="op">=</span> t<span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This version stores the unsorted value in <span
+class="math inline">\(t\)</span>. Then finds where <span
+class="math inline">\(t\)</span> should go, and shifts everything above
+it to the right, making room.</p>
+<p>Important question: [when is this function <em>not</em>
+quadratic?]</p>
+<hr />
+<h1 id="when-the-inner-loop-doesnt-run.">When the inner loop doesn’t
+run.</h1>
+<p>Look at the inner loop:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(;</span> j <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">&gt;</span> t<span class="op">;</span> j<span class="op">--)</span>  <span class="co">// the inner loop</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    arr<span class="op">[</span>j<span class="op">]</span> <span class="op">=</span> arr<span class="op">[</span>j<span class="op">-</span><span class="dv">1</span><span class="op">];</span></span></code></pre></div>
+<p>This loop has two stopping conditions: 1. <span
+class="math inline">\(j\)</span> reaches <span
+class="math inline">\(0\)</span> 2. <span
+class="math inline">\(\mathrm{arr}[j - 1] \leq t\)</span></p>
+<p>If <span class="math inline">\(j\)</span> reaches <span
+class="math inline">\(0\)</span>, the inner loop runs in <span
+class="math inline">\(O(i)\)</span>, which is <span
+class="math inline">\(O(n)\)</span>, making the sort <span
+class="math inline">\(O(n^2)\)</span> If <span
+class="math inline">\(j\)</span> reaches a <em>proportion</em> of <span
+class="math inline">\(0\)</span>, <em>the same thing happens</em>.</p>
+<hr />
+<h1 id="when-the-inner-loop-doesnt-run-2">When the inner loop doesn’t
+run (2)</h1>
+<p>Even if it only goes halfway before stopping, <span
+class="math inline">\(n/2\)</span> is still <span
+class="math inline">\(O(n)\)</span> Even if it only goes a
+<em>tenth</em> before stopping, <span
+class="math inline">\(n/10\)</span> is still <span
+class="math inline">\(O(n)\)</span></p>
+<p>But if <span class="math inline">\(j\)</span> stops after a constant
+number (such as <span class="math inline">\(0\)</span>), it becomes
+<span class="math inline">\(O(1)\)</span></p>
+<p>The outer loop is still <span class="math inline">\(O(n)\)</span>,
+making the sort <span class="math inline">\(O(n)\)</span> in total.</p>
+<p>[And when does this happen? What situation is guaranteed to make the
+inner loop always get skipped?]</p>
+<hr />
+<h1 id="when-the-inner-loop-doesnt-run-3">When the inner loop doesn’t
+run (3)</h1>
+<p>When <span class="math inline">\(\mathrm{arr}[j - 1] \leq
+t\)</span>.</p>
+<p>That is, when <span class="math inline">\(\mathrm{arr}[i - 1] \leq
+\mathrm{arr}[i]\)</span> for every <span class="math inline">\(i \gt
+0\)</span></p>
+<p>That is, when the array is already sorted.</p>
+<hr />
+<h1 id="why-is-that-useful">Why is that useful?</h1>
+<p>It’s useful when we’re measuring a natural process with some entropy,
+but not a lot. Like if a list is sorted but later you insert a constant
+number of things into it randomly.</p>
+<p>When you need to sort transparent objects* in a 3D computer graphics
+scene, but the camera hasn’t moved that much.</p>
+<p>When you want to sort objects by their distance to a point in a
+physics simulation, but their relative orders rarely change from frame
+to frame. Example: a billiards game</p>
+<p>When you want a server to respond to requests in order of priority,
+but almost all requests have the same priority except for a constant
+number.</p>
+<div class="footnote">
+<p>* or any object on a system like the Playstation 1, which had no
+depth buffer.</p>
+</div>
+<hr />
+<h1 id="how-good-is-that">How good is that?</h1>
+<p>In all the previous examples, insertion sort runs in <span
+class="math inline">\(O(n)\)</span>.</p>
+<p>It turns out, this is the theoretical best running time possible for
+a sorting algorithm that doesn’t know an unreasonable amount of
+information about the list.*</p>
+<p>So this is <em>really</em> good. But the big-<span
+class="math inline">\(O\)</span> doesn’t tell us that. The big-<span
+class="math inline">\(O\)</span> tells us that the algorithm is bad. We
+need more information!</p>
+<div class="footnote">
+<p>* In the example of inserting a constant number of items into a list,
+if we also knew the locations at which they were inserted, and we knew
+the rest of the list were sorted, then we could sort in <span
+class="math inline">\(O(1)\)</span> time by just sorting those exact
+items. Since there are a constant number, it would be O(1).</p>
+</div>
+<hr />
+<h1 id="big-omega">Big-<span class="math inline">\(\Omega\)</span></h1>
+<p>That’s a Greek capital letter Omega, whose name confusingly means
+“Big ‘O’” in Greek.</p>
+<p>If I hadn’t told you that, it wouldn’t be confusing. I’m sorry.</p>
+<p>Anyway, Big-<span class="math inline">\(\Omega\)</span> is the
+counterpart to Big-<span class="math inline">\(O\)</span>.</p>
+<p>In the same way that Big-<span class="math inline">\(O\)</span> gives
+us an <em>upper</em> bound* of a function, Big-<span
+class="math inline">\(\Omega\)</span> gives us a <em>lower</em>
+bound**.</p>
+<div class="footnote">
+<p>* if multiplied by a constant ** again, if multiplied by a
+constant</p>
+</div>
+<hr />
+<h1 id="the-definition-of-big-omega">The definition of Big-<span
+class="math inline">\(\Omega\)</span></h1>
+<p><span class="math display">\[
+f(n) = \Omega(g(n)) \iff
+\exists C \gt 0, \exists n_0 \in \mathbb{N},\forall n \geq n_0, f(n)
+\geq C\cdot g(n)
+\]</span></p>
+<p>Look familiar?</p>
+<div class="footnote">
+<p>* Note: Again, we’re assuming that <span
+class="math inline">\(f(x)\)</span> and <span
+class="math inline">\(g(x)\)</span> have a positive co-domain. If either
+can be negative we need magnitude bars around them: <span
+class="math inline">\(|f(n)| \geq C \cdot |g(n)|\)</span></p>
+</div>
+<hr />
+<h1 id="comparison-between-big-omega-and-big-o">Comparison between
+Big-<span class="math inline">\(\Omega\)</span> and Big-O</h1>
+<p><span class="math display">\[f(n) = \Omega(g(n)) \iff
+\exists C \gt 0, \exists n_0 \in \mathbb{N},\forall n \geq n_0, f(n)
+\geq C\cdot g(n)\]</span></p>
+<p><span class="math display">\[f(n) = O(g(n)) \iff
+\exists C \gt 0, \exists n_0 \in ℕ,\forall n \geq n_0, f(n) \leq C\cdot
+g(n)\]</span></p>
+<p>What’s the difference?</p>
+<hr />
+<h1 id="the-only-difference">The only difference</h1>
+<p>Big-<span class="math inline">\(\Omega\)</span> requires <span
+class="math inline">\(f(n) \ge C \cdot g(n)\)</span>, while Big-<span
+class="math inline">\(O\)</span> requires <span
+class="math inline">\(f(n) \le C \cdot g(n)\)</span></p>
+<p>This means that proofs of big-<span
+class="math inline">\(\Omega\)</span> use the same techniques.</p>
+<p>But first, let’s make sure we understand what it means for <span
+class="math inline">\(f(n) = \Omega(g(n))\)</span></p>
+<hr />
+<h1 id="knowledge-check">Knowledge Check</h1>
+<p>Find <span class="math inline">\(f(n)\)</span> such that the
+following statement is true: <span class="math display">\[f(n) =
+\Omega(n)\]</span></p>
+<hr />
+<h1 id="knowledge-check-answers">Knowledge check answers:</h1>
+<p>Some acceptable answers: - <span
+class="math inline">\(f(n)=n\)</span> - <span
+class="math inline">\(f(n)={n \over 2}\)</span> - <span
+class="math inline">\(f(n)=2n\)</span> - <span
+class="math inline">\(f(n)=n^2\)</span> - <span
+class="math inline">\(f(n)=n \lg n\)</span> - <span
+class="math inline">\(f(n)=n^{3/2}\)</span> - <span
+class="math inline">\(f(n)=2^n\)</span> - <span
+class="math inline">\(f(n)=n!\)</span></p>
+<hr />
+<h1 id="knowledge-check-2">Knowledge check (2)</h1>
+<p>Find <span class="math inline">\(g(n)\)</span> such that <span
+class="math inline">\(n \lg n = \Omega(g(n))\)</span></p>
+<hr />
+<h1 id="knowledge-check-answers-2">Knowledge check answers (2)</h1>
+<p>Some correct answers: - <span class="math inline">\(g(n) = n \lg
+n\)</span> - <span class="math inline">\(g(n) = {n \lg (n / 2) \over
+2}\)</span> - <span class="math inline">\(g(n) = n\)</span> - <span
+class="math inline">\(g(n) = \lg n\)</span> - <span
+class="math inline">\(g(n) = (\lg n)^2\)</span> - <span
+class="math inline">\(g(n) = (\lg n)^k\)</span> for any k - $g(n) =
+1</p>
+<hr />
+<h1 id="compare-to-our-earlier-knowledge-check">Compare to our earlier
+knowledge check</h1>
+<p>Last module, I asked you to find <span
+class="math inline">\(f(n)\)</span> and <span
+class="math inline">\(g(n)\)</span> such that <span
+class="math inline">\(f(n) = O(g(n))\)</span></p>
+<p>It turns out, you already understood big-<span
+class="math inline">\(\Omega\)</span>, because <span
+class="math inline">\(f(n)\)</span> and <span
+class="math inline">\(g(n)\)</span> have this relationship: <span
+class="math display">\[f = O(g(n)) \iff g = \Omega(f(n))\]</span></p>
+<p>We’re going to prove this, but how? Walk me through how we prove that
+proposition?</p>
+<hr />
+<h1 id="proving-it">Proving it:</h1>
+<p>Let’s follow this strategy: - Apply the definitions of <span
+class="math inline">\(O(g(n))\)</span> and <span
+class="math inline">\(\Omega(f(n)))\)</span> - Break the <span
+class="math inline">\(\iff\)</span> into two implications - Break down
+the assumptions for their <span class="math inline">\(C\)</span> and
+<span class="math inline">\(n_0\)</span> in each implication. - Show
+that the resulting implications about inequalities follow.</p>
+<hr />
+<h1 id="proving-similarity-between-o-and-omega">Proving similarity
+between <span class="math inline">\(O\)</span> and <span
+class="math inline">\(\Omega\)</span></h1>
+<p>Subgoal: <span class="math inline">\(f = O(g(n)) \implies g =
+\Omega(f(n))\)</span> - Apply the definitions of <span
+class="math inline">\(O(g(n))\)</span> and <span
+class="math inline">\(\Omega(f(n))\)</span> Now we must show: <span
+class="math inline">\(\exists C \gt 0, \exists n_0 \in \mathbb{N},
+\forall n \ge n_0, f(n) \leq C \cdot g(n) \implies\)</span> <span
+class="math inline">\(\exists C&#39; \gt 0, \exists n&#39;_0 \in
+\mathbb{N}, \forall n \ge n&#39;_0, g(n) \geq C&#39; \cdot f(n)\)</span>
+- Suppose* we have a <span class="math inline">\(C &gt; 0\)</span>, an
+<span class="math inline">\(n_0 \geq 0\)</span>, and that <span
+class="math inline">\(\forall n \geq n_0, f(n) \leq C \cdot
+g(n)\)</span> We must show: <span class="math inline">\(\exists C&#39;
+\gt 0, \exists n&#39;_0 \in \mathbb{N}, \forall n \ge n&#39;_0, g(n)
+\geq C&#39; \cdot f(n)\)</span> - Choose <span
+class="math inline">\(C&#39; = {1 \over C}\)</span>, <span
+class="math inline">\(n&#39;_0=n_0\)</span>, now we must show <span
+class="math inline">\(\forall n \geq n_0,g(n)\geq{1 \over C}\cdot
+f(n)\)</span> - This follows from our earlier assumption, after
+multiplying both sides by <span class="math inline">\(C\)</span>.</p>
+<div class="footnote">
+<p>* Remember that if our goal is <span class="math inline">\(P \implies
+Q\)</span>, we “suppose” <span class="math inline">\(P\)</span>. If we
+have an assumption of the type <span class="math inline">\(\exists a,
+P(a)\)</span>, we also “suppose” we have some <span
+class="math inline">\(a\)</span> named whatever we want. So we’re
+skipping right to that: we’re supposing the whole hypothesis and then
+supposing we get the values of <span class="math inline">\(C\)</span>
+and <span class="math inline">\(n_0\)</span> out of it. This is the kind
+of shortcut you can take once you’re comfortable writing proofs.</p>
+</div>
+<hr />
+<h1 id="back-to-insertion-sort-1">Back to insertion sort</h1>
+<p>Now that we’ve learned about big-<span
+class="math inline">\(\Omega\)</span>, let’s show that insertion sort is
+<span class="math inline">\(\Omega(n)\)</span>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span>               <span class="co">// Omega(n)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> t <span class="op">=</span> arr<span class="op">[</span>i<span class="op">];</span> <span class="dt">int</span> j <span class="op">=</span> i<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(;</span> j <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">&gt;</span> t<span class="op">;</span> j<span class="op">--)</span>    <span class="co">// Omega(1)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>            arr<span class="op">[</span>j<span class="op">]</span> <span class="op">=</span> arr<span class="op">[</span>j<span class="op">-</span><span class="dv">1</span><span class="op">];</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        arr<span class="op">[</span>j<span class="op">]</span> <span class="op">=</span> t<span class="op">;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>We can justify these annotations as following: - The outer loop
+always runs <span class="math inline">\(n\)</span> times, so let <span
+class="math inline">\(C = 1\)</span>: it always runs <em>at least</em>
+<span class="math inline">\(C \cdot n\)</span> times - The inner loop
+might terminate immediately, so it might never run. However, the little
+test that checks whether it should run still takes <span
+class="math inline">\(\Omega(1)\)</span> time.</p>
+<hr />
+<h1 id="practice">Practice</h1>
+<p>We’ve only proved one goal: <span class="math inline">\(f = O(g(n))
+\implies g = \Omega(f(n))\)</span> If we want to show <span
+class="math inline">\(f = O(g(n)) \iff g = \Omega(f(n))\)</span>, we
+must also prove <span class="math inline">\(g = \Omega(f(n)) \implies f
+= O(g(n))\)</span> <strong>Do this as a practice exercise.</strong></p>
+<p>Also, prove the following from the definition: <span
+class="math inline">\(n^2 = \Omega(n \lg n)\)</span></p>
+<hr />
+<h1 id="practice-2">Practice (2)</h1>
+<p>Practice, annotate this code for big-<span
+class="math inline">\(O\)</span> and big-<span
+class="math inline">\(\Omega\)</span>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> arg_min<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">);</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> sel_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> min_i <span class="op">=</span> i <span class="op">+</span> arg_min<span class="op">(</span>arr <span class="op">+</span> i<span class="op">,</span> n <span class="op">-</span> i<span class="op">);</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        swap<span class="op">(</span>arr <span class="op">+</span> min_i<span class="op">,</span> arr <span class="op">+</span> i<span class="op">);</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Write an <code>arg_min</code> and annotate it for big-<span
+class="math inline">\(O\)</span> and big-<span
+class="math inline">\(\Omega\)</span> also.</p>
+<p>The answer should be <span class="math inline">\(O(n^2)\)</span> and
+<span class="math inline">\(\Omega(n^2)\)</span> in total for the whole
+sort.</p>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions">Questions?</h1>
+<hr />
+<h1 id="the-classic-joke">The classic joke</h1>
+<p>If I ask a question like “what is the big-<span
+class="math inline">\(O\)</span> of this algorithm”, there is usually
+someone who enjoys saying “it’s <span
+class="math inline">\(O(n!!)\)</span>” (i.e., “factorial factorial”) or
+something.</p>
+<p>This is technically true and completely useless, which is what makes
+it funny.</p>
+<p>You can do the same thing with <span
+class="math inline">\(\Omega\)</span>: technically every algorithm we
+learn is <span class="math inline">\(\Omega(0)\)</span>, so saying “it’s
+<span class="math inline">\(\Omega(0)\)</span> is technically correct.
+It also gives no information at all.</p>
+<hr />
+<h1 id="bounds-that-can-be-tighter">Bounds that can be tighter</h1>
+<p>Of course computer scientists are aware of this, which is why there
+are rigorous ways of saying “you could have a tighter bound”.</p>
+<p>Let’s consider two statements of big-<span
+class="math inline">\(O\)</span>: 1. <span class="math inline">\(10n =
+O(n)\)</span> 2. <span class="math inline">\(10n = O(n^2)\)</span></p>
+<p>First, let’s give these a brief proof. What is a choice of <span
+class="math inline">\(C\)</span> and <span
+class="math inline">\(n_0\)</span> that will demonstrate membership in
+the order for both statements?</p>
+<hr />
+<h1 id="bounds-that-can-be-tighter-2">Bounds that can be tighter
+(2)</h1>
+<p>Here are some answers: 1. For <span class="math inline">\(10n =
+O(n)\)</span>, we can choose <span class="math inline">\(n_0 =
+0\)</span>, and then we have to be careful: we have to then choose some
+<span class="math inline">\(C \geq 10\)</span>. Let’s choose <span
+class="math inline">\(10\)</span>, it follows: <span
+class="math inline">\(\forall n \ge 0, 10n \leq 10n\)</span>.</p>
+<ol start="2" type="1">
+<li>For <span class="math inline">\(10n = O(n^2)\)</span>, we can choose
+<em>any positive C we want</em>. It doesn’t matter, it will just change
+our choice of <span class="math inline">\(n_0\)</span>. <span
+class="math inline">\(n^2\)</span> grows so much faster than <span
+class="math inline">\(n\)</span>, that we can choose <span
+class="math inline">\(C = .001\)</span>, and: <span
+class="math inline">\(\exists n_0 \in \mathbb{N}, \forall n \ge n_0, 10n
+= O(n^2) \impliedby\)</span> <span class="math inline">\(\exists n_0 \in
+\mathbb{N}, \forall n \ge n_0, 10n \le .001 \cdot n^2
+\impliedby\)</span> <span class="math inline">\(\exists n_0 \in
+\mathbb{N}, \forall n \ge n_0,10 \le .001\cdot n \impliedby\)</span>
+<span class="math inline">\(\exists n_0 \in \mathbb{N}, \forall n \ge
+n_0, 10000 \le n\)</span></li>
+</ol>
+<p>So choose <span class="math inline">\(n_0=10000\)</span> and you’re
+done. Clearly there’s an <span class="math inline">\(n_0\)</span> even
+for <span class="math inline">\(C=10^{-100}\)</span></p>
+<hr />
+<h1 id="bounds-that-can-be-tighter-3">Bounds that can be tighter
+(3)</h1>
+<p>Why does this happen? Why is the proof so much more flexible for
+<span class="math inline">\(O(n)\)</span> vs. <span
+class="math inline">\(O(n^2)\)</span>?</p>
+<p>Because the bound of <span class="math inline">\(n = O(n)\)</span> is
+tight. There are some choices of <span class="math inline">\(C\)</span>
+that will work and some that won’t. So <em>some</em> linear functions
+bound <span class="math inline">\(f(n)=n\)</span>, but some don’t.</p>
+<p>We can’t chose a smaller power of <span
+class="math inline">\(n\)</span> or some other sub-linear function. This
+is as “good” a statement of <span class="math inline">\(O\)</span> as we
+can obtain for <span class="math inline">\(f(n) = n\)</span></p>
+<p>But for <span class="math inline">\(n = O(n^2)\)</span>, the bound
+has room for improvement. We could improve it to <span
+class="math inline">\(n = O(n^{1.5})\)</span> or <span
+class="math inline">\(n = O(n \lg n)\)</span>, but the best choice is
+<span class="math inline">\(O(n)\)</span>.</p>
+<hr />
+<h1 id="expressing-that-rigorously">Expressing that rigorously</h1>
+<p>We can understand intuitively what it means to say “that big-<span
+class="math inline">\(O\)</span> can be tighter”.</p>
+<p>But how can we express that mathematically? - It’s not good enough to
+say something like “it’s not tight if <span
+class="math inline">\(f(n)=O(n^k)\)</span>, but <span
+class="math inline">\(\exists k&#39; \le k,f(n)=O(n^{k&#39;})\)</span>,
+because what if the function isn’t a polynomial? - It’s also not good
+enough to say something like”it’s not tight if <span
+class="math inline">\(\exists g&#39;(n), f(n)=O(g&#39;n) \land \forall
+n, g&#39;(n) &lt; g(n)\)</span>, i.e., “if we can find a smaller
+function that is also in the order of <span
+class="math inline">\(g(n)\)</span>. The reason this definition is not
+useful is that it would mean <span class="math inline">\(n =
+O(n)\)</span> is not tight, because <span class="math inline">\(n=O(n /
+2)\)</span> (and so on).</p>
+<p>So we want to express “that big-<span
+class="math inline">\(O\)</span> can be tighter” in a way that is
+rigorous, which could potentially apply to any kind of function, and
+which still has reflexivity (i.e., <span
+class="math inline">\(f(n)=O(f(n))\)</span> should be tight)</p>
+<hr />
+<h1 id="little-o">little-<span class="math inline">\(o\)</span></h1>
+<p>For this, we introduce a new notation: <span
+class="math inline">\(o(g(n))\)</span>. Its definition: <span
+class="math display">\[
+f(n)=o(g(n)) \iff \forall c \gt 0, \exists n_0 \in \mathbb{N}, \forall n
+\ge n_0,f(n) \leq c \cdot g(n)
+\]</span></p>
+<p>Compare this to the definition of <span
+class="math inline">\(O(g(n))\)</span>:</p>
+<p><span class="math display">\[
+f(n)=O(g(n)) \iff \exists C \gt 0, \exists n_0 \in \mathbb{N}, \forall n
+\ge n_0,f(n) \leq C \cdot g(n)
+\]</span></p>
+<p>What’s the difference?</p>
+<hr />
+<h1 id="little-o-2">little-<span class="math inline">\(o\)</span>
+(2)</h1>
+<p><span class="math display">\[
+f(n)=o(g(n)) \iff \forall c \gt 0, \exists n_0 \in \mathbb{N}, \forall n
+\ge n_0,f(n) \leq c \cdot g(n)
+\]</span></p>
+<p>There are two differences: 1. We changed the <span
+class="math inline">\(\exists\)</span> to a <span
+class="math inline">\(\forall\)</span> 2. We lowercased the <span
+class="math inline">\(C\)</span> into a <span
+class="math inline">\(c\)</span> (to make it clear that it is quantified
+differently)</p>
+<p>(The book’s definition uses strict <span
+class="math inline">\(\lt\)</span> rather than <span
+class="math inline">\(\le\)</span>. It doesn’t really matter, and some
+of the proofs are slightly easier with <span
+class="math inline">\(\le\)</span>, so that’s the one I use.)</p>
+<hr />
+<h1 id="knowledge-check-1">Knowledge check</h1>
+<p>Is <span class="math inline">\(n = o(n^2)\)</span>? If so, prove it,
+if not, prove that it isn’t.</p>
+<p>[Take a second, how would we prove it?]</p>
+<hr />
+<h1 id="knowledge-check-2-1">Knowledge check (2)</h1>
+<p>It is. We can choose <em>any</em> <span class="math inline">\(c \gt
+0\)</span>, and eventually <span class="math inline">\(n \le c
+n^2\)</span>.</p>
+<p>Let’s apply the definition to the goal. We must show: <span
+class="math inline">\(\forall c \gt 0, \exists n_0 \in \mathbb{N},
+\forall n \ge n_0,n \leq c \cdot n^2\)</span></p>
+<p>There’s a <span class="math inline">\(\forall\)</span> in front, so
+let’s start with “suppose”</p>
+<hr />
+<h1 id="knowledge-check-3">Knowledge check (3)</h1>
+<ul>
+<li>suppose we have a <span class="math inline">\(c \gt 0\)</span> we
+must show <span class="math inline">\(\exists n_0 \in \mathbb{N},
+\forall n \ge n_0, n \leq c \cdot n^2\)</span></li>
+<li>choose <span class="math inline">\(n_0 = \lceil {1 \over c}
+\rceil\)</span>. New goal: <span class="math inline">\(\forall n \ge
+\lceil {1 \over c} \rceil, n \leq c \cdot n^2\)</span></li>
+<li>It is safe to divide both sides by <span
+class="math inline">\(n\)</span>, because we know it is <span
+class="math inline">\(\gt 0\)</span>, so our goal becomes <span
+class="math inline">\(1 \le c \cdot n\)</span></li>
+<li>Our assumption is <span class="math inline">\(\lceil {1 \over c}
+\rceil \le n\)</span>. We can multiply both sides by <span
+class="math inline">\(c\)</span>.</li>
+<li><span class="math inline">\(1 \le c\lceil {1 \over c} \rceil \le
+cn\)</span>, from which the goal follows. <span
+class="math inline">\(\square\)</span></li>
+</ul>
+<hr />
+<h1 id="important-note-about-little-o-proofs">Important note about
+little-<span class="math inline">\(o\)</span> proofs</h1>
+<p>It’s pretty important that, when choosing <span
+class="math inline">\(n_0\)</span>, to incorporate <span
+class="math inline">\(c\)</span> in some way.</p>
+<p>Remember, the goal needs to hold <em>for all possible choices of
+c</em>. Suppose we need to show <span class="math inline">\(1 =
+o(n)\)</span>. If we just choose <span class="math inline">\(n_0 =
+0\)</span> or <span class="math inline">\(n_0 = 1\)</span> like we did
+with the big-<span class="math inline">\(O\)</span> proofs, it won’t
+work:</p>
+<p><span class="math inline">\(\forall n \ge 1, \forall c &gt; 0, 1 \le
+cn\)</span> is not a true statement. What if <span
+class="math inline">\(c=0.0001\)</span>?</p>
+<p>We need <span class="math inline">\(n_0\)</span> to be big enouch so
+that we can divide out the <span class="math inline">\(c\)</span>, but
+also have it be a natural number. So we often choose some function of
+<span class="math inline">\(c\)</span> but rounded up.</p>
+<hr />
+<h1 id="little-o-practice">Little-<span class="math inline">\(o\)</span>
+practice</h1>
+<ol type="1">
+<li>Show that <span class="math inline">\(1 = o(n)\)</span></li>
+<li>Show that <span class="math inline">\(1 = o(\lg n)\)</span>. Hint:
+consider if <span class="math inline">\(n_0 = 2^{(1 / c)}\)</span>. Does
+a natural number work?</li>
+<li>Use the previous result to show <span class="math inline">\(n = o(n
+\lg n)\)</span></li>
+<li>Show that <span class="math inline">\(\lnot (n = o(n))\)</span></li>
+<li>Is this true? Prove it one way or another: <span
+class="math inline">\(f(n) = o(g(n)) \implies g(n) = o(h(n)) \implies
+f(n) = o(h(n))\)</span></li>
+</ol>
+<div class="footnote">
+<p>Reminder: this is curried logic. <span class="math inline">\((P
+\implies Q \implies R) \iff (P \land Q \implies R)\)</span> Note: <span
+class="math inline">\(\implies\)</span> is right associative, so this is
+also true: <span class="math inline">\((P \implies (Q \implies R)) \iff
+(P \land Q \implies R)\)</span> However, this is <strong>not</strong>
+true: <span class="math inline">\(((P \implies Q) \implies R) \iff (P
+\land Q \implies R)\)</span></p>
+</div>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-1">Questions?</h1>
+<hr />
+<h1 id="what-about-loose-omega-bounds">What about loose <span
+class="math inline">\(\Omega\)</span> bounds?</h1>
+<p>Now we have a mechanism for showing that a big-<span
+class="math inline">\(O\)</span> bound could be tighter. What about
+big-<span class="math inline">\(\Omega\)</span> though?</p>
+<p>Yes, and as you might expect, it’s little-<span
+class="math inline">\(\omega\)</span>.</p>
+<p>We won’t spend as much time on it, because if you understand
+little-<span class="math inline">\(o\)</span>, you understand
+little-<span class="math inline">\(\omega\)</span>, but for completeness
+sake, let’s see the definition.</p>
+<hr />
+<h1 id="definition-of-little-omega">Definition of little-<span
+class="math inline">\(\omega\)</span></h1>
+<p><span class="math display">\[
+f(n)=\omega(g(n)) \iff \forall c \gt 0, \exists n_0 \in \mathbb{N},
+\forall n \ge n_0,f(n) \geq c \cdot g(n)
+\]</span></p>
+<p><br></p>
+<div class="footnote">
+<p>Note: again, as usual, <span class="math inline">\(f(n)\)</span> and
+<span class="math inline">\(g(n)\)</span> represent times, so they are
+non-negative.</p>
+</div>
+<hr />
+<h1 id="little-omega-practice">little-<span
+class="math inline">\(\omega\)</span> practice</h1>
+<ol type="1">
+<li>Prove that it is impossible that for some functions <span
+class="math inline">\(f\)</span> and <span
+class="math inline">\(g\)</span>, that <span
+class="math inline">\(f(n)=o(g(n)) \land f(n)=\omega(g(n))\)</span>?
+Hint: The easiest proof is probably to suppose that it’s true and derive
+a contradiction. What does it mean for <span
+class="math inline">\(\forall c, f(n) \le c\cdot g(n)\)</span> and <span
+class="math inline">\(\forall c, f(n) \ge c \cdot g(n)\)</span>?
+Remember that <span class="math inline">\(f(n)\gt 0\)</span> and <span
+class="math inline">\(g(n) \gt 0\)</span> was implied in our
+definition.</li>
+<li>Prove that <span class="math inline">\(f(n) = o(g(n)) \iff g(n) =
+\omega(f(n))\)</span> Hint: choose the same <span
+class="math inline">\(n_0\)</span>, but apply the assumption to a
+different <span class="math inline">\(c\)</span></li>
+<li>prove that <span class="math inline">\(n = \omega(1)\)</span>. You
+can use your result from the little-<span
+class="math inline">\(o\)</span> practice and the previous answer
+here.</li>
+</ol>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-2">Questions</h1>
+<hr />
+<h1 id="one-more-big-theta">One more: big-<span
+class="math inline">\(\Theta\)</span></h1>
+<p>This one is super useful. Let’s first look at the definition:</p>
+<p><span class="math inline">\(f(n) = \Theta(g(n)) \iff\)</span> <span
+class="math inline">\(\exists C_1 \gt 0, \exists C_2 \gt 0, \exists n_0
+\in \mathbb{N}, \forall n \ge n_0, C_1 \cdot g(n) \le f(n) \le C_2 \cdot
+g(n)\)</span></p>
+<div class="footnote">
+<p>Note: as always, both functions are positive.</p>
+</div>
+<hr />
+<h1 id="big-theta-2">Big-<span class="math inline">\(\Theta\)</span>
+(2)</h1>
+<p>Big-<span class="math inline">\(\Theta\)</span> is like a combination
+of big-<span class="math inline">\(O\)</span> and big-<span
+class="math inline">\(\Omega\)</span> at the same time. “<span
+class="math inline">\(f(x) = \Theta(g(x))\)</span> means that <span
+class="math inline">\(f(x)\)</span> and <span
+class="math inline">\(g(x)\)</span> differ by only a constant
+factor.</p>
+<figure>
+<img src="big-theta.svg"
+alt="bg right:55% height:100% a graph of Big-Theta. It shows that a weirdly oscillating sinusoid is contained between f(x)=(3/2)x and f(x)=(2/3)x, confirming that it is Big-Theta of x, despite its strange behavior." />
+<figcaption aria-hidden="true">bg right:55% height:100% a graph of
+Big-Theta. It shows that a weirdly oscillating sinusoid is contained
+between f(x)=(3/2)x and f(x)=(2/3)x, confirming that it is Big-Theta of
+x, despite its strange behavior.</figcaption>
+</figure>
+<p>Notice how the wacky sinusoid is still contained between the two
+linear functions. Therefore, it’s <span
+class="math inline">\(\Theta(x)\)</span>. As x gets big, it’s hard to
+distinguish it from a line.</p>
+<hr />
+<h1 id="why-is-it-useful">Why is it useful?</h1>
+<p>Because of this identity: <span class="math inline">\(f(n)=\Theta(n)
+\iff f(n)=O(n) \land f(n)=\Omega(n)\)</span> This follows immediately
+from using the same constants.</p>
+<p>If I say <span class="math inline">\(f(n)=\Theta(g(n))\)</span>, I
+have told you the big-O and big-<span
+class="math inline">\(\Omega\)</span> <em>at the same time</em>.</p>
+<p>And there’s one other reason why it’s even more useful than just
+big-<span class="math inline">\(O\)</span> and big-<span
+class="math inline">\(\Omega\)</span> put together:</p>
+<p><span class="math inline">\(f(n) = \Theta(g(n)) \implies \lnot(f(n) =
+o(g(n)) \lor f(n) = \omega(g(n))\)</span></p>
+<p>That is, <span class="math inline">\(f(n) = \Theta(g(n))\)</span>
+tells us not only that <span class="math inline">\(f(n)\)</span> is
+bounded by a constant factor of <span
+class="math inline">\(g(n)\)</span>, but that this bound is
+<em>tight</em>.</p>
+<hr />
+<h1 id="proof-of-big-theta-having-a-tight-bound">Proof of big-<span
+class="math inline">\(\Theta\)</span> having a tight bound</h1>
+<p><span class="math inline">\(f(n) = \Theta(g(n)) \implies \lnot(f(n) =
+o(g(n)) \lor f(n) = \omega(g(n))\)</span></p>
+<p>suppose <span class="math inline">\(f(n) = \Theta(g(n))\)</span>, by
+definition <span class="math inline">\(\exists (C_1\gt 0, C_2\gt 0, n_0
+\in \mathbb{N}), \forall n \ge n_0, C_1 \cdot g(n) \le f(n) \le C_2
+\cdot g(n)\)</span> *</p>
+<p>suppose we have some <span class="math inline">\(C_1\gt 0, C_2\gt 0,
+n_0 \in \mathbb{N}\)</span>, then we have the hypothesis <span
+class="math inline">\(\forall n \ge n_0, C_1 g(n) \le f(n) \le C_2
+g(n)\)</span> we must show: <span class="math inline">\(\lnot(f(n) =
+o(g(n)) \lor f(n) = \omega(g(n))\)</span> Remember that <span
+class="math inline">\(\lnot P\)</span> is equivalent to proving <span
+class="math inline">\(P \implies \mathrm{contradiction}\)</span>.</p>
+<div class="footnote">
+<p>* We can combine “foralls” and “exists” together using tuple
+notation: <span class="math inline">\(\exists(a, b, c,
+\ldots)\)</span></p>
+</div>
+<hr />
+<h1 id="proof-of-big-theta-having-a-tight-bound-2">Proof of big-<span
+class="math inline">\(\Theta\)</span> having a tight bound (2)</h1>
+<p>So assume: <span class="math inline">\(f(n) = o(g(n)) \lor f(n) =
+\omega(g(n)\)</span> When you have an assumption of the form <span
+class="math inline">\(P \lor Q\)</span>, you can break your proof into
+two subgoals, one where you assume <span
+class="math inline">\(P\)</span>, and one where you assume <span
+class="math inline">\(Q\)</span>.</p>
+<p>So “suppose” <span class="math inline">\(f(n) = o(g(n))\)</span>.
+Let’s show that assuming <span class="math inline">\(f(n) =
+o(g(n))\)</span> leads to a contradiction.</p>
+<hr />
+<h1 id="proof-of-big-theta-having-a-tight-bound-3">Proof of big-<span
+class="math inline">\(\Theta\)</span> having a tight bound (3)</h1>
+<p><span class="math inline">\(f(n) = o(g(n))\)</span> means <span
+class="math inline">\(\forall c \gt 0, \exists n&#39;_0 \in
+\mathbb{N},\forall n \ge n&#39;_0, f(n) \le c \cdot g(n)\)</span> and we
+have from our earlier assumption: <span class="math inline">\(\exists
+(C_1\ge 0, C_2\ge 0, n_0 \in \mathbb{N}), \forall n \ge n_0, C_1 \cdot
+g(n) \le f(n) \le C_2 \cdot g(n)\)</span></p>
+<p>in the same way that we “suppose” a “<span
+class="math inline">\(\forall\)</span>” in the goal and an “<span
+class="math inline">\(\exists\)</span>” in an assumption, we “choose” a
+“<span class="math inline">\(\exists\)</span>” in the goal and a “<span
+class="math inline">\(\forall\)</span>” in an assumption.</p>
+<p>Choose some <span class="math inline">\(n&#39; \ge n_0 +
+n&#39;_0\)</span> Choose <span class="math inline">\(c={C_1 \over
+2}\)</span>, from <span class="math inline">\(c\)</span> and <span
+class="math inline">\(n&#39;\)</span> and the <span
+class="math inline">\(o\)</span> assumption, <span
+class="math inline">\(f(n) \leq {C_1 \over 2} \cdot g(n)\)</span> This
+implies that <span class="math inline">\(\forall n \ge n&#39;_0, C_1
+\cdot g(n) \le f(n) \le {C_1 \over 2} \cdot g(n)\)</span></p>
+<hr />
+<h1 id="proof-of-big-theta-having-a-tight-bound-4">Proof of big-<span
+class="math inline">\(\Theta\)</span> having a tight bound (4)</h1>
+<p><span class="math inline">\(\forall n \ge n&#39;_0, C_1 \cdot g(n)
+\le f(n) \le {C_1 \over 2} \cdot g(n)\)</span> implies by transitivity,
+<span class="math inline">\(\forall n \ge n&#39;_0, C_1 \cdot g(n) \le
+{C_1 \over 2} \cdot g(n)\)</span> and <span class="math inline">\(g(n)
+\ge 0\)</span>, so this implies <span class="math inline">\(C_1 \leq
+{C_1 \over 2}\)</span> while implies <span class="math inline">\(1 \le
+{1 \over 2}\)</span>, a contradiction. <span
+class="math inline">\(\square?\)</span></p>
+<p>Not quite <span class="math inline">\(\square\)</span>, we showed
+that <span class="math inline">\(f(n) = \Theta(g(n)) \implies \lnot
+(f(n)=o(g(n)))\)</span>.</p>
+<p>What about <span class="math inline">\(\lnot(f(n) =
+\omega(f(n)))\)</span>?</p>
+<hr />
+<h1 id="big-theta-practice">Big-<span
+class="math inline">\(\Theta\)</span> practice</h1>
+<ol type="1">
+<li><p>We didn’t finish the proof of big-<span
+class="math inline">\(\Theta\)</span> having a tight bound. We showed
+that <span class="math inline">\(f(n) = \Theta(g(n)\)</span> and <span
+class="math inline">\(f(n) = o(g(n))\)</span> were incompatible. Now
+prove <span class="math inline">\(\lnot(f(n) =
+\omega(g(n))\)</span></p></li>
+<li><p>Prove this equivalence: <span
+class="math inline">\(f(n)=\Theta(g(n)) \iff f(n)=O(g(n)) \land
+f(n)=\Omega(g(n))\)</span></p></li>
+<li><p>From 1 and 2, show: <span class="math inline">\(f(n)=\Theta(g(n))
+\iff\)</span> <span class="math inline">\(f(n)=O(g(n)) \land
+f(n)=\Omega(g(n)) \land \lnot ( f(n) = o(g(n))) \land \lnot(f(n) =
+\omega(g(n)))\)</span></p></li>
+</ol>
+<hr />
+<!-- _class: questions invert -->
+<h1 id="questions-3">Questions?</h1>
+<hr />
+<h1 id="but-we-cant-always-use-big-theta">But we can’t always use
+big-<span class="math inline">\(\Theta\)</span></h1>
+<p>Ideally, we’d always use big-<span
+class="math inline">\(\Theta\)</span> because of how much information it
+gives us.</p>
+<p>But we <em>can’t</em> always use it. Here are some facts about
+insertion sort: - <span class="math inline">\(T(n) = O(n^2)\)</span> -
+<span class="math inline">\(\lnot (T(n) = o(n^2))\)</span> - <span
+class="math inline">\(T(n) = \Omega(n)\)</span> - <span
+class="math inline">\(\lnot (T(n) = \omega(n))\)</span></p>
+<p>The <span class="math inline">\(1^{st}\)</span> two mean there are a
+<span class="math inline">\(C_1\)</span> and a <span
+class="math inline">\(C_2\)</span>, <span class="math inline">\(T(n) \le
+C_1 \cdot n^2\)</span>, but <span class="math inline">\(T(n) \gt C_2
+\cdot n^2\)</span> The <span class="math inline">\(2^{nd}\)</span> two
+mean there are a <span class="math inline">\(C_3\)</span> and a <span
+class="math inline">\(C_4\)</span>, <span class="math inline">\(C_3
+\cdot n \le T(n)\)</span>, but <span class="math inline">\(C_4 \cdot n
+\gt T(n)\)</span></p>
+<p>From that, we get contradictions like <span
+class="math inline">\(\forall n \ge n_0, C_4 \cdot n \gt T(n) \gt C_2
+\cdot n^2\)</span>, which is clearly not true.</p>
+<hr />
+<h1 id="some-algorithms-dont-have-a-general-big-theta">Some algorithms
+don’t have a general big-<span
+class="math inline">\(\Theta\)</span></h1>
+<p>And ain’t that a shame; big-<span
+class="math inline">\(\Theta\)</span> is useful.</p>
+<p>Is there some way we can redefine our problem so we can use it?</p>
+<hr />
+<h1 id="introducing-cases">Introducing cases</h1>
+<p>We can consider the <em>best</em>, <em>worst</em>, and
+<em>average</em> cases for an algorithm.</p>
+<p>This lets us acknowledge that there are certain kinds of inputs that
+will have very regular runtimes from the algorithm.</p>
+<p>If we constrain our inputs like this, we can be much more precise
+with our bounds. So precise that we can usually use big-<span
+class="math inline">\(\Theta\)</span>!</p>
+<hr />
+<h1 id="cases-for-insertion-sort-best-case">Cases for insertion sort:
+best case</h1>
+<p>We know that if the list is sorted, the outer loop runs for every
+<span class="math inline">\(n\)</span> and the inner loop never
+runs.</p>
+<p>We already showed that this results in it being <span
+class="math inline">\(\Omega(n)\)</span>.</p>
+<p>However, if we say, ahead of time, “we’re assuming the list is
+sorted”, then it is also <span class="math inline">\(O(n)\)</span>,
+because we know it will not go through the list more than once.</p>
+<p>Therefore, if we say “best case” or “the list is sorted”, we can say
+insertion sort is <span class="math inline">\(\Theta(n)\)</span>.</p>
+<hr />
+<h1 id="cases-for-insertion-sort-worst-case">Cases for insertion sort:
+worst case</h1>
+<p>If the list is in exactly reverse order, the inner loop runs <span
+class="math inline">\(i\)</span> times and the outer loop runs <span
+class="math inline">\(n\)</span> times.</p>
+<p>We showed that this was <span class="math inline">\(O(n^2)\)</span>,
+but now, because we specified explicitly that the list was out of order,
+we also know that it is <span class="math inline">\(\Omega(n^2)\)</span>
+as well.</p>
+<p>Therefore it is <span class="math inline">\(\Theta(n^2)\)</span></p>
+<hr />
+<h1 id="cases-for-insertion-sort-average-case">Cases for insertion sort:
+average case</h1>
+<p>This is the toughest one. What does average mean? There are different
+ways of defining it. The simplest is the expected time taken of a
+uniform-randomly chosen input.</p>
+<p>This kind of analysis is tough and sometimes requires higher math.
+However in this case, we can observe that a randomly sorted list is
+likely to have some proportion of its pairs out of order.</p>
+<p>This means that the inner loop will run a random, but proportional
+amount of iters. So <span class="math inline">\(i/q\)</span> iters for
+some <span class="math inline">\(q\)</span>. This ends up being related
+by a constant to <span class="math inline">\(n^2\)</span>.</p>
+<p>So we can say, on average, insertion sort is <span
+class="math inline">\(\Theta(n^2)\)</span></p>
+<hr />
+<h1 id="practice-1">Practice</h1>
+<ol type="1">
+<li>Is selection sort <span class="math inline">\(\Theta(n^2)\)</span>
+in all cases, or is there some case where it has a different bound?
+Support your answer.</li>
+<li>What about linear search?</li>
+<li>Think of another algorithm that has no big-<span
+class="math inline">\(\Theta\)</span> in general, but does when you
+narrow the cases down.</li>
+</ol>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-4">Questions?</h1>
+<hr />
+<h1 id="switching-gears">Switching gears</h1>
+<p>What is the worst-case big-<span
+class="math inline">\(\Theta\)</span> of this function?</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort_rec<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    ins_sort_rec<span class="op">(</span>arr<span class="op">,</span> n <span class="op">-</span> <span class="dv">1</span><span class="op">);</span>                   <span class="co">// Theta(???)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> j <span class="op">=</span> n <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> t <span class="op">=</span> arr<span class="op">[</span>j<span class="op">];</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(;</span> j <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">&gt;</span> t<span class="op">;</span> j<span class="op">--)</span> <span class="op">{</span>      <span class="co">// Theta(n)</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        arr<span class="op">[</span>j<span class="op">]</span> <span class="op">=</span> arr<span class="op">[</span>j<span class="op">-</span><span class="dv">1</span><span class="op">];</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    arr<span class="op">[</span>j<span class="op">]</span> <span class="op">=</span> t<span class="op">;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="recursive-inseriton-sort-analysis">Recursive inseriton sort
+analysis</h1>
+<p>This is a fun one because in order to know the big-<span
+class="math inline">\(\Theta\)</span> of the recursive function, we have
+to know the big-<span class="math inline">\(\Theta\)</span> of the
+recursive function.</p>
+<p>Let’s start by showing the time function: <span
+class="math inline">\(T(0) = \Theta(1)\)</span> <span
+class="math inline">\(T(1) = \Theta(1)\)</span> <span
+class="math inline">\(T(n)= T(n - 1) + \Theta(n), \mathrm{if}\ n \ge
+0\)</span></p>
+<p>Here, we’re saying that running the function on the empty array or a
+singleton array just returns (which takes constant time). But running on
+<span class="math inline">\(n\)</span> means we first run on <span
+class="math inline">\(n - 1\)</span>, which takes <span
+class="math inline">\(T(n - 1)\)</span>, and then we have a loop that
+takes <span class="math inline">\(\Theta(n)\)</span>.</p>
+<hr />
+<h1 id="dont-bother-with-substitution">Don’t bother with
+substitution</h1>
+<p>Obviously we could substitute if we wanted: <span
+class="math inline">\(T(n)= T(n - 1) + \Theta(n), \mathrm{if}\ n \ge
+0\)</span> <span class="math inline">\(T(n)= T(n - 2) + \Theta(n) +
+\Theta(n), \mathrm{if}\ n \ge 0\)</span> <span
+class="math inline">\(T(n)= T(n - 3) + \Theta(n) + \Theta(n) +
+\Theta(n), \mathrm{if}\ n \ge 0\)</span></p>
+<p>But we’re not getting anywhere. We <em>know</em> that there’s an
+endpoint for any <span class="math inline">\(n\)</span></p>
+<p>Whenever we see this kind of infinite substitution happen, where we
+know that if we had something to fill in for <span
+class="math inline">\(P(n-1)\)</span>, we could show <span
+class="math inline">\(P(n)\)</span>, that’s a sign that we need
+induction.</p>
+<hr />
+<h1 id="deciding-on-the-proposition">Deciding on the proposition</h1>
+<p>But induction is called “induction” because you have to determine the
+proposition before you do the proof. It’s different from “deduction”
+where it just follows.</p>
+<p>So how do we get an idea of what the worst case big-<span
+class="math inline">\(\Theta\)</span> should be?</p>
+<p>It can be helpful to draw a diagram</p>
+<hr />
+<figure>
+<img src="ins_sort_rec_time.svg"
+alt="bg height:95% a diagram showing the time behavior of recursive insertion sort. There are 4 columns. One for i = 1 shows that one Theta of one comparison happens. Then, its neighbor, i = 2 shows that two Theta of one comparisons happen. Then, its neighbor, i = 3 has three Theta of one comparisons inside of it. Lastly, there is a column for i = 4+, showing more comparisons. The overall shape is triangular, justifying a quadratic number of comparisons." />
+<figcaption aria-hidden="true">bg height:95% a diagram showing the time
+behavior of recursive insertion sort. There are 4 columns. One for i = 1
+shows that one Theta of one comparison happens. Then, its neighbor, i =
+2 shows that two Theta of one comparisons happen. Then, its neighbor, i
+= 3 has three Theta of one comparisons inside of it. Lastly, there is a
+column for i = 4+, showing more comparisons. The overall shape is
+triangular, justifying a quadratic number of comparisons.</figcaption>
+</figure>
+<hr />
+<h1 id="the-diagram">The diagram</h1>
+<p>There is a column for each place in the array, and each column has
+that many comparisons in it.</p>
+<p>As a result, the shape is triangular.</p>
+<p>And a triangle has half the area of a square, so we’re justified in
+thinking that this will end up being <span
+class="math inline">\(\Theta(n^2)\)</span>.</p>
+<p>But how do we prove it?</p>
+<hr />
+<h1 id="induction-for-big-theta">Induction for big-<span
+class="math inline">\(\Theta\)</span></h1>
+<p>Remember the time function: <span class="math inline">\(T(0) =
+\Theta(1)\)</span> <span class="math inline">\(T(n)= T(n - 1) +
+\Theta(n), \mathrm{if}\ n \ge 0\)</span></p>
+<p>First, let’s replace those <span
+class="math inline">\(\Theta\)</span> expressions with expressions for
+functions <em>in</em> that <span class="math inline">\(\Theta\)</span>.
+This is rigorous if we make sure that our expressions can match the
+leading terms of every function in the set.</p>
+<p>We’ll replace <span class="math inline">\(\Theta(1)\)</span> with
+<span class="math inline">\(c\)</span> for some constant, and we know
+that <span class="math inline">\(\Theta(n)\)</span> is a linear
+function, so we’ll call it <span class="math inline">\(an\)</span>. To
+match every linear function, it could be <span class="math inline">\(an
++ d\)</span>, but we only need to match the leading term. Adding <span
+class="math inline">\(n + 1\)</span> will have the same <span
+class="math inline">\(\Theta\)</span> effect as adding <span
+class="math inline">\(n\)</span>. We also don’t have to consider
+negative functions, because they represent time taken.</p>
+<hr />
+<h1 id="induction-for-big-theta-2">Induction for big-<span
+class="math inline">\(\Theta\)</span> (2)</h1>
+<p><span class="math inline">\(T(0) = c, c \gt 0\)</span> <span
+class="math inline">\(T(n)= T(n - 1) + an, a \gt 0\)</span></p>
+<p>First, induction requires a goal. That goal is that in the worst
+case: <span class="math inline">\(T(n) = \Theta(n^2)\)</span></p>
+<p>Is this a proposition that is inductive?</p>
+<hr />
+<h1 id="inductive-propositions">Inductive propositions</h1>
+<p>Recall that propositions eligible for natural number induction look
+like this: <span class="math inline">\(\forall n, P(n)\)</span> But
+<span class="math inline">\(T(n)=\Theta(n^2)\)</span> looks like this:
+<span class="math inline">\(\exists C_1 \gt 0, C_2 \gt 0, n_0 \in
+\mathbb{N}, \forall n \ge n_0,C_1 \cdot n^2 \le T(n) \le C_2 \cdot
+n^2\)</span></p>
+<p>It has a part that could be inductive, there really is a “<span
+class="math inline">\(\forall\)</span>” buried in there. But if we tried
+to do induction here, we’d be committing a fallacy.</p>
+<p>We’re supposed to choose 3 constants <em>first</em>. If we did the
+“<span class="math inline">\(\forall\)</span>” part first, we could make
+the constants different for each <span class="math inline">\(n\)</span>,
+and we could prove that <span class="math inline">\(T\)</span> has any
+big-<span class="math inline">\(\Theta\)</span> whatsoever.</p>
+<p>So what do we choose for the constants?</p>
+<hr />
+<h1 id="induction-for-big-theta-2-1">Induction for big-<span
+class="math inline">\(\Theta\)</span> (2)</h1>
+<p>First, let’s think about <span class="math inline">\(n_0\)</span>,
+even though it’s the third constant.</p>
+<p>They don’t depend on one another, so we can move their order around
+mutually.</p>
+<p><span class="math inline">\(n_0\)</span> is a constant that is
+important for the base case. Consider <span
+class="math inline">\(P(0)\)</span>:</p>
+<p>Is it true that <span class="math inline">\(C_1 \cdot 0^2 \le (T(0) =
+c) \le C_2 \cdot 0^2\)</span>?</p>
+<p>No, and there are no positive <span
+class="math inline">\(C_1\)</span> and <span
+class="math inline">\(C_2\)</span> that will make that work.</p>
+<p>But <span class="math inline">\(C_1 \cdot 1^2 \le (T(1) = c + an) \le
+C_2 \cdot 1^2\)</span> does have solutions. So let’s choose <span
+class="math inline">\(n_0 = 1\)</span>.</p>
+<hr />
+<h1 id="induction-for-big-theta-3">Induction for big-<span
+class="math inline">\(\Theta\)</span> (3)</h1>
+<p><span class="math inline">\(T(0) = c, c \gt 0\)</span> <span
+class="math inline">\(T(n)= T(n - 1) + an, a \gt 0\)</span></p>
+<p>We need to make sure that our choices of <span
+class="math inline">\(C_n\)</span> have enough “give” to accomodate
+<span class="math inline">\(\Theta(n)\)</span></p>
+<p>Here’s the thing: I could just tell you straight up that the correct
+choice is <span class="math inline">\(a \over 2\)</span> for <span
+class="math inline">\(C_1\)</span>, and <span
+class="math inline">\(a\)</span> for <span
+class="math inline">\(C_2\)</span>, but that looks like magic.</p>
+<p>In reality, when writing proofs, we often let constants stay longer
+to figure out what to plug in. Let’s just pretend we picked <span
+class="math inline">\(C_1\)</span> and <span
+class="math inline">\(C_2\)</span>. We don’t know what they are yet, but
+they’re <em>constants</em>, not variables, so we can’t pretend they can
+change.</p>
+<hr />
+<h1 id="induction-for-big-theta-4">Induction for big-<span
+class="math inline">\(\Theta\)</span> (4)</h1>
+<p>Now that we “chose” <span class="math inline">\(C_1\)</span>, <span
+class="math inline">\(C_2\)</span> and <span
+class="math inline">\(n_0\)</span>, we have a nice proposition for
+induction: <span class="math inline">\(\forall n \in \mathbb{N}, n \ge 1
+\implies C_1 \cdot n^2 \le T(n) \le C_2 \cdot n^2\)</span></p>
+<p>The proof starts with “By induction on <span
+class="math inline">\(n\)</span>, we have two subgoals”: 1. <span
+class="math inline">\(0 \ge 1 \implies C_1 \cdot 0^2 \le T(0) \le C_2
+\cdot 0^2\)</span> 2. <span class="math inline">\(C_1 \cdot n^2 \le T(n)
+\le C_2 \cdot n^2 \implies C_1 \cdot (n+1)^2 \le T(n + 1) \le C_2 \cdot
+(n+1)^2\)</span></p>
+<hr />
+<h1 id="induction-for-big-theta-5">Induction for big-<span
+class="math inline">\(\Theta\)</span> (5)</h1>
+<p>Base case: <span class="math inline">\(0 \ge 1 \implies C_1 \cdot 0^2
+\le T(0) \le C_2 \cdot 0^2\)</span> Wait…what? Yes, this statement is
+true: vacuously true. Because <span class="math inline">\(0\)</span> is
+not <span class="math inline">\(\ge 1\)</span>. If you recall to our
+principal of induction algorithm, it didn’t care whether the proof of
+<span class="math inline">\(P(n-1)\)</span> was vacuous or not. True is
+true.</p>
+<p>Remember that in classical logic, <span class="math inline">\(P
+\implies Q\)</span> is equivalent to saying <span
+class="math inline">\(\lnot P \lor Q\)</span>. So <span
+class="math inline">\(0 \ge 1 \implies C_1 \cdot 0^2 \le T(0) \le C_2
+\cdot 0^2\)</span> is the same as saying “either <span
+class="math inline">\(n\)</span> isn’t big enough or <span
+class="math inline">\(C_1 \cdot 0^2 \le T(0) \le C_2 \cdot 0^2\)</span>.
+In this case, <span class="math inline">\(n\)</span> isn’t big enough,
+which is fine.</p>
+<hr />
+<h1 id="induction-for-big-theta-6">Induction for big-<span
+class="math inline">\(\Theta\)</span> (6)</h1>
+<p>Now for the inductive case: <span class="math inline">\(C_1 \cdot n^2
+\le T(n) \le C_2 \cdot n^2 \implies C_1 \cdot (n+1)^2 \le T(n + 1) \le
+C_2 \cdot (n+1)^2\)</span></p>
+<p>Suppose <span class="math inline">\(C_1 \cdot n^2 \le T(n) \le C_2
+\cdot n^2\)</span> and simplify the goal: <span
+class="math inline">\(C_1 \cdot (n^2 + 2n + 1) \le T(n) + a(n + 1) \le
+C_2 \cdot (n^2 + 2n +1 )\)</span></p>
+<p>For this to be true, we need for <span class="math inline">\(C_1
+\cdot (n^2 + 2n + 1) - a(n + 1) \le C_1\cdot n^2\)</span> If the lower
+bound gets even smaller, it’s fine. But if it gets bigger, we can’t
+justify the inductive argument: <span class="math inline">\(C_1\)</span>
+needs to be small enough that the lower bound can hold <span
+class="math inline">\(n+1\)</span></p>
+<p>So this is the inequality that tells us valid choices of <span
+class="math inline">\(C_1\)</span>: <span class="math inline">\(C_1
+\cdot n^2 + C_1 (2n + 1) - a(n + 1) \le C_1 \cdot n^2\)</span>. Subtract
+<span class="math inline">\(C_1 \cdot n^2\)</span>: <span
+class="math inline">\(C_1 (2n + 1) - a(n + 1) \le 0 \equiv C_1 (2n + 1)
+\le a(n + 1)\equiv C_1 \le {a(n + 1) \over (2n + 1)}\)</span></p>
+<hr />
+<h1 id="induction-for-big-theta-6-1">Induction for big-<span
+class="math inline">\(\Theta\)</span> (6)</h1>
+<p>But <span class="math inline">\(C_1\)</span> cannot depend on <span
+class="math inline">\(n\)</span>. Luckily, we can bound it.</p>
+<p><span class="math inline">\(C_1 \le {a(n + 1) \over (2n + 1)} \le
+{a(n+1) \over 2n + 2} \le{a(n+1) \over 2(n + 1)} \le {a \over
+2}\)</span>. So we will go back and choose <span
+class="math inline">\(C_1 = {a \over 2}\)</span>.</p>
+<p>What about <span class="math inline">\(C_2\)</span>? It’s basically
+the same: <span class="math inline">\(T(n) \le C_2 \cdot n^2 \implies
+T(n) + a(n + 1) \le C_2 \cdot (n^2 +2n +1)\)</span> We need <span
+class="math inline">\(a(n + 1) \le C_2 \cdot (2n +1)\equiv {a(n + 1)
+\over(2n + 1)} \le C_2\)</span> which is satisfied by <span
+class="math inline">\(a(n + 1) \over (n + 1)\)</span></p>
+<p>We could choose <span class="math inline">\(C_2 = a\)</span></p>
+<p>(Warning: remember the assumption that <span class="math inline">\(a
+\gt 0\)</span>. If <span class="math inline">\(a\)</span> could be
+negative, these bounds would not hold. Luckily we don’t have to worry
+about that)</p>
+<hr />
+<h1 id="induction-for-big-theta-7">Induction for big-<span
+class="math inline">\(\Theta\)</span> (7)</h1>
+<p>That’s the work done. The actual proof is short.</p>
+<p>Goal: Given this definition of <span
+class="math inline">\(T\)</span>: <span class="math inline">\(T(0) = c,
+c \gt 0\)</span> <span class="math inline">\(T(n)= T(n - 1) + an, a \ne
+0\)</span></p>
+<p>Show that <span class="math inline">\(T(n) = \Theta(n^2)\)</span>.
+That is: <span class="math inline">\(\exists C_1 \gt 0, \exists C_2 \gt
+0, \exists n_0 \in \mathbb{N}, \forall n \ge n_0, C_1 \cdot n^2 \le T(n)
+\le C_2 \cdot n^2\)</span></p>
+<hr />
+<h1 id="induction-for-big-theta-proof">Induction for big-<span
+class="math inline">\(\Theta\)</span>: proof</h1>
+<p>Choose <span class="math inline">\(C_1 = {a \over 2}, C_2 = a, n_0 =
+1\)</span> By induction on <span class="math inline">\(n\)</span>: -
+<span class="math inline">\(n = 0, 0 \ge 1 \implies {a \over 2} n^2 \le
+T(n) \le a n^2\)</span> This is vacuously true. - <span
+class="math inline">\({an^2 \over 2} \le T(n) \le an^2 \implies { a(n +
+1)^2 \over 2} \le T(n + 1) \le a (n + 1)^2\)</span> Suppose the
+inductive hypothesis and simplify the goal: <span
+class="math inline">\({ a(n + 1)^2 \over 2} \le T(n) + a(n + 1) \le a (n
++ 1)^2 \equiv {an^2 \over 2} - {1 \over 2} \le T(n)\le an^2 +
+3an\)</span> Which follows immediately from the inductive hypothesis
+(the bounds got wider).</p>
+<p><span class="math inline">\(\square\)</span></p>
+<hr />
+<h1 id="functional-code-and-induction">Functional code and
+induction</h1>
+<p>This proof is a lot more complicated than the imperative one. We
+eyeballed the answer fairly quickly, but it took a lot of effort finding
+constants to prove it.</p>
+<p>Rather than torture ourselves every time we want to do this, let’s
+make an observation:</p>
+<p>If a recurrence looks like this: <span class="math inline">\(T(0) =
+c\)</span> <span class="math inline">\(T(n) = T(n-1) + f(n)\)</span>,
+where <span class="math inline">\(f: \mathbb{N} \to \mathbb{N}\)</span>
+is non-decreasing, <span class="math inline">\(f(n / 2) =
+\Theta(f(n))\)</span>*</p>
+<p>Then <span class="math inline">\(T(n) = \Theta(nf(n))\)</span></p>
+<p>How can we prove this? Believe it or not, the proof is simpler than
+the previous one.</p>
+<p>(Important note: that requirement that <span
+class="math inline">\(f(n/2)=\Theta(f(n))\)</span> holds for polynomials
+and logs, but not exponentials. They grow too fast. You’ll see why we
+need this.)</p>
+<div class="footnote">
+
+</div>
+<hr />
+<h1 id="telescoping">Telescoping</h1>
+<p>Observe that our <span class="math inline">\(T\)</span> function is a
+sum. <span class="math inline">\(T(0) = c\)</span> <span
+class="math inline">\(T(1) = T(0) + f(1) = c + f(1)\)</span> <span
+class="math inline">\(T(2) = T(1) + f(2) = T(0) + f(1) + f(2) = c + f(1)
++ f(2)\)</span> <span class="math inline">\(\vdots\)</span> <span
+class="math inline">\(T(n) = c + \sum_{k = 1}^{n} f(k)\)</span></p>
+<p>This makes sense from the diagram, but let’s make it rigorous with
+induction.</p>
+<hr />
+<h1 id="proof-of-tn-as-a-telescoping-sum">Proof of T(n) as a telescoping
+sum</h1>
+<p>Show <span class="math inline">\(\forall n \in \mathbb{N}, T(n) = c +
+\sum_{k = 1}^{n} f(k)\)</span> Proof: by induction on <span
+class="math inline">\(n\)</span>: - <span class="math inline">\(n =
+0\)</span>, show <span class="math inline">\(T(0) = c + 0\)</span>. This
+follows from the definition of <span class="math inline">\(T(0)\)</span>
+- show <span class="math inline">\(T(n) = c + \sum_{k = 1}^{n} f(k)
+\implies T(n + 1) = c + \sum_{k = 1}^{n + 1} f(k)\)</span> suppose the
+inductive hypothesis. Simplify the goal to: <span
+class="math inline">\(T(n) + f(n + 1) = c + f(n + 1) + \sum_{k = 1}^{n}
+f(k)\)</span> Simplify further by subtracting the <span
+class="math inline">\(f(n + 1)\)</span>: <span
+class="math inline">\(T(n) = c + \sum_{k = 1}^{n} f(k)\)</span></p>
+<p>This is the inductive hypothesis.</p>
+<p><span class="math inline">\(\square\)</span></p>
+<hr />
+<h1 id="now-what">Now what?</h1>
+<p>Now that we’ve proved <span class="math inline">\(\forall n \in
+\mathbb{N}, T(n) = c + \sum_{k = 1}^{n} f(k)\)</span>.</p>
+<p>Our goal was to show that <span class="math inline">\(T(n) =
+\Theta(nf(n))\)</span> Let’s break that into <span
+class="math inline">\(T(n) = O(nf(n))\)</span> and <span
+class="math inline">\(T(n) = \Omega(nf(n))\)</span>.</p>
+<p>Recall that <span class="math inline">\(f(n)\)</span> was
+non-decreasing. Therefore, <span class="math inline">\(f(k) \le
+f(k+1)\)</span>. This means: <span class="math inline">\(\sum_{k =
+1}^{n}f(k) \le \sum_{k = 1}^{n}f(n)=nf(n)\)</span></p>
+<p>Because big-<span class="math inline">\(O\)</span> is reflexive, and
+because <span class="math inline">\(f(n)=O(g(n))\)</span> if <span
+class="math inline">\(f(n) \le g(n)\)</span> we can conclude
+T(n)=O(<span class="math inline">\(\sum_{k = 1}^{n}f(k)) \le O(\sum_{k =
+1}^{n}f(n))=O(nf(n))\)</span></p>
+<p>This won’t work for big-<span class="math inline">\(\Omega\)</span>,
+though. Just because <span
+class="math inline">\(f(n)=\Omega(\mathrm{smaller\ function})\)</span>
+does not mean <span class="math inline">\(f(n)=\Omega(\mathrm{bigger\
+function})\)</span>.</p>
+<hr />
+<h1 id="big-omega-proof">Big <span class="math inline">\(\Omega\)</span>
+proof</h1>
+<p>Okay, so <span class="math inline">\(T(n) = c + \sum_{k = 1}^{n}
+f(k)\)</span></p>
+<p>We want to find a smaller function than <span
+class="math inline">\(\sum_{k = 1}^{n} f(k)\)</span> that also gets rid
+of the <span class="math inline">\(k\)</span>.</p>
+<p>There’s a cool trick we can use: Take the sum of only the last half
+of terms: <span class="math inline">\(\sum_{k = 1}^{n} f(k) \ge \sum_{k
+= \lfloor n / 2 \rfloor}^{n} f(k)\)</span></p>
+<p>Imagine the sum looks like this: <span class="math inline">\(f(1) +
+f(2) + f(3) + f(4) + f(5) + f(6)\)</span> If we only take the last half:
+<span class="math inline">\(f(4) + f(5) + f(6)\)</span> Because <span
+class="math inline">\(f\)</span> is non-decreasing, all of those terms
+are <span class="math inline">\(\le f(6)\)</span>, and the sum <span
+class="math inline">\(\le 3\cdot f(6)\)</span> So we obtain this bound:
+<span class="math inline">\(\sum_{k = 1}^{n} f(k) \ge \sum_{k = \lfloor
+n / 2 \rfloor}^{n} f(k) \ge {n \over 2} \cdot f({n \over 2}) = \Omega(n
+f(n))\)</span></p>
+<p>Remember that we assumed <span class="math inline">\(f(n/2) =
+\Theta(f(n))\)</span>. This is true for polys and logs.</p>
+<hr />
+<h1 id="wrapping-it-up">Wrapping it up</h1>
+<p>If T has a recurrence relation like this: T(0) = c T(n) = T(n - 1) +
+f(n)</p>
+<p>We have shown: <span class="math inline">\(T(n) = O(n\cdot
+f(n))\)</span> and <span class="math inline">\(T(n) = \Omega(n \cdot
+f(n))\)</span></p>
+<p>Therefore, <span class="math inline">\(T(n) = \Theta(n \cdot
+f(n))\)</span></p>
+<p>There are many, many functions that have a recurrence relation like
+this. You can use this theorem any time one is on a test. We will see
+another one soon.</p>
+<hr />
+<h1 id="practice-3">Practice</h1>
+<ol type="1">
+<li>Consider your version of selection sort.
+<ol type="1">
+<li>Rewrite it as a recursive function. You can separate the arg_max
+function.</li>
+<li>Prove its correctness. (If you separated arg_max, prove it
+separately)</li>
+<li>Guess its big-<span class="math inline">\(\Theta\)</span> like you
+did before</li>
+<li>Prove it.</li>
+</ol></li>
+<li>Write a recursive “maximum” function, which returns the largest
+value in an array.
+<ol type="1">
+<li>Prove that it’s correct using induction.</li>
+<li>Determine its running bound in big-<span
+class="math inline">\(\Theta\)</span></li>
+<li>Prove its running bound.</li>
+</ol></li>
+</ol>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-5">Questions</h1>
+<hr />
+<h1 id="sorting-fast">Sorting <em>fast</em></h1>
+<p>So far we’ve seen sorting algorithms that are <span
+class="math inline">\(\Theta(n^2)\)</span> in the worst case.</p>
+<p>You’ve also seen quicksort, mergesort, and heapsort in the past.
+Those were <span class="math inline">\(n \lg n\)</span> average case.
+(Also worst case except quicksort, which is <span
+class="math inline">\(n^2\)</span> worst case).</p>
+<p>It’s possible to sort in <span class="math inline">\(O(n)\)</span>.
+Not even possible, it’s actually pretty easy.</p>
+<p>Let’s see how.</p>
+<hr />
+<h1 id="comparison-vs.-distribution-sorting">Comparison vs. Distribution
+sorting</h1>
+<p>All the sorts we’ve talked about are comparison sorts. They work by
+comparing values and moving or swapping them based on the results of the
+comparison.</p>
+<p>Comparison sorts are actually proven to be <span
+class="math inline">\(\Omega(n \lg n)\)</span>. You can’t do better than
+that.</p>
+<p>But there’s a different kind of sort: a distribution-based sorting
+algorithm.</p>
+<hr />
+<h1 id="distribution-sorts">Distribution sorts</h1>
+<p>Distribution sorts involve trying to place the value by only looking
+at a property of that value, rather than comparing it to another
+value.</p>
+<p>For example, sorting all the values with a particular digit in one
+array.</p>
+<p>We’ll cover more distribution sorts in the
+<em>divide-and-conquer</em> module. But for now, let’s cover one in
+particular.</p>
+<p>It’s called counting sort, and it has a strange big-<span
+class="math inline">\(\Theta\)</span>.</p>
+<hr />
+<h1 id="counting-sort">Counting sort</h1>
+<p>Consider this array: <code>0, 0, 1, 2, 4, 4, 2, 2, 1, 1</code></p>
+<p>Notice that all the values are between <span
+class="math inline">\(0\)</span> and <span
+class="math inline">\(4\)</span>.</p>
+<p>Let’s create an array of counts. This array will store the number of
+each value. For example, <code>counts[0]</code> will store the number of
+0s, <code>counts[1]</code> will store the number of 1s, etc.</p>
+<p>How do we generate this array?</p>
+<hr />
+<h1 id="counting-sort-2">Counting sort (2)</h1>
+<p>Imagine that the array of counts starts out empty:
+<code>[0, 0, 0, 0, 0]</code></p>
+<p>We iterate over the array of numbers, and add 1 to the count of
+whatever we point to.</p>
+<p><code>0, 0, 1, 2, 4, 4, 2, 2, 1, 1</code>, update <code>counts</code>
+to <code>[1, 0, 0, 0, 0]</code> <code>^</code> because we saw a <span
+class="math inline">\(0\)</span></p>
+<p><code>0, 0, 1, 2, 4, 4, 2, 2, 1, 1</code>, update <code>counts</code>
+to <code>[2, 0, 0, 0, 0]</code> <code>^</code> because we saw a <span
+class="math inline">\(0\)</span></p>
+<p><code>0, 0, 1, 2, 4, 4, 2, 2, 1, 1</code>, update <code>counts</code>
+to <code>[2, 1, 0, 0, 0]</code> <code>^</code> because we saw a <span
+class="math inline">\(1\)</span></p>
+<p>The counts array of <code>[2, 1, 0, 0, 0]</code> means that so far,
+there are 2 zeros and 1 one.</p>
+<hr />
+<h1 id="counting-sort-2-1">Counting sort (2)</h1>
+<p><code>0, 0, 1, 2, 4, 4, 2, 2, 1, 1</code>, update <code>counts</code>
+to <code>[2, 1, 1, 0, 0]</code> <code>^</code> because we saw a <span
+class="math inline">\(2\)</span></p>
+<p><code>0, 0, 1, 2, 4, 4, 2, 2, 1, 1</code>, update <code>counts</code>
+to <code>[2, 1, 1, 0, 2]</code> <code>~~~^</code> then 2 fours…</p>
+<p><code>0, 0, 1, 2, 4, 4, 2, 2, 1, 1</code>, update <code>counts</code>
+to <code>[2, 3, 3, 0, 2]</code> <code>~~~~~~~~~^</code> then 2 more twos
+and ones each.</p>
+<p>So in total there were 2 zeros, 3 ones, 3 twos, no threes, and 2
+fours.</p>
+<p>But we didn’t want an array of counts, we wanted a sorted array…</p>
+<hr />
+<h1 id="expanding-the-counts">Expanding the counts</h1>
+<p>Now we expand the counts down to an array of values.</p>
+<p>So for our count array: <code>[2, 3, 3, 0, 2]</code> We write 2
+zeros: <code>[0, 0]</code> Three ones: <code>[0, 0, 1, 1, 1]</code>
+Three twos: <code>[0, 0, 1, 1, 1, 2, 2, 2]</code> Skip the threes, and 2
+fours: <code>[0, 0, 1, 1, 1, 2, 2, 2, 4, 4]</code></p>
+<p>Which is the sorted version of:
+<code>[0, 0, 1, 2, 4, 4, 2, 2, 1, 1]</code></p>
+<hr />
+<h1 id="the-code">The code</h1>
+<p>Here is my version of counting sort:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// assumes that size(counts) &gt;= maximum(arr)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">// assumes that counts has been zeroed</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> csort_count<span class="op">(</span><span class="dt">size_t</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">,</span> <span class="dt">int</span><span class="op">*</span> counts<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        counts<span class="op">[</span>arr<span class="op">[</span>i<span class="op">]]++;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> csort_expand<span class="op">(</span><span class="dt">size_t</span><span class="op">*</span> out<span class="op">,</span> <span class="dt">size_t</span><span class="op">*</span> counts<span class="op">,</span> <span class="dt">size_t</span> n_counts<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n_counts<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> counts<span class="op">[</span>i<span class="op">];</span> j<span class="op">++)</span> </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>            <span class="op">*</span>out<span class="op">++</span> <span class="op">=</span> i<span class="op">;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="using-the-code">Using the code</h1>
+<p>To use it, you must create an array of counts. It’s the job of the
+caller to allocate this array. It’s possible to make a wrapper that does
+this for us:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> csort<span class="op">(</span><span class="dt">size_t</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> n_counts <span class="op">=</span> maximum<span class="op">(</span>arr<span class="op">,</span> n<span class="op">)</span> <span class="op">+</span> <span class="dv">1</span><span class="op">;</span> <span class="co">// you&#39;ll need to define &#39;maximum&#39;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span><span class="op">*</span> counts <span class="op">=</span> malloc<span class="op">(</span>n_counts <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">size_t</span><span class="op">));</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    csort_count<span class="op">(</span>arr<span class="op">,</span> n<span class="op">,</span> counts<span class="op">);</span> csort_expand<span class="op">(</span>arr<span class="op">,</span> counts<span class="op">,</span> n_counts<span class="op">);</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    free<span class="op">(</span>counts<span class="op">);</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>However, I actually prefer to not do this. IMO, if you don’t know
+ahead of time what the maximum is, you probably shouldn’t be using
+counting sort. Are you going to allocate a 1 billion element array if
+the number 999999999 appears? *</p>
+<div class="footnote">
+<p>* on Linux you can actually do this. The system doesn’t commit pages
+to the process until they are actually accessed, so if you have lots of
+numbers in a small range and then lots of numbers around 1 billion, it
+will only use one extra page for the billion.</p>
+</div>
+<hr />
+<h1 id="count-performance">Count performance</h1>
+<p>When we count, we loop through each element of the array. Let the
+array be size <span class="math inline">\(n\)</span>.</p>
+<p>It seems straightforward that generating the counts would be <span
+class="math inline">\(\Theta(n)\)</span>.</p>
+<p>Any disagreement?</p>
+<hr />
+<h1 id="expand-performance">Expand performance</h1>
+<p>This one is more interesting: we loop over each cell in the <span
+class="math inline">\(counts\)</span> array.</p>
+<p>How many elements are in the counts array? As many as you want.
+Usually we store the counts in an array of length <span
+class="math inline">\(m + 1\)</span>, where <span
+class="math inline">\(m\)</span> is the maximum value in the input
+array.</p>
+<p>Then, within each counts array element, we output that many integers.
+However, the total sum of outputs across all inputs is bounded by <span
+class="math inline">\(n\)</span>. If the array has <span
+class="math inline">\(100\)</span> elements, we will output <span
+class="math inline">\(100\)</span> counts, whether they’re split up
+between all the counts or there are <span
+class="math inline">\(100\)</span> of one value.</p>
+<hr />
+<h1 id="expand-performance-2">Expand performance (2)</h1>
+<p>Therefore, we write this as <span class="math inline">\(\Theta(n +
+m)\)</span> We first do a <span class="math inline">\(\Theta(n)\)</span>
+operation, then we do something over every count, so it could be <span
+class="math inline">\(\Theta(m)\)</span>, but if there are more elements
+of the array then counts, it’s <span
+class="math inline">\(\Theta(n)\)</span>. So really, it’s <span
+class="math inline">\(\Theta(\max(n, m))\)</span></p>
+<p><span class="math inline">\(\Theta(n) + \Theta(\max(n, m)) \equiv
+\Theta(n + m)\)</span>.</p>
+<p>But how do we formalize that? How do we handle Bachmann-Landau
+notation with more than one variable?</p>
+<hr />
+<h1 id="definition-of-thetafn-m">Definition of <span
+class="math inline">\(\Theta(f(n, m))\)</span></h1>
+<p>We add an extra “forall” to our definition. Here’s what it was
+before: <span class="math display">\[
+f(n) = \Theta(g(n)) \iff \exists C_1 \gt 0, \exists C_2 \gt 0, \exists
+n_0 \in \mathbb{N}, \forall n \ge n_0, C_1 \cdot g(n) \le f(n) \le C_2
+\cdot g(n)
+\]</span></p>
+<p>Here’s what it is with two variables: <span
+class="math inline">\(f(n, m) = \Theta(g(n, m)) \iff\)</span> <span
+class="math inline">\(\exists C_1 \gt 0, \exists C_2 \gt 0, \exists n_0
+\in \mathbb{N}, \exists m_0 \in \mathbb{N},\)</span> <span
+class="math inline">\(\forall n \ge n_0, \forall m \ge m_0, C_1 \cdot
+g(n, m) \le f(n, m) \le C_2 \cdot g(n, m)\)</span></p>
+<hr />
+<h1 id="variable-big-theta-for-expand">2 variable big-<span
+class="math inline">\(\Theta\)</span> for expand</h1>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n_counts<span class="op">;</span> i<span class="op">++)</span>       <span class="co">// Theta(m)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> counts<span class="op">[</span>i<span class="op">];</span> j<span class="op">++)</span>  <span class="co">// Theta(n), does not depend on m</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>out<span class="op">++</span> <span class="op">=</span> i<span class="op">;</span>                         <span class="co">// Theta(n + m). Don&#39;t multiply them! </span></span></code></pre></div>
+<p>The outer loop clearly runs <span class="math inline">\(m\)</span>
+times.</p>
+<p>The inner loop is a little strange. It runs once for every count.
+Luckily, we know that sum(counts) = len(array) = n, so The inner loop
+runs, in total, n times (regardless of how many times the outer loop
+runs).</p>
+<p>Because the inner loop always takes <span
+class="math inline">\(\Theta(n)\)</span> time, regardless of the time
+the outer loop takes, <em>we do not multiply them</em>!</p>
+<hr />
+<h1 id="what-if-it-were-recursive">What if it were recursive?</h1>
+<p>The recurrence relation could look like this: <span
+class="math inline">\(T(0) = c, c \gt 0\)</span> <span
+class="math inline">\(T(i) = T(i - 1) + \mathrm{counts}[i] + d, d \gt
+0\)</span></p>
+<p><span class="math inline">\(c\)</span> is the base-cost of calling
+the function. <span class="math inline">\(d\)</span> is the base cost of
+the loop to expand.</p>
+<p>We can’t use our theorem from earlier here, though.
+<code>counts[m]</code> is not a non-decreasing function.</p>
+<p>We can express it as a sum, though: <span class="math inline">\(T(m)
+= c + \sum_{i = 0}^{i = m}\mathrm{counts}[i] + dm\)</span></p>
+<hr />
+<h1 id="what-if-it-were-recursive-2">What if it were recursive? (2)</h1>
+<p><span class="math inline">\(T(m) = c + \sum_{i = 0}^{i =
+m}\mathrm{counts}[i] + dm\)</span></p>
+<p>Luckily, there’s a nice equivalence here: <span
+class="math inline">\(\sum_{i = 0}^{i = m}\mathrm{counts}[i] =
+n\)</span>. There’s one count for every element of the array.</p>
+<p>So <span class="math inline">\(T(m) = c + n + dm\)</span></p>
+<p>Can we prove this is <span class="math inline">\(\Theta(n +
+m)\)</span>?</p>
+<hr />
+<h1 id="solving-for-the-constants">Solving for the constants</h1>
+<p>Choose some <span class="math inline">\(C_1\)</span>, <span
+class="math inline">\(C_2\)</span>, <span
+class="math inline">\(n_0\)</span>, and <span
+class="math inline">\(m_0\)</span>. By induction on <span
+class="math inline">\(m\)</span>: - Base case: <span
+class="math inline">\(m \ge m_0 \implies \forall n \ge n_0, C_1(n + 0)
+\le c + n + 0 \le C_2(n + 0)\)</span></p>
+<p>Notice that we still have a <span
+class="math inline">\(\forall\)</span> in our proposition. We
+“peeled-off” the <span class="math inline">\(\forall m\)</span>, but
+there’s still a <span class="math inline">\(\forall n\)</span>. We are
+allowed to mutually re-arrange adjacent non-dependent foralls, so we
+could have done induction on <span class="math inline">\(n\)</span>
+instead of <span class="math inline">\(m\)</span>. Then our base case
+would start with <span class="math inline">\(\forall m,\)</span></p>
+<p>I like doing induction on <span class="math inline">\(m\)</span>
+more, because of the <span class="math inline">\(dm\)</span> term.
+You’ll see why it’s easier.</p>
+<p>To prove this sub goal, our proof will need to start with “suppose”.
+We’ll have to assume we have <span class="math inline">\(n \ge
+n_0\)</span> and that <span class="math inline">\(m\)</span> is an
+arbitrary natural number.</p>
+<hr />
+<h1 id="solving-for-the-constants-2">Solving for the constants (2)</h1>
+<p>The inductive case is interesting. It gives us a “<span
+class="math inline">\(\forall m\)</span>” in the inductive
+hypothesis:</p>
+<p><span class="math inline">\(m \ge m_0 \implies \forall n \ge n_0,
+C_1(n + m) \le c + n + dm \le C_2(n + m) \implies\)</span> <span
+class="math inline">\(m + 1 \ge m_0 \implies \forall n \ge n_0, C_1(n +
+m + 1) \le c + n + d(m + 1) \le C_2(n + m + 1)\)</span></p>
+<p>Now there’s enough information to choose good values of <span
+class="math inline">\(C_1\)</span> and <span
+class="math inline">\(C_2\)</span> and fully express the proof.</p>
+<p>This is a practice exercise, but the answer is in Appendix A. There
+is another approach, though. It is listed in Appendix B.</p>
+<hr />
+<h1 id="practice-4">Practice</h1>
+<ul>
+<li>Finish the proof in the previous slides</li>
+<li>Read the appendices A and B to check your work</li>
+<li>Then, read appendix D for practice quizzes.</li>
+<li>There will be a quiz for a grade next week!</li>
+</ul>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-6">Questions?</h1>
+<hr />
+<h1 id="why-dont-we-use-counting-sort-all-the-time">Why don’t we use
+counting sort all the time?</h1>
+<p>Because you need the range of values to be quite limited. It’s not
+general-purpose!</p>
+<p>But, if the distribution of values is skewed, even if it’s not 100%
+limited to a range, you can use it. Even if it’s only a hybrid sort.</p>
+<p>It’s simple, elegant, useful, but not commonly used. A great
+opportunity for optimization!</p>
+<hr />
+<h1 id="appendix-a-recursive-counting-sort-is-thetan-m">Appendix A:
+recursive counting sort is <span class="math inline">\(\Theta(n +
+m)\)</span></h1>
+<p>Let <span class="math inline">\(C_1=\min(1, d)\)</span>, <span
+class="math inline">\(C_2=\max(1, c, d)\)</span>, <span
+class="math inline">\(n_0 = 0\)</span>, <span class="math inline">\(m_0
+= 0\)</span> - Base case: <span class="math inline">\(m \ge 0 \implies
+\forall n \ge 0, \min(1, d) \cdot (n + 0) \le c + n + 0 \le \max(1, c,
+d) \cdot (n + 0)\)</span> If <span class="math inline">\(d \lt
+1\)</span>, the lower bound is <span class="math inline">\(dn \le c +
+n\)</span>, which is true, otherwise <span class="math inline">\(n \le c
++ n\)</span> (True). The upper bound follows the same way. - Inductive
+case (ignoring the <span class="math inline">\(m_0\)</span> and <span
+class="math inline">\(n_0\)</span> hypotheses which are tautologies):
+<span class="math inline">\(\forall n, (\min(1,d)\cdot(n + m) \le c + n
++ dm \le \max(1, c)\cdot(n + m) \implies\)</span> <span
+class="math inline">\(\forall n, (\min(1,d)\cdot(n + 1 + m) \le c + n +
+1 + dm \le (\max (1, c, d))\cdot(n + 1 + m)\)</span> The goal follows
+from the inductive hypothesis with some minor arithmetic.</p>
+<p><span class="math inline">\(\square\)</span></p>
+<hr />
+<h1 id="appendix-b-nicer-proof">Appendix B: nicer proof</h1>
+<p>This proof avoids the 2-variable induction.</p>
+<p>We start with <span class="math inline">\(T(m) = c + n + dm\)</span>
+Goal: <span class="math inline">\(T(m) = \Theta(n + m)\impliedby
+T(m)=O(n+m)\land T(m)=\Omega(n + m)\)</span></p>
+<p>Start by showing <span class="math inline">\(T(m)=O(n + m)\)</span>.
+If <span class="math inline">\(d \lt 1\)</span>, then <span
+class="math inline">\(T(m) = c + n + dm \le c + n +m\)</span>, so <span
+class="math inline">\(T(m)=O(n + m)\)</span> If <span
+class="math inline">\(d \ge 1\)</span>, <span class="math inline">\(T(m)
+= c + n + dm \le c + dn + dm \le c + d(n + m) = O(d(n+m)) =
+O(n+m)\)</span></p>
+<p>To show <span class="math inline">\(T(m)=\Omega(n + m)\)</span>, If
+<span class="math inline">\(d &lt; 1\)</span>, <span
+class="math inline">\(T(m) = c + n + dm \ge c + dn + dm = \Omega(n +
+m)\)</span> If <span class="math inline">\(d \ge 1\)</span>, <span
+class="math inline">\(T(m) = c + n + dm \ge c + n + m = \Omega(n +
+m)\)</span> <span class="math inline">\(\square\)</span></p>
+<hr />
+<h1 id="appendix-c-microbenchmark-results">Appendix C: Microbenchmark
+results</h1>
+<pre><code>running 3 benches with 1000 iterations each:
+
+benching insertion sort
+length 10: 0.073548 mean microseconds, stdev: 0.009183
+length 100: 1.232503 mean microseconds, stdev: 0.311345
+length 1000: 84.942303 mean microseconds, stdev: 32.327609
+
+benching insertion sort (recursive)
+length 10: 0.084384 mean microseconds, stdev: 0.009791
+length 100: 1.666998 mean microseconds, stdev: 0.766676
+length 1000: 112.733062 mean microseconds, stdev: 33.704407
+
+benching counting sort
+length 10: 0.280840 mean microseconds, stdev: 0.301999
+length 100: 0.304964 mean microseconds, stdev: 0.007011
+length 1000: 0.760517 mean microseconds, stdev: 0.026178</code></pre>
+<hr />
+<h1 id="appendix-d-actual-quiz-next-class">Appendix D: Actual quiz next
+class</h1>
+<p>Next class we will have a quiz on this material.</p>
+<p>This quiz counts! It’s going to measure your understanding of this
+module.</p>
+<p><strong>You must bring paper and a writing implement! This is your
+responsibility! Set six different reminders on your phone!</strong></p>
+<hr />
+<h1 id="appendix-d-actual-quiz-next-class-2">Appendix D: Actual quiz
+next class (2)</h1>
+<p>Start studying now, and try to resolve any feelings of meta-cognitive
+unease. If you feel like “I don’t quite get this”, listen to the
+feeling!</p>
+<p>Test yourself. The quiz will be proctored, pen-and-paper, and timed
+(15 minutes). If you aren’t studying at least a little bit under these
+time and resource controls, you aren’t studying for the quiz!</p>
+<p>The quiz will test the first learning mastery standard.</p>
+<hr />
+<h1 id="appendix-d-how-should-i-study">Appendix D: How should I
+study?</h1>
+<p>Do all the practice exercises from this week and last week.</p>
+<p>Then, take the following practice quzzes. Time yourself!</p>
+<p>You will have a base-time of 15 minutes (unless accomodations were
+made in advance). If you aren’t doing the practice sessions under the
+same time you will have in class, you aren’t actually practicing for the
+quiz.</p>
+<p>This is an open-written-materials quiz. You can bring your book,
+notes, a cheat sheet you printed off or wrote, anything written. No
+electronic devices</p>
+<hr />
+<h1 id="appendix-d-how-should-i-study-2">Appendix D: How should I study?
+(2)</h1>
+<p>Remember: <em>if you aren’t studying under time controls with pen and
+paper, <strong>you aren’t studying!</strong></em> So actually take these
+like quizzes.</p>
+<p>The first practice quiz is worked. The others aren’t.</p>
+<p>And remember to bring pen and paper for the quiz next week!</p>
+<hr />
+<h1 id="appendix-d-practice-quiz-1">Appendix D: Practice Quiz 1</h1>
+<ol type="1">
+<li><p>(20 points) Write a function in C that returns the smallest
+magnitude negative int in a given list, or 0 if there are no negative
+numbers. For example
+<code>lsmall({-2, -5, 2, 5, 7, -100}, 6) == -2</code>.
+<code>lsmall({}, 0) == 0</code></p></li>
+<li><p>(20 points) Prove that it is correct.</p></li>
+<li><p>(20 points) Determine its big-<span
+class="math inline">\(\Theta\)</span></p></li>
+<li><p>(20 points) Prove that it has that big-<span
+class="math inline">\(\Theta\)</span></p></li>
+<li><p>(20 points) for accurate self grading. Rubric after
+answers.</p></li>
+</ol>
+<hr />
+<h1 id="appendix-d-quiz-1-answers">Appendix D: Quiz 1 answers</h1>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> lsmall<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> c <span class="op">=</span> lsmall<span class="op">(</span>arr <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> n <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> arr<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&lt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> <span class="op">(</span>c <span class="op">==</span> <span class="dv">0</span> <span class="op">||</span> arr<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&gt;</span> c<span class="op">)</span> <span class="op">?</span> arr<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">:</span> c<span class="op">;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Proof: by induction on n, if n == 0, it returns 0 as required. If
+<code>lsmall(arr + 1, n - 1)</code> is correct, then we determine
+whether the new head is negative, if it is, we use it if it is larger
+than c, which will be negative.</p>
+<p>It is <span class="math inline">\(\Theta(n)\)</span></p>
+<p>Its recurrence relation is, <span class="math inline">\(T(0) =
+c\)</span>, <span class="math inline">\(T(n) = T(n - 1) + d\)</span>,
+which is <span class="math inline">\(\Theta(n\cdot 1)=\Theta(n)\)</span>
+by the linear recurrence relation lemma.</p>
+<hr />
+<h1 id="appendix-d-quiz-1-answers-2">Appendix D: Quiz 1 answers (2)</h1>
+<p>You could also do it iteratively:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> lsmall<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> res <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// I: res = lsmall(arr[0..i), i)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// I: res = maximum (filter negatives (arr))</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span>                          <span class="co">// Theta(n)</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">// if we found a negative, if it&#39;s the first one or it&#39;s &gt; res</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>arr<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> <span class="op">(</span>res <span class="op">==</span> <span class="dv">0</span> <span class="op">||</span> arr<span class="op">[</span>i<span class="op">]</span> <span class="op">&gt;</span> res<span class="op">))</span>       <span class="co">// Theta(1)</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>            res <span class="op">=</span> arr<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> res<span class="op">;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="appendix-d-quiz-1-self-grading-rubric">Appendix D: Quiz 1
+self-grading rubric</h1>
+<ol type="1">
+<li>give yourself 4 points for each edge case:
+<ol type="1">
+<li><code>lsmall({}, 0) == 0</code></li>
+<li><code>lsmall({1, 2, 3, -20}, 4) == -20</code></li>
+<li><code>lsmall({-20, 1, 2, -21}, 4) == -20</code></li>
+<li><code>lsmall({-20, 1, 2, -19}, 4) == -19</code></li>
+<li><code>lsmall({1, 2, 3, 4}, 4) == 0</code></li>
+</ol></li>
+<li>If you used a loop invariant <em>or</em> and inductive hypothesis,
+give yourself 5 points base. The loop invariant or inductive hypotheses
+must be related to the returned value: give yourself 5 points if it is.
+You will have to be the judge of the remaining 10 points. Check for
+fallacies. If you randomly wrote something without trying to convince
+yourself, please do not award credit.</li>
+</ol>
+<hr />
+<h1 id="appendix-d-quiz-1-self-grading-rubric-2">Appendix D: Quiz 1
+self-grading rubric (2)</h1>
+<ol start="3" type="1">
+<li><p>You’ll have to be the judge of big-<span
+class="math inline">\(\Theta\)</span>, and we’ll check. If you sorted
+the array first, you should have assumed that it took either <span
+class="math inline">\(n + m\)</span>, <span class="math inline">\(n \lg
+n\)</span>, or <span class="math inline">\(n^2\)</span> time. Otherwise
+you should expect <span class="math inline">\(\Theta(n)\)</span>. This
+one is normally all or nothing. If you sorted first and made a bad
+assumption about the sort, deduct 10 points if that is your
+<em>only</em> error. Otherwise deduct all 20.</p></li>
+<li><p>The proof should follow either from our linear recurrence lemma
+or from simple iterative multiplication. 20 points if so. If you went
+the hard route and tried to find <span
+class="math inline">\(C_1\)</span>, <span
+class="math inline">\(C_2\)</span>, etc., check for fallacies the same
+way as you did for number 2. If you did not state the recurrence
+correctly, -10. If you did not annotate a loop correctly, -10.</p></li>
+</ol>
+<hr />
+<h1 id="appendix-d-quiz-2">Appendix D: Quiz 2</h1>
+<ol type="1">
+<li><p>(20 points) Write a function in C that returns the sum of every
+even-index element, starting with index 0. e.g.,
+<code>even_sum({1, 2, 3, 4}, 4) == 4</code>,
+<code>even_sum({}, 0) == 0</code></p></li>
+<li><p>(20 points) Prove that it is correct.</p></li>
+<li><p>(20 points) Determine its big-<span
+class="math inline">\(\Theta\)</span></p></li>
+<li><p>(20 points) Prove that it has that big-<span
+class="math inline">\(\Theta\)</span></p></li>
+<li><p>(20 points) for accurate self grading. Try to be consistent with
+Quiz 1’s rubric.</p></li>
+</ol>
+<hr />
+<h1 id="appendix-d-quiz-3">Appendix D: Quiz 3</h1>
+<ol type="1">
+<li><p>(20 points) Write a function in C that returns the largest sum of
+adjacent pairs of an array. For example, <code>{1,2,3,1}</code> has
+adjacent pairs (1, 2); (2, 3); and (3, 1). (2, 3) has the largest sum,
+5, so it would return 5.
+<code>max_adj_sum({1,2,3,4}, 4) == 3 + 4 == 7</code>
+<code>max_adj_sum({1}, 1) == 0</code>
+<code>max_adj_sum({}, 0) == 0</code></p></li>
+<li><p>(20 points) Prove that it is correct.</p></li>
+<li><p>(20 points) Determine its big-<span
+class="math inline">\(\Theta\)</span></p></li>
+<li><p>(20 points) Prove that it has that big-<span
+class="math inline">\(\Theta\)</span></p></li>
+<li><p>(20 points) for accurate self grading. Try to be consistent with
+Quiz 1’s rubric.</p></li>
+</ol>
+<hr />
+<h1 id="appendix-d-quiz-4">Appendix D: Quiz 4</h1>
+<ol type="1">
+<li>(20 points) Write a function in C that finds the last zero-based
+index of the lowercase letter ‘q’ in an ascii string. If the letter ‘q’
+is not present, return -1. Otherwise, return the index of the last ‘q’.
+<code>rscan_q("hello world") == -1</code>
+<code>rscan_q("quello quorld") == 7</code>
+<code>rscan_q("") == -1</code></li>
+<li>(20 points) Prove that it is correct.</li>
+<li>(20 points) Determine its big-<span
+class="math inline">\(\Theta\)</span></li>
+<li>(20 points) Prove that it has that big-<span
+class="math inline">\(\Theta\)</span></li>
+<li>(20 points) for accurate self grading. Try to be consistent with
+Quiz 1’s rubric.</li>
+</ol>
+<hr />
+<h1 id="example-table-of-big-thetas">Example table of Big-<span
+class="math inline">\(\Theta\)</span>’s</h1>
+<table>
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr>
+<th>Big-<span class="math inline">\(\Theta\)</span></th>
+<th>Kind of problem</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\(1\)</span></td>
+<td>simple machine operation (arithmetic on int, boolean expression
+eval., etc.)</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\lg n\)</span></td>
+<td>binary search, search tree traversal</td>
+</tr>
+<tr>
+<td><span class="math inline">\(n\)</span></td>
+<td>linear search, many string operations, arithmetic on BigInts,
+counting sort</td>
+</tr>
+<tr>
+<td><span class="math inline">\(n \lg n\)</span></td>
+<td>fast comparison sorts</td>
+</tr>
+<tr>
+<td><span class="math inline">\(n^2\)</span></td>
+<td>slow comparison sorts, vector matrix multiplication,
+convolution</td>
+</tr>
+<tr>
+<td><span class="math inline">\(n^3\)</span></td>
+<td>linear optimization, simple matrix multiplication</td>
+</tr>
+<tr>
+<td><span class="math inline">\(2^n\)</span></td>
+<td>any operation on all combinations of something</td>
+</tr>
+<tr>
+<td><span class="math inline">\(n!\)</span></td>
+<td>any operation on all permutations (orderings) of something</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="source-code-for-mermaid-diagram">Source code for mermaid
+diagram</h1>
+<pre class="mermaid"><code>mermaid:
+graph TB
+  direction LR
+
+  subgraph row4
+    direction TB
+    i4[&quot;i = 4+&quot;] --&gt; c41[&quot;Θ(1)&quot;]
+    c41 --&gt; c42[&quot;...&quot;]
+    c42 --&gt; c43[&quot;...&quot;]
+    c43 --&gt; c44[&quot;...&quot;]
+  end
+
+  subgraph row3
+    direction TB
+    i3[&quot;i = 3&quot;] --&gt; c31[&quot;Θ(1)&quot;]
+    c31 --&gt; c32[&quot;Θ(1)&quot;]
+    c32 --&gt; c33[&quot;Θ(1)&quot;]
+  end
+
+  subgraph row2
+    direction TB
+    i2[&quot;i = 2&quot;] --&gt; c21[&quot;Θ(1)&quot;]
+    c21 --&gt; c22[&quot;Θ(1)&quot;]
+  end
+
+  subgraph row1
+    direction TB
+    i1[&quot;i = 1&quot;] --&gt; c11[&quot;Θ(1)&quot;]
+  end
+
+  i4 --&gt; i3 --&gt; i2 --&gt; i1 
+  --&gt;</code></pre>
+</body>
+</html>
