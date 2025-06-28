@@ -1581,13 +1581,24 @@ int lsmall(int* arr, size_t n) {
 `rscan_q("quello quorld") == 7`
 `rscan_q("") == -1`
 2. (20 points) Prove that it is correct.
-3. (20 points) Determine its big-$\Theta$
-4. (20 points) Prove that it has that big-$\Theta$
+3. (20 points) Determine its *worst case* big-$\Theta$
+4. (20 points) Prove that it has that worst case big-$\Theta$
 5. (20 points) for accurate self grading. Try to be consistent with Quiz 1's rubric.
 
 ---
 
-# Example table of Big-$\Theta$'s
+# Appendix D: Quiz 5
+
+Still feel like it's not clicking? Try writing your own quiz!
+
+1. Try coming up with an algorithm that has an easy to analyze runtime. 
+2. Write the quiz to mimic those above.
+3. Take the quiz. Time yourself!
+4. Grade it the same as the above.
+
+---
+
+# Appendix E: Example table of Big-$\Theta$'s
 
 
 | Big-$\Theta$| Kind of problem 
