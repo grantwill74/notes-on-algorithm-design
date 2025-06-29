@@ -338,6 +338,25 @@ void bench_pool_10000_allocs_and_free(volatile int* sink, void* data) {
     pool_destroy(&pool);
 }
 
+void bench_pool_10000_allocs_and_10000_frees(volatile int* sink, void* data) {
+    TestNode** nodes = data;
+    Pool pool;
+    pool_init(&pool, sizeof(TestNode), 10001);
+
+    for (int i = 0; i < 10000; i++) {
+        nodes[i] = pool_alloc(&pool);
+        nodes[i]->data = rand() % INT_MAX;
+    }
+
+    *sink += nodes[rand() % 10000]->data;
+
+    for(int i = 0; i < 10000; i++) {
+        pool_free(&pool, nodes[i]);
+    }
+    
+    pool_destroy(&pool);
+}
+
 void bench_malloc_free_10000(volatile int* sink, void* data) {
     TestNode** nodes = data;
 
@@ -361,14 +380,19 @@ void do_benches(void) {
     puts("Bench: pool allocations.............");
     pool_result = do_bench(&sink, 10000, &node_storage, NULL, 
         bench_pool_10000_allocs_and_free, NULL);
-    printf("Avg time: %lf nanos, %lf stdev\n",
+    printf("Avg time: %lf nanos, %lf stdev\n\n",
         pool_result.mean_nanos, pool_result.stdev);
 
+    puts("Bench: pool allocation and individual frees.....");
+    pool_result = do_bench(&sink, 10000, &node_storage, NULL, 
+        bench_pool_10000_allocs_and_10000_frees, NULL);
+    printf("Avg time: %lf nanos, %lf stdev\n\n",
+        pool_result.mean_nanos, pool_result.stdev);
 
     puts("Bench: malloc allocations.............");
     malloc_result = do_bench(&sink, 10000, node_storage, NULL,
         bench_malloc_free_10000, NULL);
-    printf("Avg time: %lf nanos, %lf stdev\n",
+    printf("Avg time: %lf nanos, %lf stdev\n\n",
         malloc_result.mean_nanos, malloc_result.stdev);
 }
 

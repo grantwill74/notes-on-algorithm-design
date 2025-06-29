@@ -7,8 +7,6 @@
 struct pool_t;
 typedef struct pool_t Pool;
 
-struct pool_cell_t;
-
 void* pool_alloc(Pool* pool);
 void* pool_calloc(Pool* pool);
 void* pool_alloc_d(Pool* pool); // debug version: scribbles 0xBADF00D on page.
