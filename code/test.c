@@ -7,7 +7,7 @@ size_t tests_run;
 
 int do_unit_tests(Tester run_tests) {
     char* msg = run_tests();
-    if (msg) printf("test failed with message %s.\n", msg);
+    if (msg) printf("test failed: %s.\n", msg);
     else printf("ran %zu tests sucessfully.\n", tests_run);
 
     return msg != NULL;
@@ -62,7 +62,7 @@ char* t_sort_triple(Sorter sort) {
     for (int i = 0; i < 6; i++) {
         sort(arr[i], 3);
         sprintf(test_err_buf, "bad sort on triplet %d", i);
-        mu_assert(test_err_buf, in_order(arr[i], 3));
+        mu_assert_str(test_err_buf, in_order(arr[i], 3));
     }
     return 0;
 }
@@ -84,7 +84,7 @@ char* t_sort_random(Sorter sort) {
             arr[0], arr[1], arr[2], arr[3], arr[4],
             arr[5], arr[6], arr[7], arr[8]);
         sort(arr, 9);
-        mu_assert(test_err_buf, in_order(arr, 9));
+        mu_assert_str(test_err_buf, in_order(arr, 9));
     }
     
     return 0;
