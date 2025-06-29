@@ -1,6 +1,6 @@
 CC=clang
 STD=c23
-EXES = mod2 mod3
+EXES = mod2 mod3 mod4
 TESTS = test_pool
 CFLAGS_DEBUG = -g $(CFLAGS_BASE)
 CFLAGS_RELEASE = -g -O3 $(CFLAGS_BASE)
