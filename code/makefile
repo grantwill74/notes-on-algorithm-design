@@ -31,7 +31,10 @@ $(EXES): %: %.c $(COMMON) $(HEADERS)
 	$(CC) $(CFLAGS_RELEASE) $< $(COMMON) -o $@ -lm
 
 test_pool: pool.c $(COMMON) $(HEADERS)
-	$(CC) $(CFLAGS_DEBUG) -DTESTING_POOL $< util.o test.o
+	$(CC) $(CFLAGS_DEBUG) -DTESTING_POOL $< util.o test.o bench.o -lm
+
+bench_pool: pool.c $(COMMON) $(HEADERS)
+	$(CC) $(CFLAGS_RELEASE) -DTESTING_POOL $< util.o test.o bench.o -lm
 
 #mod2: mod2.c $(HEADERS)
 #	$(CC) mod2.c -o mod2 $(CFLAGS)

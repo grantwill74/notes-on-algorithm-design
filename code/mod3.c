@@ -175,7 +175,7 @@ int do_benchmarks() {
             Slice arr_data = {arr, lengths[i_length]};
             BenchRunner bench = benches[i_bench];
             BenchResult res = 
-                do_bench(&sink, n_iters, &arr_data, bench_shuffle, bench);
+                do_bench(&sink, n_iters, &arr_data, bench_shuffle, bench, NULL);
             printf("length %zu: %lf mean microseconds, stdev: %lf\n", 
                 lengths[i_length], res.mean_nanos / 1e3, res.stdev / 1e3);
         }

@@ -11,7 +11,8 @@ BenchResult do_bench(
     size_t n_iters,
     void* data,
     BenchPrepper prepare,
-    BenchRunner run
+    BenchRunner run,
+    BenchPostProcessor post
 ) {
     if (n_iters == 0) {
         BenchResult empty = {0.0, 0.0};
@@ -22,7 +23,8 @@ BenchResult do_bench(
     long double sum_sq_d = 0;
 
     for (size_t i = 0; i < n_iters; i++) {
-        prepare(data);
+        if (prepare)
+            prepare(data);
         
         struct timespec start, end;
         // feel free to use clock_gettime if on a POSIX platform.
@@ -46,6 +48,10 @@ BenchResult do_bench(
         mean,
         sqrtl(variance),
     };
+
+    if(post) {
+        post(sink, data);
+    }
 
     return result;
 }

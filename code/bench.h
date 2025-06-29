@@ -17,6 +17,10 @@ typedef void (*BenchPrepper)(void* params);
 // actually does the thing we're benchmarking
 typedef void (*BenchRunner)(volatile int* sink, void* data);
 
+// does some kind of post-processing, e.g., to pour data that
+// was created into the sink
+typedef void (*BenchPostProcessor)(volatile int* sink, void* data);
+
 typedef struct bench_result_t {
     double mean_nanos;
     double stdev;
@@ -27,5 +31,6 @@ BenchResult do_bench(
     size_t n_iters,
     void* data,
     BenchPrepper prepare,
-    BenchRunner run
+    BenchRunner run,
+    BenchPostProcessor post
 );
