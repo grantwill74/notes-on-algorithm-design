@@ -29,7 +29,6 @@ Start over with modal approach:
 
 typedef struct bump_state_t {
     void** next;
-    void** end;
 } BumpState;
 
 typedef struct gaps_state_t {
@@ -59,7 +58,6 @@ void pool_new_page(Pool* pool) {
     // only create a new page when absolutely full
     assert(pool->n_allocd == pool->n_cells);
     assert(!pool->gaps.next);
-    assert(pool->bump.next == pool->bump.end);
 
     Page* page = malloc(sizeof(Page));
     page->page_data = malloc(pool->cell_size * pool->cells_per_page);
@@ -67,15 +65,16 @@ void pool_new_page(Pool* pool) {
     pool->n_pages++;
     pool->n_cells += pool->cells_per_page;
 
+    if (pool->last_page)
+        pool->last_page->next_page = page;
+
     pool->last_page = page;
+
     if(!pool->first_page)
         pool->first_page = pool->last_page;
 
     // reset bump allocator to use this page
     pool->bump.next = page->page_data;
-    char* bump_end = (char*)page->page_data + 
-        pool->cell_size * pool->cells_per_page;
-    pool->bump.end = (void**)bump_end;
 }
 
 // if n_pages_preallocated == 0, start full. otherwise avail.
@@ -96,18 +95,18 @@ void pool_init(
     pool->first_page = pool->last_page = NULL;
     pool->n_pages = pool->n_allocd = pool->n_cells = 0;
     pool->gaps.next = NULL;
-    pool->bump.next = pool->bump.end = NULL;
+    pool->bump.next = NULL;
 
     pool_new_page(pool);
 }
 
 void* pool_alloc(Pool* pool) {
+    pool->n_allocd++;
     if(pool->n_allocd == pool->n_cells) {
         pool_new_page(pool);
     }
 
     void* result = NULL;
-    pool->n_allocd++;
 
     if (pool->gaps.next) {
         result = pool->gaps.next;
@@ -232,7 +231,7 @@ char* test_pool_multi_realloc(void) {
     }
 
     mu_assert("pool has zero allocated", pool.n_allocd == 0);
-    mu_assert("pool has right number of pages", pool.n_pages == 2);
+    mu_assert("pool has right number of pages", pool.n_pages == 3);
     mu_assert("pool is in right page state",
         pool.first_page && pool.last_page && pool.first_page != pool.last_page);
     
@@ -241,11 +240,77 @@ char* test_pool_multi_realloc(void) {
     return 0;
 }
 
+char err_buf[1204];
+char* test_pool_page_chaining(void) {
+    Pool pool;
+    pool_init(&pool, sizeof (uint64_t), 1);
+
+    uint64_t* dat[4];
+    Page* pages[4];
+    
+    for (int i = 0; i < 4; i++) {
+        pages[i] = pool.last_page;
+        dat[i] = pool_alloc(&pool);
+    }
+
+    Page* current_page = pool.first_page;
+    for (int i = 0; i < 4; i++) {
+        sprintf(err_buf, "page %d exists and unique after alloc", i);
+        mu_assert_str(err_buf, pages[i] == current_page);
+        current_page = current_page->next_page;
+    }
+
+    for (int i = 0; i < 4; i++) {
+        pool_free(&pool, dat[i]);
+    }
+
+    current_page = pool.first_page;
+    for (int i = 0; i < 4; i++) {
+        sprintf(err_buf, "page %d unaffected after free", i);
+        mu_assert_str(err_buf, pages[i] == current_page);
+        current_page = current_page->next_page;
+    }
+
+    pool_destroy(&pool);
+
+    return 0;
+}
+
+char* test_pool_drains_gaps_first(void) {
+    Pool pool;
+    pool_init(&pool, sizeof (uint64_t), 3);
+
+    uint64_t* objs[10];
+
+    for (int i = 0; i < 10; i++) {
+        objs[i] = pool_alloc(&pool);
+    }
+
+    for (int i = 0; i < 3; i++) {
+        pool_free(&pool, objs[i]);
+        uint64_t* next = (uint64_t*)pool.gaps.next;
+        mu_assert("gap has object addr", objs[i] == next);
+    }
+
+    for (int i = 0; i < 3; i++) {
+        pool_alloc(&pool);
+    }
+
+    mu_assert("there is no gap", !pool.gaps.next);
+
+    pool_destroy(&pool);
+
+    return 0;
+}
+
+
 char* all_tests(void) {
     mu_run(test_cellsize_roundup);
     mu_run(test_pool_alloc_d);
     mu_run(test_pool_alloc_free_after_zeropage);
     mu_run(test_pool_multi_realloc);
+    mu_run(test_pool_page_chaining);
+    mu_run(test_pool_drains_gaps_first);
 
     return 0;
 }
