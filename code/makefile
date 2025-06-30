@@ -1,6 +1,7 @@
 CC=clang
 STD=c23
 EXES = mod2 mod3 mod4
+DEBUG_EXES := $(EXES:%=%.d)
 TESTS = test_pool
 CFLAGS_DEBUG = -g $(CFLAGS_BASE)
 CFLAGS_RELEASE = -g -O3 $(CFLAGS_BASE)
@@ -24,7 +25,7 @@ test.o: test.c test.h util.h
 %.o: %.c $(COMMON) $(HEADERS)
 	$(CC) -c $(CFLAGS_RELEASE) $< -o $@
 
-$(foreach exe, $(EXES), $(exe).d): %: %.c $(COMMON) $(HEADERS)
+$(DEBUG_EXES): %.d: %.c $(COMMON) $(HEADERS)
 	$(CC) $(CFLAGS_DEBUG) $< $(COMMON) -o $@ -lm
 
 $(EXES): %: %.c $(COMMON) $(HEADERS)
@@ -45,6 +46,7 @@ bench_pool: pool.c $(COMMON) $(HEADERS)
 clean:
 	-rm -f *.o
 	-rm -f $(EXES)
+	-rm -f $(DEBUG_EXES)
 	-rm -f $(TESTS)
 	-rm -f a.out
 

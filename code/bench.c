@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <stdio.h>
 
 
 BenchResult do_bench(
@@ -56,3 +57,19 @@ BenchResult do_bench(
     return result;
 }
 
+void print_bench(
+    volatile int* sink,
+    const char* name,
+    size_t n_iters,
+    void* data,
+    BenchPrepper prepare,
+    BenchRunner run,
+    BenchPostProcessor post
+) {
+    printf("bench: %s; %zu iterations\n", name, n_iters);
+    
+    BenchResult res = do_bench(sink, n_iters, data, prepare, run, post);
+
+    printf("mean: %lf micros   ", res.mean_nanos / 1000.0);
+    printf("stdev: %lf micros\n", res.stdev / 1000.0);
+}

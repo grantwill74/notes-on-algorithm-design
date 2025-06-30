@@ -34,3 +34,13 @@ BenchResult do_bench(
     BenchRunner run,
     BenchPostProcessor post
 );
+
+void print_bench(
+    volatile int* sink,
+    const char* name,
+    size_t n_iters,
+    void* data,
+    BenchPrepper prepare,
+    BenchRunner run,
+    BenchPostProcessor post
+);

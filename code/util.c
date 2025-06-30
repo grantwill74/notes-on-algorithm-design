@@ -9,3 +9,11 @@ void shuffle(int* arr, size_t n) {
         swap(arr + i, arr + index);
     }
 }
+
+bool arr_eq_i(const int* a, const int* b, size_t n) {
+    for(size_t i = 0; i < n; i++) {
+        if (*a++ != *b++) return false;
+    }
+
+    return true;
+}
