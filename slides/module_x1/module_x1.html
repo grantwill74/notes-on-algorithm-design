@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>module_x1</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="design-and-analysis-of-algorithms">Design and Analysis of
+Algorithms</h1>
+<h2 id="module-x1-region-based-memory-management">Module X1:
+region-based memory management</h2>
+<p><br> <br></p>
+<p>Slides © Grant Williams, <a
+href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
+4.0</a>.</p>
+<p><br></p>
+<p>This is an open educational resource. Feel free to submit fixes,
+improvements, and new material <a
+href="https://github.com/grantwill74/notes-on-algorithm-design">here</a>.</p>
+<hr />
+<h1 id="what-are-we-doing-here">What are we doing here?</h1>
+<p>This is a class about algorithms.</p>
+<p>The first part of class was very theoretical, but over time, we will
+get more pragmatic.</p>
+<p>Memory management is classically a somewhat slow operation,
+originally typically <span class="math inline">\(O(n)\)</span> or <span
+class="math inline">\(O(\lg n)\)</span>. However, recently it has
+improved to <span class="math inline">\(O(1)\)</span> for small,
+constant time allocations with most allocators.</p>
+<p>We’re going to learn how to beat the default allocator with a
+constant ratio improvement.</p>
+<p>It’s not a big-<span class="math inline">\(O\)</span> improvement,
+but sometimes constant factors are meaningful…</p>
+<hr />
+<h1 id="the-era-of-the-memory-map">The era of the memory map</h1>
+<p>In the days before persistent operating systems, it was common for
+programs to explicitly statically lay out every piece of memory.</p>
+<p><a
+href="https://github.com/pret/pokered/blob/master/ram/wram.asm">Here is
+a memory map</a> for the layout of RAM in the original Pokemon games. <a
+href="https://datacrystal.tcrf.net/wiki/Pok%C3%A9mon_Red_and_Blue/RAM_map#Money">Documented
+here</a>. You can see that every variable the game uses has an explicit
+location that is statically determined. It is the same every time the
+game boots.</p>
+<p>Early cheat systems like the Gameshark would intercept certain memory
+addresses and replace them. They were always the same, so this would
+work.</p>
+<hr />
+<h1 id="the-era-of-the-memory-map-2">The era of the memory map (2)</h1>
+<p>You might think that this is like putting everything on the stack,
+but it isn’t quite the same. The stack grows and shrinks as needed.
+Static memory is always there.</p>
+<p>It’s more like making everything a global.</p>
+<p>Despite the advice you often hear that “globals are bad”, in systems
+like this, static memory is quite useful. You can 100% guarantee that
+you will never run out of memory.</p>
+<p>Pokemon is a fairly buggy game, but under normal play conditions,
+there will never be a memory panic.</p>
+<p>Accessing a static address means no need to push it or move it when
+calling a function, so there are potential speed benefits as well.</p>
+<hr />
+<h1 id="whats-wrong-with-static-memory">What’s wrong with static
+memory?</h1>
+<p>To be honest, I feel like we might have abandoned this idea too
+quickly. Many modern games and other systems could benefit from explicit
+static memory.</p>
+<p>The issue, though, is that it doesn’t scale for most utilities.
+Consider old versions of Windows notepad: they had a 64 kilobyte buffer
+for text.</p>
+<p>If you needed to edit 65 kilobytes, too bad.</p>
+<p>Could they just increase it to a 64 <em>megabyte</em> buffer? That
+would be enough for most purposes…</p>
+<p>But then it would be wasteful most of the time.</p>
+<hr />
+<h1 id="stacks">Stacks</h1>
+<p>So then we have the stack. Stacks are so useful, most processors have
+a built-in register that stores a pointer to a stack.</p>
+<p>Why are they useful? Because there is a common pattern of memory
+usage: always allocating and freeing in reverse order.</p>
+<p>That pattern happens with function calls and local variables. When
+you call a function, it can use the stack pointer to organize its local
+storage.</p>
+<hr />
+<h1 id="stacks-2">Stacks (2)</h1>
+<p>If that function calls another function, as long as the other
+function uses memory below the first function’s stack pointer, it won’t
+interfere.</p>
+<p>When a function returns, it restores the stack to where it was. That
+memory can easily be overwritten.</p>
+<p>Usually the stack grows down. The idea is that static memory would be
+at the top of a typical address space, then the heap, and stack would be
+at the end. This would allow the stack and heap to grow towards each
+other and maximize the space available.</p>
+<hr />
+<h1 id="stacks-3">Stacks (3)</h1>
+<p>Many programming languages, such as C, make it easy to use the stack.
+Local variables are automatically located on the stack.</p>
+<p>Calling a function automatically adjusts the stack pointer. So does
+returning.</p>
+<p>Stack memory can also be manually allocated with the <a
+href="https://www.man7.org/linux/man-pages/man3/alloca.3.html"><code>alloca</code></a>
+function. This is dangerous and will cause undefined behavior if you
+alloc too much, but there are other APIs that make it safer (e.g., by
+falling back to <code>malloc</code> if needed).</p>
+<p>The size of the allocation does not affect the immediate cost.
+Allocating and freeing an entire stack frame happens at once. If there
+are 20 variables on the stack, they can all be allocated and freed
+simultaneously with one subtract and one add.</p>
+<hr />
+<h1 id="stacks-4">Stacks (4)</h1>
+<p>Using the stack has slightly more overhead than static memory because
+the pointer needs to be maintained.</p>
+<p>In practice, on modern systems, this may not materialize in
+performance very much. Only if there’s a data-dependency on the stack
+pointer.</p>
+<p>However, while stack-based memory management is extremely efficient,
+it has some downsides…</p>
+<p>[What are they?]</p>
+<hr />
+<h1 id="downsides-of-stacks">Downsides of stacks</h1>
+<p>Stacks are built to assume that, once memory is allocated, it is held
+onto it until the function eventually returns.</p>
+<p>This means that the stack generally does not have “gaps” in it. You
+can’t release higher stack memory for use by a child function. The
+memory stays in use.</p>
+<p>This is a limitation for any kind of program that needs to hold
+things, not based on when functions are called and returned, but for as
+long as necessary.</p>
+<p>E.g., how long should a page of text be stored in a word processor?
+Until the user deletes it, probably. And if they do, are you going to
+delete all the other pages created after it? Probably not. You want
+there to be a gap that could be used by other pages or other data.</p>
+<hr />
+<!-- _class: questions invert -->
+<h1 id="questions">Questions?</h1>
+<hr />
+<h1 id="dynamic-allocation">Dynamic allocation</h1>
+<p>Sometimes we can’t use any of the easy strategies: - Something could
+use vastly different amounts of memory. Especially creative software,
+such as word processors, sound and video editors, level editors in
+games, etc. So static memory is not appropriate. - The memory could be
+needed for an unpredictable amount of time, but when it is no longer
+needed, we don’t want to have to free other memory. So the stack is not
+appropriate.</p>
+<p>If both of these circumstances apply, we typically need to use
+dynamic allocation.</p>
+<hr />
+<h1 id="dynamic-allocation-2">Dynamic allocation (2)</h1>
+<p>The most basic primitives for dynamic allocation in C are
+<code>malloc</code> and <code>free</code>.</p>
+<p>Calling <code>malloc</code> earmarks some memory as being “used”, and
+gives ou a pointer to it.</p>
+<p>Calling <code>free</code> returns that memory to being unused, so
+that it can be used by someone else.</p>
+<p>Forgetting to call <code>free</code> leads to a memory leak, where
+the memory is not really being used but stays permanently locked up.</p>
+<hr />
+<h1 id="dynamic-allocation-3">Dynamic allocation (3)</h1>
+<p>There are several drawbacks to dynamic allocation: 1. You must
+remember to free. It’s a common bug to forget. Use-after-free and
+double-free are less common but also more destructive and hard to find.
+2. They are typically slower. There is a data structure that stores free
+regions of memory. 3. They become fragmented. Suppose I have 1 gigabyte
+of memory. I allocate a bunch of one 1 megabyte chunks until I’ve used
+it up. Then eventually I free two of them. If those two chunks are not
+next to each other, I cannot allocate a 2 megabyte array, even though I
+technically have 2 megabytes free.</p>
+<p>There are ways to fix all of these, but each fix also comes with
+drawbacks.</p>
+<hr />
+<h1 id="dynamic-allocation-4">Dynamic allocation (4)</h1>
+<p>Languages with manual memory management, such as C, C++, and Rust,
+are often thought of as <em>fast</em> languages.</p>
+<p>This is obviously a loose statement: you can write slow code in any
+language, and it’s absolutely possible to write code in Rust that is
+slower than Python.</p>
+<p>However, manually managing memory allows the programmer to avoid the
+overhead of automatic strategies such as garbage collection.</p>
+<p>But still, dynamic allocation, even in a language with manual memory
+management, is often much slower than stack or static memory. Even a
+call to <code>malloc</code> carries significant overhead that still
+matters to some applications (especially games and drivers).</p>
+<hr />
+<h1 id="dynamic-allocation-5">Dynamic allocation (5)</h1>
+<p>But first, [what happens when we call <code>malloc</code>? Where does
+it get the memory that it returns?]</p>
+<hr />
+<h1 id="operating-systems">Operating systems</h1>
+<p>In the old days, operating systems were basically program loaders.
+Most of the time, your program controlled the whole computer.</p>
+<p>In this case the “heap” was just a big area of memory you could use.
+*</p>
+<p>Early multi-tasking systems required more discipline. Operating
+systems needed to keep track of which system memory was being used by
+which process. This necessitated an API that a process could use to ask
+to be given control over a chunk of memory.</p>
+<div class="footnote">
+<p>*: The fact that it is called “the heap” is confusing. As far as I’m
+aware, the heap data structure was never used to manage this memory,
+although I could be wrong.</p>
+</div>
+<hr />
+<h1 id="mmap">MMap</h1>
+<p>On modern POSIX systems, one API for this is <a
+href="https://www.man7.org/linux/man-pages/man2/mmap.2.html"><code>mmap</code>
+and <code>munmap</code></a>. Another is <a
+href="https://linux.die.net/man/2/sbrk"><code>sbrk</code></a>.</p>
+<p>Modern processors group memory into pages for determining which chunk
+of memory belongs to which process. A page is typically 4 kilobytes on
+x86 systems and 64 kilobytes on ARM systems.</p>
+<p>Mmap does a lot of things, but one of them is to request the
+operating system give you one or more pages of memory directly. This
+causes a page of memory of physical ram to be assigned to a range of
+virtual addresses in your process.</p>
+<p>This completely bypasses <code>malloc</code>. It’s a way of
+requesting memory from the OS directly. The Win32 equivalent is <a
+href="https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualalloc"><code>VirtualAlloc</code></a>.</p>
+<hr />
+<h1 id="the-basic-operation-of-an-allocator">The basic operation of an
+allocator</h1>
+<p>So in order to handle dynamic allocation, we need some memory that is
+“ours”. In modern systems, we can request that memory with
+<code>mmap</code> or <code>VirtualAlloc</code>.</p>
+<p>But once we have that memory, how do we manage it? Do we just use a
+whole page every time someone wants a 16-byte linked-list node?</p>
+<p>Of course not. Instead, we maintain a data structure that stores
+contiguous chunks of memory.</p>
+<p>When we need 16-bytes, we need to somehow “carve-out” 16-bytes from a
+contiguous region. Then when we don’t need it anymore, we need to give
+it back.</p>
+<hr />
+<!-- _class: questions invert -->
+<h1 id="questions-1">Questions?</h1>
+<hr />
+<h1 id="early-allocators">Early allocators</h1>
+<p>In the old days, the most basic kind of allocater was the free
+list.</p>
+<p>The “heap” was actually a linked list of regions. Each region had a
+an address, and its size could be determined by looking at the address
+of the next block.</p>
+<p><a
+href="https://gist.github.com/hujiecs/a9e9dc835f52f843caf30b07bc91abb4">In
+fact, this was how the first K&amp;R C allocator worked</a>. It was just
+circular linked lists of contiguous regions and allocated chunks.</p>
+<p>It could start off with one giant free region. Then, when you
+allocate, it increases the address of the region, which makes it smaller
+and inserts an allocated region before it.</p>
+<p>When you free, it would re-insert a free node back into the list. If
+two free nodes were next to each other, it would merge them
+together.</p>
+<hr />
+<h1 id="problems-with-early-allocators">Problems with early
+allocators</h1>
+<p>First, there is the overhead of a linked-list node for every
+allocation and dis-contiguous free region.</p>
+<p>Then, Imagine what would happen in an environment with lots of
+dynamic allocations and frees.</p>
+<p>As fragmentation happens, we end up with lots of nodes in the list.
+So allocating a large, new node, needs to slowly traverse the list until
+it gets past all the fragments.</p>
+<p>This means that we have <span class="math inline">\(O(n)\)</span>
+worst-case behavior in the allocator, where <span
+class="math inline">\(n\)</span> is the number of frees. Not great.</p>
+<hr />
+<h1 id="trees">Trees</h1>
+<p>There’s no requirement that we use a list, though. Trees have been
+used too.</p>
+<p>For example, we can store regions in a binary search tree, ordered by
+size.</p>
+<p>This means we can find the best fit for an allocation in <span
+class="math inline">\(O(\lg n)\)</span> time, a big improvement.</p>
+<p>And yet, it’s still so much slower than stack allocation…</p>
+<hr />
+<h1 id="another-old-allocator">Another old allocator</h1>
+<p>In the old days, many games and productivity software managed their
+own memory.</p>
+<p><a
+href="https://github.com/id-Software/DOOM/blob/master/linuxdoom-1.10/z_zone.h">Here</a>
+and <a
+href="https://github.com/id-Software/DOOM/blob/master/linuxdoom-1.10/z_zone.c">here</a>
+are the source files for Doom’s allocator. It uses a linked-list based
+system, too.</p>
+<p>Wouldn’t that be slow? It turns out, no, but not because linked lists
+are fast. Instead, because there is a discipline to using dynamic
+allocation that prefers to allocate in large chunks.</p>
+<hr />
+<h1 id="john-carmacks-zones">John Carmack’s Zones</h1>
+<p>You can separate static data from data that is freed after a level or
+a frame by “tagging” a particular allocation.</p>
+<p>There were a handful of pre-defined tags:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// ZONE MEMORY</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">// PU - purge tags.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Tags &lt; 100 are not overwritten until freed.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PU_STATIC       </span><span class="dv">1</span><span class="pp">   </span><span class="co">// static entire execution time</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PU_SOUND        </span><span class="dv">2</span><span class="pp">   </span><span class="co">// static while playing</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PU_MUSIC        </span><span class="dv">3</span><span class="pp">   </span><span class="co">// static while playing</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PU_DAVE     </span><span class="dv">4</span><span class="pp">   </span><span class="co">// anything else Dave wants static</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PU_LEVEL        </span><span class="dv">50</span><span class="pp">  </span><span class="co">// static until level exited</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PU_LEVSPEC      </span><span class="dv">51</span><span class="pp">      </span><span class="co">// a special thinker in a level</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">// Tags &gt;= 100 are purgable whenever needed.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PU_PURGELEVEL   </span><span class="dv">100</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PU_CACHE        </span><span class="dv">101</span></span></code></pre></div>
+<hr />
+<h1 id="john-carmacks-zones-2">John Carmack’s Zones (2)</h1>
+<p>There was even a tag for <a
+href="https://en.wikipedia.org/wiki/Dave_Taylor_(game_programmer)">Dave</a>.
+He made the status bar among many other things.</p>
+<p>The tag system was useful. It let, for example, every chunk of memory
+associated with a level get freed whenever the level was finished,
+without the programmer having to manually free them.</p>
+<p>The reason it was called a Zone allocator was because it requested
+all the memory it needed up-front, using malloc. So there was a giant
+“zone” of memory that it controlled. Then, it carved it up manually.</p>
+<p>This strategy is still useful today…</p>
+<hr />
+<!-- _class: questions invert -->
+<h1 id="questions-2">Questions?</h1>
+<hr />
+<h1 id="region-based-memory">Region-based memory</h1>
+<p>Here we get to the crux of today’s talk. One of the major issues with
+dynamic memory is the idea that every allocation could be for something
+completely unrelated.</p>
+<p>First: this is cache-inefficient.</p>
+<p>If you carve out a region of memory for a particular purpose, you can
+often use a specialized strategy.</p>
+<p>This carved out area is called a <em>region</em> or a
+<em>zone</em>.</p>
+<hr />
+<h1 id="arenas">Arenas</h1>
+<p>The simplest strategy is the <em>arena</em>.</p>
+<p>An arena is a region of contiguous memory that is freed all at
+once.</p>
+<p>So imagine storing all of the 200 enemies in a level in one giant
+array. Once the level is over, you can just free the array all at
+once.</p>
+<p>Another example: particles. Many games have particle systems that
+track the locations of hundreds of small particles. If each of these
+were allocated with <code>malloc</code>/<code>free</code> pairs, the
+overhead would be severe, and there would be lots of tiny gaps in
+memory.</p>
+<hr />
+<h1 id="arenas-2">Arenas (2)</h1>
+<p>So keeping these life-span related objects together: - reduces the
+cost of <code>malloc</code> (because you can use certain strategies when
+you know that everything will be the same size) - reduces the cost of
+<code>free</code> because you can free all at once, and because you can
+often re-use an existing space - reduces fragmentation, because the
+arena is a giant chunk of memory. - Improves cache efficiency. Usually
+you want all your objects together so you can iterate over them. If they
+are adjacent in memory, they will likely be in the same cache page. This
+is called spatial locality and it has a massive impact on
+performance.</p>
+<hr />
+<h1 id="special-strategies">Special strategies</h1>
+<p>What’s that about reducing the cost of malloc if you know everything
+is the same size?</p>
+<p>Consider this: If every object you want to allocate (assuming no
+arrays) is the same size, then there will never be fragmentation. Every
+gap will be large enough for one thing.</p>
+<p>But it gets better: consider if the objects are larger than a
+pointer. Each gap can store a pointer to the next gap… there are some
+cool things we can do here.</p>
+<hr />
+<h1 id="pools">Pools</h1>
+<p>There is a special memory allocation strategy that is so extremely
+useful, it is now standard in even most modern <code>malloc</code>
+implementations.</p>
+<p>But even though <code>malloc</code> supports it, you can often
+improve on malloc by making it explicit that you want to use it.</p>
+<p>It is called the pool. It is a form of region-based memory in which
+every object in the region has the same size.</p>
+<hr />
+<h1 id="pool-basics">Pool basics</h1>
+<p>Suppose we decide that our levels need to have enemies.</p>
+<p>We decide in advance, that 1024 enemies are way more than we will
+ever need.</p>
+<p>Each enemy takes 64-bytes of data.</p>
+<p>That means, we can store all the enemies we need in one, giant 64
+kilobyte array.</p>
+<hr />
+<h1 id="pool-basics-2">Pool basics (2)</h1>
+<p>Let’s say we have a simple organization like this:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> bump <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// the index of the next enemy</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Enemy enemies<span class="op">[</span><span class="dv">1024</span><span class="op">];</span></span></code></pre></div>
+<p>How do we spawn in an enemy?</p>
+<hr />
+<h1 id="bump-allocation">Bump allocation</h1>
+<p>The most basic allocation strategy is called <em>bump
+allocation</em>.</p>
+<p>Bump allocation is when you simply have a pointer or index to the
+next free location, and you increment it. It is almost as fast as stack
+memory.</p>
+<p>So we could do something like this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Enemy<span class="op">*</span> spawn_enemy<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    Enemy<span class="op">*</span> enemy <span class="op">=</span> <span class="op">(</span>enemies <span class="op">+</span> bump<span class="op">++);</span> <span class="co">// this is the bump allocation</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> enemy<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="running-out-of-space">Running out of space</h1>
+<p>This is fine, but what happens if we run out of space? We only have
+room for 1024 enemies.</p>
+<p>Ideally, we would support 1024 <em>simultaneous</em> enemies. So if
+the player defeats some of them, there would then open up room for
+more.</p>
+<p>So how do we <em>free</em> an enemy?</p>
+<hr />
+<h1 id="the-free-list">The free list</h1>
+<p>One option is to maintain a list of free spaces or gaps in the
+array.</p>
+<p>So instead of sliding the whole array down (which would be <span
+class="math inline">\(O(n)\)</span>), we leave a gap.</p>
+<p>Then, when we need to allocate another enemy, we have a choice: bump,
+or put the new enemy in a gap where an old enemy used to be.</p>
+<p>But this raises a question: how do we track the gaps? Do we scan
+through the list to look for a gap? Do we store the gaps in a list? If
+we store the gaps in a list, where does the list live? Do we use malloc
+for that list? Doesn’t that defeat the whole purpose of region-based
+memory?</p>
+<hr />
+<h1 id="interleaving-the-list">Interleaving the list</h1>
+<p>Instead, there’s one very cool technique that we can use: store the
+pointers to the next free node <em>inside the list of enemies</em>.</p>
+<p>Like this:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Enemy<span class="op">*</span> next_free <span class="op">=</span> NULL<span class="op">;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> free_enemy<span class="op">(</span>Enemy<span class="op">*</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// overwrite the enemy data with a pointer to the next free gap</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*(</span>Enemy<span class="op">**)</span>e <span class="op">=</span> next_free<span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// now, the global next free space is where *this* most recent enemy was</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    next_free <span class="op">=</span> e<span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="understanding">Understanding</h1>
+<p>There’s a lot going on here: - We keep track of the first gap:
+<code>next_free</code>. - When we free, <code>next_free</code> points to
+the gap we just freed. - But at the same time, the cell that stored the
+enemy will now point to the next gap. - Next free is a pointer to an
+enemy in the array. But when we store the next free in the free cell, we
+need to pretend it’s an Enemy**. - That is, we cast the pointer from
+pointing at a 64-byte enemy to pointing to the first 8-bytes and
+assuming that they represent a pointer to the next space.</p>
+<p>Therefore, as long as the size of an enemy is large enough to store a
+pointer, we can interleave the list of free gaps in the same memory that
+is used to store enemies.</p>
+<hr />
+<h1 id="using-the-gaps">Using the gaps</h1>
+<p>When we want to allocate, we can check if there are any gaps before
+we bump:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Enemy<span class="op">*</span> spawn_enemy<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    Enemy<span class="op">*</span> result <span class="op">=</span> NULL<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// are there any gaps?</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>next_free<span class="op">)</span> <span class="op">{</span> <span class="co">// allocate from the gap</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> next_free<span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">// make next free point to the pointer that was stored in the empty cell</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        next_free <span class="op">=</span> <span class="op">*(</span>Enemy<span class="op">**)</span>next_free<span class="op">;</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>n_enemies <span class="op">&lt;</span> <span class="dv">1024</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> <span class="op">(</span>enemies <span class="op">+</span> bump<span class="op">++);</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">// out of space!</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> enemy<span class="op">;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="growing-gracefully">Growing gracefully</h1>
+<p>This is cool, but what if we still want the ability to grow? To have
+no hard upper bound on the number of enemies?</p>
+<p>Well, we could store the enemy list in an array list, but then, when
+it filled up, it would need to re-allocate a double-sized list and copy
+everything over (this is how array lists usually work).</p>
+<p>But we don’t actually need the enemies to be adjacent in memory. It’s
+nice, but if it causes the occasional re-allocation pause, it might not
+be worth it.</p>
+<hr />
+<h1 id="using-ropes">Using ropes</h1>
+<p>Sometimes people negatively compare linked lists to arrays. E.g.,
+“you should never use linked lists. Arrays are faster!”</p>
+<p>This is true: if you have to pick between exactly two choices: linked
+list or array, arrays are more often the better choice.</p>
+<p>But who says we have to pick one or the other?</p>
+<p>Enter the rope: a linked list of arrays.</p>
+<div class="footnote">
+<p>Note: The Erlang programming language actually stores strings as
+ropes by default. Each string is an array of adjacent characters, but it
+has a “next” pointer at the end. Therefore, it’s one of the rare
+languages where string appending is a <span
+class="math inline">\(O(1)\)</span> operation: just set the next
+pointer!</p>
+</div>
+<hr />
+<h1 id="using-ropes-1">Using ropes</h1>
+<p>Instead of having all our enemies in a single array, we can have a
+linked list of pages:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> enemy_page_t <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    Enemy enemies<span class="op">[</span><span class="dv">1023</span><span class="op">];</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// only store 1023 to avoid wasting a cache page on &quot;next_page&quot;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    EnemyPage<span class="op">*</span> next_page<span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> EnemyPage<span class="op">;</span></span></code></pre></div>
+<p>And we can store our pages in a linked list:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>EnemyPage <span class="op">*</span>first_page<span class="op">,</span> <span class="op">*</span>last_page<span class="op">;</span></span></code></pre></div>
+<hr />
+<h1 id="using-ropes-2">Using ropes</h1>
+<p>Now when we need to allocate: 1. we first check for any gaps. 2. If
+there are none, we try to bump allocate. 3. If there’s no room, we
+allocate a new page and bump allocate from it:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span> <span class="co">// out of memory</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    EnemyPage<span class="op">*</span> page <span class="op">=</span> allocate_new_page<span class="op">();</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    last_page<span class="op">-&gt;</span>next_page <span class="op">=</span> page<span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    last_page <span class="op">=</span> page<span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    bump <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> page<span class="op">-&gt;</span>enemies <span class="op">+</span> bump<span class="op">++;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="the-benefits">The benefits:</h1>
+<p>There are some big benefits to doing things this way: 1. All our
+enemies are in giant cache-contiguous chunks, so when we have to e.g.,
+process AI or draw them, we don’t get cache misses. 2. The cost of the
+linked list is minor. We have a tiny break at the end of each long
+string of enemies to go to the next page. 1 cache miss per 1023 hits is
+not bad! 3. We free enemies fast: a tiny linked list operation. 4.
+Alternatively, we gain the option to free every enemy in giant chunks.
+Every 1023 frees is replaced with 1 big free.</p>
+<hr />
+<h1 id="my-pool">My pool</h1>
+<p>To show you how to make a pool along these lines, I implemented one
+myself.</p>
+<p>Check out <code>code/pool.h</code> and <code>code/pool.c</code> for
+my implementation.</p>
+<p>It ends up being about the same size as Carmack’s version, but it has
+different capabilities. If you need different-sized objects, for
+example, they have to go in different pools. So it doesn’t fulfill the
+same purpose.</p>
+<hr />
+<h1 id="benchmark-results">Benchmark results</h1>
+<p>Here is a simple microbenchmark that shows a comparison as to what
+the average allocation takes with my pool versus <code>malloc</code>. It
+tests 10000 allocations and deallocations of BST tree nodes.</p>
+<p>It’s about 2.4 times faster, 46 microseconds instead of 113.</p>
+<pre><code>Bench: pool allocations.............
+Avg time: 45801.336600 nanos, 14476.111854 stdev
+
+Bench: pool allocation and individual frees.....
+Avg time: 46775.285600 nanos, 8989.162862 stdev
+
+Bench: malloc allocations and frees.............
+Avg time: 113185.646800 nanos, 18811.484887 stdev</code></pre>
+<hr />
+<h1 id="benchmark-warnings">Benchmark warnings</h1>
+<p>Of course, microbenchmarks often don’t reflect real-world
+conditions.</p>
+<p>For example, for tiny allocations, many <code>malloc</code>s use a
+bitmap to track free spaces. Scanning this bitmap can be extremely fast
+with SIMD. My solution requires rounding up the allocation size to the
+size of a pointer, which could massively waste memory.</p>
+<p>However, there are reasons to believe that my simple benchmarks
+actually privilege <code>malloc</code>, by doing all the allocations and
+frees at once, allowing malloc to bump-alloc and merge.</p>
+<hr />
+<h1 id="benchmark-warnings-2">Benchmark warnings (2)</h1>
+<p>But, on the other hand, <code>malloc</code> is doing more than my
+allocator. My allocator requires you to construct a pool in advance and
+only make the same size allocation with it.</p>
+<p>Huge difference: my allocator is not thread safe. It would be much
+more complicated, and would likely involve assigning each page to a
+thread.</p>
+<p>Don’t read too much into this benchmark. It’s just a way of showing
+you that the default allocator <em>can</em> be beaten under highly
+specific circumstances. It doesn’t mean the default is bad (it’s
+not).</p>
+<p>It just means that the default needs to consider many scenarios that
+my simple pool does not. Sometimes optimization is about writing code to
+specific needs with big assumptions .</p>
+<hr />
+<h1 id="behind-the-scenes">Behind the scenes</h1>
+<p>It’s kind of surprising how close they are, though, right?</p>
+<p>That’s because many modern implementations of <code>malloc</code> use
+pools.</p>
+<p>The thing is: they have to choose which pool. Whereas we are
+selecting the pool in advance. This is where a small advantage can come
+in.</p>
+<p>In fact, the popular <a
+href="https://github.com/jemalloc/jemalloc">jemalloc</a> allocator has
+<a
+href="https://people.freebsd.org/~jasone/jemalloc/bsdcan2006/jemalloc.pdf">separate
+pools for each power of 2 up to a certain size</a>. It has an arena for
+each thread, and then breaks it into chunks of similar sizes.</p>
+<p>Once you hit a maximum size, a tree is used. Jemalloc uses a
+red-black tree. This rarely happens in most applications. Only for
+large, odd-sized data, like huge blocks of video, audio, or string
+data.</p>
+<hr />
+<h1 id="the-drawbacks-changing-style">The drawbacks: changing style</h1>
+<p>This approach is cool, but requires some compromizes.</p>
+<p>Using a single allocator is extremely convenient. Using a pool is
+less so. You need to create the pool, store it somewhere, and
+explicitely allocate from it.</p>
+<p>You have to re-think how you use memory. It becomes a matter of
+design to layout your memory usage. You end up engaging in an activity
+that is similar to the RAM maps of old, where you decide ahead of time
+what objects will be grouped together in pools.</p>
+<hr />
+<h1 id="the-dangers-double-free-detection">The dangers: double-free
+detection</h1>
+<p>Built-in allocators in debug mode can have some important protections
+as well, that you might want to adopt.</p>
+<p>For example, what happens if you free the same memory twice?</p>
+<p>This is very bad for us. We end up storing a gap which points to
+itself. Now following the linked list will result in an infinite
+loop.</p>
+<p>How can we detect this?</p>
+<hr />
+<h1 id="double-free-detection">Double-free detection</h1>
+<p>One way is for each page to maintain a bitmap of allocated cells.</p>
+<p>So for each 64-byte enemy, there would be a single bit in the bitmap
+that tells you whether its allocated.</p>
+<p>This bit adds a tiny cost to set and clear when we alloc and free,
+and a very small memory overhead, but both cases can be guarded with an
+<code>#ifdef _DEBUG</code>.</p>
+<p>If someone tries to free something with a 0 bit set, you can panic.
+This can save tremendous debugging pain.</p>
+<hr />
+<h1 id="the-still-a-problems-shrinking-the-pool">The still-a-problems:
+shrinking the pool</h1>
+<p>What if we grow to accommodate a bunch of enemies and then don’t need
+them anymore?</p>
+<p>We could delete a page, but only if it’s completely empty.</p>
+<p>We can’t move random data around: it would invalidate pointers that
+point to it.</p>
+<p>But what if we don’t use pointers?</p>
+<hr />
+<h1 id="handles-instead-of-pointer">Handles instead of pointer</h1>
+<p>A handle is a variable that acts like a pointer but isn’t one.</p>
+<p>For example, we could use something like this:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// store this in a c file instead of an h file for encapsulation</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> enemy_handle_t <span class="op">{</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    Pool<span class="op">*</span> pool<span class="op">;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">size_t</span> index<span class="op">;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> EnemyHandle<span class="op">;</span></span></code></pre></div>
+<p>This handle is larger than a pointer. However, It has some
+advantages. Suppose there were functions
+<code>Enemy* lock_handle(EnemyHandle)</code>,
+<code>void unlock_handle(EnemyHandle)</code>. By requiring the user to
+“lock” the handle to obtain a pointer, we gain the ability to move the
+enemy around in memory as long as it is not locked.</p>
+<hr />
+<h1 id="defragmenting">Defragmenting</h1>
+<p>This means that when we free an enemy, we can move the last enemy
+over the gap instead of needing a free list. Now we have <em>zero</em>
+fragmentation.</p>
+<p>Also, we can safely free pages we don’t need anymore. Once a page is
+freed, we can even return it to the operating system by unmapping it,
+assuming we aren’t using <code>malloc</code> and <code>free</code>.</p>
+<p>Firefox, which uses Jemalloc, never seems to do this. When I use
+Firefox on Linux, I always eventually have to close and restart it
+because it leaks memory. Frankly, I use too many tabs, but it’s still an
+issue.</p>
+<hr />
+<h1 id="use-after-free-detection">Use-after-free detection</h1>
+<p>Additionally, we can detect another common error: use-after-free.
+This is when you access memory after you’ve freed it, and is a common
+reason for segmenation faults.</p>
+<p>For each allocated enemy, we can store a “generation” count. This is
+an integer. Every time we free that cell, we increment the generation
+count.</p>
+<p>We also store the generation in the handle when it is allocated. If a
+handle ever has a different generation for the same cell, it means a
+freed handle is being used.</p>
+<hr />
+<h1 id="reference-counting">Reference counting</h1>
+<p>We can use handles for reference counting. If we store, in the cell,
+how many handles are pointing at it, we can free it when the number hits
+zero.</p>
+<p>This is kind of a hybrid approach between full garbage collection and
+manual memory management.</p>
+<p>It tends to be faster than full garbage collection overall, but
+prevents you from having cycles (i.e., a circular list won’t work
+because the count will never reach zero and will leak).</p>
+<hr />
+<hr />
+<h1 id="caching">Caching</h1>
+<p>This ability to move things around also works well using the pool as
+a cache.</p>
+<p>There’s an <em>excellent</em> article on how this enabled porting
+<em>Indiana Jones and the Infernal Machine</em> to the Nintendo 64: <a
+href="https://www.gamedeveloper.com/programming/bringing-dr-jones-to-the-infernal-machine-dealing-with-memory-constraints">Florian
+Sauer, <em>Bringing Dr. Jones to the Infernal Machine</em></a>. The
+section on caching is later in the article, but all of it is
+interesting.</p>
+<p>The original PC version targetted computers with 128 megabytes of
+RAM. The Nintendo 64 was only guaranteed to have 4 megabytes (8 with a
+RAM expansion).</p>
+<p>Using a generic pool-style cache, he could guarantee that exactly 4
+megabytes of memory would be used, and shifted the sizes of the
+different pools for performance. His texture cache relied on moving
+textures around to avoid leaving gaps, and he is able to do that because
+textures are only accessed by one function once per frame.</p>
+<hr />
+<h1 id="downsides-of-handles">Downsides of handles</h1>
+<p>They add space and an extra indirection. They can be substantially
+slower than using raw pointers.</p>
+<p>On the other hand, they add tons of flexibility and the potential for
+error detection.</p>
+<p>They kind of let you build in a small amount of automatic memory
+management, but not with the overhead of full garbage collection or
+requiring a runtime.</p>
+<p>There’s always a tradeoff, but it’s good to know about the options so
+you can make the right compromise.</p>
+<p>For example, what if you made a pool for objects in a game, but made
+it clear that accesses were only valid during a certain portion of the
+frame? When you deleted objects, the list of doomed objects would be
+added to a list, and the pool could automatically defragment during the
+period in which access was forbidden.</p>
+<hr />
+<h1 id="conclusion">Conclusion</h1>
+<p>Hopefully this lecture has given you something to think about.</p>
+<p>I am not advocating you to use a custom pool for any of this class’s
+assignments.</p>
+<p>In fact, my custom pool was made mostly in one day and is not
+suitable for any real use without substantial profiling against
+<code>malloc</code> and <code>free</code>.</p>
+<p>On the other hand, it’s interesting to think about how adding
+assumptions can potentially create a big optimization opportunity.</p>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-3">Questions?</h1>
+</body>
+</html>

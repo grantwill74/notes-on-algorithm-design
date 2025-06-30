@@ -728,6 +728,21 @@ It tends to be faster than full garbage collection overall, but prevents you fro
 
 ---
 
+
+---
+
+# Caching
+
+This ability to move things around also works well using the pool as a cache.
+
+There's an *excellent* article on how this enabled porting *Indiana Jones and the Infernal Machine* to the Nintendo 64: [Florian Sauer, *Bringing Dr. Jones to the Infernal Machine*](https://www.gamedeveloper.com/programming/bringing-dr-jones-to-the-infernal-machine-dealing-with-memory-constraints). The section on caching is later in the article, but all of it is interesting.
+
+The original PC version targetted computers with 128 megabytes of RAM. The Nintendo 64 was only guaranteed to have 4 megabytes (8 with a RAM expansion).
+
+Using a generic pool-style cache, he could guarantee that exactly 4 megabytes of memory would be used, and shifted the sizes of the different pools for performance. His texture cache relied on moving textures around to avoid leaving gaps, and he is able to do that because textures are only accessed by one function once per frame.
+
+---
+
 # Downsides of handles
 
 They add space and an extra indirection. They can be substantially slower than using raw pointers.
