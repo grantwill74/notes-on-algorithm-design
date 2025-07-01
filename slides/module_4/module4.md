@@ -452,6 +452,8 @@ If we could use $P(5)$ in the proof of $P(10)$, then we could prove that mergeso
 Because we proved it worked for 3 and 2? 
 How do we know that? Because we proved that it worked for 1.
 
+The only wrinkle here is we had to prove it for 0 and also 1, because we cannot derive a proof of 1 from a proof of 0 in this case.
+
 ---
 
 # Strong induction principle (2)
@@ -489,7 +491,7 @@ Mergesort on $n$ always breaks its array down into two pieces:
 
 Because these numbers are smaller than $n$, we can assume that we have proven that mergesort works for $n / 2$ and $n / 2 + 1$
 
-Assuming that mergesort works, we end up with two sorted arrays, `lo` and `hi`. We merge them together, and we have proven that `merge` works. Therefore, the result is a sorted list regardless of `n`. $\square$
+Assuming that mergesort works, we end up with two sorted arrays, `lo` and `hi`. We merge them together, and we have already proven that `merge` works. Therefore, the result is a sorted list for any `n`. $\square$
 
 
 ---
@@ -515,7 +517,8 @@ Notice how high values of $n$ always follow from lower values of $n$. This is wh
 
 - Implement a faster merge sort that takes a pointer to a buffer and uses that instead of allocating.
 
-- Consider the binary search algorithm. Can you prove that it works using strong induction?
+- Write a binary search procedure. Given a sorted list, it will determine whether $i$ is in the list by binary searching. Prove that it is correct using strong induction.
+(If you don't prove it, and you haven't done binary search in a while, you *very likely* have a bug. Create a 100 element array of the numbers 1 to 100, and make sure every one of them is found in 7 checks or fewer)
 
 ---
 
@@ -544,6 +547,16 @@ Why is merge $\Theta(n)$? Because it has to copy one elment for every value in a
 
 (I'm simplifying somewhat. Sometimes it's not exactly cut in half, and one piece is one element longer than the other. Ignoring this will not change the big-$\Theta$)
 
+<div class="footnote">
+
+footnote:
+(If we wanted to be super rigorous, we'd use these inductive cases:
+$T(2n) = 2T(n) + \Theta(2n), T(2n + 1) = T(n + 1) + T(n) + \Theta(2n + 1)$.
+This way we handle the fact that odd lists don't break exactly evenly.
+The big-$\Theta$ we get will be the same. )
+
+</div>
+
 ---
 
 # How does this scale?
@@ -560,12 +573,172 @@ So how can we analyze this?
 
 # Every stage
 
+Let's express each level of recursion as a row:
+
+`[4, 2, 7, 8, 1, 3, 6, 5]`   split in half
+`[4, 2, 7, 8][1, 3, 6, 5]`   split each half in half
+`[4, 2][7, 8][1, 3][6, 5]`   split each quarter in half
+
+`[4][2][7][8][1][3][6][5]`   we're done splitting. This is "conquer"
+
+`[2, 4][7, 8][1, 3][5, 6]`   now merge each 8th
+`[2, 4, 7, 8][1, 3, 5, 6]`   now we merge the quarters
+`[1, 2, 3, 4, 5, 6, 7, 8]`   merge the halves
+
+Splitting is "divide". Conquering here is just returning `[a]`. Recombine is merge.
+
+Question: how many rows will there be for each phase? 
+
+---
+
+# Analyzing the number of rows
+
+We want to count how many steps it takes to go from 1 array of $n$ elements to $n$ arrays of 1 element. That will be roughly half the number of rows.
+
+For the first part: we're asking "how many times can we halve $n$ until it hits 1."
+
+This is the same as asking "how many times do we have to double 1 until it hits $n$"
+
+This is the same as asking $2^k = n$, solve for $k$
+
+[What is this?]
+
+---
+
+# Analyzing the number of rows (2)
+
+That's right, $\lg n = k$ 
+
+So for $n=8$, $\lg 8 = 3$. There will be three transformations: $8 \to 4$, $4 \to 2$, and $2 \to 1$. 
+
+This is the divide phase. We do $2$ recursive calls, then $4$, then $8$, for a total of $14$.
+
+Once we hit 8 arrays of 1, we go the other way:
+$2 \times 1 = 2$, $2 \times 2 = 4$, $2 \times 4 = 8$
+
+This is the recombine phase. We write a byte for each element. $3$ rows, $8$ elements each.
+
+Quick question: which one takes more $\Theta(1)$ operations?
+
+---
+
+# Divide vs recombine
+
+In this case, recombining is slower, but both phases are $\Theta(n \lg n)$.
+
+In short: doubling the number of rows will mean doubling the number of splits, and also doubling the number of merged integers. So they grow at the same rate.
+
+In some D&C algorithms, dividing takes more work. In others, recombining is slower. It turns out we typically get logarithms as the big-$\Theta$ when they're about the same speed.
+
+Now that we've determined that mergesort is likely $\Theta(n \lg n)$, let's prove it. But first...
 
 ---
 
 # Practice
 
-- Merge is an ordinary iterative algorithm. Prove that it is $\Theta(n)$. You can treat each assignment or int copy as one time unit for simplicity.
+- Do the previous merge-sort analysis on $n=4$ and $n=16$. That is, sketch the number of elements visually, and then verify that dividing takes $\lg n$ rows and recombining takes $\lg n$ rows
+
+- Are there any values for $n$ where that formula doesn't work?
+
+---
+
+<!-- _class: invert questions -->
+# Questions
+
+---
+
+# Proving this
+
+The purpose of drawing a sketch of how many rows and columns there are was to give us a proposition for induction. Remember: it's called induction because induction is how we come up with the goal, not because there's anything inductive about the proof.
+
+Here is the recurrence relation:
+$T(0) = 1$
+$T(1) = 1$
+$T(n) = 2T(n / 2) + \Theta(n)$
+
+The proposition we want to prove is: $T(n) = \Theta(n)$
+
+Let's start with $T(n) = O(n)$. I'll leave $T(n) = \Omega(n)$ to you.
+
+---
+
+# Using induction
+
+We can prove this using strong induction. But we don't know what values to use for $n_0$ and $C$. Let's just pretend we chose them so we can solve for them.
+
+We want to show:
+$\forall n \ge n_0, T(n) \le C(n \lg n)$
+
+We need to use induction, so let's write our subgoals:
+$0 \ge n_0 \implies T(0) = 1 \le C(n \lg n)$
+$\forall n, (\forall i \lt n, i \ge n_0 \implies T(i) \le C(i \lg i)) \implies n \ge n_0 \implies T(n) \le C(n \lg n)$
+
+Slight of hand warning: I modified the strong inductive principle. Instead of showing that if we prove $P(0)$ up to $P(n)$ that it implies $P(n + 1)$, I changed it to if we prove $P(0)$ up to $P(n - 1)$ it implies $P(n)$. This is equivalent, and it makes the math nicer for mergesort.
+
+---
+
+# The base case
+
+$0 \ge n_0 \implies 1 \le C(0 \lg 0)$
+
+Is the conclusion true? It's not true for $n_0 = 0$. Because $\lg 0$ is undefined.
+
+If we choose $n_0 = 1$, it's vacuously true, becuase $0 \lt 1$. 
+
+We actually don't want vacuous truth here because of the inductive step. If we pick $n_0 = 1$, then, when we want to (in the next step) show $(\forall i \le n, P(i)) \implies P(n + 1)$, we actually won't be able to. $P(0) \implies P(1)$ is false with $n_0 = 1$, becuase $P(1)$ is $1 \le C(1 \lg 1) = 0$.
+
+Therefore we *have* to choose $n_0 = 2$
+
+As a rule, when using strong induction, we usually want to actually find the first non-vacuous case.
+
+---
+
+# The (strong) inductive case
+
+$(\forall i \lt n, n \ge 1 \implies T(i) \le C(i \lg i)) \implies n \ge n_0 \implies T(n) \le C(n \lg n)$
+
+We start by supposing this hypothesis: $(\forall i \lt n, i \ge n_0 \implies T(i) \le C(n \lg n))$
+
+Then we suppose $n \ge 1$. We must show $T(n) \le C(n \lg n)$
+
+Let's simplify $T(n) = 2\cdot T({n \over 2}) + \Theta(n)$. We're assuming integer division.
+
+Now, because of our inductive hypothesis, we can assume the proposition is true for $T({n \over 2})$. That is: $T({n\over 2}) \le C {n \over 2}\lg {n \over 2}$
+
+Now, every time we see $T({n \over 2})$ we can replace it with $C {n  \over 2}\lg {n \over 2}$ and get something bigger. We can use this to build an inequality. This is called the substitution method.
+
+---
+
+# Using the substitution method
+
+Start with $T({n\over 2}) \le C \cdot {n\over 2}\lg {n\over 2}$, this is the induction hypothesis.
+$\implies 2 \cdot T({n\over 2}) \le C \cdot n\lg {n\over 2}$
+$\implies 2 \cdot T({n \over 2}) \le C \cdot n \lg {n\over 2} = C\cdot n \lg n - \lg 2 = C \cdot n \lg n - 1$
+$\implies 2 \cdot T({n \over 2})+ 1 \le C n\lg n$
+$\implies2 \cdot T({n \over 2})+ 1 + an \le C n\lg n + an$
+$\implies2 \cdot T({n \over 2})+ 1 + an \le C n\lg n + an$
+
+Why did we add $an$? Because it's a family of functions in $\Theta(n)$, with the same leading term. So this shows:
+$2 \cdot T({n \over 2})+ 1 + \Theta(n) \le C n\lg n + an = O(n \lg n)$ $\square$
+
+
+---
+
+<!-- _class: invert questions -->
+# Questions
+
+---
+
+# Practice
+
+- We did most of the proof that mergesort is $O(n \lg n)$. Now complete the proof and show it is $\Omega(n \lg n)$.
+
+---
+
+# Different kinds of D&C problem
+
+Let's take a (brief) breather from sorting algorithms and consider something simpler.
+
 
 ---
 
