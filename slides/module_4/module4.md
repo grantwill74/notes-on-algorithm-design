@@ -739,9 +739,333 @@ $2 \cdot T({n \over 2})+ 1 + \Theta(n) \le C n\lg n + an = O(n \lg n)$ $\square$
 
 Let's take a (brief) breather from sorting algorithms and consider something simpler.
 
+Here is a binary search tree node structure:
+```c
+typedef struct node_t {
+    struct node_t *l, *r;
+    void* data; // we don't care about this field for the exercise
+} Node;
+```
+
+Do you recall how to count the number of nodes in the tree?
 
 ---
 
+# Counting nodes
+
+```c
+size_t count_nodes(Node* root) {
+    if (!root) return 0;
+    return count_nodes(root->l) + count_nodes(root->r) + 1;
+}
+```
+
+Prove it? By strong induction on the size of the tree $n$:
+- When $n = 0$, the tree is empty and `count_nodes` returns 0.
+- The size of the two subtrees are both smaller than the whole tree, so by the strong inductive hypothesis:
+    if `count_nodes(l)` and `count_nodes(r)` are correct, then `count_nodes(l) + count_nodes(r) + 1` adds the nodes in both sides of the tree, plus the root.
+
+---
+
+# But what is the big-$\Theta$?
+
+It doesn't really matter how the tree looks, but to keep the analysis simple, let's assume it's balanced and complete.
+
+How does this look?
+
+---
+
+![bg width:90% height:90% a graph showing a tree where each node is labeled with the size of the tree. The root is labeled 15. It has two children of size 7, and 7 + 7 + 1 = 15. This same pattern repeats on both sides of the tree. The two 7s have children 3 and 3. The four 3s have children 1 and 1.](count_tree.svg)
+
+---
+
+# D&C analysis
+
+During the divide phase, we have two recursive calls per inner node. There are 7 inner nodes, so that's 14 recursive calls. 
+
+For 7, there are 6 recursive calls. For 3 there are 2.
+
+In general, there will always be $\lfloor n / 2 \rfloor$ inner nodes in a balanced, complete tree, and therefore $2 \cdot \lfloor n / 2 \rfloor$ function calls.
+
+What about the recombine phase? It's just an addition. That's $\Theta(1)$
+
+---
+
+# Recurrence relation
+
+The recurrence relation for balanced trees is therefore:
+$T(0) = 1$
+$T(n) = 2 \cdot T(n / 2) + 1$
+
+Looks similar to the mergesort case, but that $1$ instead of a $\Theta(n)$ changes things.
+
+So what do you think? We have $n$-ish recursive calls, but recombining happens once per inner node.
+
+That's $\Theta(n) + \Theta(n) = \Theta(n)$
+
+Are you convinced that this is $\Theta(n)$?
+
+---
+
+# Why is it different?
+
+This time, the divide phase was more expensive than the recombine. Therefore we're basically counting the number of divisions.
+
+For mergesort, they were about the same. We would divide proportional to $n$ times, but then *each* recombine took $\Theta(n)$ for the number of elements in the recombine. The fact that the recombine got more expensive depending on how many times we had split was where the $\lg n$ factor came from.
+
+I'm going to hold off on proving this one. You'll see why.
+
+---
+
+<!-- _class: invert questions -->
+# Questions
+
+---
+
+# Practice
+
+- Prove that if the tree is degenerate (i.e., every node has at most one child), counting is still $\Theta(n)$
+- Draw a similar diagram for counting the depth of the tree instead of the number of nodes. Assume the tree is balanced, and then do it for a degenerate tree. Do these have the same big-$\Theta$?
+
+---
+
+# One more example
+
+Suppose we want to find the $k^{th}$ largest value in a list of $n$ items.
+
+(This is a common tech-interview question. You can also efficiently solve it with an $n$-sized min-heap)
+
+The naive approach is to just sort the list and take the middle. That will not pass you the tech interview. Instead, we can improve on the time it takes to sort by recognizing that we don't need the whole list to be sorted. We just need to know the top $k$.
+
+Think of it like this: it you want to know the max, it's clearly $\Theta(n)$. What if you want the $2^{nd}$ largest? It should be almost as fast.
+
+One way to do it is with the quickselect algorithm. 
+
+---
+
+# Quickselect
+
+Suppose the list has $n=15$, and we want the 13th smallest value. (the 3rd largest)
+
+Suppose we have the ability to magically determine the median value (we don't, but pretend we do).
+
+We can split the list into three pieces:
+$\lt$ median `++` median `++` $\ge$ median
+
+Suppose the values are all different. We expect the lower half to have 7 elements, and the upper half to have the same.
+
+---
+
+# Quickselect (2)
+
+How does that help us?
+
+Because now we know the 13th smallest value is in the upper list.
+
+In fact, the 13th smallest of the whole list is the 5th smallest value in the upper list, because we know all 8 of the other values are not included in the upper list. 
+
+list: `1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15`
+low: `1, 2, 3, 4, 5, 6, 7`, mid: `8`, high: `9, 10, 11, 12, 13, 14, 15`
+
+Notice that `13`, which is the 13th smallest value in the whole thing, is actually number 5 in the high list.
+
+(Note: obviously if the list is sorted we can easily find the 13th smallest value, but the algorithm I'm showing you works even if it's unsorted.)
+
+---
+
+# Quickselect (3)
+
+Now what? We recurse. We're looking for the 5th smallest value in...
+list: `9, 10, 11, 12, 13, 14, 15`
+low: `9, 10, 11`, mid: `12`, high: `13, 14, 15`
+
+There are 3 values in the lower list, and 1 in the middle. We want the 5th, so we know that it is in the upper list. But because it's in the upper list and there are 4 smaller values, We don't want the 5th smallest, we want the 1st smallest in the upper list:
+list: `13, 14, 15`
+low: `13`, mid: `14`, high: `15`
+
+---
+
+# Quickselect (4)
+
+list: `13, 14, 15`
+low: `13`, mid: `14`, high: `15`
+
+Here, the midpoint gives us a number that's too large, so we know the solution is in the lower list. When the solution is in the lower list, we don't subtract the number of items from the one we're looking for.
+
+list: `13`
+at this point, we want the 1st smallest value in `13`, which is `13`. We found it!
+
+---
+
+# Partition
+
+Of course, we don't magically have the ability to know the median. But we can get pretty close.
+
+We can randomly choose a number in the array, and then put all the values smaller to the left, and all the values greater or equal to the right.
+
+Sometimes the left array will be tiny, and sometimes the right array will be tiny. However, we might get lucky and have the value we're looking for be in the tiny part. That would really speed things up.
+
+---
+
+# Example partition function
+
+Here's a simple partition in C, based on Tony Hoare's partition method:
+
+```c
+size_t partition(int* arr, size_t n) {
+    if (n <= 1) return 0;
+    int r = arr[n - 1]; // choose the last element to be the pivot
+    size_t i_lo = 0, i_hi = n - 2; // it's n - 2 because n - 1 is the pivot
+    for (;;) {
+        // find the first value bigger than the pivot, and the last smaller
+        while (i_lo < n && arr[i_lo] < r) i_lo++; // could remove 1st check
+        while (i_hi > 0 && arr[i_hi] >= r) i_hi--;
+
+        if (i_lo < i_hi) swap(arr + i_lo, arr + i_hi);
+        else break;
+    }
+    swap(arr + i_lo, arr + n - 1); // put the pivot into position
+    return i_lo;
+}
+```
+---
+
+# Explaining it
+
+First, we select a "pivot", which is the value we want to be in the middle. 
+
+Actually figuring out the median would require us to sort the array, which is typically $\Theta(n \lg n)$, which is not good. 
+
+Instead we just guess randomly and assume it's the last element.
+
+Then, we enter a loop: `for(;;) ...`
+
+---
+
+# Explaining it (2)
+
+The first while loop searches for the first value that is smaller than the pivot:
+```c
+while (i_lo < n && arr[i_lo] < r) i_lo++;
+```
+
+The second searches for the last value that is at least as big as the pivot:
+
+```c
+while (i_hi > 0 && arr[i_hi] >= r) i_hi--;
+```
+
+Once we find both values, we swap them. This puts them in order. 
+
+```c
+if (i_lo < i_hi) swap(arr + i_lo, arr + i_hi);
+    else break;
+```
+
+We want everything smaller than the pivot to the left.
+Once `i_lo >= i_hi`, we're done. The small values are on the left.
+
+---
+
+# Explaining it (3)
+
+The last thing we do is
+
+```c
+swap(arr + i_lo, arr + n - 1); // put the pivot into position
+return i_lo;
+```
+This makes it so that the pivot is actually greater than everything to its left and less than or equal to everything to its right.
+
+We haven't sorted the list, but we've sorted the pivot. 
+
+---
+
+# Practice 
+
+- Prove that partition results in an array in which every element `arr[0..p)` $\lt$ `arr[p]` and `arr[p + 1..n)` $\ge$ p.
+
+- Implement quickselect using this partition. This is in `mod4.c`.
+- Prove that it works.
+
+---
+
+<!-- _class: invert questions -->
+
+---
+
+# The big-$\Theta$ of quickselect average case
+
+In the best case, quickselect finds the kth value instantly (it's the pivot). So $\Theta(1)$
+
+In the worst case, either the pivot keeps being the biggest value and we want the smallest, or vice versa. This means we pivot $n$ times, and pivot is $\Theta(n)$, so it ends up being $\Theta(n^2)$ worse case.
+
+But what is its average case? It's when there are an equal number of values on either side of the median.
+
+---
+
+# Quickselect average case recurrence relation
+
+$T(0) = 1$
+$T(n) = T(n / 2) + \Theta(n)$
+
+Interesting. So we split it in half, but only once. Then we do something that takes roughly $n$ time.
+
+
+---
+
+# Sketch of quickselect
+
+
+Imagine we have $n = 64$. We partition the $64$, then identify which half has our value.
+Then we partition the $32$, then split roughly in half.
+Then we partition $16$...
+$8$...$4$...$2$...$1$... and we found it.
+
+In total, we have to process roughly $64 + 32 + 16 + 8 + 4 + 2 +1$ values. Which is $127$.
+
+It's not a coincidence that this is $2n - 1$.
+
+This algorithm ends up being $\Theta(n)$. Again, we'll prove it later.
+
+---
+
+# Three algorithms
+
+Mergesort had this recurrence:
+$T(0) = T(1) = 1$
+$T(n) = 2\cdot T(n / 2) + \Theta(n)$
+
+`count_nodes` had this recurrence:
+$T(0) = 1$
+$T(n) = 2\cdot T(n / 2) + 1$
+
+and quickselect had this recurrence:
+$T(0) = 1$
+$T(n) = T(n / 2) + \Theta(n)$
+
+Notice any patterns?
+
+---
+
+# The D&C pattern
+
+Every divide and conquer algorithm has a recurrence relation that looks like this:
+$T(n) = A\cdot T(n / B) + f(n)$
+
+$A$ is the number of splits we make
+$B$ is the size of each split. I.e., are we splitting in half, splitting in thirds, etc.
+$f(n)$ is the function we do to recombine.
+
+It turns out that knowing just $A$, $B$, and $f(n)$, we can totally characterize the big-$\Theta$ of the algorithm.
+
+There's a theorem, called the "Master Theorem" that tells us how...
+
+---
+
+
+
+---
 
 # Old fashioned sorts
 
