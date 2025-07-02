@@ -151,6 +151,14 @@ int quickselect(int* arr, size_t n, size_t k) {
         return quickselect(arr, part, k);
 }
 
+void quicksort(int* arr, size_t n) {
+    if (n <= 1) return;
+    size_t p = partition(arr, n);
+
+    quicksort(arr, p); // sort up to the partition but not including
+    quicksort(arr + p + 1, n - p - 1); // sort after the partition
+}
+
 // unit tests //////////////////////////////////////////////////////////////////
 
 
@@ -283,6 +291,12 @@ char* do_tests(void) {
     mu_run_sort(t_sort_pair, merge_sort_static);
     mu_run_sort(t_sort_triple, merge_sort_static);
     mu_run_sort(t_sort_random, merge_sort_static);
+
+    mu_run_sort(t_sort_empty, quicksort);
+    mu_run_sort(t_sort_single, quicksort);
+    mu_run_sort(t_sort_pair, quicksort);
+    mu_run_sort(t_sort_triple, quicksort);
+    mu_run_sort(t_sort_random, quicksort);
 
     srand(42);
     mu_run(test_partition_basic);
