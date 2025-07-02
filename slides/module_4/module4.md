@@ -1063,9 +1063,188 @@ There's a theorem, called the "Master Theorem" that tells us how...
 
 ---
 
+![width:100% height:50% - a diagram showing a ternary tree. Each node has 3 children, and it goes 3 layers deep. There are 1 + 3 + 9 = 13 nodes in total.](master_thm.svg)
+This relation looks like $3 \cdot T(n / 3) + f(n)$
+
+The question is, how much work is $f$ doing?
+
+It gets called for every inner node. That is, for every row except the last one. And each row down, it does less work. How many rows are there?
+
+---
+
+# The number of rows
+
+How many times can you split before reaching the leaves? In this case: $\log_3(n)$.
+In general $\log_B(n)$
+
+And how many nodes will there be on each row?
+In this case, row $r$, starting at $0$, will have $3^r$ elements. 
+In general: $A^r$ nodes per row.
+
+At row $r$, each node has $(n / 3^r)$ elements. $(n / B^r)$ in general.
+
+So, in general, we invoke $f$ like this: $f(n) + A(f(n / B)) + A^2(f(n / B^2)) + \ldots=\large \sum_{i = 0}^{(\log_B n) - 1}(A^{i}f(n/B^{i}))$
+
+But that's not the only source of work we need to care about
+
+---
+
+# The number of leaves
+
+When we reach a leaf, D&C algorithms end up being expressed as:
+$T(0) = c$, or $T(1) = d$, or some kind of constant time base case. The key is that however many leaves there are, that's how many times we will call $T(1)$.
+
+How many times does that happen?
+
+This computation is easier: it's once per leaf. And there are $A^{\log_B n}$ leaves.
+
+So we have a term: $A^{\log_B n}$.
+
+---
+
+# Combining the two
+
+Therefore, the total amount of work our algorithm will do is:
+$\large \sum_{i = 0}^{(\log_B n) - 1}(A^{i}f(n/B^{i})) + A^{\log_B n}$
+for some constants $A$ and $B$
+
+This is a sum of two terms. So if one side dominates the other, then that's the big-$\Theta$
+
+How do we know if one side dominates the other?
+
+
+<div class="footnote">
+
+(\*) I'm using [Wikipedia](https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms)) instead of the book for this definition.
+
+</div>
+
+---
+
+# Revisiting the sum
+
+At level $i$ of the recursion tree, there are $A^i$ nodes.
+
+Suppose there is a function $g$ that approximates the amount of work at a node: $f(n) \approx g(n) = \Theta(n^c)$ for some $c$.
+
+Then the cost per node is $\Theta(n / B^i)^c$. So the cost per row is $\Theta(n^c \cdot A^i/B^{ic})$.
+
+Let $L=\log_B n$, how do we get $\sum_{i = 0}^{L - 1} \Theta(n^c \cdot A^i/B^{ic})$?
+
+First, we can factor out $n^c$, and factor *in* the sum:
+$\Theta(n^c \cdot \sum_{i = 0}^{L - 1} A^i/B^{ic}) = \Theta(n^c \cdot \sum_{i = 0}^{L - 1} (A/B^c)^i)$
+
+---
+
+# Rebuilding $T(n)$
+
+Now, let's add the other term back in to get our $T(n)$ expression:
+$T(n) = \Theta(n^c \cdot \sum_{i = 0}^{L - 1} (A/B^c)^i) + A^L$ 
+
+We're close. We want both terms to have a base of $n$. Then we can compare them.
+
+We use the exponent/log swap trick:
+$A = B^{\log_B A}$, $A^L = A^{\log_B n} = (B^{\log_B A})^{\log_B n}=(B^{\log_B n})^{\log_B A}$
+
+And $B^{\log_B n}$ is just $n$, so: $A^L = n^{\log_B A}$ So now we have:
+
+$T(n) = \Theta(n^c \cdot \sum_{i = 0}^{L - 1} (A/B^c)^i) + \Theta(n^{\log_B A})$ 
+
+---
+
+# $c_\mathrm{crit}$
+
+$T(n) = \Theta(n^c \cdot \sum_{i = 0}^{(\log_B n) - 1} (A/B^c)^i) + \Theta(n^{\log_B A})$ 
+
+Now look at that sum. It's a geometric series with $r = A / B^c$
+So everything hinges on that ratio: $r=A/B^c$
+
+One last substitution will give us everything with $n$ as a base...
+
+Let $c_\mathrm{crit} = \log_B A$, then $A=B^{c_\mathrm{crit}}$
+So $r=A/B^c=B^{c_\mathrm{crit}}/B^c=B^{c_\mathrm{crit} - c}$
+
+$T(n) = \Theta(n^c \cdot \sum_{i = 0}^{(\log_B n) - 1} (B^{c_\mathrm{crit} - c})^i) + \Theta(n^{c_\mathrm{crit}})$ 
+
+---
+
+# Case 1
+
+If $A/B^c \lt 1$, that's equivalent to saying  $B^{c_\mathrm{crit}} \lt B^c \equiv B^{c_\mathrm{crit} - c} \lt 1 \equiv C_\mathrm{crit} < c$
+
+If $C_\mathrm{crit} \lt c$, $r\lt 1$, so the sum is going to result in a constant:
+$T(n) = \Theta(n^c \cdot \sum_{i = 0}^{L - 1} (A/B^c)^i) + \Theta(n^{c_\mathrm{crit}}) = \Theta(n^c)+ \Theta(n^{c_\mathrm{crit}})$ 
+
+If $c_\mathrm{crit} \lt c$, the whole thing simplifies to:
+
+$T(n)=\Theta(n^c)$
+
+That is, if $T(n) = A\cdot T(n / B) + O(n^c)$, and $\log_B A \lt c$, then $T(n) = \Theta(n^c)$
+
+---
+ 
+
+If $r \lt 1$, the sum will become a constant, and $T(n) = \Theta(n^c) + \Theta(n^{\log_B A})$
+If $r = 1$, it will become a logarithm, $T(n) = \Theta(n^c \cdot \log_B n + \Theta(n^{\log_B A}))$
+If $r \gt 1$, then we've got a series like $(1 + (a/B^c)+(a/B^c)^2 + \ldots$), and the last term ends up dominating, so $T(n)=\Theta(n^c\cdot(a/B^c)^{\log_B n}) + \Theta(n^{\log_B A})$
+
 
 
 ---
+
+
+
+
+
+So, if $c_\mathrm{crit} \lt$
+
+---
+
+# Considering the cases
+
+
+---
+
+
+# $C_\mathrm{crit}$
+
+One thing we have to do is make the definition less confusing. That giant $\sum$ has to go.
+
+If we could normalize the rows so that each one took the same amount of work, we could replace the $\sum$ with a multiplication.
+
+
+
+
+There's one important term that we need to define: $C_\mathrm{crit} = \log_B A$ (\*)
+
+$A$ is the number of subproblems
+$B$ is the reciprocal of how much work the subproblems do
+$\log_B A=\log A / \log B$
+
+
+
+---
+
+# Case 1
+
+Suppose $f(n)=O(n^c)$. Note: we're not saying that $f(n)$ is a polynomial. We're saying it's bounded by a polynomial. $\lg n = O(n^1)$
+
+That $c$ is important. We can use it to simplify the expression. Let $L=\log_B n$
+
+Total work = $\large \sum_{i = 0}^{L - 1}(A^{i}f(n/B^{i})) + A^{L}$ 
+
+$(A^i f(n/B^i))=O(A^i(n/B^i)^c)$, so:
+$\sum_{i = 0}^{L - 1}(A^{i}f(n/B^{i}))=\sum_{i = 0}^{L - 1}O(A^{i}(n/B^{i})^c)=O(n^c\sum_{i = 0}^{L - 1}(A^{i}/B^{ic}))$
+$=O(n^c)\sum_{i = 0}^{L - 1}(A/B^{c})^i$
+
+We've got a geometric series now.
+$\sum_{i = 0}^{(\log_B n) - 1}(A/B^{c})^i$ has a sum that depends on the ratio of $A / B^c$
+
+
+---
+
+
+
 
 # Old fashioned sorts
 
