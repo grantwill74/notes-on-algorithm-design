@@ -3,7 +3,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-inline void swap(int* a, int* b) {
+static inline void swap(int* a, int* b) {
     int t = *a;
     *a = *b;
     *b = t;

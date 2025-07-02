@@ -26,10 +26,10 @@ test.o: test.c test.h util.h
 	$(CC) -c $(CFLAGS_RELEASE) $< -o $@
 
 $(DEBUG_EXES): %.d: %.c $(COMMON) $(HEADERS)
-	$(CC) $(CFLAGS_DEBUG) $< $(COMMON) -o $@ -lm
+	$(CC) $(CFLAGS_DEBUG) $< $(COMMON) -lm -o $@ 
 
 $(EXES): %: %.c $(COMMON) $(HEADERS)
-	$(CC) $(CFLAGS_RELEASE) $< $(COMMON) -o $@ -lm
+	$(CC) $(CFLAGS_RELEASE) $< $(COMMON) -lm -o $@
 
 test_pool: pool.c $(COMMON) $(HEADERS)
 	$(CC) $(CFLAGS_DEBUG) -DTESTING_POOL $< util.o test.o bench.o -lm

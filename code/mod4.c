@@ -5,11 +5,9 @@
 #include <time.h>
 #include <string.h>
 
-// #include "util.h"
-// #include "bench.h"
+#include "util.h"
 #include "bench.h"
 #include "test.h"
-#include "util.h"
 
 // given two sorted arrays, merge them together to form a larger sorted array
 // requires:    sorted lo,
@@ -115,8 +113,42 @@ void merge_sort_static(int* arr, size_t n) {
     merge_sort(arr, n, merge_sort_static_buf);
 }
 
-void merge_sort_zone(int* arr, size_t n, int* zone) {
+// post: Return the pivot. let r = arr[pivot]
+//       arr[0 .. pivot) < r <= arr[pivot + 1..n) 
+size_t partition(int* arr, size_t n) {
+    if (n <= 1) return 0;
 
+    // choose the last element to be the pivot
+    int r = arr[n - 1];
+    
+    size_t i_lo = 0, i_hi = n - 2;
+    for (;;) {
+        // find the first value bigger than the pivot, and the last smaller
+        while (i_lo < n && arr[i_lo] < r) i_lo++; // could remove 1st check
+        while (i_hi > 0 && arr[i_hi] >= r) i_hi--;
+
+        if (i_lo < i_hi) swap(arr + i_lo, arr + i_hi);
+        else break;
+    }
+
+    // put the pivot into position
+    swap(arr + i_lo, arr + n - 1);
+
+    return i_lo;
+}
+
+// find the k + 1th smallest value.
+// k = 0 means min
+// k = 1 means second smallest, etc.
+int quickselect(int* arr, size_t n, size_t k) {
+    size_t part = partition(arr, n);
+
+    if (part < k)
+        return quickselect(arr + part + 1, n - part - 1, k - part - 1);
+    else if (part == k)
+        return arr[part];
+    else
+        return quickselect(arr, part, k);
 }
 
 // unit tests //////////////////////////////////////////////////////////////////
@@ -152,7 +184,87 @@ char* test_merge_basics(void) {
     return 0;
 }
 
-char* test_mergesort_slow_random() {
+char* test_partition_basic() {
+    int arr1[] = {1, 2};
+    int arr2[] = {2, 1};
+    int arr3[] = {1, 2, 3};
+    int arr4[] = {3, 2, 1};
+
+    mu_assert("partition empty returns 0", partition(arr1, 0) == 0);
+    mu_assert("partition size 1 return 0", partition((int[]){1}, 0) == 0);
+
+    partition(arr1, 2);
+    partition(arr2, 2);
+    partition(arr3, 3);
+    partition(arr4, 3);
+
+    mu_assert("partition in order pair", arr_eq_i(arr1, (int[]){1, 2}, 2));
+    mu_assert("partition out of order pair", arr_eq_i(arr2, (int[]){1, 2}, 2));
+
+    return 0;
+}
+
+char* test_partition_random_one() {
+    int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    shuffle(arr, 10);
+
+    size_t res = partition(arr, 10);
+
+    for (size_t i = 0; i < res; i++) {
+        mu_assert("value before partition is less", arr[i] < arr[res]);
+    }
+
+    for (size_t i = res + 1; i < 10; i++) {
+        mu_assert("partition below all remaining", arr[res] <= arr[i]);
+    }
+
+    return 0;
+}
+
+char* test_partition_random() {
+    for (int i = 0; i < 1000; i++) {
+        char* r = test_partition_random_one();
+        if (r) return r;
+    }
+
+    return 0;
+}
+
+char* test_qsel_basic() {
+    int arr1[] = {1, 2};
+    int arr1c[] = {1, 2};
+    int arr2[] = {2, 1};
+    int arr2c[] = {2, 1};
+
+    mu_assert("qsel on empty", quickselect(arr1, 0, 0) == 1);
+    mu_assert("qsel on single", quickselect(arr1, 1, 0) == 1);
+    mu_assert("qsel in order pair", quickselect(arr1, 2, 0) == 1);
+    mu_assert("qsel in order pair 2", quickselect(arr1c, 2, 1) == 2);
+    mu_assert("qsel out of order pair", quickselect(arr2, 2, 0) == 1);
+    mu_assert("qsel out of order pair 2", quickselect(arr2c, 2, 1) == 2);
+
+    return 0;
+}
+
+char* test_qsel_random_one() {
+    int arr[10] = {0,1,2,3,4,5,6,7,8,9};
+    shuffle(arr, 10);
+
+    int k = rand() % 10;
+    int res = quickselect(arr, 10, k);
+
+    mu_assert("qsel random k", res == k);
+
+
+    return 0;
+}
+
+char* test_qsel_random() {
+    for(int i = 0; i < 1000; i++) {
+        char* res = test_qsel_random_one();
+        if (res) return res;
+    }
+
     return 0;
 }
 
@@ -171,6 +283,12 @@ char* do_tests(void) {
     mu_run_sort(t_sort_pair, merge_sort_static);
     mu_run_sort(t_sort_triple, merge_sort_static);
     mu_run_sort(t_sort_random, merge_sort_static);
+
+    srand(42);
+    mu_run(test_partition_basic);
+    mu_run(test_partition_random);
+    mu_run(test_qsel_basic);
+    mu_run(test_qsel_random);
 
     return 0;
 }
