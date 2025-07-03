@@ -1036,11 +1036,11 @@ Mergesort had this recurrence:
 $T(0) = T(1) = 1$
 $T(n) = 2\cdot T(n / 2) + \Theta(n)$
 
-`count_nodes` had this recurrence:
+`count_nodes` had this recurrence for the balanced case:
 $T(0) = 1$
 $T(n) = 2\cdot T(n / 2) + 1$
 
-and quickselect had this recurrence:
+and quickselect had this recurrence for the average case:
 $T(0) = 1$
 $T(n) = T(n / 2) + \Theta(n)$
 
@@ -1159,7 +1159,7 @@ $T(n) = \Theta(n^c \cdot \sum_{i = 0}^{(\log_B n) - 1} (A/B^c)^i) + \Theta(n^{\l
 Now look at that sum. It's a geometric series with $r = A / B^c$
 So everything hinges on that ratio: $r=A/B^c$
 
-One last substitution will give us everything with $n$ as a base...
+One last substitution will give us something to make a decision on...
 
 Let $c_\mathrm{crit} = \log_B A$, then $A=B^{c_\mathrm{crit}}$
 So $r=A/B^c=B^{c_\mathrm{crit}}/B^c=B^{c_\mathrm{crit} - c}$
@@ -1168,25 +1168,98 @@ $T(n) = \Theta(n^c \cdot \sum_{i = 0}^{(\log_B n) - 1} (B^{c_\mathrm{crit} - c})
 
 ---
 
-# Case 1
+# Case 1: tree is leaf-heavy
 
-If $A/B^c \lt 1$, that's equivalent to saying  $B^{c_\mathrm{crit}} \lt B^c \equiv B^{c_\mathrm{crit} - c} \lt 1 \equiv C_\mathrm{crit} < c$
+If $A/B^c \lt 1$, that's equivalent to saying  $B^{c_\mathrm{crit}} \lt B^c \equiv B^{c_\mathrm{crit} - c} \lt 1 \equiv C_\mathrm{crit} \gt c$
 
-If $C_\mathrm{crit} \lt c$, $r\lt 1$, so the sum is going to result in a constant:
+If $C_\mathrm{crit} \gt c$, $r\lt 1$, so the sum is going to result in a constant:
 $T(n) = \Theta(n^c \cdot \sum_{i = 0}^{L - 1} (A/B^c)^i) + \Theta(n^{c_\mathrm{crit}}) = \Theta(n^c)+ \Theta(n^{c_\mathrm{crit}})$ 
 
-If $c_\mathrm{crit} \lt c$, the whole thing simplifies to:
+If $c_\mathrm{crit} \gt c$, the whole thing simplifies to:
 
-$T(n)=\Theta(n^c)$
+$T(n)=\Theta(n^{c_\mathrm{crit}})$
 
-That is, if $T(n) = A\cdot T(n / B) + O(n^c)$, and $\log_B A \lt c$, then $T(n) = \Theta(n^c)$
+That is, if $T(n) = A\cdot T(n / B) + O(n^c)$, and $\log A / \log B \gt c$, then $T(n) = \Theta(n^{c_\mathrm{crit}})$
+
+In other words: the work we do inside the tree is much smaller than the total number of leaves, so the number of leaves ends up being the big-$\Theta$
+
+---
+
+# Case 2: the tree and leaves are balanced
+
+If $A/B^c = 1$, that's equivalent to saying  $C_\mathrm{crit} = c$
+
+The thing inside the sum $= 1$, so we end up with a logarithm factor. Recall $L=\log_B n$
+
+$T(n) = \Theta(n^c \cdot \sum_{i = 0}^{L - 1} (A/B^c)^i) + \Theta(n^{c_\mathrm{crit}}) = \Theta(n^c\cdot \log_B n) + \Theta(n^{c_\mathrm{crit}})= \Theta(n^c\cdot \log_B n)$ 
+
+We assumed that $f(n) = \Theta(n^c)$ to derive case 1, but If our original function had factors of $\log n$ in it, that is, if $f(n) = \Theta(n^c (\log n)^2)$ then we would end up with one more log power:
+$T(n) = \Theta(n^c (\log n)^2 \cdot \sum_{i = 0}^{L - 1} (A/B^c)^i)=\Theta(n^c(\log n)^2 \cdot \log n) = \Theta(n^c \cdot (\log n)^3)$
+
+In general, if $T(n) = A \cdot T(n / B) + \Theta(n^c (\log n)^k)$ and $c = \log A / \log B$, 
+$T(n) = \Theta(n^c (\log n)^{k + 1})$
+
+Note: most of the time, $k$ will be $0$. This will make $\log n$ magically appear.
 
 ---
  
+# Case 3: the weird one: inner work heavy
 
-If $r \lt 1$, the sum will become a constant, and $T(n) = \Theta(n^c) + \Theta(n^{\log_B A})$
-If $r = 1$, it will become a logarithm, $T(n) = \Theta(n^c \cdot \log_B n + \Theta(n^{\log_B A}))$
-If $r \gt 1$, then we've got a series like $(1 + (a/B^c)+(a/B^c)^2 + \ldots$), and the last term ends up dominating, so $T(n)=\Theta(n^c\cdot(a/B^c)^{\log_B n}) + \Theta(n^{\log_B A})$
+If $A/B^c \gt 1$, that's equivalent to saying  $C_\mathrm{crit} \lt c$
+
+
+Here, the thing inside the sum is $\gt 1$. This means that we're doing more work inside the tree than we are at the leaves. This is the least common case.
+
+Recall that $A/B^c = B^{c_\mathrm{crit} - c}$, so 
+$T(n) = \Theta(n^c \cdot \sum_{i = 0}^{L - 1} (A/B^c)^i) + \Theta(n^{c_\mathrm{crit}})$ 
+$= \Theta(n^c \cdot (1 + B^{c_\mathrm{crit} - c} + (B^{c_\mathrm{crit} - c})^2 + \ldots) + \Theta(n^{c_\mathrm{crit}})$ 
+
+In that big-$\Theta$, only the largest term actually matters. So it ends up being
+
+$=\Theta(n^c \cdot (B^{c_\mathrm{crit} - c})^L) + \Theta(n^{c_\mathrm{crit}}) = \Theta(n^c \cdot (B^{c_\mathrm{crit} - c})^L)$, which was all an approximation of $f(n)$ (this was an early substitution we made).
+
+---
+
+# Case 3: the regularity condition
+
+Therefore, if $T(n) = A\cdot T(n / B) + f(n)$, where $f(n)=\Omega(n^c)$ and $c \gt c_\mathrm{crit}$,
+$T(n) = \Theta(f(n))$
+
+Basically, the recombining is so expensive that it ends up dominating everything.
+
+Except there's a special condition, called a regularity condition. There must be a $k \lt 1$:
+$$
+A\cdot f({n \over B}) \le k \cdot f(n)
+$$
+
+Why? Because we want to ensure that the work at the root is bigger than the work at the other inner nodes. If it is, then the work at the root node dominates all the others. If it's not, then there's not an obvious bound, and we need to use another technique.
+
+---
+
+# Case 3: what if the regularity condition is false?
+
+Then we can't use the master theorem. Sorry.
+
+---
+
+# The master method
+
+Try to express your problem as:
+$T(n) = A\cdot T(n / B) + f(n)$, where $A$ and $B$ are constant. 
+(If you can't, the master method does not apply)
+Let $c_\mathrm{crit} = {\log A \over \log B}$
+1. If $f(n) = O(n^c)$ and $c_\mathrm{crit} \gt c$
+   Then $T(n) = \Theta(n^{c_\mathrm{crit}})$
+2. If $f(n) = \Theta(n^{c_\mathrm{crit}}\cdot (\log n)^{k})$ and $c_\mathrm{crit} = c$
+   Then $T(n) = \Theta(n^c \cdot (\log n)^{k + 1})$
+3. If $f(n) = \Omega(n^c)$ and $c_\mathrm{crit} \lt c$ and $\exists k, A\cdot f(n / B) \le k \cdot f(n)$
+   Then $T(n) = \Theta(f(n))$
+4. Otherwise, you can't use the master method
+
+---
+
+![bg height:100% a flowchart for the master method. Step one is telling you to formulate your problem as T(n)=A*T(n/B) + f(n). Then we reach a decision: c_crit = (log A) / (log B). If f(n)=O(n^c), and c_crit > c, we go to case 1: T(n)=Theta(n^c_crit). If f(n) = Theta(n^c * (log n)^k) and c_crit = c, we go to case 2: T(n) = Theta(n^c_crit * (log n)^(k + 1). If f(n) = Omega(n^c), and c_crit < c, we go to case 3, which has a decision to make. The decision: is there a k less than 1 such that A * f(n / B) = k * f(n)? If so, T(n) = Theta(f(n)), if not, we go to the crying cat emoji, indicatin that we will have to use another method to determine the running time)](master_chart.svg)
+
 
 
 
@@ -1195,58 +1268,7 @@ If $r \gt 1$, then we've got a series like $(1 + (a/B^c)+(a/B^c)^2 + \ldots$), a
 
 
 
-
-So, if $c_\mathrm{crit} \lt$
-
----
-
-# Considering the cases
-
-
----
-
-
-# $C_\mathrm{crit}$
-
-One thing we have to do is make the definition less confusing. That giant $\sum$ has to go.
-
-If we could normalize the rows so that each one took the same amount of work, we could replace the $\sum$ with a multiplication.
-
-
-
-
-There's one important term that we need to define: $C_\mathrm{crit} = \log_B A$ (\*)
-
-$A$ is the number of subproblems
-$B$ is the reciprocal of how much work the subproblems do
-$\log_B A=\log A / \log B$
-
-
-
----
-
-# Case 1
-
-Suppose $f(n)=O(n^c)$. Note: we're not saying that $f(n)$ is a polynomial. We're saying it's bounded by a polynomial. $\lg n = O(n^1)$
-
-That $c$ is important. We can use it to simplify the expression. Let $L=\log_B n$
-
-Total work = $\large \sum_{i = 0}^{L - 1}(A^{i}f(n/B^{i})) + A^{L}$ 
-
-$(A^i f(n/B^i))=O(A^i(n/B^i)^c)$, so:
-$\sum_{i = 0}^{L - 1}(A^{i}f(n/B^{i}))=\sum_{i = 0}^{L - 1}O(A^{i}(n/B^{i})^c)=O(n^c\sum_{i = 0}^{L - 1}(A^{i}/B^{ic}))$
-$=O(n^c)\sum_{i = 0}^{L - 1}(A/B^{c})^i$
-
-We've got a geometric series now.
-$\sum_{i = 0}^{(\log_B n) - 1}(A/B^{c})^i$ has a sum that depends on the ratio of $A / B^c$
-
-
----
-
-
-
-
-# Old fashioned sorts
+# Appendix A: Old fashioned sorts
 
 In the 1890's, [Herman Hollerith](https://en.wikipedia.org/wiki/Herman_Hollerith) invented the card sorter.
 
@@ -1326,4 +1348,35 @@ flowchart TD
   B135 & B24 --> RESULT("merge([1, 3, 5] [2, 4]) =
    [1, 2, 3, 4, 5]")
 -->
+```
+
+# Mermaid source (2): flow chart
+
+```
+---
+config:
+      theme: redux
+---
+flowchart TD
+  A["T(n)=A·T(n/B) + f(n)"] --> CC
+  CC@{ shape: diamond, label: "c_crit =\n (log A) / \n(log B)" }
+  CC --> |"f(n)=O(n^c)
+  c_crit > c"| C1
+  C1["Case 1:
+  T(n)=ϴ(n^c_crit)"]
+  CC --> |"f(n)=ϴ(n^c·(log n)^k)
+  c_crit = c"| C2
+  C2["Case 2: T(n)=
+    ϴ(n^c_crit·(log n)^(k+1))"]
+  CC --> |"f(n) = Ω(n^c)
+  c_crit < c"| C3
+  C3@{shape: diamond, label: "Ǝk<1, 
+  Af(n/B) <= 
+  k·f(n)?"}
+
+  C3 --> |"yes"| C3Y
+  C3Y["T(n)=ϴ(f(n))"]
+
+  C3 --> |"no"| C3N
+  C3N["<font size= 10>😿"]
 ```
