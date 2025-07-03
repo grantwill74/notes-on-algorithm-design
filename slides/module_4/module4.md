@@ -1260,15 +1260,146 @@ Let $c_\mathrm{crit} = {\log A \over \log B}$
 
 ![bg height:100% a flowchart for the master method. Step one is telling you to formulate your problem as T(n)=A*T(n/B) + f(n). Then we reach a decision: c_crit = (log A) / (log B). If f(n)=O(n^c), and c_crit > c, we go to case 1: T(n)=Theta(n^c_crit). If f(n) = Theta(n^c * (log n)^k) and c_crit = c, we go to case 2: T(n) = Theta(n^c_crit * (log n)^(k + 1). If f(n) = Omega(n^c), and c_crit < c, we go to case 3, which has a decision to make. The decision: is there a k less than 1 such that A * f(n / B) = k * f(n)? If so, T(n) = Theta(f(n)), if not, we go to the crying cat emoji, indicatin that we will have to use another method to determine the running time)](master_chart.svg)
 
+---
+
+<!-- _class: invert questions -->
+# Questions
+
+---
+
+# Revisiting `count_nodes`
+
+Remember `count_nodes`? When it's balanced:
+$T(n) = 2\cdot T(n / 2) + 1$
+
+$c_\mathrm{crit}=\log 2 / \log 2 = 1$
+$f(n) = 1 = O(n^0)$
+
+$1 \gt 0$, so we're in case 1: $T(n) = \Theta(n^{c_\mathrm{crit}}) = \Theta(n^1)$
+
+That's it, we don't have to prove anything by induction.
+
+---
+
+# Revisiting `mergesort`
+
+Is mergesort *really* $\Theta(n \lg n)$?
+
+$T(0) = T(1) = 1$
+$T(n) = 2 \cdot T(n / 2) + \Theta(n)$
+
+$c_{\mathrm{crit}} = \log 2 / \log 2 = 1$
+$f(n) = \Theta(n^1 \cdot (\log n)^0)$
+$c = 1 = c_\mathrm{crit}$
+
+Case 2: $T(n) = \Theta(n (\log n)^1) = \Theta(n \lg n)$
+
+Yup, it is. No messy induction or substitution.
+
+---
+
+# Revisiting `quickselect`
+
+What on earth is `quickselect` in the average case?
+
+$T(0) = 1$
+$T(n) = 1 \cdot T(n / 2) + \Theta(n)$
+
+$c_\mathrm{crit}=\log 1 / \log 2 = 0$
+$f(n) = \Theta(n) = \Omega(n^1)$
+$c = 1, c_\mathrm{crit} = 0, c_\mathrm{crit} \lt c$
+
+$\exists k \lt 1, A \cdot n / B \le k \cdot n$? $n / 2 \le k n$, choose $k=1/2$, it holds.
+We're in case 3: $T(n) = \Theta(n)$
+
+---
+
+# Practice
+
+Quicksort is just like quickselect, but after partitioning we just quicksort each side.
+
+- Implement quicksort
+- What is the big-$\Theta$ of the best case, where the partition method perfectly splits the two arrays?
+- In the worst case , the partition always picks the worst value (i.e., it's bigger or smaller than all the others). 
+    - What recurrence relation do we get then?
+    - Is it eligable for the master method?
+    - Find its big-$\Theta$ either way.
+
+---
+
+# Appendix A: Practice Quiz
+
+I'm going to pick 4 recurrence relations. Your job will be to use the master theorem to find their big-$\Theta$ if applicable, or say "cannot use master method if not"
+
+For $c_\mathrm{crit}$, you can use whatever logarithm base you want, as long as you use it for the numerator and denominator. 
+
+For example: for $T(n) = 3 \cdot T(n / 9) + n$, $c_\mathrm{crit} = \log_3 3 / \log_3 9 = 1 / 2$
+
+---
+
+# Appendix A: some samples
+
+1. $T(n) = 2 \cdot T(n / 2) + n$
+2. $T(n) = T(n / 3) + n^2$
+3. $T(n) = 4\cdot T(n / 2) + n$
+4. $T(n) = 2\cdot T(n / 2) + n \cdot |\sin n|$
+5. $T(n) = 49 \cdot T (n / 7) + \Theta(n^2 \log n)$
+6. $T(n) = 100 \cdot T(n / 10) + 1$
+7. $T(n) = T(n - 1) + \Theta(n)$
+
+---
+
+# Appendix A: the answers
+
+1. $c_\mathrm{crit}= 1$, $f(n) = n^1 \cdot (\log n)^0$, so case 2. $T(n) = \Theta(n \lg n)$
+2. $c_\mathrm{crit}= 0$, $f(n) = \Omega(n^2)$, $c_\mathrm{crit} \lt 2$ case 3. $\exists k \lt 1, n^2 / 2 \le k n^2$? 
+   Yes, case 3: $T(n) = \Theta(n^2)$
+3. $c_\mathrm{crit}= \lg 4 / \lg 2 = 2$, $f(n) = \Omega(n^1)$, $2 \gt 1$, so case 1. $T(n) = \Theta(n^{c_\mathrm{crit}})=\Theta(n^2)$
+4. $c_\mathrm{crit}= 1$, $f(n) = \Omega(n^1)$, $2 \lt 3$, $\exists k \lt 1, 2((n/2) \cdot |\sin (n / 2)|) = \le k \cdot n \cdot \sin n$?
+   Fails the regularity test. Cannot apply master theorem.
+5. $c_\mathrm{crit}= \log_7 49 / \log_7 7 = 2$, $c = 2$, case 2. $T(n) = \Theta(n^2 (\log n)^2)$
+6. $c_\mathrm{crit}= \log_{10} 100 / \log_{10} 10 = 2$, $1 = O(n^0)$, $1 \gt 0$, case 1: $T(n) = \Theta(n^2)$
+7. Not a divide and conquer problem; can't use the master theorem.
+
+
+---
+
+# Appendix A: unworked samples
+
+
+1. $T(n) = 3T(n / 2) + n^2$
+2. $T(n) = T(n / 4) + n \log n$
+3. $T(n) = 5T(n / 3) + n$
+4. $T(n) = 2T(n / 2) + n^2 \log_8 n$
+5. $T(n) = 9T(n / 3) + n^2$
+6. $T(n) = 2T(n / 2) + n(\log n)^2$
+7. $T(n) = T(n-1) + T(n - 2) + 1$
 
 
 
 ---
 
+# Appendix A: tricky samples that I can still ask
 
+Ponder these. All of them have definite solutions, and are solvable using math you know. I consider these to be reasonable exam problems (I would include the hints), but you'll want to study them.
 
+- $T(n) = T(n / 2) + 2^n$
+  Hint: This one *does* pass the regularity test.
+- $T(n) = 2 \cdot T(n / 2) + sin(n)$
+  Hint: is this like the ones that failed the regularity test? Or is $\sin(n)$ bounded?$
+- $T(n) = 4 \cdot T(n / 2) + n^2 + n$
+  Hint: what kind of bound can we apply to $n^2 + n$?
+- $T(n) = 8 \cdot T(n / 2) + (\log n)^3$
+  Hint: $(\log n)^k = O(n)$ for all constant $k$
 
-# Appendix A: Old fashioned sorts
+---
+
+<!-- _class: invert questions -->
+# Questions?
+
+---
+
+# Appendix B: Old fashioned sorts
 
 In the 1890's, [Herman Hollerith](https://en.wikipedia.org/wiki/Herman_Hollerith) invented the card sorter.
 
@@ -1314,8 +1445,36 @@ If we have $10000$, we sort them in $1 + 10\times (1 + 10\times (1 + 10))=1111$
 Write the recurrence relation:
 
 $T(<= 10) = 1$
-$T(n) = 10\timesT(1/10) + 1$
+$T(n) = 10\cdot T(1/10) + 1$
 
+Applying the master theorem, this is $\Theta(n \lg n)$ But the fan-out is so wide, it feels almost linear!
+
+---
+
+# Radix sort
+
+This is called radix sort. What's cool is we can pick the radix:
+- Base-2 means we sort the numbers based on a binary digit.
+- Base-4 means we sort the numbers based on 2 binary digits grouped together.
+- Base-16 means we sort on hex digits. a 32-bit number would be sorted in 8 passes.
+
+---
+
+# Radix sort downsides
+
+- If we sort from biggest to smallest digit (big-endian radix sort), then most datasets will have lots of 0 digits. How often does a number > 1 billion arise naturally? You end up wasting several passes
+- We can fix this by sorting from smallest to largest (little-endian radix sort), and then we can stop sorting numbers as soon as they are less than the radix^(number of sorts). But then we lose the nice property that sorting part way makes the numbers "almost sorted".
+- We have to allocate buckets, which is slow.
+
+---
+
+# Practice 
+
+- Implement radix sort. Make the radix configurable.
+- What happens to the recurrence relation if we change bases? I.e., instead of using base-10, we use base-16?
+- Does that change the big-$\Theta$?
+- Radix sort seems to have a nicer recurrence relation than quicksort. Why do you think we don't often use it?
+- Does radix sort require allocation? Can you think of a way to optimize base-2 to not require more than 1 additional buffer? 
 
 ---
 
