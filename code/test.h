@@ -14,7 +14,7 @@ extern size_t tests_run;
 
 #define mu_assert(message, test) \
     do { if (!(test)) \
-        return __FILE__ ": " STRINGIZE(__LINE__) "; " message ": " #test "."; }\
+        return __FILE__ ": " STRINGIZE(__LINE__) "; " message ": " #test; }\
          while (0)
 
 // supports non literal string

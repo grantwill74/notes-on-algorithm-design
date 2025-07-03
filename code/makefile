@@ -37,6 +37,9 @@ test_pool: pool.c $(COMMON) $(HEADERS)
 bench_pool: pool.c $(COMMON) $(HEADERS)
 	$(CC) $(CFLAGS_RELEASE) -DTESTING_POOL $< util.o test.o bench.o -lm
 
+test_heap: heap.c $(COMMON) $(HEADERS)
+	$(CC) $(CFLAGS_DEBUG) $< util.o test.o
+
 #mod2: mod2.c $(HEADERS)
 #	$(CC) mod2.c -o mod2 $(CFLAGS)
 
