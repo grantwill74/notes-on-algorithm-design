@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>module_4</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="design-and-analysis-of-algorithms">Design and Analysis of
+Algorithms</h1>
+<h2 id="module-4-divide-and-conquer">Module 4: Divide-and-Conquer</h2>
+<p><br> <br></p>
+<p>Slides © Grant Williams, <a
+href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
+4.0</a>.</p>
+<p><br></p>
+<p>This is an open educational resource. Feel free to submit fixes,
+improvements, and new material <a
+href="https://github.com/grantwill74/notes-on-algorithm-design">here</a>.</p>
+<hr />
+<h1 id="introduction">Introduction</h1>
+<p>In this class, we’re going to learn an extremely common and important
+design technique for algorithms: divide and conquer.</p>
+<p>We’re also going to learn how to analyze these algorithms for their
+runtime bounds. Our traditional proof techniques will work, but there’s
+a cool theorem that will analyze them for us much easier than an
+inductive proof.</p>
+<hr />
+<h1 id="divide-and-conquer">Divide and conquer</h1>
+<p>Divide and conquer algorithms are algorithms that are broken up into
+three phases: 1. Divide: the data is broken into 2 or more pieces 2.
+Conquer: the problem is solved on at least one of the smaller pieces 3.
+Recombine (optional): the pieces are somehow merged back together</p>
+<p>Sometimes this paradigm is called “divide-conquer-recombine”, but the
+recombine part is normally implied.</p>
+<p>We often abbreviate it “D&amp;C”.</p>
+<hr />
+<h1 id="an-example">An example</h1>
+<p>Rather than keep this theoretical, let’s see an example of a common,
+useful D&amp;C algo.</p>
+<p>We’ll prove that it’s correct, prove its runtime bound the old
+fashioned way, and then see if we see any patterns as we explore other
+D&amp;C algorithms.</p>
+<p>The algorithm we look at first will be <em>Mergesort</em>.</p>
+<p>However, to understand mergesort, we have to first understand
+merging.</p>
+<hr />
+<h1 id="merge">Merge</h1>
+<p>Have you ever noticed that it’s faster to sort two lists that are
+already sorted than one list that isn’t sorted?</p>
+<p>I notice this whenever I have to sort exams by student name. If I
+break the piles into pieces, maybe with a distribution sort, I can sort
+the small piles quickly, and then merge them all together.</p>
+<p>But how does this work, and how fast is it?</p>
+<hr />
+<h1 id="the-merge-algorithm">The merge algorithm</h1>
+<p>Suppose we have two sorted lists: <code>a = [1, 2, 3, 4]</code>,
+<code>b = [0, 1, 2, 5]</code></p>
+<p>Each one is sorted, but they aren’t sorted with respect to each
+other. So we can’t just concatenate them.</p>
+<p>Instead, there’s a simple algorithm we can use to combine them.
+First, assume there is an array that is big enough to hold both of them:
+<code>buf = [_, _, _, _, _, _, _, _]</code></p>
+<hr />
+<h1 id="the-merge-algorithm-2">The merge algorithm (2)</h1>
+<p>Then, we need to track three variables: a separate index or pointer
+into <code>a</code>, <code>b</code>, and <code>buf</code>.
+<code>a = [1, 2, 3, 4], b = [0, 1, 2, 2], buf = [_, _, _, _, _, _, _, _]</code>
+<code>^                 ^                   ^</code> Here, the carats
+represent the indices. For screen narration, let <code>i = 0</code> be
+the index into <code>a</code>, <code>j = 0</code> be the index into
+<code>b</code>, and <code>k = 0</code> be the index into
+<code>buf</code>.</p>
+<hr />
+<h1 id="the-merge-algorithm-3">The merge algorithm (3)</h1>
+<p><code>a = [1, 2, 3, 4], b = [0, 1, 2, 2], buf = [_, _, _, _, _, _, _, _]</code>
+<code>^                 ^                   ^</code>,
+<code>i = 0</code>, <code>j = 0</code>, <code>k = 0</code></p>
+<p>First, we compare the elements at <code>a[i]</code> and
+<code>b[j]</code>. We want to copy the smaller one into the buffer.
+Specifically, always take <code>a[i]</code> if
+<code>a[i] &lt;= b[i]</code>, otherwise take <code>b[i]</code>. * In
+this case, <code>b[i]</code> is strictly smaller, so we copy it into the
+buffer, and increment <code>j</code>, which stores how many elements
+from <code>b</code> have been taken. We also increment <code>k</code>,
+which stores how many elements have been written to the buffer.</p>
+<p><code>a= [1, 2, 3, 4], b= [0, 1, 2, 2], buf = [0, _, _, _, _, _, _, _]</code>
+<code>^                   ^                   ^</code>,
+<code>i = 0</code>, <code>j = 1</code>, <code>k = 1</code></p>
+<div class="footnote">
+<p>*: The reason it’s important to prioritize <code>a</code> is for
+reasons of stability. We’ll talk about stability and why it’s useful
+later.</p>
+</div>
+<hr />
+<h1 id="the-merge-algorithm-4">The merge algorithm (4)</h1>
+<p><code>a= [1, 2, 3, 4], b= [0, 1, 2, 2], buf = [0, _, _, _, _, _, _, _]</code>
+<code>^                   ^                   ^</code>,
+<code>i = 0</code>, <code>j = 1</code>, <code>k = 1</code></p>
+<p>Now we compare <code>a[i] == 1</code> with <code>b[i] == 1</code>.
+These are equal, so we prefer to take from <code>a</code>. Again, this
+is for reasons of stability, which we’ll talk about soon.</p>
+<p><code>a= [1, 2, 3, 4], b= [0, 1, 2, 2], buf = [0, 1, _, _, _, _, _, _]</code>
+<code>^                ^                      ^</code>,
+<code>i = 1</code>, <code>j = 1</code>, <code>k = 2</code></p>
+<p>And then we take from <code>b</code>, because <code>1 &lt; 2</code>:
+<code>a= [1, 2, 3, 4], b= [0, 1, 2, 2], buf = [0, 1, 1, _, _, _, _, _]</code>
+<code>^                   ^                      ^</code>,
+<code>i = 1</code>, <code>j = 2</code>, <code>k = 3</code></p>
+<p>[What happens next?]</p>
+<hr />
+<h1 id="the-merge-algorithm-5">The merge algorithm (5)</h1>
+<p>take from <code>a</code> , because <code>2 &lt;= 2</code>:
+<code>a= [1, 2, 3, 4], b= [0, 1, 2, 2], buf = [0, 1, 1, 2, _, _, _, _]</code>
+<code>^                ^                         ^</code>,
+<code>i = 2</code>, <code>j = 2</code>, <code>k = 4</code></p>
+<p>then, the next two take from <code>b</code>, because both elements
+are <code>2</code>, while <code>a[i]==3</code>:
+<code>a= [1, 2, 3, 4], b= [0, 1, 2, 2], buf = [0, 1, 1, 2, 2, 2, _, _]</code>
+<code>^                     ~                          ^</code>,
+<code>i= 1</code>, <code>j= 4</code>, <code>k= 6</code></p>
+<p>At this point, <code>b</code> has no more elements (I marked the
+index with <code>~</code>). So we can safely copy the rest of
+<code>a</code> into <code>buf</code> at position <code>k</code>:
+<code>buf = [0, 1, 1, 2, 2, 2, 3, 4]</code></p>
+<p>And now <code>buf</code> is sorted, and contains all the elements in
+both <code>a</code> and <code>b</code>.</p>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions">Questions?</h1>
+<hr />
+<h1 id="merges-code">Merge’s code</h1>
+<p>So, can we write merge in C?</p>
+<p>I recommend doing it as a practice exercise later. I’m going to show
+you the code, but try doing it on your own without using the code as a
+reference.</p>
+<p>Here’s a simple implementation…</p>
+<hr />
+<h1 id="merge-in-c-scrunched-to-fit"><code>merge</code> in C (scrunched
+to fit)</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> merge<span class="op">(</span><span class="dt">const</span> <span class="dt">int</span><span class="op">*</span> lo<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span><span class="op">*</span> hi<span class="op">,</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">size_t</span> n_lo<span class="op">,</span> <span class="dt">size_t</span> n_hi<span class="op">,</span> <span class="dt">int</span><span class="op">*</span> <span class="dt">restrict</span> merge_buf<span class="op">)</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> i_lo <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> i_hi <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> i_merge <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(;;)</span> <span class="op">{</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>i_lo <span class="op">==</span> n_lo<span class="op">)</span> <span class="op">{</span> <span class="co">// done taking from lo</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>            memcpy<span class="op">(</span>merge_buf <span class="op">+</span> i_merge<span class="op">,</span> hi <span class="op">+</span> i_hi<span class="op">,</span> <span class="op">(</span>n_hi <span class="op">-</span> i_hi<span class="op">)</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">if</span> <span class="op">(</span>i_hi <span class="op">==</span> n_hi<span class="op">)</span> <span class="op">{</span> <span class="co">// done taking from hi</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>            memcpy<span class="op">(</span>merge_buf <span class="op">+</span> i_merge<span class="op">,</span> lo <span class="op">+</span> i_lo<span class="op">,</span> <span class="op">(</span>n_lo <span class="op">-</span> i_lo<span class="op">)</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>lo<span class="op">[</span>i_lo<span class="op">]</span> <span class="op">&lt;=</span> hi<span class="op">[</span>i_hi<span class="op">])</span> <span class="op">{</span> merge_buf<span class="op">[</span>i_merge<span class="op">++]</span> <span class="op">=</span> lo<span class="op">[</span>i_lo<span class="op">++];</span> <span class="op">}</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="op">{</span> merge_buf<span class="op">[</span>i_merge<span class="op">++]</span> <span class="op">=</span> hi<span class="op">[</span>i_hi<span class="op">++];</span> <span class="op">}</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="understanding-merge">Understanding <code>merge</code></h1>
+<p>First, let’s look at the parameters: - <code>lo</code> and
+<code>hi</code> are the two arrays we’re merging. They’re called that
+because they will come from the low and high halves of an array. -
+<code>n_lo</code> and <code>n_hi</code> are the lengths of the two
+arrays. In practice, <code>n_lo - n_hi &lt;= 1</code>, but we don’t need
+that invariant for this function to work. - Lastly, we have a pointer to
+the buffer that we’re going to be merging in to. This is a
+<code>restrict</code> pointer, which you may not have seen before and
+which we’ll talk about on the next slide.</p>
+<hr />
+<h1 id="restrict">Restrict</h1>
+<p><code>restrict</code> means that this pointer is the <em>only</em>
+pointer that will be used to access the data it accesses. It is a
+promise to avoid aliasing, which is when two or more pointers point to
+the same thing.</p>
+<p>If you say
+<code>int* restrict a = array1; int* restrict b = array2;</code>, you’re
+saying that a and b will never point to the same array.</p>
+<p>Why is this useful? Because if they could point to the same data,
+then many optimizations don’t work.</p>
+<p>For example, if we did not make the pointer <code>restrict</code>,
+the compiler would have to reload the data from <code>lo</code> and
+<code>hi</code> every time we wrote to <code>merge_buf</code>, because
+it might have changed.</p>
+<hr />
+<h1 id="restrict-2">Restrict (2)</h1>
+<p>The <code>restrict</code> keyword in C only applies to pointers, so
+it must go after the <code>*</code>.</p>
+<p>Remember that <code>const int*</code> and <code>int const*</code>
+both mean a pointer that points to a constant int, so the pointer can
+change, but a new value cannot be written to the underlying memory. But
+<code>int* const</code> means that the pointer itself is constant (it
+cannot be moved to a different value) but the underlying value can be
+changed.</p>
+<p>Restrict works the same way. It is an error to say
+<code>restrict int*</code> or <code>int restrict*</code>. It must come
+after the <code>*</code>.</p>
+<div class="footnote">
+<p>Note: when referring to a pointer to an int that is constant, people
+who write <code>const int*</code> are called “left-consters”, and people
+who write <code>int const*</code> are called “right-consters.” The main
+benefit of being a right-conster is that the underlying types will line
+up if you have a non-const type a line below a const type or vice versa.
+The main drawback is that less experienced programmers will think that
+you’re declaring a constant pointer. It’s also kind of weird that a
+modifier is coming after the thing it modifies, which is why I don’t
+usually do it.</p>
+</div>
+<hr />
+<h1 id="understanding-merge-2">Understanding <code>merge</code> (2)</h1>
+<p>After our parameters, we get to the declarations and loop.</p>
+<p>The first thing we check for is whether <code>i_lo</code>, which
+stores how many things we have taken from the <code>lo</code> array, is
+equal to <code>n_lo</code>, which is the total number of things in
+<code>lo</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> i_lo <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> i_hi <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> i_merge <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(;;)</span> <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>i_lo <span class="op">==</span> n_lo<span class="op">)</span> <span class="op">{</span> <span class="co">// done taking from lo</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        memcpy<span class="op">(</span>merge_buf <span class="op">+</span> i_merge<span class="op">,</span> hi <span class="op">+</span> i_hi<span class="op">,</span> <span class="op">(</span>n_hi <span class="op">-</span> i_hi<span class="op">)</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
+<p>If it is, we just copy the rest of it into
+<code>merge_buf</code>.</p>
+<p>We do the same thing with <code>i_hi</code>. If we’ve used up all the
+elements of <code>hi</code>, we copy everything remaining from
+<code>lo</code>.</p>
+<hr />
+<h1 id="understanding-merge-3">Understanding <code>merge</code> (3)</h1>
+<p>Finally we reach the main logic:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>lo<span class="op">[</span>i_lo<span class="op">]</span> <span class="op">&lt;=</span> hi<span class="op">[</span>i_hi<span class="op">])</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    merge_buf<span class="op">[</span>i_merge<span class="op">++]</span> <span class="op">=</span> lo<span class="op">[</span>i_lo<span class="op">++];</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    merge_buf<span class="op">[</span>i_merge<span class="op">++]</span> <span class="op">=</span> hi<span class="op">[</span>i_hi<span class="op">++];</span></span></code></pre></div>
+<p>If the next element of <code>lo</code> is less than or equal the next
+element of <code>hi</code>, we copy the next element of <code>lo</code>
+to the buffer. Otherwise we copy the next element of
+<code>hi</code>.</p>
+<p>Eventually one of these arrays will be empty, and we’ll transition to
+the first part: copying over the rest of the other array.</p>
+<p>And then we’re done.</p>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-1">Questions?</h1>
+<hr />
+<h1 id="proving-it">Proving it</h1>
+<p>How can we prove our merge is correct?</p>
+<p>We need some kind of loop invariant. How about this one:
+<code>sorted(lo), sorted(hi), sorted(merge_buf[0 .. i_merge)),</code>
+<code>everything in merge_buf &lt;= lo, everything in merge_buf &lt;= hi</code></p>
+<p>So, basically, both our sub-arrays are sorted, our merge buffer so
+far is sorted, and everything in the merge buffer is smaller than
+everything in either sub array.</p>
+<hr />
+<h1 id="proving-it-2">Proving it (2)</h1>
+<p>Is this true when <code>lo</code> is empty? Then we need this to be
+true after:
+<code>sorted([]), sorted(hi), sorted(merge_buf[0 .. n))</code>
+<code>everything in merge_buf &lt;= lo (vacuous), everything in merge_buf &lt;= hi</code></p>
+<p>This checks out. <code>n</code> = <code>len(lo) + len(hi)</code>.</p>
+<p>Once <code>lo</code> is empty, we have
+<code>sorted(merge_buf[0 .. lo + i_hi)]</code> And this array is less
+than everything remaining in <code>hi</code>. Then we concat the rest of
+that array to the end. Solid!</p>
+<p>The same applies when <code>hi</code> is empty conversely.</p>
+<hr />
+<h1 id="proving-it-3">Proving it (3)</h1>
+<p>But what if neither <code>lo</code> or <code>hi</code> are empty?</p>
+<p>Say that the front of <code>lo</code> is smaller or equal. We have
+that <code>everything in merge_buf &lt;= lo</code>. So that means,
+<code>merge_buf ++ [head lo]</code> is sorted. And, we don’t violate our
+<code>everything in merge_buf &lt;= hi</code> assumption, because we
+took something that was smaller than everything in <code>hi</code>.</p>
+<p>Likewise, if the front of <code>hi</code> is smaller, the invariant
+is maintained by the same logic.</p>
+<hr />
+<h1 id="proving-it-4">Proving it (4)</h1>
+<p>We’ve shown that our loop invariant holds.</p>
+<p>Once the loop finishes, <code>merge_i == n_lo + n_hi</code>, so the
+entire array is sorted.</p>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-2">Questions?</h1>
+<hr />
+<h1 id="what-about-mergesort">What about mergesort?</h1>
+<p>Merge is a useful algorithm, because it lets us, say, use different
+sorting algorithms and then stitch the results together.</p>
+<p>But we can sort entirely by applying <code>merge</code>
+recursively.</p>
+<hr />
+<h1 id="mergesort-psuedocode">Mergesort psuedocode</h1>
+<pre><code>mergesort(arr) =
+    n = len(arr)
+    if n &lt;= 1: return arr
+
+    first_hi = (n + 1) / 2    -- ceil of division
+    lo = arr[0 .. first_hi)
+    hi = arr[first_hi .. n)
+    
+    lo = mergesort(lo)
+    hi = mergesort(hi)
+
+    return merge(lo, hi)</code></pre>
+<hr />
+<h1 id="understanding-the-psuedocode">Understanding the psuedocode</h1>
+<p>First is our base case. Empty and singleton arrays are sorted, so
+just return.</p>
+<p>Otherwise, we want to split the array into two pieces, its lower and
+upper halves.</p>
+<p>If the array has an even length, we want both halves to be the same
+size. On the other hand, if it’s odd, we want <code>lo</code> to be one
+element bigger. (Proving that <code>(n + 1) / 2</code> gives us this is
+a practice exercise)</p>
+<p>We then recursively apply <code>mergesort</code> on both halves.</p>
+<p>Once it’s done, we merge the results together.</p>
+<hr />
+<h1 id="wait-really">Wait, really?</h1>
+<p>It seems strange to use recursion this way. We’re doing recursion
+<em>before</em> the main logic</p>
+<p>That recursion will keep recursing. It will keep cutting the lists
+into halves. Eventually, the halves will be of size 1. Then we hit the
+base case.</p>
+<p>Once the base case returns, we merge together two size-1 arrays. Then
+that returns and we end up merging together two size-2 arrays. And so
+on</p>
+<hr />
+<h1 id="tracing-it">Tracing it</h1>
+<p>Consider <code>mergesort([5,3,1,2,4])</code> First, it splits into
+<code>mergesort([5,3,1])</code> and <code>mergesort([2,4])</code> -
+<code>mergesort([5, 3, 1])</code> splits into
+<code>mergesort([5, 3])</code> and <code>mergesort([1]) = [1]</code> -
+<code>mergesort ([5, 3])</code> = <code>mergesort([5]) = [5]</code> and
+<code>mergesort([3]) = [3]</code>. - We <code>merge([5], [3])</code> to
+get <code>[3, 5]</code> - we <code>merge([3, 5], [1])</code> to return
+<code>[1, 3, 5]</code> - <code>mergesort([2, 4])</code> splits into
+<code>mergesort([2])</code> and <code>mergesort([4])</code> - We
+<code>merge([2], [4])</code> to return <code>[2, 4]</code> - We
+<code>merge([1, 3, 5], [2, 4])</code> to get
+<code>[1, 2, 3, 4, 5]</code></p>
+<hr />
+<h1 id="visualizing-it">Visualizing it</h1>
+<figure>
+<img src="mergesort.svg"
+alt="bg height:99% right:60% A flowchart demonstrating mergesort. At the top is a node labeled mergesort([5, 3, 1, 2, 4]). That node splits into two: mergesort([5, 3, 1]), and mergesort([2, 4]). mergesort([5, 3, 1]) splits into mergesort([5, 3,]) and 1. mergesort([5, 3]) splits into [5] and [3]. mergesort([2,4]) splits into [2] and [4]. [5] and [3] are merged into [3, 5]. [3,5] and [1] are merged into [1,3,5]. [2] and [4] are merged into [2, 4]. [1, 3, 5] and [2, 4] are merged into [1, 2, 3, 4, 5]." />
+<figcaption aria-hidden="true">bg height:99% right:60% A flowchart
+demonstrating mergesort. At the top is a node labeled
+<code>mergesort([5, 3, 1, 2, 4])</code>. That node splits into two:
+<code>mergesort([5, 3, 1])</code>, and <code>mergesort([2, 4])</code>.
+<code>mergesort([5, 3, 1])</code> splits into
+<code>mergesort([5, 3,])</code> and <code>1</code>.
+<code>mergesort([5, 3])</code> splits into <code>[5]</code> and
+<code>[3]</code>. <code>mergesort([2,4])</code> splits into
+<code>[2]</code> and <code>[4]</code>. <code>[5]</code> and
+<code>[3]</code> are merged into <code>[3, 5]</code>. <code>[3,5]</code>
+and <code>[1]</code> are merged into <code>[1,3,5]</code>.
+<code>[2]</code> and <code>[4]</code> are merged into
+<code>[2, 4]</code>. <code>[1, 3, 5]</code> and <code>[2, 4]</code> are
+merged into <code>[1, 2, 3, 4, 5]</code>.</figcaption>
+</figure>
+<hr />
+<h1 id="the-c-version-slow-version">The C version (slow version)</h1>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> merge_sort_slow<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> hi_start <span class="op">=</span> <span class="op">((</span>n <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">&gt;&gt;</span> <span class="dv">1</span><span class="op">);</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    merge_sort_slow<span class="op">(</span>arr<span class="op">,</span> hi_start<span class="op">);</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    merge_sort_slow<span class="op">(</span>arr <span class="op">+</span> hi_start<span class="op">,</span> n <span class="op">-</span> hi_start<span class="op">);</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// the slow part:</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span><span class="op">*</span> merge_buf <span class="op">=</span> malloc<span class="op">(</span>n <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    merge<span class="op">(</span>arr<span class="op">,</span> arr <span class="op">+</span> hi_start<span class="op">,</span> hi_start<span class="op">,</span> n <span class="op">-</span> hi_start<span class="op">,</span> merge_buf<span class="op">);</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    memcpy<span class="op">(</span>arr<span class="op">,</span> merge_buf<span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">)</span> <span class="op">*</span> n<span class="op">);</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    free<span class="op">(</span>merge_buf<span class="op">);</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="proving-it-1">Proving it</h1>
+<p>We showed that <code>merge</code> works. How do we show that
+<code>merge_sort</code> works?</p>
+<p>We’re going to have trouble using regular (weak) induction: - The
+base case is fine: <code>mergesort([], 0)</code> is sorted. - The
+problem is the inductive case: suppose <code>mergesort(arr, n)</code>
+works for some <code>n</code> and <code>arr</code> can we prove
+<code>mergesort([a] ++ arr, n + 1)</code> works? The issue is that we
+split our array in half. So we have: -
+<code>mergesort([a] ++ lo, (n + 2) / 2)</code> -
+<code>mergesort(hi, n / 2)</code></p>
+<pre><code>But our inductive hypothesis only works for `mergesort(arr, n)`. Not `lo` or `hi`.</code></pre>
+<hr />
+<h1 id="the-problem-with-weak-induction">The problem with weak
+induction</h1>
+<p>Weak induction assumes that we can go from <span
+class="math inline">\(P(n)\)</span> to <span class="math inline">\(P(n +
+1)\)</span>.</p>
+<p>That means, in this case we assume that something about
+<code>mergesort(arr, n)</code> lets us prove
+<code>mergesort([a] ++ arr, n + 1)</code>.</p>
+<p>But this isn’t how mergesort works! It’s not like insertion sort
+where it uses the fact that the array was sorted up to <code>i</code>,
+to generate a sorted array up to <code>i + 1</code>.</p>
+<p>Instead, it breaks the array in half. We end up needing
+<code>mergesort([a] ++ half_sized_arr, (n + 2) / 2)</code> as an
+induction hypothesis, but we don’t have one!</p>
+<hr />
+<h1 id="weak-induction-principle">Weak induction principle</h1>
+<p>Remember that weak induction for natural numbers worked like this: We
+ask the induction principle algorithm for a proof of <span
+class="math inline">\(P(2)\)</span>, where <span
+class="math inline">\(P\)</span> is a proposition about a natural
+number. It recursively computes <span
+class="math inline">\(P(1)\)</span>.</p>
+<p>The proof of <span class="math inline">\(P(1)\)</span> recursively
+gets <span class="math inline">\(P(0)\)</span>, which we provided, and
+then it applies <span class="math inline">\(P(n) \implies P(n +
+1)\)</span> to generate <span class="math inline">\(P(1)\)</span>, which
+it returns.</p>
+<p>Then the <span class="math inline">\(P(2)\)</span> call takes <span
+class="math inline">\(P(1)\)</span> and applies <span
+class="math inline">\(P(n) \implies P(n + 1)\)</span> to it, yielding a
+proof of <span class="math inline">\(P(2)\)</span>.</p>
+<p>The issue is that the machine assumes that each proposition only
+depends on the one before.</p>
+<hr />
+<h1 id="strong-induction-principle">Strong induction principle</h1>
+<p>But, what if we wanted to prove <span
+class="math inline">\(P(10)\)</span> using <span
+class="math inline">\(P(5)\)</span>?</p>
+<p>There’s really no reason why we shouldn’t be able to do this. If
+<span class="math inline">\(P(2)\)</span> and <span
+class="math inline">\(P(3)\)</span> depend on <span
+class="math inline">\(P(1)\)</span>, and <span
+class="math inline">\(P(4)\)</span> depends on <span
+class="math inline">\(P(2)\)</span>, and <span
+class="math inline">\(P(5)\)</span> depends on <span
+class="math inline">\(P(3)\)</span>, then by the time we reach a high
+number, a lower number has been proven.</p>
+<p>If we could use <span class="math inline">\(P(5)\)</span> in the
+proof of <span class="math inline">\(P(10)\)</span>, then we could prove
+that mergesort works for array size 10, because it works for 5. How do
+we know it works for 5?</p>
+<p>Because we proved it worked for 3 and 2? How do we know that? Because
+we proved that it worked for 1.</p>
+<p>The only wrinkle here is we had to prove it for 0 and also 1, because
+we cannot derive a proof of 1 from a proof of 0 in this case.</p>
+<hr />
+<h1 id="strong-induction-principle-2">Strong induction principle
+(2)</h1>
+<p>The only way that strong induction differs from weak induction is in
+the inductive case: <span class="math inline">\(\forall n \in
+\mathbb{N}, (\forall i \le n, P(i)) \implies P(n + 1)\)</span></p>
+<p>Compare this to weak induction: <span class="math inline">\(\forall n
+\in \mathbb{N}, P(N) \implies P(N + 1)\)</span></p>
+<p>Weak induction requires: “if we have proven the proposition for some
+number <span class="math inline">\(n\)</span>, we can prove it for <span
+class="math inline">\(n + 1\)</span> Strong induction requires:”if we
+have proven the proposition for <em>every number up to and
+including</em> <span class="math inline">\(n\)</span>, we can prove it
+for <span class="math inline">\(n + 1\)</span>.</p>
+<hr />
+<h1 id="lets-demonstrate">Let’s demonstrate</h1>
+<p>Let our proposition be that for natural numbers <span
+class="math inline">\(n\)</span> and arrays <code>arr</code>, where
+<span class="math inline">\(n\)</span> is the length of
+<code>arr</code>, <code>mergesort(arr, n)</code> leaves <code>arr</code>
+sorted.</p>
+<p>Does <code>mergesort([], 0)</code> work? Yes, it does. This is the
+base case. There’s a second base-case here:
+<code>mergesort([a], 0)</code>. This also works.</p>
+<p>Now, here’s the key. We need to show: <span
+class="math inline">\((\forall i \le n, P(i)) \implies P(n +
+1)\)</span></p>
+<p>So we “suppose” that <code>mergesort(arr', i)</code> works, for all
+up to and including <code>mergesort(arr, n)</code>, and we need to show
+that <code>mergesort([a] ++ arr, n + 1)</code> works.</p>
+<hr />
+<h1 id="proving-mergesort-correct">Proving mergesort correct</h1>
+<p>Mergesort on <span class="math inline">\(n\)</span> always breaks its
+array down into two pieces: - One of length <span
+class="math inline">\(n / 2\)</span> or <span class="math inline">\(n /
+2 + 1\)</span> - One of length <span class="math inline">\(n /
+2\)</span></p>
+<p>Because these numbers are smaller than <span
+class="math inline">\(n\)</span>, we can assume that we have proven that
+mergesort works for <span class="math inline">\(n / 2\)</span> and <span
+class="math inline">\(n / 2 + 1\)</span></p>
+<p>Assuming that mergesort works, we end up with two sorted arrays,
+<code>lo</code> and <code>hi</code>. We merge them together, and we have
+already proven that <code>merge</code> works. Therefore, the result is a
+sorted list for any <code>n</code>. <span
+class="math inline">\(\square\)</span></p>
+<hr />
+<h1 id="how-it-works-from-0-to-n">How it works from 0 to n</h1>
+<p>One more time, consider this: <span
+class="math inline">\(P(0)\)</span> and <span
+class="math inline">\(P(1)\)</span> were base cases. We know those
+work.</p>
+<p><span class="math inline">\(P(2)\)</span> only needs <span
+class="math inline">\(P(1)\)</span> to be proven. If mergesort works for
+<span class="math inline">\(n = 1\)</span>, then we know it works for
+<span class="math inline">\(n = 2\)</span>, because it will be split
+into two arrays of <span class="math inline">\(n = 1\)</span>, mergesort
+will work correctly for them (we proved it), and then merge will work
+(we proved it, too).</p>
+<p><span class="math inline">\(P(3)\)</span> follows from <span
+class="math inline">\(P(2)\)</span> and <span
+class="math inline">\(P(1)\)</span>, both of which are now proved. <span
+class="math inline">\(P(4)\)</span> follows from <span
+class="math inline">\(P(2)\)</span>, which followed from <span
+class="math inline">\(P(1)\)</span>. <span
+class="math inline">\(P(5)\)</span> follows from <span
+class="math inline">\(P(3)\)</span> and <span
+class="math inline">\(P(2)\)</span></p>
+<p>Notice how high values of <span class="math inline">\(n\)</span>
+always follow from lower values of <span
+class="math inline">\(n\)</span>. This is why this induction principle
+is reasonable.</p>
+<hr />
+<h1 id="practice">Practice</h1>
+<ul>
+<li><p>Prove that <code>(n + 1) / 2</code> gives us the first element of
+the second half. Use case analysis:
+<code>case 1: len(lo) = len(hi)</code>,
+<code>case 2: len(lo) = len(hi) + 1</code>. Answer is in
+<code>mod4.c</code> commented in the code for
+<code>merge_sort_slow</code>.</p></li>
+<li><p>Implement a faster merge sort that takes a pointer to a buffer
+and uses that instead of allocating.</p></li>
+<li><p>Write a binary search procedure. Given a sorted list, it will
+determine whether <span class="math inline">\(i\)</span> is in the list
+by binary searching. Prove that it is correct using strong induction.
+(If you don’t prove it, and you haven’t done binary search in a while,
+you <em>very likely</em> have a bug. Create a 100 element array of the
+numbers 1 to 100, and make sure every one of them is found in 7 checks
+or fewer)</p></li>
+</ul>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-3">Questions?</h1>
+<hr />
+<h1 id="how-fast-is-it">How fast is it?</h1>
+<p>What is mergesort’s recurrence relation?</p>
+<p>[Can we guess it?]</p>
+<hr />
+<h1 id="recurrence-relation-of-mergesort">Recurrence relation of
+mergesort</h1>
+<p><span class="math inline">\(T(0) = 1\)</span> <span
+class="math inline">\(T(1) = 1\)</span> <span class="math inline">\(T(n)
+= 2T(n / 2) + \Theta(n)\)</span></p>
+<p>The <span class="math inline">\(\Theta(n)\)</span> is from merge.</p>
+<p>Why is merge <span class="math inline">\(\Theta(n)\)</span>? Because
+it has to copy one elment for every value in a sub-array.</p>
+<p>(I’m simplifying somewhat. Sometimes it’s not exactly cut in half,
+and one piece is one element longer than the other. Ignoring this will
+not change the big-<span class="math inline">\(\Theta\)</span>)</p>
+<div class="footnote">
+<p>footnote: (If we wanted to be super rigorous, we’d use these
+inductive cases: <span class="math inline">\(T(2n) = 2T(n) + \Theta(2n),
+T(2n + 1) = T(n + 1) + T(n) + \Theta(2n + 1)\)</span>. This way we
+handle the fact that odd lists don’t break exactly evenly. The big-<span
+class="math inline">\(\Theta\)</span> we get will be the same. )</p>
+</div>
+<hr />
+<h1 id="how-does-this-scale">How does this scale?</h1>
+<p>Every time we split in half, we have to solve 2 subproblems.</p>
+<p>Once we’re done with a sub-problem, we have to merge it back
+together, which takes <span class="math inline">\(\Theta(n)\)</span>
+time.</p>
+<p>The reason this is hard to analyze is that the size of <span
+class="math inline">\(n\)</span> keeps changing. When we’re merging
+2-element lists, it’s very different than when we merge 1024-element
+lists.</p>
+<p>So how can we analyze this?</p>
+<hr />
+<h1 id="every-stage">Every stage</h1>
+<p>Let’s express each level of recursion as a row:</p>
+<p><code>[4, 2, 7, 8, 1, 3, 6, 5]</code> split in half
+<code>[4, 2, 7, 8][1, 3, 6, 5]</code> split each half in half
+<code>[4, 2][7, 8][1, 3][6, 5]</code> split each quarter in half</p>
+<p><code>[4][2][7][8][1][3][6][5]</code> we’re done splitting. This is
+“conquer”</p>
+<p><code>[2, 4][7, 8][1, 3][5, 6]</code> now merge each 8th
+<code>[2, 4, 7, 8][1, 3, 5, 6]</code> now we merge the quarters
+<code>[1, 2, 3, 4, 5, 6, 7, 8]</code> merge the halves</p>
+<p>Splitting is “divide”. Conquering here is just returning
+<code>[a]</code>. Recombine is merge.</p>
+<p>Question: how many rows will there be for each phase?</p>
+<hr />
+<h1 id="analyzing-the-number-of-rows">Analyzing the number of rows</h1>
+<p>We want to count how many steps it takes to go from 1 array of <span
+class="math inline">\(n\)</span> elements to <span
+class="math inline">\(n\)</span> arrays of 1 element. That will be
+roughly half the number of rows.</p>
+<p>For the first part: we’re asking “how many times can we halve <span
+class="math inline">\(n\)</span> until it hits 1.”</p>
+<p>This is the same as asking “how many times do we have to double 1
+until it hits <span class="math inline">\(n\)</span>”</p>
+<p>This is the same as asking <span class="math inline">\(2^k =
+n\)</span>, solve for <span class="math inline">\(k\)</span></p>
+<p>[What is this?]</p>
+<hr />
+<h1 id="analyzing-the-number-of-rows-2">Analyzing the number of rows
+(2)</h1>
+<p>That’s right, <span class="math inline">\(\lg n = k\)</span></p>
+<p>So for <span class="math inline">\(n=8\)</span>, <span
+class="math inline">\(\lg 8 = 3\)</span>. There will be three
+transformations: <span class="math inline">\(8 \to 4\)</span>, <span
+class="math inline">\(4 \to 2\)</span>, and <span
+class="math inline">\(2 \to 1\)</span>.</p>
+<p>This is the divide phase. We do <span
+class="math inline">\(2\)</span> recursive calls, then <span
+class="math inline">\(4\)</span>, then <span
+class="math inline">\(8\)</span>, for a total of <span
+class="math inline">\(14\)</span>.</p>
+<p>Once we hit 8 arrays of 1, we go the other way: <span
+class="math inline">\(2 \times 1 = 2\)</span>, <span
+class="math inline">\(2 \times 2 = 4\)</span>, <span
+class="math inline">\(2 \times 4 = 8\)</span></p>
+<p>This is the recombine phase. We write a byte for each element. <span
+class="math inline">\(3\)</span> rows, <span
+class="math inline">\(8\)</span> elements each.</p>
+<p>Quick question: which one takes more <span
+class="math inline">\(\Theta(1)\)</span> operations?</p>
+<hr />
+<h1 id="divide-vs-recombine">Divide vs recombine</h1>
+<p>In this case, recombining is slower, but both phases are <span
+class="math inline">\(\Theta(n \lg n)\)</span>.</p>
+<p>In short: doubling the number of rows will mean doubling the number
+of splits, and also doubling the number of merged integers. So they grow
+at the same rate.</p>
+<p>In some D&amp;C algorithms, dividing takes more work. In others,
+recombining is slower. It turns out we typically get logarithms as the
+big-<span class="math inline">\(\Theta\)</span> when they’re about the
+same speed.</p>
+<p>Now that we’ve determined that mergesort is likely <span
+class="math inline">\(\Theta(n \lg n)\)</span>, let’s prove it. But
+first…</p>
+<hr />
+<h1 id="practice-1">Practice</h1>
+<ul>
+<li><p>Do the previous merge-sort analysis on <span
+class="math inline">\(n=4\)</span> and <span
+class="math inline">\(n=16\)</span>. That is, sketch the number of
+elements visually, and then verify that dividing takes <span
+class="math inline">\(\lg n\)</span> rows and recombining takes <span
+class="math inline">\(\lg n\)</span> rows</p></li>
+<li><p>Are there any values for <span class="math inline">\(n\)</span>
+where that formula doesn’t work?</p></li>
+</ul>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-4">Questions</h1>
+<hr />
+<h1 id="proving-this">Proving this</h1>
+<p>The purpose of drawing a sketch of how many rows and columns there
+are was to give us a proposition for induction. Remember: it’s called
+induction because induction is how we come up with the goal, not because
+there’s anything inductive about the proof.</p>
+<p>Here is the recurrence relation: <span class="math inline">\(T(0) =
+1\)</span> <span class="math inline">\(T(1) = 1\)</span> <span
+class="math inline">\(T(n) = 2T(n / 2) + \Theta(n)\)</span></p>
+<p>The proposition we want to prove is: <span class="math inline">\(T(n)
+= \Theta(n)\)</span></p>
+<p>Let’s start with <span class="math inline">\(T(n) = O(n)\)</span>.
+I’ll leave <span class="math inline">\(T(n) = \Omega(n)\)</span> to
+you.</p>
+<hr />
+<h1 id="using-induction">Using induction</h1>
+<p>We can prove this using strong induction. But we don’t know what
+values to use for <span class="math inline">\(n_0\)</span> and <span
+class="math inline">\(C\)</span>. Let’s just pretend we chose them so we
+can solve for them.</p>
+<p>We want to show: <span class="math inline">\(\forall n \ge n_0, T(n)
+\le C(n \lg n)\)</span></p>
+<p>We need to use induction, so let’s write our subgoals: <span
+class="math inline">\(0 \ge n_0 \implies T(0) = 1 \le C(n \lg
+n)\)</span> <span class="math inline">\(\forall n, (\forall i \lt n, i
+\ge n_0 \implies T(i) \le C(i \lg i)) \implies n \ge n_0 \implies T(n)
+\le C(n \lg n)\)</span></p>
+<p>Slight of hand warning: I modified the strong inductive principle.
+Instead of showing that if we prove <span
+class="math inline">\(P(0)\)</span> up to <span
+class="math inline">\(P(n)\)</span> that it implies <span
+class="math inline">\(P(n + 1)\)</span>, I changed it to if we prove
+<span class="math inline">\(P(0)\)</span> up to <span
+class="math inline">\(P(n - 1)\)</span> it implies <span
+class="math inline">\(P(n)\)</span>. This is equivalent, and it makes
+the math nicer for mergesort.</p>
+<hr />
+<h1 id="the-base-case">The base case</h1>
+<p><span class="math inline">\(0 \ge n_0 \implies 1 \le C(0 \lg
+0)\)</span></p>
+<p>Is the conclusion true? It’s not true for <span
+class="math inline">\(n_0 = 0\)</span>. Because <span
+class="math inline">\(\lg 0\)</span> is undefined.</p>
+<p>If we choose <span class="math inline">\(n_0 = 1\)</span>, it’s
+vacuously true, becuase <span class="math inline">\(0 \lt
+1\)</span>.</p>
+<p>We actually don’t want vacuous truth here because of the inductive
+step. If we pick <span class="math inline">\(n_0 = 1\)</span>, then,
+when we want to (in the next step) show <span
+class="math inline">\((\forall i \le n, P(i)) \implies P(n +
+1)\)</span>, we actually won’t be able to. <span
+class="math inline">\(P(0) \implies P(1)\)</span> is false with <span
+class="math inline">\(n_0 = 1\)</span>, becuase <span
+class="math inline">\(P(1)\)</span> is <span class="math inline">\(1 \le
+C(1 \lg 1) = 0\)</span>.</p>
+<p>Therefore we <em>have</em> to choose <span class="math inline">\(n_0
+= 2\)</span></p>
+<p>As a rule, when using strong induction, we usually want to actually
+find the first non-vacuous case.</p>
+<hr />
+<h1 id="the-strong-inductive-case">The (strong) inductive case</h1>
+<p><span class="math inline">\((\forall i \lt n, n \ge 1 \implies T(i)
+\le C(i \lg i)) \implies n \ge n_0 \implies T(n) \le C(n \lg
+n)\)</span></p>
+<p>We start by supposing this hypothesis: <span
+class="math inline">\((\forall i \lt n, i \ge n_0 \implies T(i) \le C(n
+\lg n))\)</span></p>
+<p>Then we suppose <span class="math inline">\(n \ge 1\)</span>. We must
+show <span class="math inline">\(T(n) \le C(n \lg n)\)</span></p>
+<p>Let’s simplify <span class="math inline">\(T(n) = 2\cdot T({n \over
+2}) + \Theta(n)\)</span>. We’re assuming integer division.</p>
+<p>Now, because of our inductive hypothesis, we can assume the
+proposition is true for <span class="math inline">\(T({n \over
+2})\)</span>. That is: <span class="math inline">\(T({n\over 2}) \le C
+{n \over 2}\lg {n \over 2}\)</span></p>
+<p>Now, every time we see <span class="math inline">\(T({n \over
+2})\)</span> we can replace it with <span class="math inline">\(C
+{n  \over 2}\lg {n \over 2}\)</span> and get something bigger. We can
+use this to build an inequality. This is called the substitution
+method.</p>
+<hr />
+<h1 id="using-the-substitution-method">Using the substitution
+method</h1>
+<p>Start with <span class="math inline">\(T({n\over 2}) \le C \cdot
+{n\over 2}\lg {n\over 2}\)</span>, this is the induction hypothesis.
+<span class="math inline">\(\implies 2 \cdot T({n\over 2}) \le C \cdot
+n\lg {n\over 2}\)</span> <span class="math inline">\(\implies 2 \cdot
+T({n \over 2}) \le C \cdot n \lg {n\over 2} = C\cdot n \lg n - \lg 2 = C
+\cdot n \lg n - 1\)</span> <span class="math inline">\(\implies 2 \cdot
+T({n \over 2})+ 1 \le C n\lg n\)</span> <span
+class="math inline">\(\implies2 \cdot T({n \over 2})+ 1 + an \le C n\lg
+n + an\)</span> <span class="math inline">\(\implies2 \cdot T({n \over
+2})+ 1 + an \le C n\lg n + an\)</span></p>
+<p>Why did we add <span class="math inline">\(an\)</span>? Because it’s
+a family of functions in <span class="math inline">\(\Theta(n)\)</span>,
+with the same leading term. So this shows: <span class="math inline">\(2
+\cdot T({n \over 2})+ 1 + \Theta(n) \le C n\lg n + an = O(n \lg
+n)\)</span> <span class="math inline">\(\square\)</span></p>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-5">Questions</h1>
+<hr />
+<h1 id="practice-2">Practice</h1>
+<ul>
+<li>We did most of the proof that mergesort is <span
+class="math inline">\(O(n \lg n)\)</span>. Now complete the proof and
+show it is <span class="math inline">\(\Omega(n \lg n)\)</span>.</li>
+</ul>
+<hr />
+<h1 id="different-kinds-of-dc-problem">Different kinds of D&amp;C
+problem</h1>
+<p>Let’s take a (brief) breather from sorting algorithms and consider
+something simpler.</p>
+<p>Here is a binary search tree node structure:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> node_t <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> node_t <span class="op">*</span>l<span class="op">,</span> <span class="op">*</span>r<span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span><span class="op">*</span> data<span class="op">;</span> <span class="co">// we don&#39;t care about this field for the exercise</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> Node<span class="op">;</span></span></code></pre></div>
+<p>Do you recall how to count the number of nodes in the tree?</p>
+<hr />
+<h1 id="counting-nodes">Counting nodes</h1>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> count_nodes<span class="op">(</span>Node<span class="op">*</span> root<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(!</span>root<span class="op">)</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> count_nodes<span class="op">(</span>root<span class="op">-&gt;</span>l<span class="op">)</span> <span class="op">+</span> count_nodes<span class="op">(</span>root<span class="op">-&gt;</span>r<span class="op">)</span> <span class="op">+</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Prove it? By strong induction on the size of the tree <span
+class="math inline">\(n\)</span>: - When <span class="math inline">\(n =
+0\)</span>, the tree is empty and <code>count_nodes</code> returns 0. -
+The size of the two subtrees are both smaller than the whole tree, so by
+the strong inductive hypothesis: if <code>count_nodes(l)</code> and
+<code>count_nodes(r)</code> are correct, then
+<code>count_nodes(l) + count_nodes(r) + 1</code> adds the nodes in both
+sides of the tree, plus the root.</p>
+<hr />
+<h1 id="but-what-is-the-big-theta">But what is the big-<span
+class="math inline">\(\Theta\)</span>?</h1>
+<p>It doesn’t really matter how the tree looks, but to keep the analysis
+simple, let’s assume it’s balanced and complete.</p>
+<p>How does this look?</p>
+<hr />
+<figure>
+<img src="count_tree.svg"
+alt="bg width:90% height:90% a graph showing a tree where each node is labeled with the size of the tree. The root is labeled 15. It has two children of size 7, and 7 + 7 + 1 = 15. This same pattern repeats on both sides of the tree. The two 7s have children 3 and 3. The four 3s have children 1 and 1." />
+<figcaption aria-hidden="true">bg width:90% height:90% a graph showing a
+tree where each node is labeled with the size of the tree. The root is
+labeled 15. It has two children of size 7, and 7 + 7 + 1 = 15. This same
+pattern repeats on both sides of the tree. The two 7s have children 3
+and 3. The four 3s have children 1 and 1.</figcaption>
+</figure>
+<hr />
+<h1 id="dc-analysis">D&amp;C analysis</h1>
+<p>During the divide phase, we have two recursive calls per inner node.
+There are 7 inner nodes, so that’s 14 recursive calls.</p>
+<p>For 7, there are 6 recursive calls. For 3 there are 2.</p>
+<p>In general, there will always be <span class="math inline">\(\lfloor
+n / 2 \rfloor\)</span> inner nodes in a balanced, complete tree, and
+therefore <span class="math inline">\(2 \cdot \lfloor n / 2
+\rfloor\)</span> function calls.</p>
+<p>What about the recombine phase? It’s just an addition. That’s <span
+class="math inline">\(\Theta(1)\)</span></p>
+<hr />
+<h1 id="recurrence-relation">Recurrence relation</h1>
+<p>The recurrence relation for balanced trees is therefore: <span
+class="math inline">\(T(0) = 1\)</span> <span class="math inline">\(T(n)
+= 2 \cdot T(n / 2) + 1\)</span></p>
+<p>Looks similar to the mergesort case, but that <span
+class="math inline">\(1\)</span> instead of a <span
+class="math inline">\(\Theta(n)\)</span> changes things.</p>
+<p>So what do you think? We have <span
+class="math inline">\(n\)</span>-ish recursive calls, but recombining
+happens once per inner node.</p>
+<p>That’s <span class="math inline">\(\Theta(n) + \Theta(n) =
+\Theta(n)\)</span></p>
+<p>Are you convinced that this is <span
+class="math inline">\(\Theta(n)\)</span>?</p>
+<hr />
+<h1 id="why-is-it-different">Why is it different?</h1>
+<p>This time, the divide phase was more expensive than the recombine.
+Therefore we’re basically counting the number of divisions.</p>
+<p>For mergesort, they were about the same. We would divide proportional
+to <span class="math inline">\(n\)</span> times, but then <em>each</em>
+recombine took <span class="math inline">\(\Theta(n)\)</span> for the
+number of elements in the recombine. The fact that the recombine got
+more expensive depending on how many times we had split was where the
+<span class="math inline">\(\lg n\)</span> factor came from.</p>
+<p>I’m going to hold off on proving this one. You’ll see why.</p>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-6">Questions</h1>
+<hr />
+<h1 id="practice-3">Practice</h1>
+<ul>
+<li>Prove that if the tree is degenerate (i.e., every node has at most
+one child), counting is still <span
+class="math inline">\(\Theta(n)\)</span></li>
+<li>Draw a similar diagram for counting the depth of the tree instead of
+the number of nodes. Assume the tree is balanced, and then do it for a
+degenerate tree. Do these have the same big-<span
+class="math inline">\(\Theta\)</span>?</li>
+</ul>
+<hr />
+<h1 id="one-more-example">One more example</h1>
+<p>Suppose we want to find the <span
+class="math inline">\(k^{th}\)</span> largest value in a list of <span
+class="math inline">\(n\)</span> items.</p>
+<p>(This is a common tech-interview question. You can also efficiently
+solve it with an <span class="math inline">\(n\)</span>-sized
+min-heap)</p>
+<p>The naive approach is to just sort the list and take the middle. That
+will not pass you the tech interview. Instead, we can improve on the
+time it takes to sort by recognizing that we don’t need the whole list
+to be sorted. We just need to know the top <span
+class="math inline">\(k\)</span>.</p>
+<p>Think of it like this: it you want to know the max, it’s clearly
+<span class="math inline">\(\Theta(n)\)</span>. What if you want the
+<span class="math inline">\(2^{nd}\)</span> largest? It should be almost
+as fast.</p>
+<p>One way to do it is with the quickselect algorithm.</p>
+<hr />
+<h1 id="quickselect">Quickselect</h1>
+<p>Suppose the list has <span class="math inline">\(n=15\)</span>, and
+we want the 13th smallest value. (the 3rd largest)</p>
+<p>Suppose we have the ability to magically determine the median value
+(we don’t, but pretend we do).</p>
+<p>We can split the list into three pieces: <span
+class="math inline">\(\lt\)</span> median <code>++</code> median
+<code>++</code> <span class="math inline">\(\ge\)</span> median</p>
+<p>Suppose the values are all different. We expect the lower half to
+have 7 elements, and the upper half to have the same.</p>
+<hr />
+<h1 id="quickselect-2">Quickselect (2)</h1>
+<p>How does that help us?</p>
+<p>Because now we know the 13th smallest value is in the upper list.</p>
+<p>In fact, the 13th smallest of the whole list is the 5th smallest
+value in the upper list, because we know all 8 of the other values are
+not included in the upper list.</p>
+<p>list: <code>1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15</code>
+low: <code>1, 2, 3, 4, 5, 6, 7</code>, mid: <code>8</code>, high:
+<code>9, 10, 11, 12, 13, 14, 15</code></p>
+<p>Notice that <code>13</code>, which is the 13th smallest value in the
+whole thing, is actually number 5 in the high list.</p>
+<p>(Note: obviously if the list is sorted we can easily find the 13th
+smallest value, but the algorithm I’m showing you works even if it’s
+unsorted.)</p>
+<hr />
+<h1 id="quickselect-3">Quickselect (3)</h1>
+<p>Now what? We recurse. We’re looking for the 5th smallest value in…
+list: <code>9, 10, 11, 12, 13, 14, 15</code> low:
+<code>9, 10, 11</code>, mid: <code>12</code>, high:
+<code>13, 14, 15</code></p>
+<p>There are 3 values in the lower list, and 1 in the middle. We want
+the 5th, so we know that it is in the upper list. But because it’s in
+the upper list and there are 4 smaller values, We don’t want the 5th
+smallest, we want the 1st smallest in the upper list: list:
+<code>13, 14, 15</code> low: <code>13</code>, mid: <code>14</code>,
+high: <code>15</code></p>
+<hr />
+<h1 id="quickselect-4">Quickselect (4)</h1>
+<p>list: <code>13, 14, 15</code> low: <code>13</code>, mid:
+<code>14</code>, high: <code>15</code></p>
+<p>Here, the midpoint gives us a number that’s too large, so we know the
+solution is in the lower list. When the solution is in the lower list,
+we don’t subtract the number of items from the one we’re looking
+for.</p>
+<p>list: <code>13</code> at this point, we want the 1st smallest value
+in <code>13</code>, which is <code>13</code>. We found it!</p>
+<hr />
+<h1 id="partition">Partition</h1>
+<p>Of course, we don’t magically have the ability to know the median.
+But we can get pretty close.</p>
+<p>We can randomly choose a number in the array, and then put all the
+values smaller to the left, and all the values greater or equal to the
+right.</p>
+<p>Sometimes the left array will be tiny, and sometimes the right array
+will be tiny. However, we might get lucky and have the value we’re
+looking for be in the tiny part. That would really speed things up.</p>
+<hr />
+<h1 id="example-partition-function">Example partition function</h1>
+<p>Here’s a simple partition in C, based on Tony Hoare’s partition
+method:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> partition<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> r <span class="op">=</span> arr<span class="op">[</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> <span class="co">// choose the last element to be the pivot</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">size_t</span> i_lo <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> i_hi <span class="op">=</span> n <span class="op">-</span> <span class="dv">2</span><span class="op">;</span> <span class="co">// it&#39;s n - 2 because n - 1 is the pivot</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(;;)</span> <span class="op">{</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">// find the first value bigger than the pivot, and the last smaller</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="op">(</span>i_lo <span class="op">&lt;</span> n <span class="op">&amp;&amp;</span> arr<span class="op">[</span>i_lo<span class="op">]</span> <span class="op">&lt;</span> r<span class="op">)</span> i_lo<span class="op">++;</span> <span class="co">// could remove 1st check</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="op">(</span>i_hi <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> arr<span class="op">[</span>i_hi<span class="op">]</span> <span class="op">&gt;=</span> r<span class="op">)</span> i_hi<span class="op">--;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>i_lo <span class="op">&lt;</span> i_hi<span class="op">)</span> swap<span class="op">(</span>arr <span class="op">+</span> i_lo<span class="op">,</span> arr <span class="op">+</span> i_hi<span class="op">);</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    swap<span class="op">(</span>arr <span class="op">+</span> i_lo<span class="op">,</span> arr <span class="op">+</span> n <span class="op">-</span> <span class="dv">1</span><span class="op">);</span> <span class="co">// put the pivot into position</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> i_lo<span class="op">;</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="explaining-it">Explaining it</h1>
+<p>First, we select a “pivot”, which is the value we want to be in the
+middle.</p>
+<p>Actually figuring out the median would require us to sort the array,
+which is typically <span class="math inline">\(\Theta(n \lg n)\)</span>,
+which is not good.</p>
+<p>Instead we just guess randomly and assume it’s the last element.</p>
+<p>Then, we enter a loop: <code>for(;;) ...</code></p>
+<hr />
+<h1 id="explaining-it-2">Explaining it (2)</h1>
+<p>The first while loop searches for the first value that is smaller
+than the pivot:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>i_lo <span class="op">&lt;</span> n <span class="op">&amp;&amp;</span> arr<span class="op">[</span>i_lo<span class="op">]</span> <span class="op">&lt;</span> r<span class="op">)</span> i_lo<span class="op">++;</span></span></code></pre></div>
+<p>The second searches for the last value that is at least as big as the
+pivot:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>i_hi <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> arr<span class="op">[</span>i_hi<span class="op">]</span> <span class="op">&gt;=</span> r<span class="op">)</span> i_hi<span class="op">--;</span></span></code></pre></div>
+<p>Once we find both values, we swap them. This puts them in order.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>i_lo <span class="op">&lt;</span> i_hi<span class="op">)</span> swap<span class="op">(</span>arr <span class="op">+</span> i_lo<span class="op">,</span> arr <span class="op">+</span> i_hi<span class="op">);</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">break</span><span class="op">;</span></span></code></pre></div>
+<p>We want everything smaller than the pivot to the left. Once
+<code>i_lo &gt;= i_hi</code>, we’re done. The small values are on the
+left.</p>
+<hr />
+<h1 id="explaining-it-3">Explaining it (3)</h1>
+<p>The last thing we do is</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>swap<span class="op">(</span>arr <span class="op">+</span> i_lo<span class="op">,</span> arr <span class="op">+</span> n <span class="op">-</span> <span class="dv">1</span><span class="op">);</span> <span class="co">// put the pivot into position</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> i_lo<span class="op">;</span></span></code></pre></div>
+<p>This makes it so that the pivot is actually greater than everything
+to its left and less than or equal to everything to its right.</p>
+<p>We haven’t sorted the list, but we’ve sorted the pivot.</p>
+<hr />
+<h1 id="practice-4">Practice</h1>
+<ul>
+<li><p>Prove that partition results in an array in which every element
+<code>arr[0..p)</code> <span class="math inline">\(\lt\)</span>
+<code>arr[p]</code> and <code>arr[p + 1..n)</code> <span
+class="math inline">\(\ge\)</span> p.</p></li>
+<li><p>Implement quickselect using this partition. This is in
+<code>mod4.c</code>.</p></li>
+<li><p>Prove that it works.</p></li>
+</ul>
+<hr />
+<!-- _class: invert questions -->
+<hr />
+<h1 id="the-big-theta-of-quickselect-average-case">The big-<span
+class="math inline">\(\Theta\)</span> of quickselect average case</h1>
+<p>In the best case, quickselect finds the kth value instantly (it’s the
+pivot). So <span class="math inline">\(\Theta(1)\)</span></p>
+<p>In the worst case, either the pivot keeps being the biggest value and
+we want the smallest, or vice versa. This means we pivot <span
+class="math inline">\(n\)</span> times, and pivot is <span
+class="math inline">\(\Theta(n)\)</span>, so it ends up being <span
+class="math inline">\(\Theta(n^2)\)</span> worse case.</p>
+<p>But what is its average case? It’s when there are an equal number of
+values on either side of the median.</p>
+<hr />
+<h1 id="quickselect-average-case-recurrence-relation">Quickselect
+average case recurrence relation</h1>
+<p><span class="math inline">\(T(0) = 1\)</span> <span
+class="math inline">\(T(n) = T(n / 2) + \Theta(n)\)</span></p>
+<p>Interesting. So we split it in half, but only once. Then we do
+something that takes roughly <span class="math inline">\(n\)</span>
+time.</p>
+<hr />
+<h1 id="sketch-of-quickselect">Sketch of quickselect</h1>
+<p>Imagine we have <span class="math inline">\(n = 64\)</span>. We
+partition the <span class="math inline">\(64\)</span>, then identify
+which half has our value. Then we partition the <span
+class="math inline">\(32\)</span>, then split roughly in half. Then we
+partition <span class="math inline">\(16\)</span>… <span
+class="math inline">\(8\)</span>…<span
+class="math inline">\(4\)</span>…<span
+class="math inline">\(2\)</span>…<span class="math inline">\(1\)</span>…
+and we found it.</p>
+<p>In total, we have to process roughly <span class="math inline">\(64 +
+32 + 16 + 8 + 4 + 2 +1\)</span> values. Which is <span
+class="math inline">\(127\)</span>.</p>
+<p>It’s not a coincidence that this is <span class="math inline">\(2n -
+1\)</span>.</p>
+<p>This algorithm ends up being <span
+class="math inline">\(\Theta(n)\)</span>. Again, we’ll prove it
+later.</p>
+<hr />
+<h1 id="three-algorithms">Three algorithms</h1>
+<p>Mergesort had this recurrence: <span class="math inline">\(T(0) =
+T(1) = 1\)</span> <span class="math inline">\(T(n) = 2\cdot T(n / 2) +
+\Theta(n)\)</span></p>
+<p><code>count_nodes</code> had this recurrence for the balanced case:
+<span class="math inline">\(T(0) = 1\)</span> <span
+class="math inline">\(T(n) = 2\cdot T(n / 2) + 1\)</span></p>
+<p>and quickselect had this recurrence for the average case: <span
+class="math inline">\(T(0) = 1\)</span> <span class="math inline">\(T(n)
+= T(n / 2) + \Theta(n)\)</span></p>
+<p>Notice any patterns?</p>
+<hr />
+<h1 id="the-dc-pattern">The D&amp;C pattern</h1>
+<p>Every divide and conquer algorithm has a recurrence relation that
+looks like this: <span class="math inline">\(T(n) = A\cdot T(n / B) +
+f(n)\)</span></p>
+<p><span class="math inline">\(A\)</span> is the number of splits we
+make <span class="math inline">\(B\)</span> is the size of each split.
+I.e., are we splitting in half, splitting in thirds, etc. <span
+class="math inline">\(f(n)\)</span> is the function we do to
+recombine.</p>
+<p>It turns out that knowing just <span
+class="math inline">\(A\)</span>, <span
+class="math inline">\(B\)</span>, and <span
+class="math inline">\(f(n)\)</span>, we can totally characterize the
+big-<span class="math inline">\(\Theta\)</span> of the algorithm.</p>
+<p>There’s a theorem, called the “Master Theorem” that tells us how…</p>
+<hr />
+<p><img src="master_thm.svg"
+alt="width:100% height:50% - a diagram showing a ternary tree. Each node has 3 children, and it goes 3 layers deep. There are 1 + 3 + 9 = 13 nodes in total." />
+This relation looks like <span class="math inline">\(3 \cdot T(n / 3) +
+f(n)\)</span></p>
+<p>The question is, how much work is <span
+class="math inline">\(f\)</span> doing?</p>
+<p>It gets called for every inner node. That is, for every row except
+the last one. And each row down, it does less work. How many rows are
+there?</p>
+<hr />
+<h1 id="the-number-of-rows">The number of rows</h1>
+<p>How many times can you split before reaching the leaves? In this
+case: <span class="math inline">\(\log_3(n)\)</span>. In general <span
+class="math inline">\(\log_B(n)\)</span></p>
+<p>And how many nodes will there be on each row? In this case, row <span
+class="math inline">\(r\)</span>, starting at <span
+class="math inline">\(0\)</span>, will have <span
+class="math inline">\(3^r\)</span> elements. In general: <span
+class="math inline">\(A^r\)</span> nodes per row.</p>
+<p>At row <span class="math inline">\(r\)</span>, each node has <span
+class="math inline">\((n / 3^r)\)</span> elements. <span
+class="math inline">\((n / B^r)\)</span> in general.</p>
+<p>So, in general, we invoke <span class="math inline">\(f\)</span> like
+this: <span class="math inline">\(f(n) + A(f(n / B)) + A^2(f(n / B^2)) +
+\ldots=\large \sum_{i = 0}^{(\log_B n) -
+1}(A^{i}f(n/B^{i}))\)</span></p>
+<p>But that’s not the only source of work we need to care about</p>
+<hr />
+<h1 id="the-number-of-leaves">The number of leaves</h1>
+<p>When we reach a leaf, D&amp;C algorithms end up being expressed as:
+<span class="math inline">\(T(0) = c\)</span>, or <span
+class="math inline">\(T(1) = d\)</span>, or some kind of constant time
+base case. The key is that however many leaves there are, that’s how
+many times we will call <span class="math inline">\(T(1)\)</span>.</p>
+<p>How many times does that happen?</p>
+<p>This computation is easier: it’s once per leaf. And there are <span
+class="math inline">\(A^{\log_B n}\)</span> leaves.</p>
+<p>So we have a term: <span class="math inline">\(A^{\log_B
+n}\)</span>.</p>
+<hr />
+<h1 id="combining-the-two">Combining the two</h1>
+<p>Therefore, the total amount of work our algorithm will do is: <span
+class="math inline">\(\large \sum_{i = 0}^{(\log_B n) -
+1}(A^{i}f(n/B^{i})) + A^{\log_B n}\)</span> for some constants <span
+class="math inline">\(A\)</span> and <span
+class="math inline">\(B\)</span></p>
+<p>This is a sum of two terms. So if one side dominates the other, then
+that’s the big-<span class="math inline">\(\Theta\)</span></p>
+<p>How do we know if one side dominates the other?</p>
+<div class="footnote">
+<p>(*) I’m using <a
+href="https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms)">Wikipedia</a>
+instead of the book for this definition.</p>
+</div>
+<hr />
+<h1 id="revisiting-the-sum">Revisiting the sum</h1>
+<p>At level <span class="math inline">\(i\)</span> of the recursion
+tree, there are <span class="math inline">\(A^i\)</span> nodes.</p>
+<p>Suppose there is a function <span class="math inline">\(g\)</span>
+that approximates the amount of work at a node: <span
+class="math inline">\(f(n) \approx g(n) = \Theta(n^c)\)</span> for some
+<span class="math inline">\(c\)</span>.</p>
+<p>Then the cost per node is <span class="math inline">\(\Theta(n /
+B^i)^c\)</span>. So the cost per row is <span
+class="math inline">\(\Theta(n^c \cdot A^i/B^{ic})\)</span>.</p>
+<p>Let <span class="math inline">\(L=\log_B n\)</span>, how do we get
+<span class="math inline">\(\sum_{i = 0}^{L - 1} \Theta(n^c \cdot
+A^i/B^{ic})\)</span>?</p>
+<p>First, we can factor out <span class="math inline">\(n^c\)</span>,
+and factor <em>in</em> the sum: <span class="math inline">\(\Theta(n^c
+\cdot \sum_{i = 0}^{L - 1} A^i/B^{ic}) = \Theta(n^c \cdot \sum_{i =
+0}^{L - 1} (A/B^c)^i)\)</span></p>
+<hr />
+<h1 id="rebuilding-tn">Rebuilding <span
+class="math inline">\(T(n)\)</span></h1>
+<p>Now, let’s add the other term back in to get our <span
+class="math inline">\(T(n)\)</span> expression: <span
+class="math inline">\(T(n) = \Theta(n^c \cdot \sum_{i = 0}^{L - 1}
+(A/B^c)^i) + A^L\)</span></p>
+<p>We’re close. We want both terms to have a base of <span
+class="math inline">\(n\)</span>. Then we can compare them.</p>
+<p>We use the exponent/log swap trick: <span class="math inline">\(A =
+B^{\log_B A}\)</span>, <span class="math inline">\(A^L = A^{\log_B n} =
+(B^{\log_B A})^{\log_B n}=(B^{\log_B n})^{\log_B A}\)</span></p>
+<p>And <span class="math inline">\(B^{\log_B n}\)</span> is just <span
+class="math inline">\(n\)</span>, so: <span class="math inline">\(A^L =
+n^{\log_B A}\)</span> So now we have:</p>
+<p><span class="math inline">\(T(n) = \Theta(n^c \cdot \sum_{i = 0}^{L -
+1} (A/B^c)^i) + \Theta(n^{\log_B A})\)</span></p>
+<hr />
+<h1 id="c_mathrmcrit"><span
+class="math inline">\(c_\mathrm{crit}\)</span></h1>
+<p><span class="math inline">\(T(n) = \Theta(n^c \cdot \sum_{i =
+0}^{(\log_B n) - 1} (A/B^c)^i) + \Theta(n^{\log_B A})\)</span></p>
+<p>Now look at that sum. It’s a geometric series with <span
+class="math inline">\(r = A / B^c\)</span> So everything hinges on that
+ratio: <span class="math inline">\(r=A/B^c\)</span></p>
+<p>One last substitution will give us something to make a decision
+on…</p>
+<p>Let <span class="math inline">\(c_\mathrm{crit} = \log_B A\)</span>,
+then <span class="math inline">\(A=B^{c_\mathrm{crit}}\)</span> So <span
+class="math inline">\(r=A/B^c=B^{c_\mathrm{crit}}/B^c=B^{c_\mathrm{crit}
+- c}\)</span></p>
+<p><span class="math inline">\(T(n) = \Theta(n^c \cdot \sum_{i =
+0}^{(\log_B n) - 1} (B^{c_\mathrm{crit} - c})^i) +
+\Theta(n^{c_\mathrm{crit}})\)</span></p>
+<hr />
+<h1 id="case-1-tree-is-leaf-heavy">Case 1: tree is leaf-heavy</h1>
+<p>If <span class="math inline">\(A/B^c \lt 1\)</span>, that’s
+equivalent to saying <span class="math inline">\(B^{c_\mathrm{crit}} \lt
+B^c \equiv B^{c_\mathrm{crit} - c} \lt 1 \equiv C_\mathrm{crit} \gt
+c\)</span></p>
+<p>If <span class="math inline">\(C_\mathrm{crit} \gt c\)</span>, <span
+class="math inline">\(r\lt 1\)</span>, so the sum is going to result in
+a constant: <span class="math inline">\(T(n) = \Theta(n^c \cdot \sum_{i
+= 0}^{L - 1} (A/B^c)^i) + \Theta(n^{c_\mathrm{crit}}) = \Theta(n^c)+
+\Theta(n^{c_\mathrm{crit}})\)</span></p>
+<p>If <span class="math inline">\(c_\mathrm{crit} \gt c\)</span>, the
+whole thing simplifies to:</p>
+<p><span
+class="math inline">\(T(n)=\Theta(n^{c_\mathrm{crit}})\)</span></p>
+<p>That is, if <span class="math inline">\(T(n) = A\cdot T(n / B) +
+O(n^c)\)</span>, and <span class="math inline">\(\log A / \log B \gt
+c\)</span>, then <span class="math inline">\(T(n) =
+\Theta(n^{c_\mathrm{crit}})\)</span></p>
+<p>In other words: the work we do inside the tree is much smaller than
+the total number of leaves, so the number of leaves ends up being the
+big-<span class="math inline">\(\Theta\)</span></p>
+<hr />
+<h1 id="case-2-the-tree-and-leaves-are-balanced">Case 2: the tree and
+leaves are balanced</h1>
+<p>If <span class="math inline">\(A/B^c = 1\)</span>, that’s equivalent
+to saying <span class="math inline">\(C_\mathrm{crit} = c\)</span></p>
+<p>The thing inside the sum <span class="math inline">\(= 1\)</span>, so
+we end up with a logarithm factor. Recall <span
+class="math inline">\(L=\log_B n\)</span></p>
+<p><span class="math inline">\(T(n) = \Theta(n^c \cdot \sum_{i = 0}^{L -
+1} (A/B^c)^i) + \Theta(n^{c_\mathrm{crit}}) = \Theta(n^c\cdot \log_B n)
++ \Theta(n^{c_\mathrm{crit}})= \Theta(n^c\cdot \log_B n)\)</span></p>
+<p>We assumed that <span class="math inline">\(f(n) =
+\Theta(n^c)\)</span> to derive case 1, but If our original function had
+factors of <span class="math inline">\(\log n\)</span> in it, that is,
+if <span class="math inline">\(f(n) = \Theta(n^c (\log n)^2)\)</span>
+then we would end up with one more log power: <span
+class="math inline">\(T(n) = \Theta(n^c (\log n)^2 \cdot \sum_{i = 0}^{L
+- 1} (A/B^c)^i)=\Theta(n^c(\log n)^2 \cdot \log n) = \Theta(n^c \cdot
+(\log n)^3)\)</span></p>
+<p>In general, if <span class="math inline">\(T(n) = A \cdot T(n / B) +
+\Theta(n^c (\log n)^k)\)</span> and <span class="math inline">\(c = \log
+A / \log B\)</span>, <span class="math inline">\(T(n) = \Theta(n^c (\log
+n)^{k + 1})\)</span></p>
+<p>Note: most of the time, <span class="math inline">\(k\)</span> will
+be <span class="math inline">\(0\)</span>. This will make <span
+class="math inline">\(\log n\)</span> magically appear.</p>
+<hr />
+<h1 id="case-3-the-weird-one-inner-work-heavy">Case 3: the weird one:
+inner work heavy</h1>
+<p>If <span class="math inline">\(A/B^c \gt 1\)</span>, that’s
+equivalent to saying <span class="math inline">\(C_\mathrm{crit} \lt
+c\)</span></p>
+<p>Here, the thing inside the sum is <span class="math inline">\(\gt
+1\)</span>. This means that we’re doing more work inside the tree than
+we are at the leaves. This is the least common case.</p>
+<p>Recall that <span class="math inline">\(A/B^c = B^{c_\mathrm{crit} -
+c}\)</span>, so <span class="math inline">\(T(n) = \Theta(n^c \cdot
+\sum_{i = 0}^{L - 1} (A/B^c)^i) + \Theta(n^{c_\mathrm{crit}})\)</span>
+<span class="math inline">\(= \Theta(n^c \cdot (1 + B^{c_\mathrm{crit} -
+c} + (B^{c_\mathrm{crit} - c})^2 + \ldots) +
+\Theta(n^{c_\mathrm{crit}})\)</span></p>
+<p>In that big-<span class="math inline">\(\Theta\)</span>, only the
+largest term actually matters. So it ends up being</p>
+<p><span class="math inline">\(=\Theta(n^c \cdot (B^{c_\mathrm{crit} -
+c})^L) + \Theta(n^{c_\mathrm{crit}}) = \Theta(n^c \cdot
+(B^{c_\mathrm{crit} - c})^L)\)</span>, which was all an approximation of
+<span class="math inline">\(f(n)\)</span> (this was an early
+substitution we made).</p>
+<hr />
+<h1 id="case-3-the-regularity-condition">Case 3: the regularity
+condition</h1>
+<p>Therefore, if <span class="math inline">\(T(n) = A\cdot T(n / B) +
+f(n)\)</span>, where <span
+class="math inline">\(f(n)=\Omega(n^c)\)</span> and <span
+class="math inline">\(c \gt c_\mathrm{crit}\)</span>, <span
+class="math inline">\(T(n) = \Theta(f(n))\)</span></p>
+<p>Basically, the recombining is so expensive that it ends up dominating
+everything.</p>
+<p>Except there’s a special condition, called a regularity condition.
+There must be a <span class="math inline">\(k \lt 1\)</span>: <span
+class="math display">\[
+A\cdot f({n \over B}) \le k \cdot f(n)
+\]</span></p>
+<p>Why? Because we want to ensure that the work at the root is bigger
+than the work at the other inner nodes. If it is, then the work at the
+root node dominates all the others. If it’s not, then there’s not an
+obvious bound, and we need to use another technique.</p>
+<hr />
+<h1 id="case-3-what-if-the-regularity-condition-is-false">Case 3: what
+if the regularity condition is false?</h1>
+<p>Then we can’t use the master theorem. Sorry.</p>
+<hr />
+<h1 id="the-master-method">The master method</h1>
+<p>Try to express your problem as: <span class="math inline">\(T(n) =
+A\cdot T(n / B) + f(n)\)</span>, where <span
+class="math inline">\(A\)</span> and <span
+class="math inline">\(B\)</span> are constant. (If you can’t, the master
+method does not apply) Let <span class="math inline">\(c_\mathrm{crit} =
+{\log A \over \log B}\)</span> 1. If <span class="math inline">\(f(n) =
+O(n^c)\)</span> and <span class="math inline">\(c_\mathrm{crit} \gt
+c\)</span> Then <span class="math inline">\(T(n) =
+\Theta(n^{c_\mathrm{crit}})\)</span> 2. If <span
+class="math inline">\(f(n) = \Theta(n^{c_\mathrm{crit}}\cdot (\log
+n)^{k})\)</span> and <span class="math inline">\(c_\mathrm{crit} =
+c\)</span> Then <span class="math inline">\(T(n) = \Theta(n^c \cdot
+(\log n)^{k + 1})\)</span> 3. If <span class="math inline">\(f(n) =
+\Omega(n^c)\)</span> and <span class="math inline">\(c_\mathrm{crit} \lt
+c\)</span> and <span class="math inline">\(\exists k, A\cdot f(n / B)
+\le k \cdot f(n)\)</span> Then <span class="math inline">\(T(n) =
+\Theta(f(n))\)</span> 4. Otherwise, you can’t use the master method</p>
+<hr />
+<figure>
+<img src="master_chart.svg"
+alt="bg height:100% a flowchart for the master method. Step one is telling you to formulate your problem as T(n)=AT(n/B) + f(n). Then we reach a decision: c_crit = (log A) / (log B). If f(n)=O(n^c), and c_crit &gt; c, we go to case 1: T(n)=Theta(n^c_crit). If f(n) = Theta(n^c  (log n)^k) and c_crit = c, we go to case 2: T(n) = Theta(n^c_crit * (log n)^(k + 1). If f(n) = Omega(n^c), and c_crit &lt; c, we go to case 3, which has a decision to make. The decision: is there a k less than 1 such that A * f(n / B) = k * f(n)? If so, T(n) = Theta(f(n)), if not, we go to the crying cat emoji, indicatin that we will have to use another method to determine the running time)" />
+<figcaption aria-hidden="true">bg height:100% a flowchart for the master
+method. Step one is telling you to formulate your problem as
+T(n)=A<em>T(n/B) + f(n). Then we reach a decision: c_crit = (log A) /
+(log B). If f(n)=O(n^c), and c_crit &gt; c, we go to case 1:
+T(n)=Theta(n^c_crit). If f(n) = Theta(n^c </em> (log n)^k) and c_crit =
+c, we go to case 2: T(n) = Theta(n^c_crit * (log n)^(k + 1). If f(n) =
+Omega(n^c), and c_crit &lt; c, we go to case 3, which has a decision to
+make. The decision: is there a k less than 1 such that A * f(n / B) = k
+* f(n)? If so, T(n) = Theta(f(n)), if not, we go to the crying cat
+emoji, indicatin that we will have to use another method to determine
+the running time)</figcaption>
+</figure>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-7">Questions</h1>
+<hr />
+<h1 id="revisiting-count_nodes">Revisiting <code>count_nodes</code></h1>
+<p>Remember <code>count_nodes</code>? When it’s balanced: <span
+class="math inline">\(T(n) = 2\cdot T(n / 2) + 1\)</span></p>
+<p><span class="math inline">\(c_\mathrm{crit}=\log 2 / \log 2 =
+1\)</span> <span class="math inline">\(f(n) = 1 = O(n^0)\)</span></p>
+<p><span class="math inline">\(1 \gt 0\)</span>, so we’re in case 1:
+<span class="math inline">\(T(n) = \Theta(n^{c_\mathrm{crit}}) =
+\Theta(n^1)\)</span></p>
+<p>That’s it, we don’t have to prove anything by induction.</p>
+<hr />
+<h1 id="revisiting-mergesort">Revisiting <code>mergesort</code></h1>
+<p>Is mergesort <em>really</em> <span class="math inline">\(\Theta(n \lg
+n)\)</span>?</p>
+<p><span class="math inline">\(T(0) = T(1) = 1\)</span> <span
+class="math inline">\(T(n) = 2 \cdot T(n / 2) + \Theta(n)\)</span></p>
+<p><span class="math inline">\(c_{\mathrm{crit}} = \log 2 / \log 2 =
+1\)</span> <span class="math inline">\(f(n) = \Theta(n^1 \cdot (\log
+n)^0)\)</span> <span class="math inline">\(c = 1 =
+c_\mathrm{crit}\)</span></p>
+<p>Case 2: <span class="math inline">\(T(n) = \Theta(n (\log n)^1) =
+\Theta(n \lg n)\)</span></p>
+<p>Yup, it is. No messy induction or substitution.</p>
+<hr />
+<h1 id="revisiting-quickselect">Revisiting <code>quickselect</code></h1>
+<p>What on earth is <code>quickselect</code> in the average case?</p>
+<p><span class="math inline">\(T(0) = 1\)</span> <span
+class="math inline">\(T(n) = 1 \cdot T(n / 2) + \Theta(n)\)</span></p>
+<p><span class="math inline">\(c_\mathrm{crit}=\log 1 / \log 2 =
+0\)</span> <span class="math inline">\(f(n) = \Theta(n) =
+\Omega(n^1)\)</span> <span class="math inline">\(c = 1, c_\mathrm{crit}
+= 0, c_\mathrm{crit} \lt c\)</span></p>
+<p><span class="math inline">\(\exists k \lt 1, A \cdot n / B \le k
+\cdot n\)</span>? <span class="math inline">\(n / 2 \le k n\)</span>,
+choose <span class="math inline">\(k=1/2\)</span>, it holds. We’re in
+case 3: <span class="math inline">\(T(n) = \Theta(n)\)</span></p>
+<hr />
+<h1 id="practice-5">Practice</h1>
+<p>Quicksort is just like quickselect, but after partitioning we just
+quicksort each side.</p>
+<ul>
+<li>Implement quicksort</li>
+<li>What is the big-<span class="math inline">\(\Theta\)</span> of the
+best case, where the partition method perfectly splits the two
+arrays?</li>
+<li>In the worst case , the partition always picks the worst value
+(i.e., it’s bigger or smaller than all the others).
+<ul>
+<li>What recurrence relation do we get then?</li>
+<li>Is it eligable for the master method?</li>
+<li>Find its big-<span class="math inline">\(\Theta\)</span> either
+way.</li>
+</ul></li>
+</ul>
+<hr />
+<h1 id="appendix-a-practice-quiz">Appendix A: Practice Quiz</h1>
+<p>I’m going to pick 4 recurrence relations. Your job will be to use the
+master theorem to find their big-<span
+class="math inline">\(\Theta\)</span> if applicable, or say “cannot use
+master method if not”</p>
+<p>For <span class="math inline">\(c_\mathrm{crit}\)</span>, you can use
+whatever logarithm base you want, as long as you use it for the
+numerator and denominator.</p>
+<p>For example: for <span class="math inline">\(T(n) = 3 \cdot T(n / 9)
++ n\)</span>, <span class="math inline">\(c_\mathrm{crit} = \log_3 3 /
+\log_3 9 = 1 / 2\)</span></p>
+<hr />
+<h1 id="appendix-a-some-samples">Appendix A: some samples</h1>
+<ol type="1">
+<li><span class="math inline">\(T(n) = 2 \cdot T(n / 2) +
+n\)</span></li>
+<li><span class="math inline">\(T(n) = T(n / 3) + n^2\)</span></li>
+<li><span class="math inline">\(T(n) = 4\cdot T(n / 2) + n\)</span></li>
+<li><span class="math inline">\(T(n) = 2\cdot T(n / 2) + n \cdot |\sin
+n|\)</span></li>
+<li><span class="math inline">\(T(n) = 49 \cdot T (n / 7) + \Theta(n^2
+\log n)\)</span></li>
+<li><span class="math inline">\(T(n) = 100 \cdot T(n / 10) +
+1\)</span></li>
+<li><span class="math inline">\(T(n) = T(n - 1) +
+\Theta(n)\)</span></li>
+</ol>
+<hr />
+<h1 id="appendix-a-the-answers">Appendix A: the answers</h1>
+<ol type="1">
+<li><span class="math inline">\(c_\mathrm{crit}= 1\)</span>, <span
+class="math inline">\(f(n) = n^1 \cdot (\log n)^0\)</span>, so case 2.
+<span class="math inline">\(T(n) = \Theta(n \lg n)\)</span></li>
+<li><span class="math inline">\(c_\mathrm{crit}= 0\)</span>, <span
+class="math inline">\(f(n) = \Omega(n^2)\)</span>, <span
+class="math inline">\(c_\mathrm{crit} \lt 2\)</span> case 3. <span
+class="math inline">\(\exists k \lt 1, n^2 / 2 \le k n^2\)</span>? Yes,
+case 3: <span class="math inline">\(T(n) = \Theta(n^2)\)</span></li>
+<li><span class="math inline">\(c_\mathrm{crit}= \lg 4 / \lg 2 =
+2\)</span>, <span class="math inline">\(f(n) = \Omega(n^1)\)</span>,
+<span class="math inline">\(2 \gt 1\)</span>, so case 1. <span
+class="math inline">\(T(n) =
+\Theta(n^{c_\mathrm{crit}})=\Theta(n^2)\)</span></li>
+<li><span class="math inline">\(c_\mathrm{crit}= 1\)</span>, <span
+class="math inline">\(f(n) = \Omega(n^1)\)</span>, <span
+class="math inline">\(2 \lt 3\)</span>, <span
+class="math inline">\(\exists k \lt 1, 2((n/2) \cdot |\sin (n / 2)|) =
+\le k \cdot n \cdot \sin n\)</span>? Fails the regularity test. Cannot
+apply master theorem.</li>
+<li><span class="math inline">\(c_\mathrm{crit}= \log_7 49 / \log_7 7 =
+2\)</span>, <span class="math inline">\(c = 2\)</span>, case 2. <span
+class="math inline">\(T(n) = \Theta(n^2 (\log n)^2)\)</span></li>
+<li><span class="math inline">\(c_\mathrm{crit}= \log_{10} 100 /
+\log_{10} 10 = 2\)</span>, <span class="math inline">\(1 =
+O(n^0)\)</span>, <span class="math inline">\(1 \gt 0\)</span>, case 1:
+<span class="math inline">\(T(n) = \Theta(n^2)\)</span></li>
+<li>Not a divide and conquer problem; can’t use the master theorem.</li>
+</ol>
+<hr />
+<h1 id="appendix-a-unworked-samples">Appendix A: unworked samples</h1>
+<ol type="1">
+<li><span class="math inline">\(T(n) = 3T(n / 2) + n^2\)</span></li>
+<li><span class="math inline">\(T(n) = T(n / 4) + n \log n\)</span></li>
+<li><span class="math inline">\(T(n) = 5T(n / 3) + n\)</span></li>
+<li><span class="math inline">\(T(n) = 2T(n / 2) + n^2 \log_8
+n\)</span></li>
+<li><span class="math inline">\(T(n) = 9T(n / 3) + n^2\)</span></li>
+<li><span class="math inline">\(T(n) = 2T(n / 2) + n(\log
+n)^2\)</span></li>
+<li><span class="math inline">\(T(n) = T(n-1) + T(n - 2) +
+1\)</span></li>
+</ol>
+<hr />
+<h1 id="appendix-a-tricky-samples-that-i-can-still-ask">Appendix A:
+tricky samples that I can still ask</h1>
+<p>Ponder these. All of them have definite solutions, and are solvable
+using math you know. I consider these to be reasonable exam problems (I
+would include the hints), but you’ll want to study them.</p>
+<ul>
+<li><span class="math inline">\(T(n) = T(n / 2) + 2^n\)</span> Hint:
+This one <em>does</em> pass the regularity test.</li>
+<li><span class="math inline">\(T(n) = 2 \cdot T(n / 2) +
+sin(n)\)</span> Hint: is this like the ones that failed the regularity
+test? Or is <span class="math inline">\(\sin(n)\)</span> bounded?$</li>
+<li><span class="math inline">\(T(n) = 4 \cdot T(n / 2) + n^2 +
+n\)</span> Hint: what kind of bound can we apply to <span
+class="math inline">\(n^2 + n\)</span>?</li>
+<li><span class="math inline">\(T(n) = 8 \cdot T(n / 2) + (\log
+n)^3\)</span> Hint: <span class="math inline">\((\log n)^k =
+O(n)\)</span> for all constant <span
+class="math inline">\(k\)</span></li>
+</ul>
+<hr />
+<!-- _class: invert questions -->
+<h1 id="questions-8">Questions?</h1>
+<hr />
+<h1 id="appendix-b-old-fashioned-sorts">Appendix B: Old fashioned
+sorts</h1>
+<p>In the 1890’s, <a
+href="https://en.wikipedia.org/wiki/Herman_Hollerith">Herman
+Hollerith</a> invented the card sorter.</p>
+<p>You would record data records on a punch-card, containing, e.g.,
+census information.</p>
+<p><a
+href="https://en.wikipedia.org/wiki/File:Hollerith_Punched_Card.jpg">The
+cards had a grid that could have holes punched</a>. For example, if you
+were tabulating peoples’ ages, you could punch a “3” in one row and a
+“2” in another to record “32”, along with other data.</p>
+<p>These cards could then be sorted into physical buckets, where a card
+counter could tabulate them. So you could know the number of people who
+were 32.</p>
+<hr />
+<h1 id="multiple-passes">Multiple passes</h1>
+<p>The operator would place the cards in hoppers and run the
+machine.</p>
+<p>The machine would sort one column into buckets. Say, the leading
+digit.</p>
+<p>The operator could then take 1 bucket, e.g., the 3 bucket, set up 10
+empty buckets, set the machine to sort on the next column, and dump the
+3 bucket back into the hopper.</p>
+<p>Now the new buckets would have all the 30s, 31s, 32s, etc.</p>
+<p>These could each be tabulated by a card counter.</p>
+<hr />
+<h1 id="what-is-the-big-theta">What is the big-<span
+class="math inline">\(\Theta\)</span>?</h1>
+<p>Assume that we can sort into <span class="math inline">\(10\)</span>
+buckets.</p>
+<p>If we have <span class="math inline">\(10\)</span> values to sort, we
+sort them in one pass.</p>
+<p>If we have <span class="math inline">\(100\)</span> values to sort,
+we sort them in <span class="math inline">\(1 + 10 \times 1 =
+11\)</span> passes. (i.e., <span class="math inline">\(1\)</span> pass
+to give <span class="math inline">\(10\)</span> buckets of <span
+class="math inline">\(10\)</span> each. For each one, <span
+class="math inline">\(1\)</span> pass)</p>
+<p>If we have <span class="math inline">\(1000\)</span>, we sort them in
+<span class="math inline">\(1 + 10\times (1 + 10\times
+1)=111\)</span></p>
+<p>If we have <span class="math inline">\(10000\)</span>, we sort them
+in <span class="math inline">\(1 + 10\times (1 + 10\times (1 +
+10))=1111\)</span></p>
+<hr />
+<h1 id="a-little-surprising">A little surprising</h1>
+<p>Write the recurrence relation:</p>
+<p><span class="math inline">\(T(&lt;= 10) = 1\)</span> <span
+class="math inline">\(T(n) = 10\cdot T(1/10) + 1\)</span></p>
+<p>Applying the master theorem, this is <span
+class="math inline">\(\Theta(n \lg n)\)</span> But the fan-out is so
+wide, it feels almost linear!</p>
+<hr />
+<h1 id="radix-sort">Radix sort</h1>
+<p>This is called radix sort. What’s cool is we can pick the radix: -
+Base-2 means we sort the numbers based on a binary digit. - Base-4 means
+we sort the numbers based on 2 binary digits grouped together. - Base-16
+means we sort on hex digits. a 32-bit number would be sorted in 8
+passes.</p>
+<hr />
+<h1 id="radix-sort-downsides">Radix sort downsides</h1>
+<ul>
+<li>If we sort from biggest to smallest digit (big-endian radix sort),
+then most datasets will have lots of 0 digits. How often does a number
+&gt; 1 billion arise naturally? You end up wasting several passes</li>
+<li>We can fix this by sorting from smallest to largest (little-endian
+radix sort), and then we can stop sorting numbers as soon as they are
+less than the radix^(number of sorts). But then we lose the nice
+property that sorting part way makes the numbers “almost sorted”.</li>
+<li>We have to allocate buckets, which is slow.</li>
+</ul>
+<hr />
+<h1 id="practice-6">Practice</h1>
+<ul>
+<li>Implement radix sort. Make the radix configurable.</li>
+<li>What happens to the recurrence relation if we change bases? I.e.,
+instead of using base-10, we use base-16?</li>
+<li>Does that change the big-<span
+class="math inline">\(\Theta\)</span>?</li>
+<li>Radix sort seems to have a nicer recurrence relation than quicksort.
+Why do you think we don’t often use it?</li>
+<li>Does radix sort require allocation? Can you think of a way to
+optimize base-2 to not require more than 1 additional buffer?</li>
+</ul>
+<hr />
+<h1 id="mermaid-source-1">Mermaid source (1)</h1>
+<pre class="mermaid"><code>&lt;---
+
+---
+config:
+      theme: redux
+---
+flowchart TD
+  A[&quot;mergesort([5,3,1,2,4])&quot;]
+  A --&gt; AL[&quot;mergesort([5,3,1])&quot;]
+  AL --&gt; ALL[&quot;mergesort([5, 3])&quot;]
+  ALL --&gt; ALLL[&quot;[5]&quot;]
+  ALL --&gt; ALLH[&quot;[3]&quot;]
+  AL --&gt; ALH[1]
+  A --&gt; AH[&quot;mergesort([2,4])&quot;]
+  AH --&gt; AHL[&quot;[2]&quot;]
+  AH --&gt; AHH[&quot;[4]&quot;]
+
+  ALLL &amp; ALLH --&gt; B35(&quot;merge([5], [3]) = (3, 5)&quot;)
+  B35 &amp; ALH --&gt; B135(&quot;merge([3,5], [1]) = [1,3,5]&quot;)
+  AHL &amp; AHH --&gt; B24(&quot;merge([2], [4]) = [2, 4]&quot;)
+
+  B135 &amp; B24 --&gt; RESULT(&quot;merge([1, 3, 5] [2, 4]) =
+   [1, 2, 3, 4, 5]&quot;)
+--&gt;</code></pre>
+<h1 id="mermaid-source-2-flow-chart">Mermaid source (2): flow chart</h1>
+<pre><code>---
+config:
+      theme: redux
+---
+flowchart TD
+  A[&quot;T(n)=A·T(n/B) + f(n)&quot;] --&gt; CC
+  CC@{ shape: diamond, label: &quot;c_crit =\n (log A) / \n(log B)&quot; }
+  CC --&gt; |&quot;f(n)=O(n^c)
+  c_crit &gt; c&quot;| C1
+  C1[&quot;Case 1:
+  T(n)=ϴ(n^c_crit)&quot;]
+  CC --&gt; |&quot;f(n)=ϴ(n^c·(log n)^k)
+  c_crit = c&quot;| C2
+  C2[&quot;Case 2: T(n)=
+    ϴ(n^c_crit·(log n)^(k+1))&quot;]
+  CC --&gt; |&quot;f(n) = Ω(n^c)
+  c_crit &lt; c&quot;| C3
+  C3@{shape: diamond, label: &quot;Ǝk&lt;1, 
+  Af(n/B) &lt;= 
+  k·f(n)?&quot;}
+
+  C3 --&gt; |&quot;yes&quot;| C3Y
+  C3Y[&quot;T(n)=ϴ(f(n))&quot;]
+
+  C3 --&gt; |&quot;no&quot;| C3N
+  C3N[&quot;&lt;font size= 10&gt;😿&quot;]</code></pre>
+</body>
+</html>

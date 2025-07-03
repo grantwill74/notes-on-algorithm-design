@@ -1483,7 +1483,6 @@ This is called radix sort. What's cool is we can pick the radix:
 # Mermaid source (1)
 
 ```mermaid
-<---
 
 ---
 config:
