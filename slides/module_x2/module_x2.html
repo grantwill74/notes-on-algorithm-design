@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>module_x2</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="design-and-analysis-of-algorithms">Design and Analysis of
+Algorithms</h1>
+<h2 id="module-x2-heaps-heapsort-and-priority-queues">Module X2: Heaps,
+Heapsort, and Priority Queues</h2>
+<p><br> <br></p>
+<p>Slides © Grant Williams, <a
+href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
+4.0</a>.</p>
+<p><br></p>
+<p>This is an open educational resource. Feel free to submit fixes,
+improvements, and new material <a
+href="https://github.com/grantwill74/notes-on-algorithm-design">here</a>.</p>
+<hr />
+<h1 id="heaps">Heaps</h1>
+<p>We are going to need heaps.</p>
+<p>Not now, but later.</p>
+<p>And now’s as good a time as any!</p>
+<hr />
+<h1 id="the-name-is-overloaded">The name is overloaded</h1>
+<p>Last small-module was about memory management.</p>
+<p>There, we talked about <em>the</em> heap.</p>
+<p>Don’t get confused: those are completely different things.</p>
+<p><em>The</em> heap refers to a pile of bytes that is organized by
+whatever allocator you use. It’s called the heap because it’s like just
+a pile of data you can request when you need it.</p>
+<p><em>A</em> heap refers to a data structure with a specific
+property…</p>
+<hr />
+<h1 id="the-heap-property">The heap property</h1>
+<p>Heaps are binary trees.</p>
+<p>Note: they are <em>not</em> binary search trees.</p>
+<p>Binary search trees have the property that a node’s left child has a
+smaller value than it, and its right child has a larger value than it
+(if either exist).</p>
+<p>[What property do heaps have?]</p>
+<hr />
+<h1 id="the-heap-property-2">The heap property (2)</h1>
+<p>Min-heaps have the property that every element is smaller than its
+children. Max-heaps have the property that every element is bigger than
+its children.</p>
+<p>There is another property that practical heaps have that we will
+mention soon, but the heap property is the main one.</p>
+<p>It is also called the “heap invariant”, because it is expected to be
+preserved after each heap operation.</p>
+<hr />
+<h1 id="storing-heaps">Storing heaps</h1>
+<p>So how do we store a heap?</p>
+<p>They’re trees, right, so we do this?</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> heap_node_t <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> heap_node_t <span class="op">*</span>l<span class="op">,</span> <span class="op">*</span>r<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> value<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> HeapNode<span class="op">;</span></span></code></pre></div>
+<p>[What do we think?]</p>
+<hr />
+<h1 id="no">No</h1>
+<p>We <em>could</em> do that, but it would be inefficient.</p>
+<p>First, every node is mostly overhead.</p>
+<p>We have 2 pointers and one int. In a 64-bit executable that’s
+20-bytes, minimum.</p>
+<p>24-bytes more likely due to padding. Wasteful.</p>
+<p>Even if memory is plentiful, fast memory is not.</p>
+<hr />
+<h1 id="no-2">No (2)</h1>
+<p>Second, when you use chained data structures, you typically use
+malloc. Good malloc implementations will put values near to each other
+when they are small and allocated at similar times.</p>
+<p>But what if the tree hangs around? The values will get scattered, and
+your cache locality will be poor.</p>
+<p>(or you could use a pool like we discussed earlier, then this problem
+isn’t as bad. But the first problem is still an issue.)</p>
+<hr />
+<h1 id="so-what-to-do">So what to do?</h1>
+<p>Instead, heaps usually do something weird: they store the tree as an
+array.</p>
+<p>Normally that would be very wasteful: trees can be all kinds of
+strange shapes, and we don’t want every gap to be taking up space.</p>
+<p>But heaps don’t have to worry about gaps. Heaps usually have another
+property: they are complete</p>
+<hr />
+<h1 id="completeness">Completeness</h1>
+<p>A complete tree is “as full as possible”. It does not have gaps.</p>
+<p>What do I mean?</p>
+<p>A tree is complete, if and only if: * all levels except the last are
+completely full * the last level, if it is not full, is filled from left
+to right. (no gaps)</p>
+<p>Let’s look at some diagrams</p>
+<hr />
+<h1 id="incomplete-trees">Incomplete trees</h1>
+<p>This tree is incomplete.</p>
+<p>It is missing the right child of B.</p>
+<p>It would also be incomplete if it were missing B or C entirely.</p>
+<figure>
+<img src="incomplete_tree.svg"
+alt="bg height:90% right:65% a diagram of an incomplete tree. It is a balanced binary tree, but the child of the root, B, does not have a child. There is a child of the root, C, which has a child, F, creating a gap" />
+<figcaption aria-hidden="true">bg height:90% right:65% a diagram of an
+incomplete tree. It is a balanced binary tree, but the child of the
+root, B, does not have a child. There is a child of the root, C, which
+has a child, F, creating a gap</figcaption>
+</figure>
+<hr />
+<h1 id="complete-trees">Complete trees</h1>
+<p>This tree is complete.</p>
+<p>The lowest level is not completely full, but it is filled from left
+to right.</p>
+<figure>
+<img src="complete_tree.svg"
+alt="bg height:90% right:65% a diagram of a complete tree. This tree has a root, A, with a child C, which has no child G. However, it does have a child, and every other node of that level has both children." />
+<figcaption aria-hidden="true">bg height:90% right:65% a diagram of a
+complete tree. This tree has a root, A, with a child C, which has no
+child G. However, it does have a child, and every other node of that
+level has both children.</figcaption>
+</figure>
+<hr />
+<h1 id="why">Why?</h1>
+<p>Heaps are typically complete trees. Why?</p>
+<p>So they can be implemented as an array.</p>
+<p>The tree in the previous slide is represented as:
+<code>[A, B, C, D, E, F]</code></p>
+<p>Because the tree is complete, there are no gaps. That means no cell
+is wasted. The array just lists the nodes from left to right.</p>
+<hr />
+<h1 id="how">How?</h1>
+<p>The key to understanding the array representation is how to compute
+the parent and child.</p>
+<p>We want to be able to know, for any index in the array, who its
+parent is and who its children are.</p>
+<p>So, first of all, where is the root?</p>
+<hr />
+<h1 id="the-root-and-friends">The root and friends</h1>
+<p>The root is at index 0. Its left child is at index 1, its right child
+is at index 2</p>
+<p>But, in general, how do we get the left and right child of a
+node?</p>
+<p>[We can diagram these and future concepts if necessary.]</p>
+<hr />
+<h1 id="parent-lc-rc">Parent, lc, rc</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> parent <span class="op">=</span> <span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">&gt;&gt;</span> <span class="dv">1</span><span class="op">;</span> <span class="co">// for everyone but root</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> l_child <span class="op">=</span> <span class="op">(</span>i <span class="op">&lt;&lt;</span> <span class="dv">1</span><span class="op">)</span> <span class="op">+</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> r_child <span class="op">=</span> l_child <span class="op">+</span> <span class="dv">1</span><span class="op">;</span></span></code></pre></div>
+<p>You can convince yourself of these identities with some examples: -
+Who is the left child of the root (= 0)? 1 - Who is the roots right
+child? The very next node: 2. - Who is the parent of 1 and 2? 0 for
+both.</p>
+<p>Proving it is more involved. If you want to do it, try starting by
+considering how many nodes are between a node <span
+class="math inline">\(i\)</span> and the end of its row, and then how
+many nodes there are up to its left child.</p>
+<hr />
+<h1 id="putting-things-in-a-heap">Putting things in a heap</h1>
+<p>So how do we put things in a heap?</p>
+<p>At first, we just stick them at the end. But that might violate the
+heap invariant…</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// heap must have room for n + 1</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> heap_ins<span class="op">(</span><span class="dt">int</span><span class="op">*</span> heap<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">,</span> <span class="dt">int</span> v<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    heap<span class="op">[</span>n<span class="op">]</span> <span class="op">=</span> v<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    heap_up<span class="op">(</span>heap<span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="putting-things-in-a-heap-2">Putting things in a heap (2)</h1>
+<p>There is a critical function to understand:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> heap_up<span class="op">(</span><span class="dt">int</span><span class="op">*</span> heap<span class="op">,</span> <span class="dt">size_t</span> i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>i <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">size_t</span> parent <span class="op">=</span> <span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">&gt;&gt;</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>heap<span class="op">[</span>parent<span class="op">]</span> <span class="op">&gt;</span> heap<span class="op">[</span>i<span class="op">])</span> <span class="op">{</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        swap<span class="op">(</span>heap <span class="op">+</span> parent<span class="op">,</span> heap <span class="op">+</span> i<span class="op">);</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        heap_up<span class="op">(</span>heap<span class="op">,</span> parent<span class="op">);</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This function restores the heap invariant between a pair of
+numbers.</p>
+<p>Random fact: heap-up is also called “bubble-up”, “percolate”, and
+“sift-up”.</p>
+<hr />
+<h1 id="heap-up">Heap up</h1>
+<p>Why?</p>
+<p>Suppose we put a really small number at the end of the heap. That
+means it’s on the bottom row.</p>
+<p>If a child is larger than its parent, this breaks the rule. So we
+swap them.</p>
+<p>Does that fix it? Well, maybe not. After swapping, the new number
+might be smaller than its new parent (originally the grandparent), so we
+swap again.</p>
+<p>We keep swapping until it stops being smaller or it hits the root.
+Now the invariant is restored.</p>
+<hr />
+<h1 id="why-would-we-put-things-in-a-heap">Why would we put things in a
+heap?</h1>
+<p>Because the top of the min-heap is always the smallest element.</p>
+<p>As long as it’s cheap to put things into the heap, we have a cheap
+and convenient sorting algorithm.</p>
+<p>Is it cheap? To find out, we’ll need to consider how to remove things
+from the heap.</p>
+<hr />
+<h1 id="questions">Questions</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="taking-things-out-of-a-heap">Taking things out of a heap</h1>
+<p>We know that the smallest value is at the top.</p>
+<p>We could just remove it. Then there would be a gap we would have to
+fill.</p>
+<p>The problem is that if we did that, we might end up with an
+incomplete tree. We need to control where the gap is introduced.</p>
+<p>So, take the last value in the heap. Put it at the top, then push it
+down. That way there are no gaps.</p>
+<hr />
+<h1 id="taking-things-out-of-a-heap-1">Taking things out of a heap</h1>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> heap_down<span class="op">(</span><span class="dt">int</span><span class="op">*</span> heap<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">,</span> <span class="dt">size_t</span> i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">size_t</span> l_child <span class="op">=</span> <span class="op">(</span>i <span class="op">&lt;&lt;</span> <span class="dv">1</span><span class="op">)</span> <span class="op">+</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">size_t</span> r_child <span class="op">=</span> l_child <span class="op">+</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>l_child <span class="op">&gt;=</span> n<span class="op">)</span> <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>r_child <span class="op">&gt;=</span> n<span class="op">)</span> <span class="op">{</span> <span class="co">// 1 child case</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>heap<span class="op">[</span>i<span class="op">]</span> <span class="op">&gt;</span> heap<span class="op">[</span>l_child<span class="op">])</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>heap <span class="op">+</span> i<span class="op">,</span> heap <span class="op">+</span> l_child<span class="op">);</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span> <span class="co">// 2 child case</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">size_t</span> min_child <span class="op">=</span> heap<span class="op">[</span>l_child<span class="op">]</span> <span class="op">&lt;=</span> heap<span class="op">[</span>r_child<span class="op">]</span> <span class="op">?</span> l_child <span class="op">:</span> r_child<span class="op">;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>heap<span class="op">[</span>i<span class="op">]</span> <span class="op">&gt;</span> heap<span class="op">[</span>min_child<span class="op">])</span> <span class="op">{</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>heap <span class="op">+</span> i<span class="op">,</span> heap <span class="op">+</span> min_child<span class="op">);</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            heap_down<span class="op">(</span>heap<span class="op">,</span> n<span class="op">,</span> min_child<span class="op">);</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="understanding-it">Understanding it</h1>
+<p>We compute the left and right children.</p>
+<p>If the left child is outside the heap, we know that we’re a leaf, so
+we terminate.</p>
+<p>If only the right child is in bound, we’re at the last row before the
+end of the heap. We see if the value at <span
+class="math inline">\(i\)</span> is smaller. If it is, swap. No
+recursive call, because we’re at the bottom. [We can diagram this]</p>
+<p>If there are two children, we swap the value with the smaller of the
+two. Why the smaller? Because the larger would violate the heap property
+against the smaller.</p>
+<p>Once we do this, we might not be at the bottom of the heap, so we
+recurse.</p>
+<hr />
+<h1 id="summary-of-heap-removal">Summary of heap removal</h1>
+<ul>
+<li>We take the top value out of the heap.</li>
+<li>We replace it with the very last value.</li>
+<li>We swap that value down as far as it will go</li>
+</ul>
+<hr />
+<h1 id="heap-pop">Heap pop</h1>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> heap_pop<span class="op">(</span><span class="dt">int</span><span class="op">*</span> heap<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    assert<span class="op">(</span>n <span class="op">&gt;</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> top <span class="op">=</span> heap<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    heap<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> heap<span class="op">[</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">];</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    heap_down<span class="op">(</span>heap<span class="op">,</span> n <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> top<span class="op">;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<!-- _class: questions invert -->
+<h1 id="questions-1">Questions</h1>
+<hr />
+<h1 id="sorting">Sorting?</h1>
+<p>I mentioned sorting before. How can we sort with a heap?</p>
+<p>Answer: 1. Insert all the numbers into the heap 2. Then remove them.
+They will be in order.</p>
+<p>We’re being light on proofs in this lecture because we have a lot to
+go through in only a mini-lecture. But most of the proofs come out of
+the heap invariant.</p>
+<p>If every operation leaves it intact, then we always remove the
+mininum from a min-heap, so it should be easy to trust this
+algorithm</p>
+<p>Another useful function constructs a heap in place. This is called
+heapify…</p>
+<hr />
+<h1 id="heapsort-code">Heapsort code</h1>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">// convert an array into a heap by inserting its elements</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> heapify<span class="op">(</span><span class="dt">int</span><span class="op">*</span> data<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        heap_ins<span class="op">(</span>data<span class="op">,</span> i<span class="op">,</span> data<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> heapsort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> data<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    heapify<span class="op">(</span>data<span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span><span class="op">*</span> buf <span class="op">=</span> malloc<span class="op">(</span>n <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        buf<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> heap_pop<span class="op">(</span>data<span class="op">,</span> n <span class="op">-</span> i<span class="op">);</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    memcpy<span class="op">(</span>data<span class="op">,</span> buf<span class="op">,</span> n <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    free<span class="op">(</span>buf<span class="op">);</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="footnote">
+<p>(note: this is a basic heapsort. Fancier versions can be done in
+place without the allocation. As an optional exercise, consider
+constructing a max-heap backwards, so that the max is at the right end
+of the array.)</p>
+</div>
+<hr />
+<h1 id="remaining-questions">Remaining questions</h1>
+<p>Hopefully heapsort makes sense. It’s very useful and we will be using
+heaps heavily later when we get to graph modelling.</p>
+<p>There are a few remaining questions</p>
+<ol type="1">
+<li>How fast is heapsort theoretically?</li>
+<li>What are its advantages?</li>
+<li>What are its disadvantages?</li>
+<li>What is its practical speed, considering the above?</li>
+<li>How do we build a priority queue?</li>
+</ol>
+<p>The first one seems like it would be hard to answer, but luckily, we
+have a tool for answering it…</p>
+<hr />
+<h1 id="how-fast-is-heapsort">How fast is heapsort</h1>
+<p>Heapsort is composed of two operations in sequence:</p>
+<ol type="1">
+<li>insert</li>
+<li>pop</li>
+</ol>
+<p>And what are their recurrence relations?</p>
+<hr />
+<h1 id="recurrence-insert">Recurrence: insert:</h1>
+<p>Insert: depends entirely on heap-up. Worst case: <span
+class="math inline">\(T(0) = 1\)</span> <span
+class="math inline">\(\leftarrow\)</span> from inserting into an empty
+heap <span class="math inline">\(T(n) = T(n / 2) + 1\)</span></p>
+<p>In the worst case, the value we inserted at the bottom was the
+smallest value, so it must swap every single row. Each row swap moves us
+half of the way up the remaining number of elements (hence <span
+class="math inline">\(n / 2\)</span>).</p>
+<p>Do we have a strategy for solving this recurrence?</p>
+<hr />
+<h1 id="master-theorem">Master theorem</h1>
+<p>Yup, it’s a divide and conquer.</p>
+<p>In this case, <span class="math inline">\(f(n) = 1 = \Theta(1) =
+\Theta(n^0)\)</span><br />
+<span class="math inline">\(c_\mathrm{crit} = \lg 1 / \lg 2 = 0\)</span>
+<span class="math inline">\(c_\mathrm{crit} = c\)</span>, so this is a
+Case 2. <span class="math inline">\(T(n) = \Theta(n^0 (\lg n)^1) =
+\Theta(\lg n)\)</span></p>
+<p>It’s logarithmic, which makes perfect sense. Every time we heap-up a
+node, we’re skipping it forward by <span
+class="math inline">\(n/2\)</span>-ish nodes. So worst case, it’s <span
+class="math inline">\(log_2\)</span> swaps. Best case it’s in the
+correct position right off the bat (<span
+class="math inline">\(\Theta(1)\)</span>).</p>
+<hr />
+<h1 id="recurrence-pop">Recurrence: pop</h1>
+<p>When we remove something from a heap, the best case is that either
+it’s the only node, or that the node we replace it with is in position
+already. The worst case is that when we load the last value into the
+top, we end up having to swap it all the way back down to the bottom</p>
+<p>We only have one recursive call, and it’s to swap the value with one
+of its children.</p>
+<p>We’re swapping in the other direction here, but it doesn’t matter.
+There are the same number of rows, so the recurrence looks similar (if
+it bothers you, realize that <span class="math inline">\(T(n) = T(i * 2)
++ \ldots, T(n) = 1\)</span>; is related to <span
+class="math inline">\(T(n) = T(n / 2) + \ldots, T(1) = 1\)</span>):</p>
+<p><span class="math inline">\(T(1) = 1\)</span> <span
+class="math inline">\(T(n) = T(n / 2) + 1\)</span></p>
+<hr />
+<h1 id="theoretical-speed">Theoretical speed:</h1>
+<p>It ends up being the same: <span class="math inline">\(\Theta(\lg
+n)\)</span> in the worst case.</p>
+<p>So, to heapsort, we first insert <span
+class="math inline">\(n\)</span> items, with <span
+class="math inline">\(\Theta(\lg n)\)</span> time for each insert. Then
+we remove <span class="math inline">\(n\)</span> items, for <span
+class="math inline">\(\Theta(\lg n)\)</span> each time.</p>
+<p><span class="math inline">\(n \Theta(\lg n) + n \Theta(\lg n) =
+\Theta(n \lg n) + \Theta(n \lg n) = \Theta(n \lg n)\)</span></p>
+<p>Just like mergesort and average-case quicksort.</p>
+<hr />
+<h1 id="why-heapsort">Why heapsort?</h1>
+<p>Heapsort has some unique advantages:</p>
+<ul>
+<li>It has a tight bound at <span class="math inline">\(\Theta(n \lg
+n)\)</span> like mergesort, but it can be done in-place (we didn’t, but
+it’s possible).</li>
+<li>It has great best-case behavior.</li>
+<li>It’s <em>online</em>. An online sort is one where you can sort one
+more value without having to re-run the whole algorithm. If we quicksort
+a giant list, and then want to add one more value later, we basically
+have to insert them at <span class="math inline">\(O(n)\)</span> each,
+or run quicksort again. If we have a heap, we can keep the
+data-structure and add some more values for <span
+class="math inline">\(O(\lg n)\)</span> each.</li>
+</ul>
+<hr />
+<h1 id="why-not-heapsort">Why not heapsort?</h1>
+<p>Heapsort also has a unique disadvantage: it has terrible (almost
+worst possible) cache locality.</p>
+<p>Cache locality is very important to modern computers. Basically, your
+CPU is not reading data out of RAM: only cache. Being as efficient with
+cache as possible is very important to overall performance.</p>
+<p>When we read data in order of memory address, most of our reads will
+be cache-hits, and the prefetcher will keep the right bits in
+memory.</p>
+<p>Heaps compare nodes to their parents and children, and these are
+massively far away from each other. A node at position 1 million will
+have a parent close to position 500k. Those values are very far apart in
+memory, and will likely not be in cache. Cache misses are very
+expensive.</p>
+<hr />
+<h1 id="practical-speed">Practical speed</h1>
+<p>Practically, heaps are very fast when they are small. If the whole
+heap fits into a cache page, the one major downside of heapsort goes
+away.</p>
+<p>Therefore it’s common to use heapsort as a kind of intermediate
+sorting algorithm.</p>
+<p>For example, gcc’s C++ implementation uses Introsort. It starts by
+running quicksort, but only to a certain maximum recursion depth to
+avoid worst-case behavior.</p>
+<p>Once it hits the limit, it looks at how many more values it needs to
+sort. Small numbers (e.g., 16) can be done extremely quickly with
+insertion sort (especially with vector support). Larger values can be
+done with heapsort. As long as we didn’t get extremely unlucky, after a
+few rounds of quicksort-splitting, we likely have small spans that will
+work well with heapsort.</p>
+<hr />
+<h1 id="questions-2">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="priority-queues">Priority queues</h1>
+<p>One last thing: heaps are priority queues.</p>
+<p>Or rather, they are the main structure that enables them.</p>
+<p>Instead of inserting raw integers, imagine that we have a heap of
+structures like this:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> prio_q_node_t <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> priority<span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span><span class="op">*</span> data<span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> PrioQNode<span class="op">;</span></span></code></pre></div>
+<p>We can insert these into a heap like this…</p>
+<hr />
+<h1 id="inserting-priority-nodes">Inserting priority nodes</h1>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> heap_ins<span class="op">(</span><span class="dt">int</span> priority<span class="op">,</span> <span class="dt">void</span><span class="op">*</span> data<span class="op">,</span> PrioQNode<span class="op">*</span> heap<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    heap<span class="op">[</span>n<span class="op">]</span> <span class="op">=</span> <span class="op">{</span>priority<span class="op">,</span> data<span class="op">};</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    heap_up<span class="op">(</span>heap<span class="op">,</span> n <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> heap_up<span class="op">(</span>PrioQNode<span class="op">*</span> heap<span class="op">,</span> <span class="dt">size_t</span> i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ... check conditions, compute parent ... (omitted)</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>heap<span class="op">[</span>i<span class="op">].</span>priority <span class="op">&lt;</span> heap<span class="op">[</span>parent<span class="op">])</span> <span class="op">{</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        swap<span class="op">(</span>heap <span class="op">+</span> i<span class="op">,</span> heap <span class="op">+</span> parent<span class="op">);</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        heap_up<span class="op">(</span>heap<span class="op">,</span> i<span class="op">);</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="satellite-data">Satellite data</h1>
+<p>We’re using priority as the value that determines where something is
+sorted.</p>
+<p>The data is just along for the ride.</p>
+<p>So if we wanted to, say, compute the turn order in a turn-based game,
+the data could be the character itself, and the priority could be the
+negative speed stat or something.</p>
+<p>The heap ignores the data, it’s just along for the ride.</p>
+<p>So a priority queue is just a heap with extra data attached to the
+value we’re sorting that we ignore inside the heap.</p>
+<hr />
+<h1 id="summary">Summary</h1>
+<p>You’ve probably been introduced to heaps before. But since we will
+need them when we get to graph algorithms, I thought I’d give us a
+review.</p>
+<p>This was a whirlwind tour, but hopefuly it’s clear: - What a heap is
+- How it works - Why it works - How fast they are - Why we like them -
+When they are appropriate - And how to make a priority queue</p>
+<hr />
+<h1 id="questions-3">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="appendix-mermaid-source-incomplete-tree">Appendix: mermaid
+source: incomplete tree</h1>
+<pre><code>---
+config:
+      theme: redux
+---
+flowchart TD
+  A --&gt; B &amp; C
+  B --&gt; D
+  B -.-&gt; E[&quot;\-&quot;]:::dotted;
+  C --&gt; F &amp; G
+
+  classDef dotted stroke-dasharray: 5, 5;</code></pre>
+<hr />
+<h1 id="appendix-mermaid-source-complete-tree">Appendix: mermaid source:
+complete tree</h1>
+<pre><code>---
+config:
+      theme: redux
+---
+flowchart TD
+  A --&gt; B &amp; C
+  B --&gt; D
+  B --&gt; E;
+  C --&gt; F
+  C -.-&gt; G[&quot;\-&quot;]:::dotted;
+
+  classDef dotted stroke-dasharray: 5, 5;</code></pre>
+</body>
+</html>
