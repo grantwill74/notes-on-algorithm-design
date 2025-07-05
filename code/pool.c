@@ -30,32 +30,6 @@ Start over with modal approach:
         dealloc: write next pointer, stay in gaps state
 */
 
-typedef struct bump_state_t {
-    void** next;
-} BumpState;
-
-typedef struct gaps_state_t {
-    void** next;
-} GapsState;
-
-typedef struct page_t {
-    struct page_t* next_page;
-    void** page_data;
-} Page;
-
-typedef struct pool_t {
-    size_t cell_size;
-    size_t cells_per_page;
-    size_t n_pages;
-    size_t n_allocd;
-    size_t n_cells;
-    
-    GapsState gaps;
-    BumpState bump;
-
-    Page *first_page, *last_page;
-} Pool;
-
 
 void pool_new_page(Pool* pool) {
     // only create a new page when absolutely full
@@ -121,6 +95,12 @@ void* pool_alloc(Pool* pool) {
     }
 
     return result;
+}
+
+void* pool_calloc(Pool* pool) {
+    void* alloc = pool_alloc(pool);
+    memset(alloc, 0, pool->cell_size);
+    return alloc;
 }
 
 void* pool_alloc_d(Pool* pool) {
@@ -306,6 +286,31 @@ char* test_pool_drains_gaps_first(void) {
     return 0;
 }
 
+char* test_pool_calloc() {
+    Pool pool;
+    pool_init(&pool, sizeof (uint64_t), 5);
+
+    // scribble on pool
+    ((uint64_t*)(pool.first_page->page_data))[0] = 0xF00DBAD;
+    ((uint64_t*)(pool.first_page->page_data))[1] = 0xCAFEF00D;
+    ((uint64_t*)(pool.first_page->page_data))[2] = 0xDEADC0de;
+    ((uint64_t*)(pool.first_page->page_data))[3] = 0xF00l;
+
+    uint64_t* results[4] = 
+        {pool_calloc(&pool), pool_calloc(&pool),
+         pool_calloc(&pool), pool_calloc(&pool)};
+
+
+    mu_assert("pool calloc 1", *results[0] == 0);
+    mu_assert("pool calloc 2", *results[1] == 0);
+    mu_assert("pool calloc 3", *results[2] == 0);
+    mu_assert("pool calloc 4", *results[3] == 0);
+    
+    pool_destroy(&pool);
+
+    return 0;
+}
+
 
 char* all_tests(void) {
     mu_run(test_cellsize_roundup);
@@ -314,6 +319,7 @@ char* all_tests(void) {
     mu_run(test_pool_multi_realloc);
     mu_run(test_pool_page_chaining);
     mu_run(test_pool_drains_gaps_first);
+    mu_run(test_pool_calloc);
 
     return 0;
 }
