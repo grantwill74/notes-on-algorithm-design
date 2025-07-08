@@ -8,7 +8,7 @@ typedef int (*NodeComparer)(void* a, void* b);
 
 // assumes the pointer data is actually an int (not a pointer to an int)
 static inline int node_compare_int_default(void* a, void* b) {
-    return (int64_t)a - (int64_t)b;
+    return (intptr_t)a - (intptr_t)b;
 }
 
 typedef struct bst_node_t {
@@ -22,12 +22,6 @@ typedef struct bst_t {
     BstNode* root;
     NodeComparer comparer;
 } Bst;
-
-typedef enum tree_dir_t {
-    LEFT = 0,
-    RIGHT,
-} TreeDir;
-
 
 // callback for pre-insert function. passes context along from insert call.
 typedef void (*BstPreInsert)(BstNode* about_to_insert, void* context);

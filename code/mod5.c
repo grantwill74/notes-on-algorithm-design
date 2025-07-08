@@ -53,6 +53,9 @@ void* bst_insert_generic(
     return ret;
 }
 
+void bst_insert(Bst* tree, void* data) {
+    bst_insert_generic(tree, &(tree->root), data, NULL, NULL, NULL);
+}
 
 
 // unit tests //////////////////////////////////////////////////////////////////
@@ -128,9 +131,10 @@ void record_node(BstNode* node, void* chain_) {
     slice->n++; 
 }
 
-void count_node(BstNode* node, void* count_) {
+BstNode* count_node(BstNode* node, void* count_) {
     size_t* count = count_;
     (*count)++;
+    return node;
 }
 
 static char * test_insert_pre() {
@@ -156,6 +160,34 @@ static char * test_insert_pre() {
     mu_assert("rc fourth call", nodes[1]->data == (void*)15);
     mu_assert("slice size 2", context.n == 2);
 
+    bst_destroy(&bst);
+
+    return 0;
+}
+
+static char * test_insert_post() {
+    Bst bst;
+    bst_init(&bst, 1024, node_compare_int_default);
+
+    size_t count = 0;
+
+    bst_insert_generic(&bst, &(bst.root), (void*)10, &count, NULL, count_node);
+    mu_assert("root count is 1", count == 1);
+    count = 0;
+
+    bst_insert_generic(&bst, &(bst.root), (void*)5, &count, NULL, count_node);
+    mu_assert("lc count is 2", count == 2);
+    count = 0;
+
+    bst_insert_generic(&bst, &(bst.root), (void*)3, &count, NULL, count_node);
+    mu_assert("llc count is 3", count == 3);
+    count = 0;
+
+    bst_insert_generic(&bst, &(bst.root), (void*)15, &count, NULL, count_node);
+    mu_assert("rc count is 2", count == 2);
+
+    bst_destroy(&bst);
+
     return 0;
 }
 
@@ -164,6 +196,7 @@ char* run_tests() {
     mu_run(test_insert_lr);
     mu_run(test_insert_duplicate);
     mu_run(test_insert_pre);
+    mu_run(test_insert_post);
 
     return 0;
 }
