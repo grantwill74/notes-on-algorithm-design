@@ -951,6 +951,18 @@ However, both of these operations occur fairly rarely. Even in the worst case sc
 
 ---
 
+# Rebuilding the tree
+
+We've talked about how to insert, how to compute the sizes of each ancestor, and how to find the scapegoat. We've also mentioned rebuilding the tree. How do you do it?
+
+The easiest way: the tree is already in order because it is a binary search tree. Perform an in-order traversal on the scapegoat tree and write it into an array.
+
+Use that array to rebuild the tree. Take the median as the new root. Now run the rebuild algorithm on the left and right partitions of that array, and make them the left and right children of the root.
+
+This takes $O(n)$ time. The authors in the studies have a more complex re-build algorithm that avoid re-allocations, and involves manipulating the child node pointers of the scapegoat.
+
+---
+
 # Questions?
 <!-- _class: invert questions -->
 
@@ -962,3 +974,12 @@ Your next project involves using scapegoat trees.
 
 Let's take a look!
 
+---
+
+# Appendix
+
+The shortest paper on scapegoat trees from the authors are [these ACM-SIAM proceedings](https://people.csail.mit.edu/rivest/pubs/GR93.pdf).
+
+They have enough information for you to implement scapegoat trees.
+
+However, feel free to reach out for help if you get stuck.

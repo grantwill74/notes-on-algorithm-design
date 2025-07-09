@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>module_5</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="design-and-analysis-of-algorithms">Design and Analysis of
+Algorithms</h1>
+<h2 id="module-5-trees">Module 5: Trees</h2>
+<p><br> <br></p>
+<p>Slides © Grant Williams, <a
+href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
+4.0</a>.</p>
+<p><br></p>
+<p>This is an open educational resource. Feel free to submit fixes,
+improvements, and new material <a
+href="https://github.com/grantwill74/notes-on-algorithm-design">here</a>.</p>
+<hr />
+<h1 id="introduction">Introduction</h1>
+<p>In this module we will review trees.</p>
+<p>We will learn about their benefits, their drawbacks, and how to
+mitigate them.</p>
+<p>However, before we get too much into it, I have a quesiton:</p>
+<p>What is the point? Why do we care about trees?</p>
+<p>They feature prominently in CS education, but how often have you been
+like “I need a binary tree for this” when doing your software
+engineering or capstone projects?</p>
+<hr />
+<h1 id="the-point-of-trees">The point of trees?</h1>
+<p>Trees are <em>one</em> way of implementing dictionaries (aka
+<em>maps</em>).</p>
+<p>Hashmaps are another.</p>
+<p>These two completely different approaches both allow us to create the
+same abstract structure. And it turns out, there are reasons to use
+both.</p>
+<p>[So what is a dictionary, and how does it work?]</p>
+<hr />
+<h1 id="dictionaries">Dictionaries</h1>
+<p>A dictionary can be seen either as a generalization of an array, or
+as a special case of relation (partial map).</p>
+<p>Ordinarily, arrays are a kind of function. You give them an index,
+and they give you some kind of value.</p>
+<p>We say that they are <em>partial</em> functions, because arrays are
+not required to have a value for every index. Some indices might not
+have a value. If an array has size 100, then any index <span
+class="math inline">\(\ge\)</span> 100 is not going to be there.</p>
+<p>However, array indices are limited to natural numbers (usually,
+technically in C you can access arrays with negative indices for
+extremely arcane purposes). And the keys need to be adjacent for
+efficiency reasons.</p>
+<hr />
+<h1 id="dictionaries-2">Dictionaries (2)</h1>
+<p>Dictionaries are data structures that break those two limitations: 1.
+You can associate (almost) any kind of key with any kind of value. 2.
+Integer keys don’t need to be adjacent. You can have 1: “Hello” and
+1000000000: “Goodbye” in the same data structure without allocating a
+one billion and one cell array.</p>
+<p>[So, how do we implement them?]</p>
+<hr />
+<h1 id="default-hashmaps">Default: hashmaps</h1>
+<p>By default, dictionaries are almost always just a thin wrapper over a
+hashmap.</p>
+<p>That’s how it works in Python, Lua, Ruby, and many other
+languages.</p>
+<p>Hashmaps are fast, cache efficient, and typically waste no more than
+twice the amount of memory necessary when they are reasonably large.</p>
+<p>However, Hashmaps have a major limitation [what is it?]</p>
+<hr />
+<h1 id="hashmaps-are-not-sorted">Hashmaps are not sorted</h1>
+<p>The whole point of a hash function is that it be as close to uniform
+random as possible.</p>
+<p>That is, the hashvalue of a particular input should be as
+unpredictable as possible without evaluating the function.</p>
+<p>Why? Because we want to use the whole hashtable. If the function
+frequently returns some keys more than others, we end up with more
+collisions.</p>
+<p>So it’s not only unsorted: it’s <em>super</em> unsorted. It’s as
+unsorted as possible.</p>
+<p>On the other hand…</p>
+<hr />
+<h1 id="trees-are-sorted">Trees are sorted</h1>
+<p>Binary search trees in particular are sorted.</p>
+<p>Specifically, an in-order traversal will be in order.</p>
+<p>[Why?]</p>
+<hr />
+<h1 id="trees-are-sorted-2">Trees are sorted (2)</h1>
+<p>By induction on a tree: - If it’s empty, it’s sorted - If in-order
+traversal of its child nodes is sorted, and everything in left &lt; root
+&lt; everything in right, than inorder(left) ++ root ++ inorder(right)
+is sorted.</p>
+<p>So the normal property of BSTs, that the node’s value is always
+between the values of its left and right children, naturally makes it so
+that in-order traversal is sorted.</p>
+<hr />
+<h1 id="questions">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="who-cares">Who cares?</h1>
+<p>I have a question: why do we need dictionaries to be sorted?</p>
+<p>It seems like every time we use a dictionary it’s because we know the
+keys.</p>
+<p>And even if we don’t, like, if we want to iterate over all of them,
+we can just put the keys in an array. That still seems better than using
+a tree.</p>
+<hr />
+<h1 id="good-examples">Good examples</h1>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Transactions <span class="kw">WHERE</span> TxDate <span class="kw">BETWEEN</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> DATEADD(<span class="dt">month</span>, <span class="op">-</span><span class="dv">1</span>, <span class="fu">CURRENT_DATE</span>) <span class="kw">AND</span> <span class="fu">CURRENT_DATE</span>;</span></code></pre></div>
+<p>We’re choosing all transactions in the last month.</p>
+<p>How does the database actually do that?</p>
+<p>One way to do it: put the dates in a tree.</p>
+<p>The key is the date, the value (aka satellite data, we’ll talk about
+it soon) is the row.</p>
+<hr />
+<h1 id="good-examples-2">Good examples (2)</h1>
+<p>The database can quickly scan over the date tree, in order, to find
+the start and end.</p>
+<p>This ends up being <span class="math inline">\(O(\lg n + k)\)</span>:
+- <span class="math inline">\(\lg n\)</span> for the initial search in
+the BST - <span class="math inline">\(k\)</span> for the number of
+elements in the range</p>
+<p>But it needs to stay sorted. We don’t want to have inserts take too
+long.</p>
+<hr />
+<h1 id="tree-dictionaries">Tree dictionaries</h1>
+<p>So, sometimes we need a structure that stays sorted, but also can
+implement dictionaries.</p>
+<p>How do we implement a dictionary with a tree?</p>
+<p>Let’s review the BST data structure to make sure we understand it,
+and then implement a simple dictionary.</p>
+<hr />
+<h1 id="bstnode">BstNode</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> bst_node_t <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> bst_node_t <span class="op">*</span>left<span class="op">,</span> <span class="op">*</span>right<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span><span class="op">*</span> data<span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> BstNode<span class="op">;</span></span></code></pre></div>
+<p>You’ve seen it before, but maybe not in C.</p>
+<p>Remember: the typedef only works outside the struct, so we need to
+scope our <code>bst_node_t</code> pointer with “struct”.</p>
+<hr />
+<h1 id="the-data">The data</h1>
+<p>What is <code>data</code>?</p>
+<p>It’s whetever you want it to be. That’s why it’s a
+<code>void*</code>.</p>
+<p>It could be a string, a tuple, or even an integer casted to a
+pointer.</p>
+<p>When you first learned about BSTs, likely the data was hardcoded to
+be an <code>int</code> or a string. But think back to the database
+example: a database row is a lot more complicated.</p>
+<hr />
+<h1 id="the-comparator">The comparator</h1>
+<p>First, to make a BST, we need a comparator. A comparator is something
+that compares two data elements and tells you which one is smaller.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="kw">inline</span> <span class="dt">int</span> node_compare_int_default<span class="op">(</span><span class="dt">void</span><span class="op">*</span> a<span class="op">,</span> <span class="dt">void</span><span class="op">*</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">(</span><span class="dt">intptr_t</span><span class="op">)</span>a <span class="op">-</span> <span class="op">(</span><span class="dt">intptr_t</span><span class="op">)</span>b<span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This is a simple comparator that assumes the void* aren’t actually
+pointing to anything useful, and instead they are just reinterpreted as
+integers (<code>intptr_t</code> is guaranteed to be as large as a
+pointer, but it’s signed).</p>
+<p>It’s important to decide when you’re going to do this, vs have the
+pointer actually point to something. For db-rows we would definitely do
+the latter:</p>
+<p><code>return ((SomeRow*)a)-&gt;date - ((SomeRow*)b)-&gt;date</code>;</p>
+<hr />
+<h1 id="function-pointer-reminder">Function pointer reminder</h1>
+<p>In an OO language the comparator could be an object or a class.</p>
+<p>In this case it is a function. It returns &lt; 0 if a is less than b.
+0 if equal. &gt; 0 otherwise.</p>
+<p>The type looks like this: <code>int (*)(void* a, void* b)</code></p>
+<p>That’s a function pointer. And we never, ever use them without a
+typedef.</p>
+<hr />
+<h1 id="function-pointer-typedef">Function pointer typedef</h1>
+<p><code>typedef int (*NodeComparer)(void* a, void* b);</code></p>
+<p>Now the pointer has a name: it’s a <code>NodeComparer</code>.</p>
+<p>How is it used? We create a field of this type in our tree structure,
+and call it every time we do an insertion or a lookup.</p>
+<p>Speaking of the tree structure…</p>
+<hr />
+<h1 id="the-struct">The struct</h1>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> bst_t <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    Pool pool<span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">size_t</span> size<span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    BstNode<span class="op">*</span> root<span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    NodeComparer comparer<span class="op">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> Bst<span class="op">;</span></span></code></pre></div>
+<p>The root and size are self-explanatory. The comparer is an instance
+of that typedef. What about the pool?</p>
+<p>It’s the pool allocator we saw in the first extra lecture.</p>
+<p>[Why are we using the pool?]</p>
+<hr />
+<h1 id="the-pool">The pool</h1>
+<p>If we didn’t use the pool, over time, through insertions and
+deletions, the tree would become scattered. This is worse for cache
+locality.</p>
+<p>That said, our pool pages are still in a linked list, and trees are
+non-linear data structures, so it’s not like they’re guaranteed to be
+adjacent.</p>
+<p>However, we can free the entire tree with a single
+<code>pool_destroy</code> call.</p>
+<p>It’s not absolutely required to use a pool. Feel free to use
+<code>malloc</code> and <code>free</code>. There are other benefits,
+too,</p>
+<hr />
+<h1 id="questions-1">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="inserting-into-the-tree">Inserting into the tree</h1>
+<p>You’ve already seen a simple insertion method for binary search
+trees.</p>
+<p>Briefly here is a review of the pseudo-code:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> insert<span class="op">(</span>BstNode<span class="op">**</span> node<span class="op">,</span> value<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(!*</span>node<span class="op">)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>node <span class="op">=</span> create a new node with value</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>value <span class="op">&lt;</span> <span class="op">(*</span>node<span class="op">)-&gt;</span>value<span class="op">)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        insert <span class="op">((*</span>node<span class="op">)-&gt;</span>left<span class="op">,</span> value<span class="op">);</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>value <span class="op">==</span> <span class="op">(*</span>node0<span class="op">)-&gt;</span>value<span class="op">)</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>node <span class="op">=</span> deallocate the old value and replace</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        insert<span class="op">((*</span>node<span class="op">)-&gt;</span>right<span class="op">,</span> value<span class="op">);</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Here, we’re using a double pointer. Why? [Ideas?]</p>
+<hr />
+<h1 id="the-double-pointer">The double pointer</h1>
+<p>We have two fundamentally different behaviors to handle: - The tree
+is empty and root is null - The tree has a root</p>
+<p>If we insert to a null node, we want to fill it in with an actual
+node.</p>
+<p>If there is a node there, we want to do normal insert things (go left
+or right depending on the result of the comparison)</p>
+<hr />
+<h1 id="the-double-pointer-2">The double pointer (2)</h1>
+<p>If we used a single pointer:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> insert<span class="op">(</span>BstNode<span class="op">*</span> node<span class="op">,</span> value<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(!</span>node<span class="op">)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> create a new node with value<span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">// ^^ doesn&#39;t do anything</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span></code></pre></div>
+<p>Would leak memory, because we’d be changing the pointer which is a
+parameter to the function, but the caller of the function would not be
+aware of it.</p>
+<hr />
+<h1 id="the-double-pointer-3">The double pointer (3)</h1>
+<p>Alternatively, we could return the new pointer…</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>BstNode<span class="op">*</span> insert<span class="op">(</span>BstNode<span class="op">*</span> node<span class="op">,</span> value<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(!</span>node<span class="op">)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">(</span>create a new node with value<span class="op">);</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span></code></pre></div>
+<p>But then the user of the function would have to check if the root
+were changed, and then assign the result to the root of the tree. A more
+complicated design.</p>
+<hr />
+<h1 id="the-double-pointer-4">The double pointer (4)</h1>
+<p>In the same way that a single pointer can be used to modify a
+non-pointer variable from a function, a double pointer can be used to
+modify a pointer.</p>
+<p>So we can pass the <em>address</em> of the root pointer (not the root
+pointer itself), and then it will be overwritten if the root
+changes.</p>
+<p>Does this make sense? We have time for questions if we need to cover
+double pointers in more detail.</p>
+<hr />
+<h1 id="questions-2">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="practice">Practice</h1>
+<ul>
+<li>Recall the tree lookup function you learned in Algorithms and Data
+Structures. Can you implement it using our Bst structure?</li>
+<li>Does it require a double pointer?</li>
+<li>How would you prove that tree insertions are <span
+class="math inline">\(\Theta(\lg n)\)</span> on a balanced tree?</li>
+<li>How would you prove that tree insertions are <span
+class="math inline">\(\Theta(n)\)</span> in the worst case?</li>
+<li>What is the best case <span class="math inline">\(\Theta\)</span>
+for an insertion?</li>
+</ul>
+<hr />
+<h1 id="the-drawbacks-of-bsts">The drawbacks of BSTs</h1>
+<p>BSTs are useful, but they have a huge drawback.</p>
+<p>[what is it?]</p>
+<hr />
+<h1 id="they-can-become-imbalanced">They can become imbalanced</h1>
+<p>Some BSTs are good and some are bad.</p>
+<p>If we insert 10, 5, and 15, in that order, we have a balanced
+BST.</p>
+<p>If we insert 5, 10, and 15, in that order, <em>or the reverse</em>,
+we have an imbalanced BST.</p>
+<p>[What’s the problem with imbalanced BSTs?]</p>
+<hr />
+<h1 id="imbalanced-trees-become-linked-lists">Imbalanced trees become
+linked lists</h1>
+<p>The most perfectly imbalanced tree is a linked list with extra
+pointers.</p>
+<p>So it’s not even a <em>good</em> linked list.</p>
+<p>Unfortunately, we can’t reasonably say “hey make sure your data is
+random”. We don’t know the data in advance.</p>
+<p>We need a lower bound on insertion and lookup time, but to get that,
+we need to modify the tree.</p>
+<hr />
+<h1 id="first-approaches">First approaches</h1>
+<p>The earliest approach was to just to rotate the tree if it gets even
+a little out of height-balance. This approach was called the AVL
+tree.</p>
+<p>The AVL tree was named after the Latinized names of its inventers:
+Georgy Adelson-Velsky and Evgenii Mikhailovich Landis</p>
+<hr />
+<h1 id="avl-trees">AVL trees</h1>
+<p>The basic operation is simple: - Every node tracks either its height,
+or the height difference between its children. - This difference is
+called the “balance”. It must always be within <span
+class="math inline">\(-1 \le b \le 1\)</span> - If inserting causes an
+imbalance, we rotate the node at which there is an imbalance.</p>
+<hr />
+<h1 id="avl-trees-example">AVL trees example</h1>
+<p>For example, if we insert 1, then 2, then 3, an ordinary BST would
+look like this: <span class="math inline">\(1 \rightarrow 2 \rightarrow
+3\)</span> This is imbalanced, because <span
+class="math inline">\(1\)</span>, has a right-child height of 2, but a
+left-child height of 0. So its balance is 2, which is outside the legal
+range.</p>
+<p>A BST would then rotate the root to the left to obtain: <span
+class="math inline">\(1 \leftarrow 2 \rightarrow 3\)</span> [We can do
+more examples on the whiteboard]</p>
+<hr />
+<h1 id="avl-tree-properties">AVL tree properties</h1>
+<p>AVL trees are very tightly balanced. Even the slightest bit of
+imbalance will force a rotation.</p>
+<p>Deleting is more expensive: sometimes you have to rotate many times
+after a delete.</p>
+<p>However, these downsides come with an upside: a tightly balanced tree
+is fast to do lookups on.</p>
+<hr />
+<h1 id="other-self-balancing-bsts">Other self-balancing BSTs</h1>
+<p>There are other kinds of self-balancing BSTs. For example, red-black
+trees.</p>
+<p>Red-black trees don’t have as strict height balance requirements that
+AVL trees do. Instead, one side won’t be twice as deep as the other.</p>
+<p>This ends up being a tradeoff. Insertions are typically a bit
+cheaper, because they are less likely to result in rotations. However,
+the tree isn’t kept in as good of a condition.</p>
+<hr />
+<h1 id="questions-3">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="why-choose">Why choose?</h1>
+<p>So, we really have a choice: - More balance means faster lookups, but
+expensive inserts and deletes. - Less balance means slower lookups, and
+eventually it can get so bad that inserts will start to slow down
+too.</p>
+<p>Who says that the right amount of balance is to be between <span
+class="math inline">\(-1 \le b \le 1\)</span>? Who says it’s within a
+2/1 ratio? What if the perfect amount of balance for a given problem is
+to have no more than exactly 72% of nodes on one side of the tree?</p>
+<p>This is where we get to scapegoat trees.</p>
+<hr />
+<h1 id="scapegoat-trees">Scapegoat Trees</h1>
+<p>Scapegoat trees are a kind of self-balancing BST which let you
+configure exactly how out of whack you want the tree to be allowed to
+get before it rebalances.</p>
+<p>Rebalancing a scapegoat tree is very expensive: it rebalances
+<em>perfectly</em>. You will get the theoretically most balanced tree
+you can get with that data.</p>
+<p>However, you don’t have to do it very often, and you also can pick
+how <em>much</em> you rebalance. You typically choose a small portion of
+the tree to rebalance.</p>
+<hr />
+<h1 id="scapegoat-trees-2">Scapegoat Trees (2)</h1>
+<p>Scapegoat trees are actually required by the master syllabus for this
+class. I have to assign a project requiring them.</p>
+<p>Also, according to the master syllabus, you are required to read the
+papers in which they were introduced yourself and implement the data
+structure.</p>
+<p>That’s a little overwhelming, so I’m going to give you a high-level
+understanding. I won’t provide code, but the following slides should
+give you a better understanding so that when you do read the papers, it
+will be a bit more familiar.</p>
+<p>What even is a scapegoat?</p>
+<hr />
+<h1 id="the-scapegoat">The scapegoat</h1>
+<p>Scapegoat rituals are found in many cultures around the world.</p>
+<p>An animal (e.g., a goat) is symbolically burdened with the sins of
+the community, and cast out.</p>
+<figure>
+<img src="scapegoat_manchester.jpg"
+alt="bg right:65% height:80% The Manchester Art Gallery version of the Scapegoat, by William Holman Hunt. An image of a goat, with its horns wrapped in red cloth. Standing in the shallows of the dead sea, the goat looks mournfully at the viewer. There is an obvious rainbow visible, and in the distance dark clouds giving way to a clear, sunny, evening sky, which seems to sarcastically suggest that everything got better once the goat was cast out." />
+<figcaption aria-hidden="true">bg right:65% height:80% The Manchester
+Art Gallery version of the Scapegoat, by William Holman Hunt. An image
+of a goat, with its horns wrapped in red cloth. Standing in the shallows
+of the dead sea, the goat looks mournfully at the viewer. There is an
+obvious rainbow visible, and in the distance dark clouds giving way to a
+clear, sunny, evening sky, which seems to sarcastically suggest that
+everything got better once the goat was cast out.</figcaption>
+</figure>
+<hr />
+<h1 id="the-scapegoat-2">The scapegoat (2)</h1>
+<p>In our modern society, we only do this figuratively. A scapegoat is
+someone we blame for something going wrong so that we don’t have to
+address the real causes, and can instead just kick the person out and
+keep everything the same.</p>
+<p>When it comes to self-balancing trees, we can’t really change the
+underlying process. Data is going to come in in some kind of order, and
+we have to keep it sorted.</p>
+<p>But we can blame a sub-tree. If we say “hey, this tree is out of
+whack and it screwed up the insert”, we can then replace that sub-tree
+with a perfectly balanced one.</p>
+<hr />
+<h1 id="scapegoat-trees-1">Scapegoat trees</h1>
+<p>Scapegoat trees follow this principle.</p>
+<p>We decide in advance how imbalanced we want them to be allowed to
+be.</p>
+<p>If inserting into the tree breaks that invariant for the whole tree,
+we search for the deepest node for which it is broken. Then we blame
+that node for causing the problem, and rebuild the sub-tree perfectly
+balanced at that node.</p>
+<p>So how do we represent balance?</p>
+<hr />
+<h1 id="alpha-balance"><span class="math inline">\(\alpha\)</span>
+balance</h1>
+<p>We represent max-imbalance, called <span
+class="math inline">\(\alpha\)</span>, as the largest proportion of the
+tree which is allowed on either side.</p>
+<p>So if <span class="math inline">\(\alpha = 75\%\)</span>, that means
+that the largest child of the root may have up to <span
+class="math inline">\(75\%\)</span> of the total amount of nodes. We
+call such a tree <span class="math inline">\(75\%\)</span>
+weight-balanced.</p>
+<p>Weight balance refers to the total size of the trees on either side.
+As opposed to height balance, which is based on their height.</p>
+<p>If the tree has <span class="math inline">\(1000\)</span> nodes,
+then, with an <span class="math inline">\(\alpha\)</span> of <span
+class="math inline">\(75\%\)</span>, the root’s largest child can have
+up to <span class="math inline">\(750\)</span>. If it has more, than the
+tree is no longer <span
+class="math inline">\(\alpha\)</span>-weight-balanced.</p>
+<p>Technically, we allow 1 node of give. So the larger child needs to
+have <em>more than</em> 75% + 1 nodes before we do anything. We’ll
+explain why later.</p>
+<hr />
+<h1 id="knowledge-check">Knowledge check</h1>
+<ul>
+<li>What <span class="math inline">\(\alpha\)</span> would we pick if we
+wanted the tree to be perfectly balanced?</li>
+<li>What <span class="math inline">\(\alpha\)</span> would we pick if we
+never wanted the tree to be re-balanced?</li>
+<li>What is the meaningful range of values that <span
+class="math inline">\(\alpha\)</span> can inhabit? Does an <span
+class="math inline">\(\alpha\)</span> of 2 make sense? What about an
+alpha of <span class="math inline">\(25\%\)</span>?</li>
+</ul>
+<hr />
+<h1 id="alpha-tradeoffs-knowledge-check-answers"><span
+class="math inline">\(\alpha\)</span> tradeoffs: knowledge check
+answers</h1>
+<p>This system allows us to decide how often we want to rebalance.</p>
+<ul>
+<li>If we want a perfectly balanced tree, we want <span
+class="math inline">\(\alpha = 50\%\)</span>. That means that the
+“larger” child must be no more than half the size of the total tree. But
+that means the other child has the other half. So they’re 50/50. (In
+practice, perfectly balanced trees only happen at powers of 2, so we
+allow a slight amount of imbalance even with <span
+class="math inline">\(\alpha = 50\%\)</span>)</li>
+<li>If we want to turn off re-balancing, we pick <span
+class="math inline">\(\alpha=100\%\)</span>. Now we allow the largest
+child to have up to all the nodes. This will always be the case.</li>
+<li>The meaningful range is <span class="math inline">\(\alpha \in [.5,
+1.0]\)</span> <span class="math inline">\(\alpha \lt .5\)</span> is
+contradictory: how can the <em>larger</em> child have less than half the
+tree? Then the <em>smaller</em> child has more than half? <span
+class="math inline">\(\alpha \gt 1.0\)</span> is redundant. The larger
+child can have <em>more</em> than all the nodes?</li>
+</ul>
+<hr />
+<h1 id="questions-4">Questions?</h1>
+<!-- _class: questions invert -->
+<hr />
+<h1 id="detecting-imbalance">Detecting imbalance</h1>
+<p>Consider this goofy tree:</p>
+<p><span class="math inline">\(1 \leftarrow 2 \leftarrow 3 \leftarrow 4
+\leftarrow 5 \rightarrow 6 \rightarrow 7 \rightarrow 8 \rightarrow
+9\)</span></p>
+<p>This tree’s root is technically both weight-balanced and
+height-balanced: - The left child of root has the same number of nodes
+as the right child (4 each). - They also both have the same height (4
+each).</p>
+<p>And yet, this tree itself is not balanced. The problem is that while
+the root is balanced, the left and right children of the root (the 4 and
+6) are not balanced. Each is, in fact, perfectly imbalanced in opposite
+directions.</p>
+<p>We’d like to be able to detect this as it happens. After an insert,
+we’d like to know that part of the tree has become imbalanced.</p>
+<hr />
+<h1 id="alpha-height"><span
+class="math inline">\(\alpha\)</span>-height</h1>
+<p>It turns out, knowing the <span
+class="math inline">\(\alpha\)</span>-weight tells us how high a
+sub-tree can be. The max height for a given <span
+class="math inline">\(\alpha\)</span>-weight is called <span
+class="math inline">\(\alpha\)</span>-height.</p>
+<p>How do we compute the <span
+class="math inline">\(\alpha\)</span>-height?</p>
+<p>Imagine that <span class="math inline">\(\alpha=2/3\)</span>. We’d
+like that no more than two-thirds of the nodes be on one side. What does
+that say about the maximum depth we can achieve?</p>
+<hr />
+<h1 id="alpha-height-2"><span
+class="math inline">\(\alpha\)</span>-height (2)</h1>
+<p>Every time we go down a level: <span
+class="math inline">\(n_\mathrm{child} \le (2/3)\cdot
+n_\mathrm{parent}\)</span></p>
+<p>The <span class="math inline">\(\alpha=2/3\)</span> tells us that the
+child must be no more than two-thirds of the parent. Otherwise, we’ve
+violated the balance.</p>
+<p>What about going down two levels? <span
+class="math inline">\(n_\mathrm{child} \le (2/3)^2\cdot
+n_\mathrm{parent}\)</span></p>
+<hr />
+<h1 id="alpha-height-3"><span
+class="math inline">\(\alpha\)</span>-height (3)</h1>
+<p>What is the absolute deepest we can go and have the relation still
+hold? We don’t know, that’s what we’re trying to solve for.</p>
+<p>However, we do know for certain that the size of the child at that
+point will be 1.</p>
+<p>Why?</p>
+<p>Because we check whenever we insert a node. When we insert a node, it
+is the root of a tree of size 1. So after inserting a node, this
+inequality holds:</p>
+<p><span class="math inline">\(1 \le (2/3)^d \cdot n\)</span></p>
+<p>Where <span class="math inline">\(d\)</span> is the depth of the
+insertion, and <span class="math inline">\(n\)</span> is the number of
+nodes in the tree.</p>
+<hr />
+<h1 id="alpha-height-4"><span
+class="math inline">\(\alpha\)</span>-height (4)</h1>
+<p><span class="math inline">\(1 \le (2/3)^d \cdot n \equiv\)</span>
+<span class="math inline">\(1/n \le (2/3)^d \equiv\)</span> <span
+class="math inline">\(n \ge (3/2)^d \equiv\)</span> <span
+class="math inline">\(\leftarrow\)</span> we take the reciprocal, so the
+inequality flips <span class="math inline">\(\log_{(3 / 2)}(n) \ge
+\log_{(3 / 2)}((3/2)^d) \equiv\)</span> <span
+class="math inline">\(\log_{(3 / 2)}(n) \ge d\)</span> <span
+class="math inline">\(\leftarrow\)</span> we use the log to solve for
+the exponent</p>
+<p>So we solved for the maximum depth we can allow. As long as the depth
+of an insertion is less than <span class="math inline">\(\log_{(1 /
+\alpha)}(n)\)</span>, where <span class="math inline">\(n\)</span> is
+the number of nodes in the tree, we’re balanced.</p>
+<p>In practice, we are okay with <span class="math inline">\(d\)</span>
+being one greater, because in cases where we have <span
+class="math inline">\(\alpha=50\%\)</span>, we don’t want it to be
+impossible for a tree with 4 nodes to ever be balanced. [whiteboard]</p>
+<hr />
+<h1 id="the-scapegoat-tree-rule">The scapegoat tree rule</h1>
+<p>So this is the rule: - When we insert into a scapegoat tree, we track
+how far down we are. Every recursive call increases the depth by 1. -
+The balance condition is: <span class="math inline">\(d \le
+\log_{(1/\alpha)}(n) + 1\)</span>. - If that inequality holds, we do
+nothing. - Otherwise, we need to find a scapegoat…</p>
+<p>But first…</p>
+<hr />
+<h1 id="questions-5">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="finding-the-scapegoat">Finding the scapegoat</h1>
+<p>Consider this imbalanced tree rooted at <span
+class="math inline">\(2\)</span>: <span class="math inline">\(1
+\leftarrow 2 \rightarrow 3 \rightarrow 4 \rightarrow 5\)</span></p>
+<p>Suppose that we’ve chosen <span
+class="math inline">\(\alpha=0.6\)</span>. First, let’s compute <span
+class="math inline">\(1/\alpha = 1/0.6 \approx 1.67\)</span></p>
+<p>What is the maximum depth we can permit with this tree? <span
+class="math inline">\(d \le \lfloor \log_{1.67}(5) \rfloor + 1 \equiv d
+\le \lfloor \log(5) / \log(1.67) \rfloor + 1 \equiv d \le 3 + 1 \equiv d
+\le 4\)</span></p>
+<p>So if <span class="math inline">\(d \gt 4\)</span>, we need to do
+something.</p>
+<p>(I’m taking the floor because the depth is an integer, so we can
+safely round down.)</p>
+<hr />
+<h1 id="finding-the-scapegoat-2">Finding the scapegoat (2)</h1>
+<p>Let’s insert 6. This is our new tree <span class="math inline">\(1
+\leftarrow 2 \rightarrow 3 \rightarrow 4 \rightarrow 5 \rightarrow
+6\)</span></p>
+<p>And what’s the depth of that insertion? <span class="math inline">\(d
+= 5\)</span>. Uh-oh, now we need a scapegoat. (I’m treating depth as the
+height of the tree. So the root has depth <span
+class="math inline">\(1\)</span>.)</p>
+<p>To do this, we start at the <span class="math inline">\(6\)</span>,
+and work our way up, parent by parent. At each point, we evaluate this
+inequality: <span class="math inline">\(i \le \log(n_\mathrm{subtree}) /
+\log(1 / \alpha) + 1\)</span> Where <span
+class="math inline">\(i\)</span> is the height of the tree at each
+point. <span class="math inline">\(i\)</span> starts at <span
+class="math inline">\(1\)</span>, and goes up by 1 for each parent. If
+this inequality ever fails, we have found our scapegoat.</p>
+<hr />
+<h1 id="finding-the-scapegoat-3">Finding the scapegoat (3)</h1>
+<p>Let’s do this step-by-step.</p>
+<p>We just inserted <span class="math inline">\(6\)</span>. Is that one
+node imbalanced? <span class="math inline">\(1 \le \log(1) / \log(1.67)
++ 1 = 0 + 1 = 1\)</span> Nope, it’s fine, let’s keep going.</p>
+<p>The parent is <span class="math inline">\(5\)</span>. Is that node
+imbalanced? <span class="math inline">\(2 \le \lfloor \log(2) /
+\log(1.67) \rfloor + 1 = 1 + 1 = 2\)</span> Yup, <span
+class="math inline">\(2 \le 2\)</span>, let’s keep going.</p>
+<hr />
+<h1 id="finding-the-scapegoat-4">Finding the scapegoat (4)</h1>
+<p>Notice that <span class="math inline">\(i\)</span> is increasing for
+each parent we consider. And the size is also increasing by 1. But if
+the tree were not degenerate, the size would increase by more.</p>
+<p>The grandparent is <span class="math inline">\(4\)</span>. Is that
+node imbalanced? <span class="math inline">\(3 \le \lfloor \log(3) /
+\log(1.67) \rfloor + 1 =3\)</span> Just barely balanced (within 1).</p>
+<p>What about <span class="math inline">\(3\)</span>?</p>
+<p><span class="math inline">\(4 \le \lfloor \log(4) / \log(1.67)
+\rfloor + 1 = 3\)</span></p>
+<p>Uh oh.</p>
+<hr />
+<h1 id="finding-the-scapegoat-5">Finding the scapegoat (5)</h1>
+<p><span class="math inline">\(1 \leftarrow 2 \rightarrow \mathbf{3}
+\rightarrow 4 \rightarrow 5 \rightarrow 6\)</span></p>
+<p>Can you <em>believe</em> this 3? It’s completely imbalanced! If it
+weren’t for them, everything would have been fine. It’s not 2’s
+fault!</p>
+<p>3, we have some concerns we need to talk about.</p>
+<hr />
+<h1 id="what-now">What now?</h1>
+<p>So we have someone to blame. Now what?</p>
+<p>Now, we rebuild the tree centered at 3.</p>
+<p>What does it mean to rebuild the tree?</p>
+<p>Here are the nodes in the sub-tree, in order:
+<code>3, 4, 5, 6</code></p>
+<p>Choose the median, round down. That’s the new root. Do the same to
+the left and right. We get this new sub-tree: <span
+class="math inline">\(3 \leftarrow 4 \rightarrow 5 \rightarrow
+6\)</span> And this is inserted back into the whole tree: <span
+class="math inline">\(1 \leftarrow 2 \rightarrow (3 \leftarrow 4
+\rightarrow 5 \rightarrow 6)\)</span> (2 is the root of the whole tree,
+and 4 is the root of its right child)</p>
+<hr />
+<h1 id="questions-6">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="more-on-rebuilding-trees">More on rebuilding trees</h1>
+<p>In practice, we don’t need to compute the log each time. Which is
+good because that’s an expensive operation.</p>
+<p>Instead, we can just directly use the size of the ancestor.</p>
+<p>If we rebuild the first ancestor <span
+class="math inline">\(i\)</span> for which <span
+class="math inline">\(\mathrm{size}(i) \gt \alpha \cdot
+\mathrm{size}(\mathrm{parent})\)</span>, that is equivalent.</p>
+<p>Why is it equivalent? Because if the tree is balanced, that should
+never happen. No node should be larger than the alpha fraction of its
+parent.</p>
+<p>More algebra follows…</p>
+<hr />
+<h1 id="finding-the-scapegoat-quickly">Finding the scapegoat
+quickly</h1>
+<p>Remember that we were searching for the first <span
+class="math inline">\(i^{\mathrm{th}}\)</span> ancestor of the inserted
+node, such that <span class="math inline">\(i \gt \log_{(1 /
+\alpha)}(\mathrm{size}(i))\)</span></p>
+<p>Raise both sides by <span class="math inline">\(1/ \alpha\)</span>:
+<span class="math inline">\((1 / \alpha)^i \gt
+\mathrm{size}(i)\)</span></p>
+<p>This is the first <span class="math inline">\(i\)</span> we find
+moving up from the inserted node with this inequality. The previous
+<span class="math inline">\(i\)</span> did not have this property
+(including <span class="math inline">\(i = 1\)</span>): <span
+class="math inline">\((1 / \alpha)^{i - 1} \le \mathrm{size}(i -
+1)\)</span></p>
+<hr />
+<h1 id="finding-the-scapegoat-quickly-2">Finding the scapegoat quickly
+(2)</h1>
+<p>We can divide those two inequalities. <span class="math inline">\((1
+/ \alpha)^i \gt \mathrm{size}(i)\)</span> means that if we divide the
+right by a larger value than the left, the inequality will still be
+true. Therefore. <span class="math inline">\({(1 / \alpha)^i \over (1 /
+\alpha)^{i - 1}} \gt {\mathrm{size(i)} \over \mathrm{size(i -
+1)}}\)</span></p>
+<p>After simplifying: <span class="math inline">\((1 / \alpha) \gt
+{\mathrm{size}(i) \over \mathrm{size}(i - 1)} \equiv \alpha \lt
+{\mathrm{size}(i - 1)\over \mathrm{size}(i)} \equiv
+\alpha\cdot\mathrm{size}(i) \lt \mathrm{size}(i-1)\)</span></p>
+<p>Remember here that <span class="math inline">\(i\)</span> is the
+parent, and <span class="math inline">\(i-1\)</span> is the child. So
+this is how we derive that inequality from before.</p>
+<p>In other words, go back up from your insertion until you find a child
+that is bigger than alpha times its parent.</p>
+<hr />
+<h1 id="go-back-up-from-the-insertion">Go back up from the
+insertion?</h1>
+<p>What do we mean by “go back up from the insertion”? How do you do
+that?</p>
+<p>Scapegoat trees were envisioned to not require a parent pointer in
+their struct. They were designed to use ordinary binary search tree
+structures.</p>
+<p>Why? Avoiding the parent pointer improves the cache efficiency and
+memory overhead of the tree.</p>
+<p>As a result, they wanted to build a self-balancing tree that did not
+require parent pointers.</p>
+<p>Now, AVL trees also don’t technically require them, but it ends up
+being really annoying to delete from them without parent pointers. Same
+with red-black trees.</p>
+<hr />
+<h1 id="go-back-up-from-the-insertion-2">Go back up from the insertion?
+(2)</h1>
+<p>So, as you insert down into the tree, you are expected to maintain a
+list of ancestors.</p>
+<p>How big should the list be? For any reasonable value of alpha you can
+use a static list. Unless the tree is <em>really</em> imbalanced it
+shouldn’t need more than 1000 depth.</p>
+<p>Feel free to use an array list of your own making though. Double the
+array list every time it gets full and you will have amortized <span
+class="math inline">\(O(1)\)</span> insertions.</p>
+<hr />
+<h1 id="go-back-up-from-the-insertion-3">Go back up from the insertion?
+(3)</h1>
+<p>Then, after inserting, the length of that list (+ 1) is the depth. If
+that number is larger than the alpha depth of the tree, we have a
+problem.</p>
+<p>Whom do we blame? Iterate over the list of ancestors in reverse
+order. If we find an ancestor <span class="math inline">\(i\)</span>
+where <span class="math inline">\(\alpha \cdot \mathrm{size}(i - 1) \lt
+\mathrm{size}(i)\)</span>, we make <span
+class="math inline">\(i\)</span> the scapegoat.</p>
+<p>(note: this formula is slightly different from the previous one,
+because here, <span class="math inline">\(i\)</span> is the index in an
+array and <span class="math inline">\(i = 0\)</span> is the root,
+whereas before, <span class="math inline">\(i=1\)</span> was the node we
+just inserted)</p>
+<p>Eventually, we <em>will</em> reach a scapegoat. The root can be a
+scapegoat too.</p>
+<hr />
+<h1 id="getting-the-size">Getting the size</h1>
+<p>But how do we get the size on the way up?</p>
+<p>In the original paper, the authors wanted the tree node struct to be
+small, so it doesn’t store the size of the node.</p>
+<p>Instead, we start at a size of 1. We store that in an accumulator.
+Then, whenever we look at the parent node, we recursively compute the
+size of the sibling, + 1 for the parent, and add those values to the
+accumulator. We end up needing to add potentially all the nodes in the
+tree.</p>
+<p>This is <span class="math inline">\(O(n)\)</span>, so why doesn’t
+that destroy the performance of the tree?</p>
+<hr />
+<h1 id="amortized-analysis">Amortized analysis</h1>
+<p>Remember how we did best-case, worst-case, and average-case
+analysis?</p>
+<p>There’s another kind, called amortized analysis.</p>
+<p>Sometimes you will hear of a data structure having “amortized <span
+class="math inline">\(\Theta(n)\)</span>”. A good example of that is
+array lists.</p>
+<p>Array lists store an array, say, with a capacity of 16. They also
+store the current size, which let’s say is 10.</p>
+<hr />
+<h1 id="amortized-analysis-2">Amortized analysis (2)</h1>
+<p>When you add something to the array, it’s normally <span
+class="math inline">\(\Theta(1)\)</span>. You just put it at the end and
+increment the size.</p>
+<p>However, if you keep doing this, eventually the array will fill up.
+Then what?</p>
+<p>Then you allocate a new array that is twice as big, and copy over the
+values. This costs <span class="math inline">\(\Theta(n)\)</span> to
+copy everything over.</p>
+<p>So does that mean that adding to the end of an array list is <span
+class="math inline">\(O(n)\)</span>? That’s bad, though.</p>
+<p>Sort of…</p>
+<hr />
+<h1 id="amortized-analysis-3">Amortized analysis (3)</h1>
+<p>Yes, in the worst case, adding to the array is very expensive.</p>
+<p>Let’s say that it costs 1 time unit to copy one element.</p>
+<p>If it starts with capacity 1, it takes 1 time unit to fill it up, and
+1 time unit to copy it over. Now it has capacity 2.</p>
+<p>It takes 1 more time unit to fill it up. 2 time units to copy it. Now
+capacity = 4. It takes 2 more units to fill, 4 more to copy. Capacity =
+8…</p>
+<p>let’s make a table…</p>
+<hr />
+<h1 id="amortized-analysis-4">Amortized analysis (4)</h1>
+<table>
+<thead>
+<tr>
+<th>Capacity</th>
+<th>Time to fill from previous capacity</th>
+<th>Time to reallocate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>8</td>
+<td>4</td>
+<td>8</td>
+</tr>
+<tr>
+<td>16</td>
+<td>8</td>
+<td>16</td>
+</tr>
+<tr>
+<td>32</td>
+<td>16</td>
+<td>32</td>
+</tr>
+</tbody>
+</table>
+<p>See the pattern?</p>
+<hr />
+<h1 id="amortized-analysis-5">Amortized analysis (5)</h1>
+<p>Everytime we reallocate the array, we have twice as long until we
+need to reallocate.</p>
+<p>The future reallocation time is twice the time it takes to fill up
+half the array.</p>
+<p>So we can just pretend that it takes 3 time units to append one
+element.</p>
+<p>For each element between size 8 and 16, we pay one time unit to
+append that element. However, in the future, will have to pay 16 time
+units. So total = (16-8) + 16 = 24 = <span
+class="math inline">\(3\cdot8\)</span></p>
+<p>For each element between size 16 and 32, we pay 1 unit to append.
+However, in the future we will have to pay 32. Total = (32 - 16) + 32 =
+48 = <span class="math inline">\(3 \cdot 16\)</span></p>
+<p>We always pay a total of three time units per element, even though we
+keep having to copy more and more</p>
+<hr />
+<h1 id="amortized-analysis-6-why">Amortized analysis (6), why?</h1>
+<p>The reason: every time we allocate, we pay twice as much. But…</p>
+<p>Every time we allocate, we go twice as long before we need to
+re-allocate.</p>
+<p>Therefore it cancels out, and it ends up being, on average, constant
+time. Just with a larger constant to account for occsional long
+copies.</p>
+<p>Wait…so amortized time is average time?</p>
+<p>In this particular case, yes. The amortized time is the same as
+average time. That’s because we’re only considering one operation:
+append.</p>
+<p>But what about with trees?</p>
+<hr />
+<h1 id="amortized-analysis-for-trees">Amortized analysis for trees</h1>
+<p>Trees need to be careful. They are used for dictionaries. Suppose
+we’re using the dictionary to store user activity because we want to see
+all the activity over the previous month or something. We have to be
+very careful.</p>
+<p>A user might realize that we’re using a tree, and craft some activity
+that hits the worst case for the tree with the goal of slowing down our
+server. This is called a denial of service attack.</p>
+<p>Amortized analysis is when you consider every possible action a user
+could take, and conclude that in every possible case, the total amount
+of time is bounded by some function of <span
+class="math inline">\(n\)</span>.</p>
+<hr />
+<h1 id="amortized-analysis-in-general">Amortized analysis in
+general</h1>
+<p>Amortized analysis is more complicated than the tricks we’ve used so
+far.</p>
+<p>There’s typically some kind of accounting that needs to be done.</p>
+<p>One way of doing it is to define a relation that represents all the
+valid states our data structure could be in, and then do induction over
+derivations of the relation.</p>
+<p>This kind of analysis features in Ph.D. level coursework on
+algorithms and it’s outside the scope of this class.</p>
+<p>However, we can use the amortized analysis of others…</p>
+<hr />
+<h1 id="amortized-analysis-for-scapegoat-tree-sizes">Amortized analysis
+for scapegoat tree sizes</h1>
+<p>When we’re computing the size of each ancestor in the scapegoat tree,
+we will touch at most <span class="math inline">\(n\)</span> nodes,
+where <span class="math inline">\(n\)</span> is the size of the
+scapegoat.</p>
+<p>Then we will re-build the scapegoat, which is also <span
+class="math inline">\(O(n)\)</span></p>
+<p>However, both of these operations occur fairly rarely. Even in the
+worst case scenario, with <span class="math inline">\(.5 \lt \alpha \lt
+1\)</span>, the insertion itself will be <span
+class="math inline">\(O(\lg n)\)</span>, and then some time will pass
+before we have to do it again. As the tree gets big, even with alpha
+very close to <span class="math inline">\(.5\)</span>, this holds.</p>
+<hr />
+<h1 id="rebuilding-the-tree">Rebuilding the tree</h1>
+<p>We’ve talked about how to insert, how to compute the sizes of each
+ancestor, and how to find the scapegoat. We’ve also mentioned rebuilding
+the tree. How do you do it?</p>
+<p>The easiest way: the tree is already in order because it is a binary
+search tree. Perform an in-order traversal on the scapegoat tree and
+write it into an array.</p>
+<p>Use that array to rebuild the tree. Take the median as the new root.
+Now run the rebuild algorithm on the left and right partitions of that
+array, and make them the left and right children of the root.</p>
+<p>This takes <span class="math inline">\(O(n)\)</span> time. The
+authors in the studies have a more complex re-build algorithm that avoid
+re-allocations, and involves manipulating the child node pointers of the
+scapegoat.</p>
+<hr />
+<h1 id="questions-7">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="your-assignment">Your assignment</h1>
+<p>Your next project involves using scapegoat trees.</p>
+<p>Let’s take a look!</p>
+<hr />
+<h1 id="appendix">Appendix</h1>
+<p>The shortest paper on scapegoat trees from the authors are <a
+href="https://people.csail.mit.edu/rivest/pubs/GR93.pdf">these ACM-SIAM
+proceedings</a>.</p>
+<p>They have enough information for you to implement scapegoat
+trees.</p>
+<p>However, feel free to reach out for help if you get stuck.</p>
+</body>
+</html>
