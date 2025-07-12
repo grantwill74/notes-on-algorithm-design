@@ -275,11 +275,11 @@ There might be a polynomial-time *reduction* from the problem to a problem in P.
 
 # Reduction
 
-For example, I can *reduce* the problem of multiplying integers to the problem of multiplying matrices of integers. I just encode the two integers as if they were both $1\times 1$ matrices, and apply my solution for multiplying matrices. Then I convert back.
+For example, I can *reduce* the problem of determining whether a given number is the product of two other numbers to the problem of determining if a matrix is the result of multiplying two other matrices. I just encode the two integers as if they were both $1\times 1$ matrices, and apply my solution for matrices. Then I convert back.
 
 I'm just re-encoding a simple data type twice, so this reduction takes $\Theta(1)$. 
 
-Conversely, the problem of mulyiplying square integer matrices *can also be reduced* to the problem of multiplying integers. For every $n\times n$ integer in the second matrix, multiply it by the $n$ integers in each column of of the first one, and do some additions.
+Conversely, the problem of testing a product of square integer matrices *can also be reduced* to the problem of multiplying integers. For every $n\times n$ integer in the second matrix, multiply it by the $n$ integers in each column of of the first one, and do some additions.
 
 This particular reduction (there are others) takes longer: $\Theta(n^3)$ multiplications need to happen. **But it is still polynomial time.**
 
@@ -289,7 +289,7 @@ This particular reduction (there are others) takes longer: $\Theta(n^3)$ multipl
 
 You notice that our reduction of matrix multiplication to scalar multiplication is pretty much how we usually mutliply (small) matrices. 
 
-But sometimes we have a choice of different reductions. Example, suppose I want to know if an element is contained in a list?
+But sometimes we have a choice of different reductions. Example, my problem is that  I want to know if an element is contained in a list?
 - One reduction involves sorting the list first, typically $\Theta(n \lg n)$ for comparison sorts, and then solving the problem "is this element in this *sorted* list", which can be solved in $\Theta(\lg n)$.
 - Another reduction involves building a hash-set from the list $\Theta(n)$ and then asking the question, "is this value contained in this hashset", with expected time $\Theta(1)$.
 
@@ -305,8 +305,25 @@ So don't just think about what you're doing as solving a problem. Try to think a
 
 ---
 
+
 # Questions?
 <!-- _class: invert questions -->
+
+---
+
+# A little warning about problems
+
+Before we continue, I feel like I should highlight something.
+
+In this lecture we're specifically talking about P and NP, which contain *decision problems*.
+
+Many of the problems we solve as programmers are not decision problems. For example, computing the product of two numbers is a function problem, not a decision problem. 
+
+But determining whether a given product actually *is* the product is a decision problem. 
+
+Practically computable function problems live in the sets FP and FNP. 
+
+Many of the theorems that apply to P and NP *do not* apply to FP and FNP. It's important to keep them straight! Keep me honest too, if I give a problem in the wrong set!
 
 ---
 
@@ -319,7 +336,7 @@ This is confusing, because if we *reduce* A to B, it sounds like A must be *bigg
 
 But really, this notation is about difficulty. If we can reduce A to B in polynomial time, then we know either that A is in the same class as B, or an easier class. For example, a polynomial is less than an exponential as $n$ goes to infinity.
 
-The $p$ means "polynomial time". We don't care about reductions that are so slow we don't gain anything by doing them. The $m$ means many to one. It means that our solution for problem B is not expected to be non-deterministic. We will give one instance of the problem.
+The $p$ means "polynomial time". We don't care about reductions that are so slow we don't gain anything by doing them. The $m$ means many to one (as opposed to many-to-many). It means that you can't generate lots of reductions and ask an oracle to choose the best one. We will create one instance of B for each instance of A.
 
 ---
 
@@ -327,16 +344,18 @@ The $p$ means "polynomial time". We don't care about reductions that are so slow
 
 For this class, assume that $A \le B$ is equivalent to writing $A \le_m^p B$ for problems A and B. We're going to assume that reductions are polynomial time and deterministic unless I say otherwise.
 
-Suppose that the problem of scalar multiplication is called MUL.
-And suppose that the problem of matrix multiplication is called MATMUL.
+Suppose that the problem of checking scalar multiplication is called MUL.
+And suppose that the problem of checking matrix multiplication is called MATMUL.
 
-We saw that MUL $\le$ MATMUL, and MATMU $\le$ MUL, implying that they are "equally" hard (and they are: they are both in P).
+We saw that MUL $\le$ MATMUL, and MATMUL $\le$ MUL, implying that they are "equally" hard (and they are: they are both in P).
+
+They aren't literally equally hard. Matrices take longer to multiply than scalars. But they are both polynomial time; they are in the same set.
 
 ---
 
 # NP completeness (2)
 
-NP is an important category because it contains all the problems that we could theoretically solve in polynomial time if we were smart enough or had powerful enough computers.
+NP is an important category because it contains all the problems that we could theoretically solve in polynomial time if we were smart enough or had enough threads.
 
 There is an interesting problem in NP called **SAT**. 
 
@@ -350,9 +369,9 @@ This is the only solution, but sometimes there are more than one, and sometimes 
 
 # NP completeness (3)
 
-In 1971, Stephen Cook had [an important realization](https://en.wikipedia.org/wiki/Cook%E2%80%93Levin_theorem). He realized that *every problem in NP could be reduced to SAT*.
+In 1971, computer scientist Stephen Cook had [an important realization](https://en.wikipedia.org/wiki/Cook%E2%80%93Levin_theorem). He realized that *every problem in NP could be reduced to SAT*.
 
-Why? Let's imagine you have some complicated boolean formula with $n$ terms.
+First, how do we know that SAT is in NP? Let's imagine you have some complicated boolean formula with $n$ terms.
 
 Determining if there is a solution is hard. We have to potentially consider every assignment of true or false to every variable, and there can be as many variables as terms.
 
@@ -362,7 +381,39 @@ In principle, this is $O(2^n)$, because there can be up to $n$ variables, and th
 
 # NP completeness (4)
 
-But, given a solution, determining if it is correct is very easy. We just fill in the trues and values and evaluate all 
+But, given a solution, determining if it is correct is very easy. We just fill in the trues and falses and evaluate all the operators. This takes linear time in the number of operands.
+
+So on a non-deterministic turing machine, SAT is in NP. It has a polynomial time solution if we have the ability to try every combination at the same time.
+
+Okay, SAT is in NP. But why would we care?
+
+---
+
+# Everything in NP can be reduced to SAT
+
+The Cook-Levin theorem, named after Stephen Cook and Leonid Levin, a Soviet (at the time) computer scientist who independently discovered the same things as Stephen Cook, states:
+
+*Any problem in NP can be many-to-one reduced to SAT in polyomial time*
+
+In other words, $\forall X \in \mathrm{NP}, X \le \mathrm{SAT}$
+
+Why? What's so special about boolean satisfiability?
+
+---
+
+# The SAT reduction
+
+Imagine we have a SAT solver. SAT solvers are not things that only exist in theory: [people compete every year to make the fastest one](https://satcompetition.github.io/).
+
+We can give a boolean expression to our SAT solver, and it will tell us whether it has a solution or not. In practice, it will also tell us the solution, but to be strictly a decider, it is only required to output "yes" or "no".
+
+Cook and Levin's goal was to convert *any* decision problem in NP into a SAT problem. For a problem to be in NP, there must exist a Turing Machine (deterministic or not) that solves it in polynomial time.
+
+So we must assume that machine exists, and convert it into a SAT problem somehow.
+
+---
+
+
 
 
 ---
@@ -414,3 +465,9 @@ But, given a solution, determining if it is correct is very easy. We just fill i
 # A bunch of quiz questions
 
 
+
+# The gadget
+
+When doing reductions, we often compose [*gadgets*](https://en.wikipedia.org/wiki/Gadget_(computer_science)). A gadget is a piece of a turing machine that maps one piece of a problem into another.
+
+It turns out, there is a really complicated gadget 
