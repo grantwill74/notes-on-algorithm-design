@@ -413,26 +413,330 @@ So we must assume that machine exists, and convert it into a SAT problem somehow
 
 ---
 
+# The big idea
+
+Given some problem X, our goal is to create a rule that converts each input of the problem into a giant boolean expression (in poly time) that answer three questions:
+1. The machine runs correctly (it's not in two states at once or writing two symbols to one point at memory, etc.)
+2. The machine actually halts
+3. When the machine does halt, it answers "yes" (i.e., it accepts).
+
+If the boolean expression we generate has a solution, then that means it is possible for the machine to run correctly, to halt, and to answer yes on that input. The problem was originally solved by a non-deterministic TM, so if it is capable of accepting the input, it *does* accept the input. So if we solved the original problem, this boolean expression will have a solution and vice versa.
+
+---
+
+# The SAT reduction (2)
+
+To determine whether the machine runs correctly, we literally encode a Turing Machine simulator as a boolean expression.
+
+First, we can describe states of a TM. What do we need to know about a TM to simulate its next steps?
+- We need to know its current state
+- We need to know the state of every cell of the tape
+- We need to know the location of the tape's head (which cell is "current")
 
 
+We can encode these in boolean expressions. For example, we can have a list of variables $Q_{t,q}$, each of which is true only if the machine can be in state $q$ at time $t$, and false otherwise. The number of states is constant, so there are $C \cdot p(n)$ of these variables in total.
+
+---
+
+# The SAT reduction (3)
+
+What about the tape? Turing machines have an input alphabet, which is the set of symbols that can be in any cell of the tape.
+
+Define a giant list of boolean variables $S_{i,t,a}$, each of which means "at time $t$, index $i$ on the tape has symbol $a$".
+
+And also, define a list $H_{i, t}$, each of which means "at time $t$ the head is over index $i$".
+
+We add a boolean clause ${\large \lor}_{t=0}^{t=p(n)}Q_{t,q_a}$ for every accepting state $q_a$. So our boolean expression only has a solution if it is possible for the machine to be in an accepting state at some point.
+
+All of these variables together define the set of states the machine *could* be in. So we can say "hey, if there is some way the machine *could* accept, then we say "yes" for this input.
+
+---
+
+# The SAT reduction (4)
+
+What if the machine is in two states at once? Or what if one tape cell has two different symbols in it? These conditions can't happen with turing machines, but they could happen with the boolean expressions we just introduced.
+
+We need additional conditions that prevent the boolean expression from having a solution when the Turing Machine being simulated does not. 
+
+Enforce the following (using lots of "or-but-not" logic) for each $(i, t)$:
+- Exactly one $S_{i, t, a}$ is true for all $a$ in the alphabet. 
+- Exactly one $Q_{t, q}$ is true for all $q$ in the set of states.
+- Exactly one $H_{i, t}$ is true. (the head is in one state)
+
+But what about transitions?
+
+---
+
+# The SAT reduction (5)
+
+For every transition in the original machine, $q \overset {a} \mapsto (q', d)$, where $q$ is the initial state, $q'$ is the destination state, $a$ is the symbol that needs to be under the head, and $d$ is the direction to move the tape head, we add even more clauses to require:
+
+$$
+(Q_{t, q} \land H_{i, t} \land S_{i, t, a}) \implies (Q_{t + 1, q'} \land H_{i+d, t+1} \land S_{i, t+ 1, a'})
+$$
+
+That is, for every state and transition, either one of those variables on the left is not set, or all of the variables on the right are set.
+
+So any time we *are* in the state on the left, it has to be the case that the machine at the next time step is in the correct state, too.
+
+---
+
+# The SAT reduction (6)
+
+There are some more rule restrictions:
+
+The head must be over exactly one cell at a given time $t$. 
+
+So it must be over at *most* one cell...:
+for all $i, i', i \ne i', \lnot H_{t, i} \lor \lnot H_{t, i'}$
+
+But also at *least* one cell:
+${\large \lor}_{-p(n) \le i \le p(n)}H_{t,i}$
+
+
+Note the bounds on $i$. We could start going left or right with every transition, and since we take $p(n)$ steps, that's as far to the left or right that the head could be.
+
+
+Similary, we can only be in one state at a time.
+
+---
+
+# The SAT reduction (7)
+
+The tape can only be changed at the head:
+$$
+\forall a, a', a \ne a', S_{t, i, a} \land S_{t + 1, i, a'} \implies H_{t, i}
+$$
+
+In other words, if the tape at position $i$ changes from $a$ to $a'$ at time $t$, then the head needs to be there at time $t$.
+
+---
+
+# The SAT reduction (8)
+
+The machine needs to start out in the right state.
+
+$S_{i, 0, a}$ is true if the initial input has symbol 'a' at position 'i'.
+
+Also, we need to start in the right state: $Q_{0, q_s}$, where $q_s$ is the starting state.
+
+Finally, the tape needs to start at position 0: $H_{0, 0}$
+
+---
+
+# The final problem
+As a summary from [here](https://en.wikipedia.org/wiki/Cook%E2%80%93Levin_theorem#Proof), we have this giant boolean expression, consisting of all the following anded together:
+- $S_{i, 0, a}$ for all $i$ and $a$, meaning that we start in a given state
+- $Q_{0, q_s}$ we start in state $q$ at time $0$
+- $H_{0, 0}$ the head starts at position $0$ at time $0$.
+- for all $i, a, a', a \ne a'$, $\lnot S_{t, i, a} \lor S_{t, i, a'}$, at most one symbol per tape cell
+- ${\large \lor}_{a \in \Sigma}S_{t, i, a}$, at *least* one symbol per tape cell
+- $\forall a, a', a \ne a', S_{t, i, a} \land S_{t + 1, i, a'} \implies H_{t, i}$, tape only written at head
+
+and...
+
+---
+
+# The final problem (2)
+
+- $\forall q, q', q \ne q', \lnot Q_{t, q} \lor \lnot Q_{t, q'}$, we're in at *most* one state
+- ${\large \lor}_q Q_{t, q}$, we're in at *least* one state.
+- for all $i, i', i \ne i', \lnot H_{t, i} \lor \lnot H_{t, i'}$, the head is over at *most* one cell
+- ${\large \lor}_{-p(n) \le i \le p(n)}H_{t,i}$, and at *least* one cell
+- $(Q_{t, q} \land H_{t, i} \land S_{t, i, a}) \implies (Q_{t + 1, q'} \land H_{t+1, i + d} \land S_{t + 1, i, a'})$, transitions respected
+- ${\large \lor}_{0 \le t \le p(n)}{\large \lor}_{q_a}Q_{t, q_a}$, must be in an accepting state at some valid point in time
+
+---
+
+# The final problem (3)
+
+If that giant, massive boolean expression has a solution, then it means that the turing machine we're simulating has the possibility of reaching an accepting state.
+
+Which means it *does* reach an accepting state (because NTMs explore every possibility)
+
+Which means we can answer the original problem, but using the solution for SAT instead of the turing machine we had originally.
+
+This is a reduction, and it's one of the most important ones. It's a reduction that works for any problem in the entire, massive set of NP.
+
+---
+
+# Questions ?
+<!-- _class: questions invert -->
+
+---
+
+# Practice problems
+
+All of these problems suppose that we've performed the reduction from X to SAT.
+
+1. If we know $H_{t, i}$, what do we know about $H_{t + 1, i'}$?
+2. If we know that $S_{t, i, a}$, what can we say about $S_{t, i, b}$, where $a \ne b$? Are any of those true?
+3. If the original Turing machine had no accepting states, what can we say about the number of solutions to the boolean expression we create?
+4. Suppose the following $Q_{t, q}$ terms are true: $Q_{0, 1}$, $Q_{1, 2}$, $Q_{2, 3}$, $Q_{1, 4}$
+   Why is this set of terms invalid?
+
+
+---
+
+# Practice answers
+
+1. We know $H_{t+1, i - 1} \lor H_{t + 1, i} \lor H_{t + 1, i + 1}$, because the head can only move one cell per time unit.
+2. No. If $S_{t, i, a}$, then $\lnot S_{t, i, b}$ for all $b \ne a$. Otherwise, we could have more than one symbol written to the same tape cell.
+3. There won't be any. The answer will be "no", just like it was for the original TM.
+4. At time $t = 1$, we are in two states, $2$ and $4$.
+
+---
+
+# How long does it take?
+
+That's a ton of work.
+
+Imagine we have a simple problem like "is this list sorted", and we convert it into that boolean monstrosity so we can run it on a SAT solver. Is this transformation really polynomial time?
+
+Yes. Building the table takes, at worst, $O((p(n))^3)$, because:
+    - There can't be more than $p(n)$ time units, so $t$ is bounded.
+    - Even if there were more than $p(n)$ alphabet symbols, we wouldn't have time to write them all in $p(n)$, so take a subset of size $p(n)$.
+    - We can only write to, at most, $p(n)$ tape cells.
+
+---
+
+# How long does it take? (2)
+
+Therefore, creating that giant table of tape states $S_{t, i, a}$ is cubic in $p(n)$. It might require us to write up to $p(n) \times p(n) \times p(n)$ variables.
+
+And if $p(n)$ is a polynomial, $(p(n))^3$ is a polynomial. This is the most expensive step, and it dominates the others.
+
+However, it's a little slower even, because we need to run this on a Turing Machine. We often use the bit model for runtime bounds on classical Turing Machines, and storing the time $t$ and index $i$ is usually done in binary. This requires a logarithmic number of bits.
+
+So the final runtime on a turing machine is bounded by $O(\lg (p(n)) (p(n))^3)$
+
+---
+
+# How long does it take? (3)
+
+But maybe you're curious how long SAT takes?
+
+Modern SAT solvers have all kinds of clever heuristics and multi-threading capabilities. Many package managers, like Conda and Apt, (but not Pacman sorry Arch users), are basically just wrappers around a SAT solver.
+
+Most of the time, it's possible to make these solvers run quickly. But, fundamentally, there are still $2^n$ combinations of variables to consider (with each representing whether a particular package and version is included). That's why sometimes Pip can take 15 minutes and then crash: it got stuck in a bad SAT solve.
+
+For this reason, some dependency managers just say "we will only use the latest version". And you get Arch + pacman.
+
+In the worst case, SAT takes $\Theta(2^n)$
+
+---
+
+# Why would anyone do this?
+
+"Would anyone really do this?" No. If you have an algorithm that tells you whether a list is sorted, and you want to *actually use it*, to, you know, see if a list is sorted, you would never encode it as a SAT problem and run a SAT solver.
+
+It goes from being $\Theta(n)$ to $O(2^n)$, where $n$ is a way bigger number. Awful. Horrible.
+
+So what was the point?
 
 ---
 
 # P = NP? (2)
 
+By showing that every problem could be reduced to SAT in polynomial time, Cook and Levin did something very interesting.
+
+Imagine that we go the other way around, and reduce SAT to something else in polynomial time?
+
+Now we have proven that SAT and the other problem are "equally-ish" hard.
+
+So what if we somehow proved that SAT could be reduced (in polynomial time) to the problem of checking if two matrices multiplied gave a particular product? ...
+
 ---
 
-# Practice exercises
+# P = NP? (3)
+
+...Then we would have a poly time solution on a *deterministic* turing machine for SAT.
+
+That is, we would have proved that SAT is actually in P.
+
+And you know what? Everything in NP can be reduced to SAT...
+
+Which means that everything in NP can be reduced to the problem of checking a matrix product (by way of SAT)...
+
+Which means that everything in NP has a polynomial time algorithm that runs on a deterministic turing machine...
+
+Which means that everything in NP is actually in P!
+
+---
+
+# NP-complete
+
+In fact, SAT has been reduced to many, many other problems. But none of them is in P.
+
+The set of problems that is equally as hard as SAT is called "NP-complete". It is the set of the hardest problems in NP.
+
+---
+
+# P = NP? (4)
+
+We already know that P $\subseteq$ NP
+
+If you could reduce SAT, or any NP-complete problem, to something in P, you would prove that NP $\subseteq$ P.
+
+And this would prove that P = NP.
+
+And you would win [a million dollars](https://en.wikipedia.org/wiki/Millennium_Prize_Problems).
+
+You would also win a million dollars if you proved that P $\ne$ NP, which seems much harder (you'd have to show that there is no possible reduction from any np-complete problem to any problem in P in poly time)
+
+---
+
+# P = NP? (5)
+
+According to [polls](https://mags.acm.org/communications/201205?pg=12#pg12), most (about 80%) of computer science researchers believe P $\ne$ NP.
+
+It makes sense. It's hard to imagine how you could convert SAT into something that runs in polynomial time.
+
+However, there's a weird possibility. [Donald Knuth](https://www.informit.com/articles/article.aspx?p=2213858&WT.mc_id=Author_Knuth_20Questions) (question 17) believes actually that P = NP. He feels that there is space for polynomial algorithms with enormous exponents that do rote operations on all the bits of a problem. However, he feels that the proof will likely be non-constructive. Meaning, it will be an indirect proof, and it won't come with an algorithm that tells you how to convert an NP problem to a P problem.
+
+So you would know your RSA encryption isn't quite as secure as you thought, but wouldn't know for sure if the algorithm that breaks it is practical. Great.
+
+---
+
+
+
+![height:100% width:100% an image showing the sets P, NP, NP-complete, and NP-hard. If P = NP, there are only two sets, P and NP-hard, and NP-hard contains P. Otherwise, all 4 sets are somewhat distinct. NP contains P and NP-complete. NP-hard contains NP-complete. So NP-hard overlaps NP, and the intersection is NP-complete](P_np_np-complete_np-hard.svg)
+
+([Image](https://en.wikipedia.org/wiki/File:P_np_np-complete_np-hard.svg) by Behnam Esfahbod, [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/deed.en), 2007-11-01)
+
+(We'll discuss NP-hard next lecture)
 
 ---
 
 # Why don't we care as much about space?
 
+One last thing: why so much about bounding time and not bounding space?
+
+Because so far, we've focused on polynomial time algorithms in this course. And an algorithm that uses polynomial time also uses polynomial space.
+
+If writing to ram takes 1 operation, and you perform $p(n)$ operations total, then you can write to at most $p(n)$ cells of ram.
+
+This is generally why we focus more on time bounds than space bounds.
+
+However, in the latter half of this course, we'll see some examples of NP-complete problems that can be sped up a lot by using a bunch of space. So it does still matter.
+
 ---
 
-# Cheat sheets
+# More practice
 
---------
+These are some practice problems based on popular games. If you don't know the rules for one of these games, try to come up with a question about a game you are familiar with, and encode it as a SAT problem.
+
+1. Suppose you wanted to solve the decision problem "this sudoku has a solution". How could you express that as a SAT problem?
+2. Suppose you were looking at a chess board and you wanted to know whether the game was over (in checkmate), how could you express that as a SAT input? No need to be too precise.
+3. Suppose you wanted to know if a given wordle game could be won with a given word list, based on the highlighted tiles you've seen on the last guess. How would you encode that?
+
+
+---
+
+# Questions?
+<!-- _class: invert questions -->
+
+-----
 
 # Some classic reductions (and "gadgets")
 
@@ -455,6 +759,10 @@ So we must assume that machine exists, and convert it into a SAT problem somehow
 ---
 
 # Beyond NP: NP-Hard
+
+---
+
+# Below NP-complete but above P: NP-Inter
 
 ---
 
