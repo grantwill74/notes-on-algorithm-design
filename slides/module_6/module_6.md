@@ -722,6 +722,14 @@ However, in the latter half of this course, we'll see some examples of NP-comple
 
 ---
 
+# PSpace
+
+A program can't use more space than time. However, it can use much more time than space.
+
+PSpace is the set of problems that take a polynomial amount of time. It actually includes some problems that are harder than the hardest problems in NP.
+
+---
+
 # More practice
 
 These are some practice problems based on popular games. If you don't know the rules for one of these games, try to come up with a question about a game you are familiar with, and encode it as a SAT problem.
@@ -1099,51 +1107,163 @@ By transitivity, VC, INDSET, and CLIQUE are all in the same class. Another way o
 
 We also showed SAT $\le$ CLIQUE, and CLIQUE $\le$ NP, so now we have that all of these problems are in NP-complete.
 
----
-
-# SUBSET-SUM
-
-There are many ways to do these reductions. Consider these two related problems: subset-sum and partition.
-
-Subset sum is the problem of, given a set of integers and a target sum, determining if a subset of those integers has that target sum.
-
-For example SUBSET-SUM($\{ 1, 4, 5, 9 \}, 6$) is true, because the set $\{1, 5\}$ has the sum $6$.
-
-However SUBSET-SUM($\{ 1, 4, 5, 9 \}, 7$) is false, because there is no way to get a sum of $7$ from any combination of the numbers in the set.
 
 ---
 
-# PARTITION
+# More NP-complete problems
 
-PARTITION is the question of "are there two partitions of this set that have the same sum"
+There are hundreds of NP-complete problems, but we're out of time to learn more. Here are some popularly referenced ones:
 
-For example PARTITION($\{1, 4, 5, 9\}$) is false, because there are no partitions of that set that have the same sum. 
-
-You might think "what about 4 + 5 = 9"? But that would leave out 1. The two partitions have to be two sets that include all the elements of the original set.
-
-PARTITION($\{1, 4, 5, 8, 2\}$) is true, because SUM($\{1, 4, 5\}$) = SUM($\{8, 2\}$) = 10
+- HP: the Hamiltonian Path Problem. Is there a Hamiltonia Path in the graph? A Hamiltonian path is a path that visits each node exactly once.
+  (I can't actually find a common abbreviation for this problem, so I'm using HP)
+- TSP: travelling salesperson, decision version. Is there a path that visits each node exactly once that is shorter or equal to a target length?
+(normally TSP is stated as finding the shortest such circuit, but that version is FNP)
+- The subset sum problem. Given a set of numbers and a target sum, is there any subset of the given set that has the target sum?
+- The partition problem. Given a set of numbers, is it possible to partition it so that both partitions have the same sum?
 
 ---
 
-# SUBSET-SUM 
+# Practice
 
+- Reduce HP to TSP: it's surprisingly easy
+- Reduce TSP to HP: a little harder, but if you are clever with the lengths you use for your edges and the target length for TSP, you can do it.
+- Do we need to do anything else to prove NP-completeness of TSP and HP? If so, what would it take?
+This one is answered in the next slide.
 
+---
+
+# Proving NP-completeness of TSP and HP
+
+We haven't proved it's NP-complete.
+
+We need to show:
+- that TSP or HP is NP. Then we know they are both in NP.
+- that an existing NP-complete problem can be reduced to one of them.
+
+If we did this, both problems would be proven np-complete (which they are).
+
+In practice, there is a clever reduction from 3SAT to HP that involves creating a series of diamonds of 4 vertices, one for each variable, that forces you to pick one way or the other depending on whether the variable is assigned true or not.
 
 ---
 
 # Beyond NP: NP-Hard
 
+NP-complete is the hardest set that we've spent a lot of time on.
+
+The problems in NP-complete are all $O(2^{p(n)})$, because all of them can be solved by considering every combination (for $n$ inputs, there are $2^n$ combinations) and then some polynomial time work to verify each input.
+
+Every NP-complete problem is in NP-hard, but NP-hard has some decision problems that are even slower than NP-complete.
+
+Can anyone think of some?
+
+---
+
+# NP-hard - NP-complete problems
+
+Undecidable problems are harder than NP-complete (because there is no bound to how long they can take).
+
+So the halting problem and equivalence problems are NP-hard and not NP-complete.
+
+Determining if one piece of code is "maximally optimized" in general is also harder than NP-complete (it relies on equivalence).
+
+There are also more conventional problems that are hard. For example: "is this the set of all permutations of $n$ values" is $\Theta(n!)$
+
+
 ---
 
 # Below NP-complete but above P: NP-Inter
 
+If P is not NP, then there are problems that are in NP, but not in P nor in NP-complete.
+
+For now (as long as we don't know P = NP), we call this set NP-inter.
+
+The most widely referenced NP-inter problem I'm aware of is integer factorization: given two integers, do they have a common factor greater than 1? This is exponential in the number of bits, [but is much faster than $O(2^n)$](https://en.wikipedia.org/wiki/General_number_field_sieve)
+
+Another one is the [discrete logarithm problem](https://en.wikipedia.org/wiki/Discrete_logarithm).
+
+The non-P nature of these is important. Interestingly, many of these (but not all) are instances of a more fundamental problem called "abelian hidden subgroup" problems, which can be solved by quantum computers in polynomial time. Bad news for browser security!
+
 ---
 
-# How I will generate quiz questions
+# Tested skills
+
+This section will be tested by asking short problems that test the following:
+- That you understand the definitions.
+    - What is required for membership in P?
+    - What is required for membership in NP?
+    - What is required for membership in NP-inter?
+    - What is required for membership in NP-hard?
+    - What is required for membership in NP-complete?
+
+- That you understand the reduction from any NP problem to SAT.
+- That you understand SAT $\to$ 3SAT
+
+More on the next slide...
 
 ---
 
-# A bunch of quiz questions
+# Tested skills (2)
+- That you understand SAT $\le$ CLIQUE
+- That you understand INDSET, CLIQUE, and VC, and the mutual reductions.
+- That you are familiar with the complexity class of all the problems we've talked about in this lecture (i.e., if I say reduce a problem to discrete log, you know that means NP-inter)
+- That you understand how to prove that problems belong to one category or another using reductions.
+
+---
+
+# Quiz format
+
+The quiz will be 4 questions. Each question will be short answer, and will require a brief explanation.
+
+The 4 questions will be waited equally (25%). Self grading will be the same as always.
+
+---
+
+# Example problems
+
+1. Is the problem of determining if a list is sorted in NP? Give a 1 sentence explanation of your answer.
+2. Is the problem of determining if a matrix is the product of two matrices in NP-complete? Give a 1 sentence explanation.
+3. Assuming P is not NP, are we aware of any problems in NP-Inter that are also in NP-complete? Explain your answer, and provide an example if your answer is "yes".
+4. Assuming P = NP, are there any problems in NP-Inter that are also in NP-complete? Explain your answer; provide an example if your answer is "yes".
+5. Are there any members of NP-complete that are not in NP-hard? Explain your answer; provide an example if the answer is yes.
+
+---
+
+# Example problems (2)
+
+6. Suppose we are performing the sat reduction for a problem. $S_{t, i, a}$ is true and $S_{t + 1, i + 1, b}$ is true. Is is possible for both variables to be true? Explain your answer?
+7. Suppose we have a graph with 100 nodes, and a minimum VC of 10 nodes. Does that say anything about the largest indset? If so, what is its size?
+8. Suppose we just now found a polynomial time reduction of TSP $\le$ List-is-sorted. Does this prove anything interesting we didn't already know? If so, what, and explain why? If not, explain why not.
+9. Suppose we just now found find a polynomial time reduction of List-is-sorted $\le$ TSP. Does this prove anything interesting we didn't already know? If so, what, and explain why? If not, explain why not.
+10. Suppose TSP $\le$ A $\le$ B. If A is $\Omega(n!)$, which category can we assign B to?
+
+---
+
+# Selected answers
+
+For 1, yes, determining if a list is sorted is in P, and every problem in P is in NP.
+
+For 3, no, if P $\ne$ NP, NP-inter and NP-complete are disjoint. If we showed an NP-inter problem were in NP-complete, it would imply that we reduced an NP-complete problem to an NP-inter problem in polynomial time, which would "merge" the two sets.
+
+For 5, no, every member of NP-complete is in NP-hard by definition. NP-hard is the set of problems that are at least as hard as the problems in NP-complete.
+
+For 8, yes, it would mean that P = NP, because we reduced an np-complete problem to a P problem in polynomial time.
+
+For 9, no, we already knew the problem List-is-sorted can be reduced to TSP, because
+ P $\le$ NP $\le$ SAT $\le$ TSP.
+
+---
+
+# More
+
+These are just some of the types of questions I can ask.
+
+I can also ask about cliques, 3SAT reductions, the reasons for complexity classes (instead of just relying on big-$\Theta$), etc.
+
+Anything in the slides is fair game.
+
+However, now you can see what kinds of questions I am going to ask and roughly how long they will take.
+
+I highly recommend letting an AI quiz you based on these slides. This is a truly good, healthy, and constructive use of AI.
 
 ---
 
