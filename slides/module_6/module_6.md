@@ -704,7 +704,7 @@ So you would know your RSA encryption isn't quite as secure as you thought, but 
 
 ([Image](https://en.wikipedia.org/wiki/File:P_np_np-complete_np-hard.svg) by Behnam Esfahbod, [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/deed.en), 2007-11-01)
 
-(We'll discuss NP-hard next lecture)
+(NP-hard is just everything at least as hard as NP-complete)
 
 ---
 
@@ -738,23 +738,396 @@ These are some practice problems based on popular games. If you don't know the r
 
 -----
 
-# Some classic reductions (and "gadgets")
+# Last Class
+
+Last class we learned a ton:
+- The importance of complexity categories: different computers have different capabilities, but polytime is polytime.
+- The complexity categories P, NP, and NP-complete
+- Why SAT is so important
+- How to reduce an NP problem to SAT
+
+
+---
+
+# This class
+
+But there's one thing missing...
+
+Remember how we said that any problem in NP can be reduced to SAT, but what about reducing SAT to other problems?
+
+There is an entire class of problems in NP that SAT has been reduced to. These are called the NP-complete problems.
+
+Many of these reductions are creative, and it helps to understand them. Let's take a look!
 
 ---
 
 # SAT $\to$ 3SAT
 
+SAT feels like a very open-ended problem. Given any legal expression composed of boolean variables and boolean operators, determine whether it has a solution.
+
+It turns out, this problem is actually equivalent to a problem that seems much simpler: 3SAT
+
+The problem statement is like this:
+Given a boolean expression in 3CNF, does it have a solution?
+
+But what is 3CNF?
+
 ---
 
-# 3SAT $\to$ CLIQUE
+# 3-CNF
+
+3-CNF stands for "three term conjunctive normal form".
+
+Conjunctive normal form means that all of the conjunctions (ands) appear at only the highest level. That is, they happen last when evaluating.
+
+$A \land (\lnot B \lor C) \land (D \lor F \lor G \lor H)$ is in conjunctive normal form
+$A \land (\lnot B \lor (C \land D)) \land (F \lor G \lor H)$ is not, because of the $C \land D$ hapenning early.
 
 ---
 
-# CLIQUE $\leftrightarrow$ VC $\leftrightarrow$ INDSET
+# 3-CNF (2)
+
+3-CNF is when we follow the rules for CNF, but also  each term is the disjunction (or) of 3 terms, like this:
+$(A \lor B \lor C) \land (D \lor \lnot E \lor F) \land (G \lor H \lor I) \land \cdots$
+
+[Every boolean expression can be converted to CNF](https://en.wikipedia.org/wiki/Conjunctive_normal_form#Conversion_to_CNF). The main trick is to replace every operator (such as xor or nand) with its equivalents using only and, or, and not. And then, to apply DeMorgan's laws. And it turns out, any CNF expression can be 3CNF.
 
 ---
 
-# Subset-sum / partition
+# SAT $\to$ 3SAT (2)
+
+It might surprise you that the general problem of SAT can be reduced to the seemingly simpler problem of 3SAT. But it can: we just have to add more terms.
+
+Given an arbitrary boolean expression composed of and, or, and not, we can convert it into a 3SAT expression by following some rules. We do it clause by clause
+
+First, the SAT clause might already be in 3SAT: $A \lor B \lor C$. In this case, we're done.
+
+What if it only has 1 term? Then $A \equiv A \lor A \lor A$
+And 2 terms? $A \lor B \equiv A \lor B \lor B$
+
+Okay, so for 3 or fewer terms, it's easy to turn a SAT clause into 3SAT clause. But what do we do for 4 or more terms?
+
+---
+
+# SAT $\to$ 3SAT (3)
+
+We're assuming that we're already in CNF, so each clause (the ones being anded) looks like this: $C_i = (\ell_0 \lor \ell_1 \lor \ell_2 \lor \ell_3 \lor \cdots \lor \ell_k)$
+
+We can convert this to a number of 3CNF clauses by adding more variables like this:
+$C_i = (\ell_0 \lor \ell_1 \lor y_0) \land (\lnot y_0 \lor \ell_2 \lor y_1) \land (\lnot y_1 \lor \ell_3 \lor y_2) \land \cdots \land(\lnot y_{k - 3} \lor \ell_{k - 1}\lor \ell_k)$
+
+
+---
+
+# The "y" variables.
+
+These $y$ variables are just added to the formula, but they don't change whether or not there is a solution. Think of $y_0$ as meaning "there's a true clause later". For example, if $y_0$ is true, then $(\lnot y_0 \lor \ell_2 \lor y_1)$ means that $\ell_2$ is true or there's a true value later ($y_1$).
+
+Another way of seeing $(\lnot y_0 \lor \ell_2 \lor y_1)$, is that it's saying "or maybe there *isn't* a true value later, and actually it's $\ell_2$ that is the true one. But if not, then there's a separate true variable in a future clause ($y_1)$
+
+If there *isn't* a true clause later and if $\ell_0$ and $\ell_1$ are both false, then the whole original clause would have been false. Likewise, if there is a clause later that is true, only one of the original clause variables could satisfy it, because the 
+
+---
+
+# SAT $\to$ 3SAT (4)
+
+If this is confusing consider this: the original clause was a giant "or" of lots of variables.
+
+A single one of them being true makes the whole clause true. 
+
+Therefore, if, say $\ell_1$ is true, we can now set all the $y$ variables to false, and the whole thing will be true.
+
+If $\ell_0$ and $\ell_1$ are false, then we need one of the other ones to be true. So $y_0=\mathrm{true}$ forces $l_2$ to be true (because its clause has $\lnot y_0$), or else, it forces $l_3$ to be true (because of $\lnot y_1$), etc.
+
+A solution to the 3SAT clause implies a solution to the original clause, and that is true for all the clauses in the expression.
+
+---
+
+# SAT $\to$ 3SAT (5)
+
+How fast is this reduction?
+
+It should be reasonable that it is a polynomial time reduction. We iterate over every clause in the original expression. We iterate over every term in every clause. We construct at most one new clause per term. Therefore, if $n$ is the number of terms, this reduction is $\Theta(n)$. 
+
+It should also be reasonable that 3SAT is a member of NP. We could try every combination of truth-value assignments on a non-deterministic machine and verify the results in polytime, the same as we did with SAT.
+
+We know that NP $\le$ SAT by Cook-Levin, and now we know SAT $\le$ 3SAT by the reduction we just did, so we know 3SAT is in NP-hard. 3SAT $\le$ SAT is trivial (a 3SAT formula is already a SAT formula). Therefore 3-SAT is NP-complete.
+
+---
+
+# Reasoning about reductions
+
+Any problem that is both NP-hard and NP is NP-complete. SAT $\le$ 3SAT proves the hardness of 3SAT, 3SAT $\le$ SAT, means that 3SAT and SAT are in the same category. NP-complete is the name of that category.
+
+If problem A can be reduced in polynomial time to problem B, then A is "less or equally hard" than B: $A \le B$
+
+If problem B can be reduced in polynomial time to problem A, same thing: $B \le A$
+
+If they both apply, then A and B are roughly equally hard. They are in the same class.
+
+Let's do a quick knowledge check...
+
+---
+
+# Knowledge check
+
+1. Suppose we reduce a problem to SAT. What does that tell us about the problem?
+
+2. Suppose we then reduce SAT to that problem? What do we know then? Consider the two cases that the problem is in P, or that it is in NP but not P (NP $-$ P).
+
+3. Give an example of a reduction that would prove P = NP.
+
+---
+
+# KC answers
+
+1. It tells us the problem is NP. Because A $\le$ SAT and SAT $\le$ NP.
+2. If the problem is in P, it means P = NP. If the problem is NP $-$ P, it means the problem is NP-complete.
+3. Reducing 3SAT to the problem of determining if a list is sorted would prove P = NP.
+
+---
+
+# Questions?
+<!-- _class: questions invert -->
+
+---
+
+# The clique problem
+
+In everyday language, a clique is a group of friends who behave exclusively, keeping other people from joining their group.
+
+In computer science, a clique of size K is a set of K vertices in a graph that are all connected to each other.
+
+The image to the right shows a clique of size 3. 5, 2, and 1 are all adjacent. This is called a 3-clique. Can you find some cliques of size 2?
+
+![bg right:45% height:50% an undirected graph with the following connections. 6 is connected to 4. 4 is connected to 3 and 5. 5 is connected to 4, 2, and 1. 2 is connected to 3, 5, and 1. 1 is connected only to 2 and 5. Because 1, 2, and 5 are all connected to each other, they are in a clique. There are 3 of them, so it is a 3-clique.](6n-graf-clique.svg)
+
+<div class="footnote">
+
+[Image](https://en.wikipedia.org/wiki/File:6n-graf-clique.svg) by [David Remahl](https://en.wikipedia.org/wiki/User:Chmod007), public domain.
+
+</div>
+
+---
+
+# The clique problem (2)
+
+This is an NP problem. Finding whether there is a clique of size 10 in a graph can be brute-forced by considering every combination of 10 nodes and checking to see if they are adjacent.
+
+Checking a solution is easy, just check to see if there are enough vertices given, and that they are connected. This is clearly polynomial, so this is an NP problem.
+
+If it's a problem in NP, we know that it can be reduced to SAT. It turns out, this problem is NP-complete. How do we prove that?
+
+After proving that it's in NP, we need to reduce an NP-complete problem to clique in polynomial time. If we can do that, clique is NP complete.
+
+---
+
+# SAT $\le$ CLIQUE
+
+Shortly after Stephen Cook's seminal paper, [Richard Karp](https://en.wikipedia.org/wiki/Richard_M._Karp) took [21 NP problems and reduced SAT to them](https://en.wikipedia.org/wiki/Karp%27s_21_NP-complete_problems) (proving NP-completeness). One of these was SAT $\to$ CLIQUE.
+
+It worked like this: create a vertex for every pair of $(v, c)$, where $v$ is a literal (i.e., a variable or a negation of a variable), and $c$ is a clause that $v$ appears in. 
+
+So if we had this formula: $(X \lor Y) \land (Y \lor \lnot Z) \land (Z \lor X)$, define these:
+$(X, X \lor Y), (X, Z \lor X), (Y, X \lor Y), (Y, Y \lor \lnot Z), (\lnot Z, Y \lor \lnot Z), (Z, Z \lor X)$ 
+
+Note, each of these is just a point. We haven't connected them yet.
+
+$(X, X \lor Y)$ represents the statement "X is true, making $X \lor Y$ true". 
+
+This is how we connect them...
+
+---
+
+# SAT $\le$ CLIQUE assignments
+
+Connect any nodes where the clauses are **different** and the variable assignment is not contradictory. That is, for two points, if their clauses are different but the variables aren't $A$ and $\lnot A$, connect them. Connections:
+- $(X, X \lor Y)$ is connected to every other node except $(Y, X \lor Y)$.
+- $(X, Z \lor X)$ is connected to every other node except $(Z, Z \lor X)$.
+- $(Y, X \lor Y)$ and $(Y, Y \lor \lnot Z)$ are connected to every other node, except for nodes with the same clause
+- $(\lnot Z, Y \lor \lnot Z)$ and $(Z, Z \lor X)$ are connected to every other node except nodes of the same clause as well as each other, because $\lnot Z$ is not compatible with $Z$.
+
+[Let's whiteboard/mermaid it if time permits]
+
+---
+
+# SAT $\le$ CLIQUE assignments
+
+We want at least a 3-clique: there are 3 clauses in the original expression, and a 3-clique would mean they could all be simultaneously true. For k clauses we need a k-clique.
+
+I.e., a clique here represents clauses that can all be true at the same time, because none of them in the clique have contradictory variable assignments (e.g., $Z$ and $\lnot Z$)
+
+In our case, we have more than one to choose from. One of them is:
+ $(\lnot Z, Y \lor \lnot Z), (Y, X \lor Y), (X, Z \lor X)$
+
+This means it is possible to satisfy the equation $(X \lor Y) \land (Z \lor X) \land (Y \lor \lnot Z)$ using the assignments, Y = true, X = true, Z = false. (it's fine that $Y \lor \lnot Z$ is connected to $Z \lor X$, it's only the assignments that can't be contradictory)
+
+In general, any clique of size k has to have k different clauses in it, so we found a way to satisfy our 3 clauses without a single pair of contradictions. In this case: more exist.
+
+
+---
+
+![bg right:60% height:85% a graph demonstrating a 3-clique that satisfies the expression (x or x or y) and (not x or not y or not y) and (not x or y or y). These clauses are connected to each other, and the variables y, not x, and not x are highlighted (the graph does not show all 6 pairs of variable and clause)](Sat_reduced_to_Clique_from_Sipser.svg)
+
+# Another example
+
+This is a subgraph of the cliques for the boolean expression $(x \lor x \lor y) \land (\lnot x \lor \lnot y \lor \lnot y) \land$
+$(\lnot x \lor y \lor y)$. The chosen assignments are highlighted in green.
+
+<div class="footnote">
+
+[Image](https://en.wikipedia.org/wiki/File:Sat_reduced_to_Clique_from_Sipser.svg) by Thore Husfeldt, [CC BY-SA 3.0 unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en), 2009.
+
+</div>
+
+---
+
+# Practice problems
+
+- Create a random boolean expression with at least 4 clauses and 4 different variables, with 3 variables or their negations per clause.
+- Construct the graph according to the SAT $\to$ CLIQUE reduction.
+- Does your expression have a solution?
+- If so, modify it so that it does not. If not, modify it so that it does. Notice how it either creates or breaks cliques.
+
+---
+
+# Questions?
+<!-- _class: questions invert -->
+
+---
+
+# INDSET
+
+Now that we understand the clique problem, this one will be easy.
+
+INDSET stands for "independent set". k vertices form an indset if *none* of them are adjacent. It's like an anti-clique. 
+
+In the image, the blue vertices form a 9-indset.
+
+![bg right:50% height:80%](Independent_set_graph.svg)
+
+---
+
+# Reduce INDSET $\le$ CLIQUE and CLIQUE $\le$ INDSET 
+
+Do it for me. 
+
+How can I reduce these problems to each other?
+
+---
+
+## INDSET $\le$ CLIQUE
+
+For this reduction, just invert all the adjacencies. So if nodes A and B are connected make them unconnected and vice versa.
+
+Now, if we had a k-indset (none of the nodes were connected), we now have a k-clique (all of them will be connected). Therefore, our k-clique solver will return true for our inverted graph if and only iff our original graph had an indset of size k.
+
+## CLIQUE $\le$ INDSET
+
+This is identical. Invert the adjacencies. If we had a clique before, we have an indset now of the same size.
+
+---
+
+# CLIQUE $\le$ INDSET $\le$ CLIQUE
+
+Are these reductions polynomial time?
+
+Yes. If there are $n$ nodes in a graph, there are necessarily $O(n^2)$ connections between them. Therefore, inverting all the connections is $O(n^2)$.
+
+---
+
+# Vertex Cover (VC) problem
+
+A k-vertex cover occurs when there are k nodes such that every edge in the graph is connected to at least one of the k nodes.
+
+For example, in the bottom image to the right, there is a vertex cover of size 2.
+
+There is a functional version of this problem to find the *minimum* vertex cover, but we are concerned with a decision problem: *is* there a vertex cover of size k? In this case, yes for $\ge$ 2, no for 1.
+
+![bg height:90% right:40% the image shows 3 graphs. One with no vertices highlighted, one with one vertex highlighted, and one with two vertices highlighted. The highlighted vertex in the second image is connected to two edges, but it is not connected to 4 other edges, therefore it does not form a cover. However, the two vertices highlighted in the bottom graph are together connected to every edge in the graph. That is, every edge in the graph touches at least one of the two selected nodes. Therefore, there is a vertex cover of size 2.](Couverture_de_sommets.svg)
+
+<div class="footnote">
+
+[Image](https://en.wikipedia.org/wiki/File:Couverture_de_sommets.svg) by Fschwarzentruber, 2016, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.en)
+
+</div>
+
+---
+
+# VC $\le$ INDSET $\le$ VC
+
+It turns out, if there are $n$ nodes and there is a click of size $k$, then there is an indset of size $n - k$
+
+Consider the graph on the right. There are vertex covers of size 2. One of them is $\{A, B\}$
+
+![bg height:100% right:60% an undirected graph in which A is connected to B, C, D, and E; and B is connected to A and C, but not D and E.](cover_indset.svg)
+
+Is there an indset of size 3? 
+
+---
+
+# VC $\le$ INDSET $\le$ VC (2)
+
+Yes, $\{D, E, C\}$ is an indset of size 3.
+
+It turns out, we don't even need to modify the graph. Knowing that there is a VC tells us there is an indset and vice versa.
+
+Why does this work? Imagine that you have an indset. The nodes are not adjacent to each other. If you take the compliment (i.e., the nodes not in the indset), it would include all the adjacent nodes and therefore all the adjacent edges.
+
+If the graph is connected, it would have to include all the gaps between the nodes in the indset. If the graph is not connected, then there are random disconnected nodes that do not have edges to connect.
+
+The same argument works in reverse. If I have a vertex cover, then its compliment includes nodes that are adjacent to the cover but not touching each other.
+
+---
+
+# Knowledge check (2)
+
+- We've shown VC $\le$ INDSET $\le$ VC
+- We've shown CLIQUE $\le$ INDSET $\le$ CLIQUE
+- What can we say about the relationship INDSET and VC?
+
+---
+
+# KC 2 answers
+
+INDSET and VC are in the same class. They are both NP-complete.
+
+Because VC $\le$ INDSET $\le$ VC and CLIQUE $\le$ INDSET $\le$ CLIQUE, then
+VC $\le$ INDSET $\le$ CLIQUE and CLIQUE $\le$ INDSET $\le$ VC
+
+By transitivity, VC, INDSET, and CLIQUE are all in the same class. Another way of putting it is: VC $\le$ INDSET $\le$ VC makes VC and INDSET in the same class. Same for INDSET and CLIQUE. Therefore CLIQUE and VC are in the same class.
+
+We also showed SAT $\le$ CLIQUE, and CLIQUE $\le$ NP, so now we have that all of these problems are in NP-complete.
+
+---
+
+# SUBSET-SUM
+
+There are many ways to do these reductions. Consider these two related problems: subset-sum and partition.
+
+Subset sum is the problem of, given a set of integers and a target sum, determining if a subset of those integers has that target sum.
+
+For example SUBSET-SUM($\{ 1, 4, 5, 9 \}, 6$) is true, because the set $\{1, 5\}$ has the sum $6$.
+
+However SUBSET-SUM($\{ 1, 4, 5, 9 \}, 7$) is false, because there is no way to get a sum of $7$ from any combination of the numbers in the set.
+
+---
+
+# PARTITION
+
+PARTITION is the question of "are there two partitions of this set that have the same sum"
+
+For example PARTITION($\{1, 4, 5, 9\}$) is false, because there are no partitions of that set that have the same sum. 
+
+You might think "what about 4 + 5 = 9"? But that would leave out 1. The two partitions have to be two sets that include all the elements of the original set.
+
+PARTITION($\{1, 4, 5, 8, 2\}$) is true, because SUM($\{1, 4, 5\}$) = SUM($\{8, 2\}$) = 10
+
+---
+
+# SUBSET-SUM 
+
+
 
 ---
 
@@ -772,10 +1145,18 @@ These are some practice problems based on popular games. If you don't know the r
 
 # A bunch of quiz questions
 
+---
 
+Appendix: Mermaid source
 
-# The gadget
-
-When doing reductions, we often compose [*gadgets*](https://en.wikipedia.org/wiki/Gadget_(computer_science)). A gadget is a piece of a turing machine that maps one piece of a problem into another.
-
-It turns out, there is a really complicated gadget 
+```
+---
+config:
+      theme: redux
+---
+flowchart TD
+  A --- B
+  A --- C
+  A --- D
+  B --- C
+```

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+	xmlns:svg="http://www.w3.org/2000/svg"
+	xmlns="http://www.w3.org/2000/svg"
+	version="1.0"
+	width="850"
+	height="850"
+	id="svg2"
+	viewBox="75 75 850 850">
+	<title>Independent Set Graph</title>
+	<style type="text/css">
+		circle {
+			fill-opacity:1;
+			stroke:#000000;
+			stroke-width:4;
+			stroke-linecap:square;
+			stroke-miterlimit:4;
+			stroke-opacity:1"
+		}
+		circle.circleblue {
+			stroke-width:4;
+			stroke:#000000;
+			fill:#3366ff;
+			}
+		circle.circleblack {
+			stroke-width:4;
+			stroke:#000000;
+			fill:#000000;
+		}
+		path.sides3 {
+			fill:none;
+			fill-opacity:1;
+			fill-rule:evenodd;
+			stroke:#000000;
+			stroke-width:4;
+			stroke-linecap:square;
+			stroke-linejoin:miter;
+			stroke-miterlimit:4;
+			stroke-opacity:1;
+			visibility:visible;
+			display:inline;
+			overflow:visible;
+	}
+		path.connexion {
+			fill:none;
+			fill-rule:evenodd;
+			stroke:#000000;
+			stroke-width:4;
+			stroke-linecap:square;
+			stroke-linejoin:miter;
+			stroke-miterlimit:4;
+			stroke-opacity:1
+	}
+</style>
+	<g id="LayerTriangles">
+		<path class="sides3" d="M 500,269.06 L 700,615.46 L 300,615.46 L 500,269.06 z" />
+		<path class="sides3" d="M 500,730.94 L 300,384.54 L 700,384.54 L 500,730.94 z" />
+		<path class="sides3" d="M 384.53,300 L 730.94,500 L 384.53,700 L 384.53,300 z" />
+		<path class="sides3" d="M 615.46,700 L 269.06,500 L 615.46,300 L 615.46,700 z" />
+	</g>
+	<g id="LayerLines">
+		<path class="connexion" d="M 500,100 L 500,269.06" />
+		<path class="connexion" d="M 300,153.59 L 384.53,300" />
+		<path class="connexion" d="M 153.59,300 L 300,384.54" />
+		<path class="connexion" d="M 100,500 L 269.06,500" />
+		<path class="connexion" d="M 153.59,700 L 300,615.46" />
+		<path class="connexion" d="M 300,846.41 L 384.53,700" />
+		<path class="connexion" d="M 500,730.94 L 500,900" />
+		<path class="connexion" d="M 615.46,700 L 700,846.41" />
+		<path class="connexion" d="M 700,615.46 L 846.41,700" />
+		<path class="connexion" d="M 730.94,500 L 900,500" />
+		<path class="connexion" d="M 700,384.54 L 846.41,300" />
+		<path class="connexion" d="M 615.46,300 L 700,153.59" />
+		<path class="connexion" d="M 500,100 L 300,153.59 L 153.59,300 L 100,500 L 153.59,700 L 300,846.41 L 512,900 L 700,846.41 L 846.41,700 L 900,500 L 846.41,300 L 700,153.59 L 500,100 z" />
+	</g>
+	<g id="LayerCircles">
+		<circle class="circleblack" cx="500" cy="100" r="16" />
+		<circle class="circleblue" cx="300" cy="153.599" r="16" />
+		<circle class="circleblack" cx="153.59" cy="300" r="16" />
+		<circle class="circleblue" cx="100" cy="500" r="16" />
+		<circle class="circleblack" cx="153.59" cy="700" r="16" />
+		<circle class="circleblack" cx="300" cy="846.41" r="16" />
+		<circle class="circleblue" cx="500" cy="900" r="16" />
+		<circle class="circleblack" cx="700" cy="846.41" r="16" />
+		<circle class="circleblack" cx="846.41" cy="700" r="16" />
+		<circle class="circleblue" cx="900" cy="500" r="16" />
+		<circle class="circleblack" cx="846.41" cy="300" r="16" />
+		<circle class="circleblue" cx="700" cy="153.599" r="16" />
+		<circle class="circleblue" cx="500" cy="269.06" r="16" />
+		<circle class="circleblack" cx="384.54001" cy="300" r="16" />
+		<circle class="circleblack" cx="300" cy="384.54001" r="16" />
+		<circle class="circleblack" cx="269.06" cy="500" r="16" />
+		<circle class="circleblack" cx="300" cy="615.461" r="16" />
+		<circle class="circleblue" cx="384.54001" cy="700" r="16" />
+		<circle class="circleblack" cx="500" cy="730.94" r="16" />
+		<circle class="circleblue" cx="615.461" cy="700" r="16" />
+		<circle class="circleblack" cx="700" cy="615.461" r="16" />
+		<circle class="circleblack" cx="730.94" cy="500" r="16" />
+		<circle class="circleblue" cx="700" cy="384.54001" r="16" />
+		<circle class="circleblack" cx="615.461" cy="300" r="16" />
+	</g>
+</svg>
+
