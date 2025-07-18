@@ -361,7 +361,116 @@ But game theory is outside the scope of this class. Just remember that when you'
 
 ---
 
-# Another problem: greedy?
+# One lens to view these card games through
+
+The card games with greedy algorithms actually have a fundamental property. A kind of "greedy essence" that tells you right off the bat that they are greedy if you notice it.
+
+This essential property is the decision we have to make can be encoded as a [matroid](https://en.wikipedia.org/wiki/Matroid).
+
+
+---
+
+# What is a matroid?
+
+Matroid is a scary sounding word, but "-oid" as a suffix just means "like"
+
+So it's something that is like a Matrix.
+
+In what way? In the way that it describes something that is linearly independent.
+
+And really, it is this independence that is kind of a first step that makes greedy strategies a possibility for a problem.
+
+
+---
+
+# Linear independence
+
+A linear system is one in which the variables don't depend on each other. If we have two variables, taking more of one does not require us to take more (or less) of another.
+
+In the case of many greedy problems, this is the key. If there isn't some drawback to increasing one variable, we can just always do it. If your goal is to maximize $x$, and $x$ does not affect $y$ or $z$, then your decision is easy: ignore $y$ and $z$.
+
+All matrices are matroids, but there are matroids that aren't matrices. There are lots of ways to define a matroid, but there is one that works well for many greedy problems and which doesn't require higher math: the set theoretic definition.
+
+---
+
+
+# The set definition of a matroid
+
+A matroid is defined by two sets: $E$ and $I$.
+
+$E$ is the set of **E**lements. These are usually the "things" that you can take or not take; or play or not play.
+
+$I$ is the set of **I**ndependent subsets. Each element of $I$ is a set which consists of zero or more elements of $E$. These sets represent combinations of choices in the game. $I$ must have the following properties:
+- $\emptyset \in I$
+- "heredity": $A \in I \implies B \subset A \implies B \in I$
+- "exchange": $A, B \in I$
+
+---
+
+# Matroids for Alice and Bob's simple card game
+
+Recall that card game where both Alice and Bob could play as many cards as they wanted, and the winner got to keep all the cards they played as well as the cards they won.
+
+Suppose there were 10 cards in Alice's hand. Then $E = \{1, 2, 3, 4, 5, 6, 7, 8, 9, 10\}$
+
+Then $I$ is the set of all $2^{10}$ combinations of moves that Alice can make.
+
+E.g., $\{\} \in I, \{1\} \in I, \{2\} \in I$, $\{1, 2\} \in I, \{1, 2, 5, 7, 10\} \in I$, etc.
+
+Basically, Alice can play any combination of the values of $E$.
+
+Technically she can't play the empty set according to our rules, but we can treat $\{\}$ as forfeiting the game or something. 
+
+---
+
+# Is this a matroid?
+
+We've given $E$ and $I$. Now we must show that $I$ obeys the heredity and exchange properties:
+- Heredity: If $A \subset B$, and $B \subseteq I$ is a valid move, then $A$ is a valid move. Is that true? This is a fancy way of saying, if playing a set of cards is a move, then playing fewer cards is also a move. This is true: the game does not require that we play a certain minimum number of cards.
+- Exchange: If $A, B \in I$ and $|A| \gt |B|$, then $\exists a \in A, \{a\} \cup B \in I$
+  Meaning: suppose there are two hands that Alice can play: $A$ and $B$. If $A$ has more cards, then there's a least one card that we could copy from $A$ and add to $B$ to make it even bigger, and the result from doing that would 
+
+So the moves available to Alice form a matroid. Now: what's the best move?
+
+---
+
+# Rado-edmonds
+
+[There is a theorem](https://link.springer.com/article/10.1007/BF01584082), attributed to Jack Edmonds and Richard Rado, which tells us that optimization problems that can be encoded as matroids have greedy solutions.
+
+In this case, the problem is: "what is the largest value play". 
+
+As you would expect, the answer is "the one with the most cards". There's nothing groundbreaking here, but stating it in the language of matroids gives us a way to quickly validate that a greedy strategy is even available.
+
+In this case, we recognize that we can assign a weight to each set of cards Alice can play, and that adding more cards always increases that weight.
+
+---
+
+# Still need induction
+
+Encoding the decision as a matroid helps us know what the "greedy" solution of the decision is.
+
+But it doesn't prove that a greedy algorithm is optimum. We still need 
+
+---
+
+# Questions?
+<!-- _class: invert questions -->
+
+---
+
+# Can we make a matroid?
+
+Alice is learning a new skill. It could be anything: writing, math, Street Fighter 6.
+
+Alice's skill level at whatever this is is $s$, which is a natural number.
+
+She knows that to get better at a skill, you need to challenge yourself with little tests. Therefore, she is on the lookout for skill challenges.
+
+Each challenge has two skill ratings: $s_{lo}$ and $s_{hi}$. Alice can benefit from the challenge if her skill is between $s_{lo} \le s \le s_{hi}$. Afterwards, she will gain one point of skill.
+
+If $s \lt s_{lo}$, the challenge is too hard, and Alice cannot complete it. 
+If $s_{hi} \lt s$, the challenge is too easy, and Alice does not gain benefit from it
 
 <div class="footnote">
 
@@ -369,8 +478,115 @@ This was inspired by a PACNW regional problem that I can't find. It involved a s
 
 </div>
 
+
 ---
 
-# The essence of greedy problems
+# Another problem (2)
 
-# More theory: Matroids
+The input to the program is a list of pairs: $s_{i, {lo}}$ and $s_{i,{hi}},$ for each challenge $i$. 
+
+Alice considers the list in order, and for each challenge, she can choose to skip it, or perform it. If she skips it, it doesn't come up again. It's perform or skip for every problem, once.
+
+If she is eligable to perform it, she gains one point of skill, but now may be ineligible to perform some challenges later.
+
+The goal is to compute the maximum skill rating $s$ that Alice can achieve. You can look into the future at all the challenges that will appear, and advice Alice such that she maximizes the number of skill points.
+
+---
+
+# Another problem (3)
+
+Here's an example, suppose this is an input:
+```
+0 10; 1 10; 2 10
+```
+
+In this case, there are three challenges with ranges 0 to 10, 1 to 10, and 2 to 10.
+Alice should take all three. She ends up with 3 points of skill. She does not benefit from skipping.
+
+Here's another example input:
+```
+0 10; 0 0; 1 1
+```
+
+Here, if she takes the first challenge, the second is off limits. But if she skips the first challenge, she can take the second. Either way, she should take the 3rd. 2 is the answer.
+
+---
+
+# Another problem (4)
+
+So the question is: how do we do this? What is an algorithm that is both optimal (we get the maximum number of skill points) while also being as fast as possible.
+
+Is this NP-complete? Harder? NP-inter? P?
+
+[what do you think?]
+
+---
+
+# This is greedy and P time
+
+Alice should always take a challenge if her skill is within the range.
+
+Always. She should *never* skip a challenge.
+
+First, if you agree, try to formulate why.
+
+If you disagree, try to find a counter example.
+
+---
+
+# Proving the optimality of the greedy strategy
+
+The reason the greedy strategy is correct, is that even if taking a skill challenge blocks off later challenges, the benefit is limited to the number of challenges we skipped.
+
+For example, consider this input: `0 0; 0 0; 0 0`
+
+Let's consider all possibilities:
+- Skip all of them. Obviously the worst choice.
+- Take one, skip others.
+- Skip one, take two, skip three.
+- Skip one and two, take three.
+
+All the possibilities give the same skill.
+
+---
+
+# Inductive proof
+
+Let's do a proof over a list. A list of some type T has two constructors:
+- `[]` is a list.
+- If `t` is a list, `h : t` is a list, where `h` is an element of type T, and `:` means "cons" (i.e., create a new list with the given element as its head).
+
+Suppose we have a proposition that starts with "for all lists of T". We can prove it by showing that the proposition is true of the empty list, and that if the proposition is true of some list, it's still true if we add a random element to the front of the list.
+
+In this case, our list is a list of pairs: $S_{i, lo}$ and $S_{i, hi}$
+
+---
+
+# Inductive proof (2)
+
+Our goal is to show that always taking a challenge is optimal. That means that another strategy isn't strictly better (although it could be equivalent).
+
+For the base case: if the list is empty, any strategy is optimal.
+
+For the inductive case: suppose that always taking a challenge is optimal. Now we have a new challenge, $s_{lo}$ and $s_{hi}$. How can we show that we should take it?
+
+---
+
+# Inductive proof (3)
+
+- If we take it, we block off any challenge with $s_{hi} \lt s$
+- If we don't take it, we gain access to at most one challenge that we otherwise wouldn't have had, because it would have been too easy. 
+  Why at most one challenge? Because if there are two challenges with $s_{hi} = s$, then after taking one, we will be ineligible for the other.
+
+Therefore, skipping a challenge gives us, at most, access to one more challenge. Therefore, at best, it is an equal strategy because we skip one and gain one.
+
+At worst, we lose access to challenges that had a minimum rating that we no longer meet.
+
+Therefore, always taking the challenge is optimal.
+
+---
+
+# Questions?
+<!-- _class: invert questions -->
+
+---
