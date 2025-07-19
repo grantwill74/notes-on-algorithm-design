@@ -450,7 +450,11 @@ In this case, we recognize that we can assign a weight to each set of cards Alic
 
 Encoding the decision as a matroid helps us know what the "greedy" solution of the decision is.
 
-But it doesn't prove that a greedy algorithm is optimum. We still need 
+But it doesn't prove that a greedy algorithm is optimum. We still need to prove that if we follow that greedy algorithm, we end up with an optimum solution.
+
+So the inductive proof would still be required in this case. The matroid is just a way of showing "yes, there is a situation here where we can keep making our move bigger until it involves all the cards. Therefore greed is an option."
+
+If the *whole problem*, including the moves, can be encoded as a matroid, *then* that really is a proof that a greedy algorithm is appropriate.
 
 ---
 
@@ -463,9 +467,9 @@ But it doesn't prove that a greedy algorithm is optimum. We still need
 
 Alice is learning a new skill. It could be anything: writing, math, Street Fighter 6.
 
-Alice's skill level at whatever this is is $s$, which is a natural number.
+Alice's skill level at whatever this is is $s = 0$, which is a natural number.
 
-She knows that to get better at a skill, you need to challenge yourself with little tests. Therefore, she is on the lookout for skill challenges.
+She knows that to get better at a skill, you need to challenge yourself with little tests. Therefore, she creates a challenge bank of training opportunities.
 
 Each challenge has two skill ratings: $s_{lo}$ and $s_{hi}$. Alice can benefit from the challenge if her skill is between $s_{lo} \le s \le s_{hi}$. Afterwards, she will gain one point of skill.
 
@@ -485,11 +489,11 @@ This was inspired by a PACNW regional problem that I can't find. It involved a s
 
 The input to the program is a list of pairs: $s_{i, {lo}}$ and $s_{i,{hi}},$ for each challenge $i$. 
 
-Alice considers the list in order, and for each challenge, she can choose to skip it, or perform it. If she skips it, it doesn't come up again. It's perform or skip for every problem, once.
+Alice can consider the list in any order. If she is eligable to perform a challenge, she gains one point of skill, but now may be ineligible to perform some challenges later.
 
-If she is eligable to perform it, she gains one point of skill, but now may be ineligible to perform some challenges later.
+Alice is permitted to do a challenge she is ineligible for, it just doesn't give her a skill point.
 
-The goal is to compute the maximum skill rating $s$ that Alice can achieve. You can look into the future at all the challenges that will appear, and advice Alice such that she maximizes the number of skill points.
+The goal is to compute the set of challenges that Maximize Alice's skill points gained.
 
 ---
 
@@ -501,20 +505,22 @@ Here's an example, suppose this is an input:
 ```
 
 In this case, there are three challenges with ranges 0 to 10, 1 to 10, and 2 to 10.
-Alice should take all three. She ends up with 3 points of skill. She does not benefit from skipping.
+Alice should take all three. She ends up with 3 points of skill. She does not benefit from skipping any.
 
 Here's another example input:
 ```
 0 10; 0 0; 1 1
 ```
 
-Here, if she takes the first challenge, the second is off limits. But if she skips the first challenge, she can take the second. Either way, she should take the 3rd. 2 is the answer.
+Here, if she takes the first challenge, the second doesn't help. But if she skips the first challenge, the second helps. So one answer is $\{0, 2\}$, but there are others.
 
 ---
 
 # Another problem (4)
 
 So the question is: how do we do this? What is an algorithm that is both optimal (we get the maximum number of skill points) while also being as fast as possible.
+
+If Alice takes a challenge, it makes other challenges less valuable, which seems to imply that there is some thinking we need to do, but maybe not...
 
 Is this NP-complete? Harder? NP-inter? P?
 
@@ -524,9 +530,7 @@ Is this NP-complete? Harder? NP-inter? P?
 
 # This is greedy and P time
 
-Alice should always take a challenge if her skill is within the range.
-
-Always. She should *never* skip a challenge.
+Alice should take every challenge. She should not skip a challenge. The optimum result is just be the set of all challenges.
 
 First, if you agree, try to formulate why.
 
@@ -534,21 +538,32 @@ If you disagree, try to find a counter example.
 
 ---
 
-# Proving the optimality of the greedy strategy
+# Building a matroid
 
-The reason the greedy strategy is correct, is that even if taking a skill challenge blocks off later challenges, the benefit is limited to the number of challenges we skipped.
+Here, our problem forms a matroid. 
 
-For example, consider this input: `0 0; 0 0; 0 0`
+$I$ is generate the set of decisions we could make, so let's let $I$ be the set of all answers (i.e., the combinations of challenges we could take).
 
-Let's consider all possibilities:
-- Skip all of them. Obviously the worst choice.
-- Take one, skip others.
-- Skip one, take two, skip three.
-- Skip one and two, take three.
+If $I$ is the set of all combinations of challenges themselves, then $E$ must be the set of challenges (i.e, $E = \{0, 1, 2, 3, 4, 5, \ldots\}$)
 
-All the possibilities give the same skill.
+What are the other requirements?
 
 ---
+
+# Building a matroid (2)
+
+Is $\emptyset \in I$? Yes, Alice can just not do any challenges. It's a bad option, but it's an option.
+
+If $B \in I$ and $A \subset B$, then $A \in I$? Yes, Alice can always take one fewer challenge and the result is still valid.
+
+If $|A| \gt |B|$, then we can copy an element from $A$ in to $B$ to make $B'$, and $B'$ will be in $I$? Yes, any time there is a problem in set $A$ that is not in set $B$, we can always add that problem to set $B$.
+
+So this is a Matroid. And whatever value there is to an answer $I$, we will never make it worse by adding another problem. 
+
+But that's not 100% obvious, so let's prove it.
+
+---
+
 
 # Inductive proof
 
@@ -566,23 +581,229 @@ In this case, our list is a list of pairs: $S_{i, lo}$ and $S_{i, hi}$
 
 Our goal is to show that always taking a challenge is optimal. That means that another strategy isn't strictly better (although it could be equivalent).
 
-For the base case: if the list is empty, any strategy is optimal.
-
-For the inductive case: suppose that always taking a challenge is optimal. Now we have a new challenge, $s_{lo}$ and $s_{hi}$. How can we show that we should take it?
+Now, let's represent the amount of skill points Alice gets as a recurrence relation:
+- $f(l)$ is the number of points Alice gets from a list of problems $l$
+- $f(0) = 0$
+- $f(h : l) =$
+    - $f(l) + 1$ if $h_{lo} \le f(l) \le h_{hi}$
+    - $f(l)$ otherwise
 
 ---
 
 # Inductive proof (3)
 
-- If we take it, we block off any challenge with $s_{hi} \lt s$
-- If we don't take it, we gain access to at most one challenge that we otherwise wouldn't have had, because it would have been too easy. 
-  Why at most one challenge? Because if there are two challenges with $s_{hi} = s$, then after taking one, we will be ineligible for the other.
+For the base case: if the list is empty, any strategy is optimal. $f(0) = 0$ for any strat.
 
-Therefore, skipping a challenge gives us, at most, access to one more challenge. Therefore, at best, it is an equal strategy because we skip one and gain one.
+For the inductive case: suppose that always taking a challenge is optimal. Now we have a new challenge, $h = (h_{lo}, h_{hi})$. How can we show that we should take it?
 
-At worst, we lose access to challenges that had a minimum rating that we no longer meet.
+- If we take it, either $f(h : l) = f(l)$ or $f(h : l) = f(l) + 1$. That is, either we get a skill point or we don't.
+- If we *don't* take it, then we get $f(l)$.
+- Therefore, our outcomes are either identical or better if we always take it.
 
-Therefore, always taking the challenge is optimal.
+---
+
+# Inductive proof (4)
+
+So, in this case, we were able to fit a matroid to our problem, which is one way of showing that there might be a greedy solution available.
+
+We realized that taking more challenges would result in a better score, but we decided not to stop there, and ended up proving the result inductively anyway.
+
+Ultimately, greedy algorithms generally require inductive proofs. Unless the matroid structure is super obvious, and even if it is, it's worth while to prove it.
+
+Proofs of greedy algorithms typically involve showing that if we deviate from the greedy strategy, we don't end up being better off.
+
+---
+
+# Questions?
+<!-- _class: questions invert  -->
+
+---
+
+# Modification 1: Alice doesn't waste time
+
+Suppose that Alice is not permitted to waste time. So if she has an input like this: `0 0; 0 0; 1 1`, valid answers are $\{0, 2\}$ and $\{1, 2\}$. However, $\{0, 1, 2\}$ is not valid, because doing problem 1 after problem 0 would be a waste of time (it would not make Alice gain a skill point).
+
+Does this change anything?
+
+---
+
+# Mod 1 (2)
+
+Yes, it means we can no longer encode the whole problem as a matroid.
+
+We actually violate both constraints on $I$. Heredity isn't there anymore: just because we have a valid member of $I$, does not mean that we can remove elements of it and have it still be a valid member of $I$.
+
+Example for the previous slide's example: just because $\{0, 2\}$ is a valid solution, does not mean that $\{2\}$ is a valid solution. In fact, it's not, because Alice's skill starts at 0, and problem 2 requires a skill of 1. 
+
+---
+
+# Does that mean that there is no greedy solution?
+
+No, just because we cannot encode the problem as a matroid does not mean that there is no greedy solution. 
+
+In this case, there *is* a greedy solution:
+Alice should do as many problems as she can at any point. She should keep adding problems to the set until her skill is outside the range of all of them.
+
+There is a broader category of "-oids" here that we can use: a Greedoid
+
+All matroids are greedoids, but greedoids are a little more flexible, and fit more problems.
+
+---
+
+# Greedoids
+
+A greedoid is just like a matroid, in that it can be defined by two sets.
+
+Here, instead of $(E, I)$, we say $(E, F)$, where $F$ stands for "feasible set". 
+
+It's still a set of "valid moves", we just call it something slightly different, because greedoids aren't just about linear independence, they're about feasability.
+
+With greedoids, we still have the exchange requirement: if $A, B \in F$ and $|A| \gt |B|$, there exists some element of $A$ that can be copied into $B$.
+
+---
+
+# Greedoids (2)
+
+We modify the heredity requirement. Originally, we had to be able to remove *any* element of a solution, and have the result still be a valid solution (i.e., if $A \in I$, then any subset of A is $\in I$).
+
+Here, there's a weaker requirement, called "accessibility":
+If $A \in F$, then there exists an $x \in A$ such that $A \setminus \{x\} \in F$
+Here: "$\setminus$" means "without". It's the set equivalent of a minus sign.
+
+This is saying: we must be able to remove an element of a valid solution. But not *all* elements, just some element.
+
+Let's show that our problem here can be represented as a greedoid. If we can, then we can assume there is a greedy solution.
+
+---
+
+# Proving accessibility
+
+The goal here is to show that given any non-empty solution, we can always remove one more challenge.
+
+Which challenge can we remove? The one with the highest skill requirement.
+
+If there are 10 challenges in our answer, and the answer is valid, then Alice will have a skill of 10.
+
+That means, every challenge must have a skill requirement $\le 9$, otherwise at least one challenge would have been a waste of time.
+
+There might be a challenge with a requirement of 9. We had to build up to it by doing all the other challenges. After doing it, the skill level is 10. Pick this challenge to remove.
+
+---
+
+# Proving accessibility (2)
+
+Let's build a relation $R$ that represents feasible solutions.
+
+This relation has two ways of constructing elements:
+- $\emptyset \in R$, because Alice can do nothing if she wants.
+- If $f \in R$ and $a_{lo} \le |f| \le a_{hi}$, then $f \cup \{a\} \in R$.
+
+This kind of construction is very common for proving things about algorithms.
+
+This relation has a pair of constructors, just like natural numbers and just like lists. Therefore, we can do induction on it the exact same.
+
+---
+
+# Proving accessibility (3)
+
+We need to show that $R$ is complete. That means that every feasible set $F \in R$.
+
+We need to show that $R$ is correct. That means that every element of $R$ is feasible.
+
+Why? Because we need $R$ to include exactly the same elements as $F$. If it doesn't, then just because we prove something is true for $R$ does not mean we proved it for $F$.
+
+Then, we will use $R$ to show the accessibility property and the exchange property.
+
+---
+
+# Proving completeness
+
+Goal: for every $f \in F$, $f \in R$.
+
+If $f$ is empty, then $f \in R$ by definition.
+
+Otherwise, there is some order that we can do the challenges in $f$ and not violate any of the constraints. Call this order $f_1, f_2, \cdots, f_n$
+
+By induction on $i$:
+- $f_0 = \emptyset \in R$ by definition of $R$.
+- If $f = f_1$ up to $f_i \in F \implies f \in R$, then $f_1$ up to $f_{i + 1} \in R$
+  Recall that our order was feasible. Therefore, $f_{i + 1, lo} \le i \le f_{i + 1, hi}$, so $f \cup \{f_{i + 1}\} \in R$
+   
+---
+
+# Proving correctness
+
+Goal: for every $f \in R$, $f \in F$
+
+Now we do induction on "derivations" of $f \in R$. 
+A derivation is just an element of the relation that we generate from an earlier one.
+
+This may seem strange, but $f \in R$ is actually an inductive claim. We're saying "either $f$ is empty, or there's some smaller solution that we made bigger by adding a valid challenge to it"
+
+So in the same way that we did induction on natural numbers, and induction on lists, we can do induction on derivations of this relation.
+
+If a proposition about the relation is true when $f = \emptyset$, and if it's true for some $f$ where $a_{lo} \le |f| \le a_{hi}$, then it's true for the result, $f \cup \{a\}$, then we can say the proposition is true for every member of the relation.
+
+---
+
+# Proving correctness (2)
+
+By induction on derivations of $f \in R$:
+- When $f = \emptyset$, it's in $F$ because the empty set is a legal play for Alice.
+- If it's true that $f \in R$, and there is some challenge $a$ where $a_{lo} \le |f| \le a_{hi}$, then it's true that $f \cup \{a\} \in F$.
+  Here, we can assume that there is some legal order to perform the tasks in $f$. After doing so, Alice's skill level will be $|f|$. Since we know that $|f|$ is between the skill requirements of $a$, we know that $a$ can be performed after doing everything in $f$.
+
+So we can see that the moves in $R$ are the same as the moves in $F$. $R$ is just a way of making it explicit how we compute a move in $F$.
+
+---
+
+# Proving accessibility (4)
+
+To recall, we want to show that if $f \in F$ and $f \ne \emptyset$, then there is an $a \in f$ such that $f \setminus a \in F$.
+
+Let's do induction on derivations of $f \in F$ again.
+
+- If $f = \emptyset$, this contradicts the hypothesis that $f \ne \emptyset$, so this is vacuously true.
+- If The proposition is true for $f$, and there is an $a$ where $a_{lo} \le f \le a_{hi}$,
+  then the proposition is true for $f \cup \{a\}$. 
+  Here, we choose $a$ to be the element we remove. We obtain $f$, which we supposed was in $F$.
+
+The purpose of the relation was to make it explicit how we build-up a feasible move from simpler moves. Accessibility just requires us to be able to make the move smaller. So we use what we know about $R$ to remove the most recent addition.
+
+---
+
+# Proving the exchange property
+
+Recall that there was one more property we needed to show. 
+
+If $A, B \in F$, and $|A| \gt |B|$, then there exists an $x \in A \setminus B$ such that $B \cup \{x\} \in F$
+
+By our completeness property earlier, we know that $A \in F$ implies $A \in R$. We will show that for all $f, f' \in R$, if $|f| \gt |f'|$, then $\exists a \in f,a \cup f' \in R$
+
+Let's again do induction on $f \in A$:
+- If $f = \emptyset$, then it's impossible for $|f| \gt |f'|$ for any $f'$, because that would require $|f| \gt 0$, but $|f| = 0$. So this is vacuously true.
+- For our inductive case, consider that there is some element $a \in f \setminus f'$ we can copy from $f$ into $f'$. Is that also true for $f \cup \{a\}$ if $|f \cup \{a\}| \gt |f'|$? This requires some case matching...
+
+---
+
+# Proving the exchange property (2)
+
+If $|f \cup \{a\}| \gt |f'|$, there are two possibilities:
+1. $|f| \gt |f'|$. In this case, our goal follows from the inductive hypothesis. We already know there's an element from $f$ that can be copied into $f'$.
+2. $|f| = |f'|$. This is the trickier case. Now we need to actually *find* the element to copy, because we can't use the inductive hypothesis (it required that $|f| \gt |f'|$)
+Luckily, we can still use $a$, becuase the requirement for $a$ was that $a_{lo} \le |f| \le a_{hi}$. But here, $|f| = |f'|$, so $a_{lo} \le |f| \le a_{hi}$. Because of the derivations of our relation $R$, $f' \in R \implies a_{lo} \le |f'| \le a_{hi} \implies f' \cup \{a\} \in R$. And by the correctness property, $f' \cup \{a\} \in R \implies f' \cup \{a\} \in F$.
+
+So finally, we know that our entire problem meets the requirements for a greedoid, meaning that there is an optimal greedy solution.
+
+---
+
+# Reassurance
+
+I know it is overwhelming to have two new induction techniques introduced in the same lecture.
+
+I'm just showing you how there are lots of ways to prove that a greedy algorithm is optimal. We can frame it as a matroid, or a greedoid. We can use induction on natural numbers, or lists, and now, even relations.
+
+When I ask you about greedy algorithms, I will leave it up to you to determine how you want to prove optimality. 
 
 ---
 
@@ -590,3 +811,116 @@ Therefore, always taking the challenge is optimal.
 <!-- _class: invert questions -->
 
 ---
+
+# Practice problems:
+1. Consider what happens if some challenges lower Alice's skill. Is that problem still greedy? How would we solve it?
+2. Consider what happens if Alice does not get to choose the order of the problems, but instead is given a "take it or leave" it choice for each problem. Is it still greedy?
+3. Consider if each problem has an "effort" rating that requires how much work it takes to do, but also a "reward" rating that determines how much skill Alice gets. Alice has 100 effort points to spend. Is this greedy?
+
+---
+
+# Partial answers:
+1. This problem is still greedy, but we only want to take challenges that don't lower Alice's skill. 
+2. This problem is also greedy. Alice should always take a challenge for which she is eligable.
+3. This problem is *not* greedy. It's actually an instance of the knapsack problem, which we will learn how to solve next module. In short: if we always take, e.g., the most skill gain, or the highest ratio of skill gain to cost, or something like that, each of those strategies is falsifiable.
+
+---
+
+# Questions?
+<!-- _class: invert questions -->
+
+---
+
+# The quiz
+
+Next module, we'll have a quiz. The quiz will have this format:
+
+1. Here is a problem. Implement a greedy solution in C which is optimal.
+
+2. Prove that the greedy solution is optimal.
+
+You can show optimality with matroids or greedoids if applicable, but they might not be applicable. 
+
+Very important: **Even if they are applicable, remember that just because a "move" is a matroid does not mean the whole problem is solved. If the player will need to make many moves, you still need to use induction to show that for *each* move a greedy strategy is optimal.**
+
+You will probably need to use induction.
+
+---
+
+# Quiz 1
+
+1. a. (50%) Solve the following problem in C with a greedy P-time algorithm:
+  You are given an array of integers `int* arr`, a `size_t n` and a `size_t k`.
+  Find the maximum sum that can be obtained by choosing `k` integers from `arr`.
+  Bounds: `0 < k <= n`
+
+  Example: `choose_k({1, 2, 3}, 3, 2) == 5`, because the largest sum of 2 integers in the array `{1, 2, 3}` is `2 + 3 == 5`
+
+1. b. (50%) prove that your solution is optimal.
+
+---
+
+# Quiz 2
+
+2. a. (50%) Solve the fractional-backpack problem in C with a greedy P-time algo:
+  You are given an array of this struct:
+  ```c
+  typedef struct item_t { float weight; float value; } Item;
+  ```
+  You are given a maximum weight. Your goal is to return the maximum value you can carry. You are allowed to carry fractions of items.
+
+  E.g., `fract_bp({ {20.0f, 100.0f}, {10.0f, 5.0f}}, 15.0f) == 75.0f`, because we will take 15 of the first item. If 20 is worth 100, then 15 is worth 75.
+
+  2. b. (50%) prove that your strategy is optimal.
+
+---
+
+# Quiz 3
+
+3. a. (50%) You are given a list of jobs, each of which is defined entirely by its deadline  `d`, which is the number of days in the future the job is due. You can do one job per day, and every job pays $200 if done on or before the deadline, and $0 otherwise. Write a greedy, P-time C program giving the maximum amount of money you can make in `dt` days. 
+
+```c
+size_t max_money(size_t* jobs, size_t n, size_t d) { ... }
+```
+
+Example: suppose the list is `{0, 1, 5, 2, 1}`. The best we can achieve is doing the day 0 job on day 0, one of the day 1 deadline jobs on day 1, and then the day 2 and 5 jobs on days 2 and 3. That's 4 jobs for $800. It's impossible to do both jobs with a day 1 deadline.
+
+3. b. (50%) Prove that your greedy solution is optimal
+
+---
+
+# More practice
+
+Go to [CodeForces.com](https://codeforces.com/problemset). On the left, there's a little filter for problem difficulty. You want 1000 elo difficulty problems.
+
+Almost all of these have greedy solutions. They are often thoughtfully defined problems, and the writeups usually include a proof of greedy optimality.
+
+[LeetCode](https://leetcode.com/problem-list/greedy/) also has greedy problem lists. I recommend doing "Easy" difficulty problems: the ones I quiz you on will not be too challenging.
+
+---
+
+# Grinding is great
+
+Being able to quickly see that a problem is greedy isn't a guaranteed skill. It requires some amount of grinding to see the common patterns. 
+
+If you weren't able to get these practice problems within 10 minutes each, I recommend doing some problems on the above sites. 
+
+Be sure your solution is accepted! It's tempting to say "I could do that", but the problem writers think of lots of clever corner cases that might not be obvious. It's a good way to test your proof for fallacies.
+
+---
+
+# More encouragement
+
+Greedy algorithms are extremely common in coding interviews and competitive coding competitions. They give the appearance of being challenging combinatorial problems, but they often have short, quick solutions.
+
+They test both programming skills and mathematical reasoning. Usually an inductive proof is at the heart of them.
+
+I think if you get good at these skills (both finding the greedy solution and proving it is optimal), you will be happy you did so.
+
+It's totally normal to feel lost or experience programmer's-block. Go ahead and give yourself a quiz-length time limit to solve a problem, and if you don't get it, peek at a solution or ask an AI. Over time, the proportion you get will go up, and the time taken will go down. The difficulty level on CodeForces is rather high, too, so don't feel bad.
+
+---
+
+# Questions?
+<!-- _class: invert questions -->
+
