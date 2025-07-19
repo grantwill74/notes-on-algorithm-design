@@ -1267,6 +1267,16 @@ I highly recommend letting an AI quiz you based on these slides. This is a truly
 
 ---
 
+# Final video
+
+I recommend [this video](https://www.youtube.com/watch?v=unLPk4H1hto) to help you understand just how creative reductions can be.
+
+The video shows a reduction from 3SAT into determining whether a Super Mario Bros. level is beatable.
+
+This might help it click if you're struggling to understand reduction.
+
+---
+
 Appendix: Mermaid source
 
 ```
