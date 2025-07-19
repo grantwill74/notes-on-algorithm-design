@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>module_7</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="design-and-analysis-of-algorithms">Design and Analysis of
+Algorithms</h1>
+<h2 id="module-7-greedy-algorithms">Module 7: Greedy Algorithms</h2>
+<p><br> <br></p>
+<p>Slides © Grant Williams, <a
+href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
+4.0</a>.</p>
+<p><br></p>
+<p>This is an open educational resource. Feel free to submit fixes,
+improvements, and new material <a
+href="https://github.com/grantwill74/notes-on-algorithm-design">here</a>.</p>
+<hr />
+<h1 id="last-week">Last week</h1>
+<p>Last time we learned about complexity categories.</p>
+<p>One category was particularly important: NP-complete.</p>
+<p>NP-complete is full of useful, interesting problems: - SAT: useful
+for package managers, AI, among many other things - TSP: useful for home
+delivery and machining - VC: useful for security systems, city
+management, many other things</p>
+<p>Solving these problems is massively useful for many important,
+real-world things.</p>
+<p>The problem is that everything in NP-complete is exponential
+time!</p>
+<hr />
+<h1 id="this-week">This week</h1>
+<p>But sometimes life throws us a bone: just because the general version
+of those problems is hard, does not mean that every single instance we
+encounter is hard.</p>
+<p>For example, the TSP is hard, but what if our graph is a rectangular
+grid of tiles with uniform edge weights? Then it’s easy: just follow a
+lawn-mower pattern.</p>
+<p>What makes TSP hard is that normally, choosing to visit a city next
+means we can’t visit it from a city later, which might have a shorter
+path. This means the decision of which city to visit first requires
+trying it and seeing how it works out, and then potentially revising our
+choice later.</p>
+<hr />
+<h1 id="greedy-algorithms">Greedy algorithms</h1>
+<p>Greedy algorithms are those in which we can get an optimal result
+with locally optimal decision making.</p>
+<p>It would be like if we could solve TSP by always visiting the
+shortest distance (which doesn’t normally work).</p>
+<p>Greedy algorithms arise when there’s some aspect of the problem that
+makes a simple strategy really effective.</p>
+<p>Let’s consider video games…</p>
+<hr />
+<h1 id="np-complete-game-problems">NP-complete game problems</h1>
+<p>The following problems are NP-hard (probably, I haven’t proved it or
+anything):</p>
+<p>Deciding the optimal place for districts in Civilization 6. Districts
+are little buildings you put down that have an effect on neighboring
+tiles. Going for the highest immediate bonus is not always optimal,
+because the district you put down blocks other districts.</p>
+<p>Deciding the optimal build-order in a well-balanced RTS. Every
+building you build ends up changing the resources and strategies
+available, which may affect future decisions.</p>
+<p>Determining the optimal chess move. Some moves are better than
+others, but determining the ideal move currently requires considering
+all the opponents moves they could make in response.</p>
+<p>These are hard problems, but what if the game were not well
+balanced?</p>
+<hr />
+<h1 id="greedy-algorithms-for-fake-np-complete-games">Greedy algorithms
+for fake NP-complete games</h1>
+<p>Civ6: Imagine if there were a district that gave the bonuses of every
+other district. Now you just have to only build that one. There are no
+longer any tradeoffs.</p>
+<p>RTS: Imagine if one building gave the benefits of all the other
+buildings and cost the same as the cheapest one. Now spamming that
+building is the optimal strategy.</p>
+<p>What if we’re playing a <a
+href="https://en.wikipedia.org/wiki/Fairy_chess">fairy-chess</a> puzzle
+where there’s a piece that can move anywhere and cannot be taken? Just
+only move that piece.</p>
+<p>Notice how if one move becomes “overpowered”, the search space for
+optimum strategies becomes very small and predictable.</p>
+<p>That’s the essence of a greedy algorithm. It’s one that solves what
+seems like a hard problem, by solving a simple problem over and over
+again.</p>
+<hr />
+<h1 id="questions">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="an-example-problem">An example problem</h1>
+<p>Suppose Alice and Bob are playing ” Simple War” with <span
+class="math inline">\(N \gt 1\)</span> cards.</p>
+<p>The cards each have a number on them from <span
+class="math inline">\(1\)</span> to <span
+class="math inline">\(N\)</span>, with every number being used exactly
+once.</p>
+<p>The cards are randomly partitioned between Alice and Bob.</p>
+<p>Alice and Bob play cards at the same time. They can play any card in
+their hand.</p>
+<p>The highest card wins the play. The winning player takes that card
+and the card they played and add both to their hand. They continue until
+a player has won all the cards.</p>
+<p>What is the optimum strategy? [Let’s think about it first.]</p>
+<p>If both players use it, can we determine who will win? And can we
+bound the time it takes?</p>
+<hr />
+<h1 id="simple-war">Simple war</h1>
+<p>At first, this seems like a combinatorial problem. Each player has a
+bunch of cards. Which one do they play? Maybe playing a good card now
+means we can’t play it later…</p>
+<p>Except if you win, you get your card back plus the opponent’s card.
+So winning means you gave up nothing. And now you are in a stronger
+position.</p>
+<p>And you maximize your chance of winning by playing your best
+card.</p>
+<p>So the ideal strategy is to always play your maximum card.</p>
+<p>And the winner will be whoever has card number <span
+class="math inline">\(N\)</span>. Determining this takes <span
+class="math inline">\(\Theta(N)\)</span> if we are given a list of
+cards, or <span class="math inline">\(\Theta(1)\)</span> if we are told
+the number of cards at the beginning.</p>
+<hr />
+<h1 id="simple-war-induction">Simple war induction</h1>
+<p>How would we prove this ideal strategy? You guessed it:
+induction!</p>
+<p>But this time, let’s do induction over a set of a particular type.
+Suppose a set of cards is constructed like this: - <span
+class="math inline">\(\emptyset\)</span> is a set of cards. - If <span
+class="math inline">\(H\)</span> is a set of cards and <span
+class="math inline">\(c\)</span> is a card, <span
+class="math inline">\(H \cup { c }\)</span> is a set of cards.</p>
+<p>This type is inductive because it has a finite number of
+constructors. We can use induction on this type to prove statements that
+begin with <span class="math inline">\(\forall H \in
+\mathrm{Hands}\)</span></p>
+<p>We could just do induction over the size of her hand, but it’s a
+little cleaner sometimes to do induction directly on data
+structures.</p>
+<hr />
+<h1 id="simple-war-ideal-strategy">Simple war ideal strategy</h1>
+<p>We have two cases for induction: one for each constructor. Our goal
+is to prove that for any hand <span class="math inline">\(H\)</span>,
+playing the largest card is optimal (i.e., that no other strategy is
+better).</p>
+<ul>
+<li><p>Suppose that Alice’s hand is empty. Then she has lost; every
+strategy is identical.</p></li>
+<li><p>Suppose that for <span class="math inline">\(H\)</span>, the
+optimum strategy is <span class="math inline">\(\max H\)</span>. We must
+show that for some card <span class="math inline">\(c\)</span>, <span
+class="math inline">\(\max(H \cup \{ c \})\)</span> is the optimum
+strategy There are 3 possibilities for <span
+class="math inline">\(c\)</span>, 2 of which are valid:</p>
+<ol type="1">
+<li><span class="math inline">\(c \gt \max H\)</span>. By the inductive
+hypothesis, playing <span class="math inline">\(\max H\)</span> was
+optimal, so playing an even higher card does not lose against any
+additional hands.</li>
+<li><span class="math inline">\(c \lt \max H\)</span>. Then <span
+class="math inline">\(\max(H \cup \{ c \}) = \max H\)</span>, and the
+goal follows from IH.</li>
+<li><span class="math inline">\(c = \max H\)</span>. This is impossible
+because the cards are distinct</li>
+</ol></li>
+</ul>
+<hr />
+<h1 id="who-will-win">Who will win?</h1>
+<p>If our goal is to determine the winner, then it’s whoever has the
+card numbered N.</p>
+<p>How long does it take to do this? If we are given Alice’s hand <span
+class="math inline">\(H\)</span>, we must scan through it until either
+we find <span class="math inline">\(N\)</span> (meaning she wins), or
+until we reach the end (she loses).</p>
+<p>Therefore, in the worst case, it is <span
+class="math inline">\(\Theta(|H|)\)</span></p>
+<p>In this case, the fact that we defined our algorithm by linear search
+lets us re-use the big <span class="math inline">\(\Theta\)</span> for
+linear search.</p>
+<hr />
+<h1 id="questions-1">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="a-slight-modification">A slight modification</h1>
+<p>Suppose the game has two rule changes: - Instead of both players
+playing at the same time, Bob plays first. - Now, N is the best
+card…except for 1, which beats N and absolutely nothing else.</p>
+<p>So the questions are: - Is there still a greedy algorithm for Alice
+that is optimum? - Can we predict who will win?</p>
+<p>We’re still assuming both sides play optimally.</p>
+<p>[What do you think?]</p>
+<div class="footnote">
+<p>inspired by <a
+href="https://codeforces.com/problemset/problem/2104/C">this CodeForces
+problem</a>.</p>
+</div>
+<hr />
+<h1 id="its-still-greedy">It’s still greedy</h1>
+<p>The key here is that Bob goes first. So Alice can follow this plan: -
+If Alice has N and 1, she plays N every hand regardless of what Bob
+plays. - If Alice has N and some other card, but not 1, Alice still
+wins: - If Bob plays 1, Alice plays her other card. - If Bob plays
+another card, Alice plays N. - If Alice has <span
+class="math inline">\(N - 1\)</span> and 1, she still wins: - If Bob
+plays N, Alice plays 1 - Otherwise Alice plays <span
+class="math inline">\(N - 1\)</span> - Otherwise, Alice loses - If Alice
+only has N Bob will play 1. - If Alice does not have N or <span
+class="math inline">\(N - 1\)</span>, Bob will play <span
+class="math inline">\(N-1\)</span> every hand.</p>
+<hr />
+<h1 id="the-simplest-statement-of-the-rule">The simplest statement of
+the rule</h1>
+<p>Alice wins if she has either: - N and something else: i.e., <span
+class="math inline">\(N \in A, \land |A| \gt 1\)</span> - <span
+class="math inline">\(N - 1\)</span> and 1: i.e., <span
+class="math inline">\(\{N - 1, 1\} \subseteq A\)</span></p>
+<hr />
+<h1 id="complicated-rules">Complicated rules</h1>
+<p>Notice that sometimes the greedy strategy can be a little
+complex.</p>
+<p>In this case, the slight change in rules made the ideal strategy
+require some adjustment.</p>
+<p>One way of thinking of greedy algorithms is that they are an
+“exploit” for a game.</p>
+<p>Think back to games you may have played, when there was an
+overpowered strategy. Often, the developers “patch” the exploit, but
+then there is a slightly more complicated strategy that starts working.
+It’s kind of like slowly moving the game from polynomial time to
+NP-complete by gradually removing greedy strategies.</p>
+<p>Most good pure-strategy or puzzle games (pure meaning there’s no
+reflex component) seem like they are NP-complete: hard enough to be deep
+and not have an obvious exploit, but not so hard that the game cannot be
+solved with good pattern recognition.</p>
+<hr />
+<h1 id="questions-2">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="another-variant">Another variant</h1>
+<p>Alice and Bob get bored of playing games that seem like they always
+have easy solutions. So they try to make it more complicated again.</p>
+<p>Bob proposes a rule change: - Go back to playing simultaneously -
+Instead of playing one card at a time, players can play any number in a
+trick. - The winner of the trick is the one with the largest sum. - The
+winner keeps all the played cards from both players.</p>
+<p>If you risk a lot of cards, you’re in trouble if you lose. On the
+other hand if you don’t risk enough, you lose the trick.</p>
+<p>[What do we think? Any ideas if there even <em>is</em> an ideal
+strategy?]</p>
+<hr />
+<h1 id="yup-its-still-greedy">Yup, it’s still greedy</h1>
+<p>Play every card you have every trick. If both players play optimally,
+the winner is whoever has the highest sum.</p>
+<p>Let’s prove it…</p>
+<p>Base case: If you have zero cards, you’ve lost. So any strategy is
+the same.</p>
+<p>If playing all the cards is optimum, consider if you had one more
+card. Should you play it or hold back?</p>
+<p>The key insight: winning a trick makes you strictly better off. If
+you lose, you are in a strictly worse position. Therefore, if someone
+can guarantee they win a trick, they should, and they should do it over
+and over again.</p>
+<hr />
+<h1 id="yup-its-still-greedy-2">Yup, it’s still greedy (2)</h1>
+<ul>
+<li>If you hold back, you might still win, in which case it didn’t
+matter, but playing it doesn’t hurt either.</li>
+<li>If you hold back you might lose. You either would have lost anyway,
+or you lost a trick you could have won if you hadn’t held back. So
+playing the extra card is either equal or better for that trick.</li>
+<li>If you don’t hold back, you maximize your chances of winning. If you
+don’t win with all your cards, you never could have won that trick, and
+you will be even weaker. If you do win, you lose nothing.</li>
+</ul>
+<p>You might think “but wait, if I hold back, at least I don’t lose that
+card!”. However, if your opponent won, they are in a strictly stronger
+position. So if that card mattered, then you should have played it, and
+if it didn’t, you are still guaranteed to lose now.</p>
+<hr />
+<h1 id="questions-3">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="one-more-try">One more try</h1>
+<p>Alice and Bob brainstorm to figure out what keeps going wrong in
+their game designs.</p>
+<p>It feels like the fundamental issue is that winning a trick just
+makes you better. You don’t have to give up anything.</p>
+<p>Is there some way to make this no longer be true?</p>
+<p>[Weigh in: any rule changes we want to consider?]</p>
+<hr />
+<h1 id="one-more-try-2">One more try (2)</h1>
+<p>One option to improve the game would be to remove the cards played
+from further play. I.e., you don’t get to pick up all the cards you just
+played and use them again.</p>
+<p>The game proceeds in tricks as before. Both players play
+simultaneously, and play as many cards as they want.</p>
+<p>Both players play with identical decks, so there isn’t an advantage
+to having certain cards. Any card can still be played at any time.</p>
+<p>The winner of a trick is whoever’s sum is higher. If the sums are
+equal, no one wins.</p>
+<hr />
+<h1 id="one-more-try-3">One more try (3)</h1>
+<p>You are required to play at least one card, and the game ends when
+one player finishes playing every card in their deck.</p>
+<p>Your final score is the sum of the cards you won and the cards you
+didn’t play. The sum does not include the cards you played.</p>
+<p>So now you are not <em>strictly better</em> by playing high cards. If
+your opponent was going to play a 10, your best play would have been to
+play an 11. Playing all your cards will get the same result if you have
+&gt; 10 total sum, but then you will not be able to win any further
+tricks.</p>
+<hr />
+<h1 id="is-there-an-exploit">Is there an exploit?</h1>
+<p>First, let’s consider this ruleset. Each of the rules I added was
+because of an exploit: - If you got to count cards you played for your
+score, it would go back to being smart to play all your cards. You
+either win the first trick or you draw. If you win, the game is over and
+you will have more points. If it’s a draw, you would have lost if you
+hadn’t played all the cards. - If you didn’t get to count the cards you
+won, but only the ones in your hand, your incentive would be to play one
+card at a time. You either draw or win with this strategy.</p>
+<hr />
+<h1 id="is-there-an-exploit-2">Is there an exploit? (2)</h1>
+<ul>
+<li>If you could play zero cards, that would then be ideal. The opponent
+would not get anything for winning tricks. Both players would cross
+their arms and refuse to play.</li>
+<li>If players did not play simultaneously, the best move would always
+be to add 1 to the opponents play if available, and your smallest card
+if you couldn’t.</li>
+</ul>
+<hr />
+<h1 id="a-fragile-game">A fragile game</h1>
+<p>However, I can’t <em>prove</em> to you that there is no greedy
+algorithm that would still work here, without “solving” the game.</p>
+<p>And the fact that I had to “patch” the game so many times should make
+us wonder: is there really no way to greed? Why should we be sure this
+time?</p>
+<p>There’s no obvious answer. You might say “well, greedy algorithms are
+always polynomial time, so prove there can’t be one for this algorithm”.
+But for NP-complete games, proving that there’s no polynomial-time
+algorithm would be akin to proving P <span
+class="math inline">\(\ne\)</span> NP.</p>
+<hr />
+<h1 id="game-theory">Game theory</h1>
+<p>Ideally, we end up with a game in which there is no obvious one
+move…</p>
+<p>Which means that we have to try to guess what our opponent will
+do…</p>
+<p>Which means that any “bias” by our opponent becomes something to
+exploit. Imagine playing rock-paper-scissors against someone who had a
+higher than <span class="math inline">\(1/3\)</span> chance of picking
+rock. You would win in the long run by shifting your picks toward
+paper.</p>
+<p>However, especially when a move that seems good now ends up hurting
+us later, we have to consider strings of moves. We start to feel the
+exponential nature of the move space. Think about how Chess is still
+unsolved despite enormous resources being poured into it.</p>
+<p>But game theory is outside the scope of this class. Just remember
+that when you’re looking for a greedy algorithm, you often don’t have to
+use it!</p>
+<hr />
+<h1 id="questions-4">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="one-lens-to-view-these-card-games-through">One lens to view
+these card games through</h1>
+<p>The card games with greedy algorithms actually have a fundamental
+property. A kind of “greedy essence” that tells you right off the bat
+that they are greedy if you notice it.</p>
+<p>This essential property is the decision we have to make can be
+encoded as a <a
+href="https://en.wikipedia.org/wiki/Matroid">matroid</a>.</p>
+<hr />
+<h1 id="what-is-a-matroid">What is a matroid?</h1>
+<p>Matroid is a scary sounding word, but “-oid” as a suffix just means
+“like”</p>
+<p>So it’s something that is like a Matrix.</p>
+<p>In what way? In the way that it describes something that is linearly
+independent.</p>
+<p>And really, it is this independence that is kind of a first step that
+makes greedy strategies a possibility for a problem.</p>
+<hr />
+<h1 id="linear-independence">Linear independence</h1>
+<p>A linear system is one in which the variables don’t depend on each
+other. If we have two variables, taking more of one does not require us
+to take more (or less) of another.</p>
+<p>In the case of many greedy problems, this is the key. If there isn’t
+some drawback to increasing one variable, we can just always do it. If
+your goal is to maximize <span class="math inline">\(x\)</span>, and
+<span class="math inline">\(x\)</span> does not affect <span
+class="math inline">\(y\)</span> or <span
+class="math inline">\(z\)</span>, then your decision is easy: ignore
+<span class="math inline">\(y\)</span> and <span
+class="math inline">\(z\)</span>.</p>
+<p>All matrices are matroids, but there are matroids that aren’t
+matrices. There are lots of ways to define a matroid, but there is one
+that works well for many greedy problems and which doesn’t require
+higher math: the set theoretic definition.</p>
+<hr />
+<h1 id="the-set-definition-of-a-matroid">The set definition of a
+matroid</h1>
+<p>A matroid is defined by two sets: <span
+class="math inline">\(E\)</span> and <span
+class="math inline">\(I\)</span>.</p>
+<p><span class="math inline">\(E\)</span> is the set of
+<strong>E</strong>lements. These are usually the “things” that you can
+take or not take; or play or not play.</p>
+<p><span class="math inline">\(I\)</span> is the set of
+<strong>I</strong>ndependent subsets. Each element of <span
+class="math inline">\(I\)</span> is a set which consists of zero or more
+elements of <span class="math inline">\(E\)</span>. These sets represent
+combinations of choices in the game. <span
+class="math inline">\(I\)</span> must have the following properties: -
+<span class="math inline">\(\emptyset \in I\)</span> - “heredity”: <span
+class="math inline">\(A \in I \implies B \subset A \implies B \in
+I\)</span> - “exchange”: <span class="math inline">\(A, B \in
+I\)</span></p>
+<hr />
+<h1 id="matroids-for-alice-and-bobs-simple-card-game">Matroids for Alice
+and Bob’s simple card game</h1>
+<p>Recall that card game where both Alice and Bob could play as many
+cards as they wanted, and the winner got to keep all the cards they
+played as well as the cards they won.</p>
+<p>Suppose there were 10 cards in Alice’s hand. Then <span
+class="math inline">\(E = \{1, 2, 3, 4, 5, 6, 7, 8, 9, 10\}\)</span></p>
+<p>Then <span class="math inline">\(I\)</span> is the set of all <span
+class="math inline">\(2^{10}\)</span> combinations of moves that Alice
+can make.</p>
+<p>E.g., <span class="math inline">\(\{\} \in I, \{1\} \in I, \{2\} \in
+I\)</span>, <span class="math inline">\(\{1, 2\} \in I, \{1, 2, 5, 7,
+10\} \in I\)</span>, etc.</p>
+<p>Basically, Alice can play any combination of the values of <span
+class="math inline">\(E\)</span>.</p>
+<p>Technically she can’t play the empty set according to our rules, but
+we can treat <span class="math inline">\(\{\}\)</span> as forfeiting the
+game or something.</p>
+<hr />
+<h1 id="is-this-a-matroid">Is this a matroid?</h1>
+<p>We’ve given <span class="math inline">\(E\)</span> and <span
+class="math inline">\(I\)</span>. Now we must show that <span
+class="math inline">\(I\)</span> obeys the heredity and exchange
+properties: - Heredity: If <span class="math inline">\(A \subset
+B\)</span>, and <span class="math inline">\(B \subseteq I\)</span> is a
+valid move, then <span class="math inline">\(A\)</span> is a valid move.
+Is that true? This is a fancy way of saying, if playing a set of cards
+is a move, then playing fewer cards is also a move. This is true: the
+game does not require that we play a certain minimum number of cards. -
+Exchange: If <span class="math inline">\(A, B \in I\)</span> and <span
+class="math inline">\(|A| \gt |B|\)</span>, then <span
+class="math inline">\(\exists a \in A, \{a\} \cup B \in I\)</span>
+Meaning: suppose there are two hands that Alice can play: <span
+class="math inline">\(A\)</span> and <span
+class="math inline">\(B\)</span>. If <span
+class="math inline">\(A\)</span> has more cards, then there’s a least
+one card that we could copy from <span class="math inline">\(A\)</span>
+and add to <span class="math inline">\(B\)</span> to make it even
+bigger, and the result from doing that would</p>
+<p>So the moves available to Alice form a matroid. Now: what’s the best
+move?</p>
+<hr />
+<h1 id="rado-edmonds">Rado-edmonds</h1>
+<p><a href="https://link.springer.com/article/10.1007/BF01584082">There
+is a theorem</a>, attributed to Jack Edmonds and Richard Rado, which
+tells us that optimization problems that can be encoded as matroids have
+greedy solutions.</p>
+<p>In this case, the problem is: “what is the largest value play”.</p>
+<p>As you would expect, the answer is “the one with the most cards”.
+There’s nothing groundbreaking here, but stating it in the language of
+matroids gives us a way to quickly validate that a greedy strategy is
+even available.</p>
+<p>In this case, we recognize that we can assign a weight to each set of
+cards Alice can play, and that adding more cards always increases that
+weight.</p>
+<hr />
+<h1 id="still-need-induction">Still need induction</h1>
+<p>Encoding the decision as a matroid helps us know what the “greedy”
+solution of the decision is.</p>
+<p>But it doesn’t prove that a greedy algorithm is optimum. We still
+need to prove that if we follow that greedy algorithm, we end up with an
+optimum solution.</p>
+<p>So the inductive proof would still be required in this case. The
+matroid is just a way of showing “yes, there is a situation here where
+we can keep making our move bigger until it involves all the cards.
+Therefore greed is an option.”</p>
+<p>If the <em>whole problem</em>, including the moves, can be encoded as
+a matroid, <em>then</em> that really is a proof that a greedy algorithm
+is appropriate.</p>
+<hr />
+<h1 id="questions-5">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="can-we-make-a-matroid">Can we make a matroid?</h1>
+<p>Alice is learning a new skill. It could be anything: writing, math,
+Street Fighter 6.</p>
+<p>Alice’s skill level at whatever this is is <span
+class="math inline">\(s = 0\)</span>, which is a natural number.</p>
+<p>She knows that to get better at a skill, you need to challenge
+yourself with little tests. Therefore, she creates a challenge bank of
+training opportunities.</p>
+<p>Each challenge has two skill ratings: <span
+class="math inline">\(s_{lo}\)</span> and <span
+class="math inline">\(s_{hi}\)</span>. Alice can benefit from the
+challenge if her skill is between <span class="math inline">\(s_{lo} \le
+s \le s_{hi}\)</span>. Afterwards, she will gain one point of skill.</p>
+<p>If <span class="math inline">\(s \lt s_{lo}\)</span>, the challenge
+is too hard, and Alice cannot complete it. If <span
+class="math inline">\(s_{hi} \lt s\)</span>, the challenge is too easy,
+and Alice does not gain benefit from it</p>
+<div class="footnote">
+<p>This was inspired by a PACNW regional problem that I can’t find. It
+involved a student either choosing to study or not based on the skill
+range of a problem. Please submit a PR if you find it!</p>
+</div>
+<hr />
+<h1 id="another-problem-2">Another problem (2)</h1>
+<p>The input to the program is a list of pairs: <span
+class="math inline">\(s_{i, {lo}}\)</span> and <span
+class="math inline">\(s_{i,{hi}},\)</span> for each challenge <span
+class="math inline">\(i\)</span>.</p>
+<p>Alice can consider the list in any order. If she is eligable to
+perform a challenge, she gains one point of skill, but now may be
+ineligible to perform some challenges later.</p>
+<p>Alice is permitted to do a challenge she is ineligible for, it just
+doesn’t give her a skill point.</p>
+<p>The goal is to compute the set of challenges that Maximize Alice’s
+skill points gained.</p>
+<hr />
+<h1 id="another-problem-3">Another problem (3)</h1>
+<p>Here’s an example, suppose this is an input:</p>
+<pre><code>0 10; 1 10; 2 10</code></pre>
+<p>In this case, there are three challenges with ranges 0 to 10, 1 to
+10, and 2 to 10. Alice should take all three. She ends up with 3 points
+of skill. She does not benefit from skipping any.</p>
+<p>Here’s another example input:</p>
+<pre><code>0 10; 0 0; 1 1</code></pre>
+<p>Here, if she takes the first challenge, the second doesn’t help. But
+if she skips the first challenge, the second helps. So one answer is
+<span class="math inline">\(\{0, 2\}\)</span>, but there are others.</p>
+<hr />
+<h1 id="another-problem-4">Another problem (4)</h1>
+<p>So the question is: how do we do this? What is an algorithm that is
+both optimal (we get the maximum number of skill points) while also
+being as fast as possible.</p>
+<p>If Alice takes a challenge, it makes other challenges less valuable,
+which seems to imply that there is some thinking we need to do, but
+maybe not…</p>
+<p>Is this NP-complete? Harder? NP-inter? P?</p>
+<p>[what do you think?]</p>
+<hr />
+<h1 id="this-is-greedy-and-p-time">This is greedy and P time</h1>
+<p>Alice should take every challenge. She should not skip a challenge.
+The optimum result is just be the set of all challenges.</p>
+<p>First, if you agree, try to formulate why.</p>
+<p>If you disagree, try to find a counter example.</p>
+<hr />
+<h1 id="building-a-matroid">Building a matroid</h1>
+<p>Here, our problem forms a matroid.</p>
+<p><span class="math inline">\(I\)</span> is generate the set of
+decisions we could make, so let’s let <span
+class="math inline">\(I\)</span> be the set of all answers (i.e., the
+combinations of challenges we could take).</p>
+<p>If <span class="math inline">\(I\)</span> is the set of all
+combinations of challenges themselves, then <span
+class="math inline">\(E\)</span> must be the set of challenges (i.e,
+<span class="math inline">\(E = \{0, 1, 2, 3, 4, 5,
+\ldots\}\)</span>)</p>
+<p>What are the other requirements?</p>
+<hr />
+<h1 id="building-a-matroid-2">Building a matroid (2)</h1>
+<p>Is <span class="math inline">\(\emptyset \in I\)</span>? Yes, Alice
+can just not do any challenges. It’s a bad option, but it’s an
+option.</p>
+<p>If <span class="math inline">\(B \in I\)</span> and <span
+class="math inline">\(A \subset B\)</span>, then <span
+class="math inline">\(A \in I\)</span>? Yes, Alice can always take one
+fewer challenge and the result is still valid.</p>
+<p>If <span class="math inline">\(|A| \gt |B|\)</span>, then we can copy
+an element from <span class="math inline">\(A\)</span> in to <span
+class="math inline">\(B\)</span> to make <span
+class="math inline">\(B&#39;\)</span>, and <span
+class="math inline">\(B&#39;\)</span> will be in <span
+class="math inline">\(I\)</span>? Yes, any time there is a problem in
+set <span class="math inline">\(A\)</span> that is not in set <span
+class="math inline">\(B\)</span>, we can always add that problem to set
+<span class="math inline">\(B\)</span>.</p>
+<p>So this is a Matroid. And whatever value there is to an answer <span
+class="math inline">\(I\)</span>, we will never make it worse by adding
+another problem.</p>
+<p>But that’s not 100% obvious, so let’s prove it.</p>
+<hr />
+<h1 id="inductive-proof">Inductive proof</h1>
+<p>Let’s do a proof over a list. A list of some type T has two
+constructors: - <code>[]</code> is a list. - If <code>t</code> is a
+list, <code>h : t</code> is a list, where <code>h</code> is an element
+of type T, and <code>:</code> means “cons” (i.e., create a new list with
+the given element as its head).</p>
+<p>Suppose we have a proposition that starts with “for all lists of T”.
+We can prove it by showing that the proposition is true of the empty
+list, and that if the proposition is true of some list, it’s still true
+if we add a random element to the front of the list.</p>
+<p>In this case, our list is a list of pairs: <span
+class="math inline">\(S_{i, lo}\)</span> and <span
+class="math inline">\(S_{i, hi}\)</span></p>
+<hr />
+<h1 id="inductive-proof-2">Inductive proof (2)</h1>
+<p>Our goal is to show that always taking a challenge is optimal. That
+means that another strategy isn’t strictly better (although it could be
+equivalent).</p>
+<p>Now, let’s represent the amount of skill points Alice gets as a
+recurrence relation: - <span class="math inline">\(f(l)\)</span> is the
+number of points Alice gets from a list of problems <span
+class="math inline">\(l\)</span> - <span class="math inline">\(f(0) =
+0\)</span> - <span class="math inline">\(f(h : l) =\)</span> - <span
+class="math inline">\(f(l) + 1\)</span> if <span
+class="math inline">\(h_{lo} \le f(l) \le h_{hi}\)</span> - <span
+class="math inline">\(f(l)\)</span> otherwise</p>
+<hr />
+<h1 id="inductive-proof-3">Inductive proof (3)</h1>
+<p>For the base case: if the list is empty, any strategy is optimal.
+<span class="math inline">\(f(0) = 0\)</span> for any strat.</p>
+<p>For the inductive case: suppose that always taking a challenge is
+optimal. Now we have a new challenge, <span class="math inline">\(h =
+(h_{lo}, h_{hi})\)</span>. How can we show that we should take it?</p>
+<ul>
+<li>If we take it, either <span class="math inline">\(f(h : l) =
+f(l)\)</span> or <span class="math inline">\(f(h : l) = f(l) +
+1\)</span>. That is, either we get a skill point or we don’t.</li>
+<li>If we <em>don’t</em> take it, then we get <span
+class="math inline">\(f(l)\)</span>.</li>
+<li>Therefore, our outcomes are either identical or better if we always
+take it.</li>
+</ul>
+<hr />
+<h1 id="inductive-proof-4">Inductive proof (4)</h1>
+<p>So, in this case, we were able to fit a matroid to our problem, which
+is one way of showing that there might be a greedy solution
+available.</p>
+<p>We realized that taking more challenges would result in a better
+score, but we decided not to stop there, and ended up proving the result
+inductively anyway.</p>
+<p>Ultimately, greedy algorithms generally require inductive proofs.
+Unless the matroid structure is super obvious, and even if it is, it’s
+worth while to prove it.</p>
+<p>Proofs of greedy algorithms typically involve showing that if we
+deviate from the greedy strategy, we don’t end up being better off.</p>
+<hr />
+<h1 id="questions-6">Questions?</h1>
+<!-- _class: questions invert  -->
+<hr />
+<h1 id="modification-1-alice-doesnt-waste-time">Modification 1: Alice
+doesn’t waste time</h1>
+<p>Suppose that Alice is not permitted to waste time. So if she has an
+input like this: <code>0 0; 0 0; 1 1</code>, valid answers are <span
+class="math inline">\(\{0, 2\}\)</span> and <span
+class="math inline">\(\{1, 2\}\)</span>. However, <span
+class="math inline">\(\{0, 1, 2\}\)</span> is not valid, because doing
+problem 1 after problem 0 would be a waste of time (it would not make
+Alice gain a skill point).</p>
+<p>Does this change anything?</p>
+<hr />
+<h1 id="mod-1-2">Mod 1 (2)</h1>
+<p>Yes, it means we can no longer encode the whole problem as a
+matroid.</p>
+<p>We actually violate both constraints on <span
+class="math inline">\(I\)</span>. Heredity isn’t there anymore: just
+because we have a valid member of <span
+class="math inline">\(I\)</span>, does not mean that we can remove
+elements of it and have it still be a valid member of <span
+class="math inline">\(I\)</span>.</p>
+<p>Example for the previous slide’s example: just because <span
+class="math inline">\(\{0, 2\}\)</span> is a valid solution, does not
+mean that <span class="math inline">\(\{2\}\)</span> is a valid
+solution. In fact, it’s not, because Alice’s skill starts at 0, and
+problem 2 requires a skill of 1.</p>
+<hr />
+<h1 id="does-that-mean-that-there-is-no-greedy-solution">Does that mean
+that there is no greedy solution?</h1>
+<p>No, just because we cannot encode the problem as a matroid does not
+mean that there is no greedy solution.</p>
+<p>In this case, there <em>is</em> a greedy solution: Alice should do as
+many problems as she can at any point. She should keep adding problems
+to the set until her skill is outside the range of all of them.</p>
+<p>There is a broader category of “-oids” here that we can use: a
+Greedoid</p>
+<p>All matroids are greedoids, but greedoids are a little more flexible,
+and fit more problems.</p>
+<hr />
+<h1 id="greedoids">Greedoids</h1>
+<p>A greedoid is just like a matroid, in that it can be defined by two
+sets.</p>
+<p>Here, instead of <span class="math inline">\((E, I)\)</span>, we say
+<span class="math inline">\((E, F)\)</span>, where <span
+class="math inline">\(F\)</span> stands for “feasible set”.</p>
+<p>It’s still a set of “valid moves”, we just call it something slightly
+different, because greedoids aren’t just about linear independence,
+they’re about feasability.</p>
+<p>With greedoids, we still have the exchange requirement: if <span
+class="math inline">\(A, B \in F\)</span> and <span
+class="math inline">\(|A| \gt |B|\)</span>, there exists some element of
+<span class="math inline">\(A\)</span> that can be copied into <span
+class="math inline">\(B\)</span>.</p>
+<hr />
+<h1 id="greedoids-2">Greedoids (2)</h1>
+<p>We modify the heredity requirement. Originally, we had to be able to
+remove <em>any</em> element of a solution, and have the result still be
+a valid solution (i.e., if <span class="math inline">\(A \in I\)</span>,
+then any subset of A is <span class="math inline">\(\in I\)</span>).</p>
+<p>Here, there’s a weaker requirement, called “accessibility”: If <span
+class="math inline">\(A \in F\)</span>, then there exists an <span
+class="math inline">\(x \in A\)</span> such that <span
+class="math inline">\(A \setminus \{x\} \in F\)</span> Here: “<span
+class="math inline">\(\setminus\)</span>” means “without”. It’s the set
+equivalent of a minus sign.</p>
+<p>This is saying: we must be able to remove an element of a valid
+solution. But not <em>all</em> elements, just some element.</p>
+<p>Let’s show that our problem here can be represented as a greedoid. If
+we can, then we can assume there is a greedy solution.</p>
+<hr />
+<h1 id="proving-accessibility">Proving accessibility</h1>
+<p>The goal here is to show that given any non-empty solution, we can
+always remove one more challenge.</p>
+<p>Which challenge can we remove? The one with the highest skill
+requirement.</p>
+<p>If there are 10 challenges in our answer, and the answer is valid,
+then Alice will have a skill of 10.</p>
+<p>That means, every challenge must have a skill requirement <span
+class="math inline">\(\le 9\)</span>, otherwise at least one challenge
+would have been a waste of time.</p>
+<p>There might be a challenge with a requirement of 9. We had to build
+up to it by doing all the other challenges. After doing it, the skill
+level is 10. Pick this challenge to remove.</p>
+<hr />
+<h1 id="proving-accessibility-2">Proving accessibility (2)</h1>
+<p>Let’s build a relation <span class="math inline">\(R\)</span> that
+represents feasible solutions.</p>
+<p>This relation has two ways of constructing elements: - <span
+class="math inline">\(\emptyset \in R\)</span>, because Alice can do
+nothing if she wants. - If <span class="math inline">\(f \in R\)</span>
+and <span class="math inline">\(a_{lo} \le |f| \le a_{hi}\)</span>, then
+<span class="math inline">\(f \cup \{a\} \in R\)</span>.</p>
+<p>This kind of construction is very common for proving things about
+algorithms.</p>
+<p>This relation has a pair of constructors, just like natural numbers
+and just like lists. Therefore, we can do induction on it the exact
+same.</p>
+<hr />
+<h1 id="proving-accessibility-3">Proving accessibility (3)</h1>
+<p>We need to show that <span class="math inline">\(R\)</span> is
+complete. That means that every feasible set <span
+class="math inline">\(F \in R\)</span>.</p>
+<p>We need to show that <span class="math inline">\(R\)</span> is
+correct. That means that every element of <span
+class="math inline">\(R\)</span> is feasible.</p>
+<p>Why? Because we need <span class="math inline">\(R\)</span> to
+include exactly the same elements as <span
+class="math inline">\(F\)</span>. If it doesn’t, then just because we
+prove something is true for <span class="math inline">\(R\)</span> does
+not mean we proved it for <span class="math inline">\(F\)</span>.</p>
+<p>Then, we will use <span class="math inline">\(R\)</span> to show the
+accessibility property and the exchange property.</p>
+<hr />
+<h1 id="proving-completeness">Proving completeness</h1>
+<p>Goal: for every <span class="math inline">\(f \in F\)</span>, <span
+class="math inline">\(f \in R\)</span>.</p>
+<p>If <span class="math inline">\(f\)</span> is empty, then <span
+class="math inline">\(f \in R\)</span> by definition.</p>
+<p>Otherwise, there is some order that we can do the challenges in <span
+class="math inline">\(f\)</span> and not violate any of the constraints.
+Call this order <span class="math inline">\(f_1, f_2, \cdots,
+f_n\)</span></p>
+<p>By induction on <span class="math inline">\(i\)</span>: - <span
+class="math inline">\(f_0 = \emptyset \in R\)</span> by definition of
+<span class="math inline">\(R\)</span>. - If <span
+class="math inline">\(f = f_1\)</span> up to <span
+class="math inline">\(f_i \in F \implies f \in R\)</span>, then <span
+class="math inline">\(f_1\)</span> up to <span
+class="math inline">\(f_{i + 1} \in R\)</span> Recall that our order was
+feasible. Therefore, <span class="math inline">\(f_{i + 1, lo} \le i \le
+f_{i + 1, hi}\)</span>, so <span class="math inline">\(f \cup \{f_{i +
+1}\} \in R\)</span></p>
+<hr />
+<h1 id="proving-correctness">Proving correctness</h1>
+<p>Goal: for every <span class="math inline">\(f \in R\)</span>, <span
+class="math inline">\(f \in F\)</span></p>
+<p>Now we do induction on “derivations” of <span class="math inline">\(f
+\in R\)</span>. A derivation is just an element of the relation that we
+generate from an earlier one.</p>
+<p>This may seem strange, but <span class="math inline">\(f \in
+R\)</span> is actually an inductive claim. We’re saying “either <span
+class="math inline">\(f\)</span> is empty, or there’s some smaller
+solution that we made bigger by adding a valid challenge to it”</p>
+<p>So in the same way that we did induction on natural numbers, and
+induction on lists, we can do induction on derivations of this
+relation.</p>
+<p>If a proposition about the relation is true when <span
+class="math inline">\(f = \emptyset\)</span>, and if it’s true for some
+<span class="math inline">\(f\)</span> where <span
+class="math inline">\(a_{lo} \le |f| \le a_{hi}\)</span>, then it’s true
+for the result, <span class="math inline">\(f \cup \{a\}\)</span>, then
+we can say the proposition is true for every member of the relation.</p>
+<hr />
+<h1 id="proving-correctness-2">Proving correctness (2)</h1>
+<p>By induction on derivations of <span class="math inline">\(f \in
+R\)</span>: - When <span class="math inline">\(f = \emptyset\)</span>,
+it’s in <span class="math inline">\(F\)</span> because the empty set is
+a legal play for Alice. - If it’s true that <span
+class="math inline">\(f \in R\)</span>, and there is some challenge
+<span class="math inline">\(a\)</span> where <span
+class="math inline">\(a_{lo} \le |f| \le a_{hi}\)</span>, then it’s true
+that <span class="math inline">\(f \cup \{a\} \in F\)</span>. Here, we
+can assume that there is some legal order to perform the tasks in <span
+class="math inline">\(f\)</span>. After doing so, Alice’s skill level
+will be <span class="math inline">\(|f|\)</span>. Since we know that
+<span class="math inline">\(|f|\)</span> is between the skill
+requirements of <span class="math inline">\(a\)</span>, we know that
+<span class="math inline">\(a\)</span> can be performed after doing
+everything in <span class="math inline">\(f\)</span>.</p>
+<p>So we can see that the moves in <span
+class="math inline">\(R\)</span> are the same as the moves in <span
+class="math inline">\(F\)</span>. <span class="math inline">\(R\)</span>
+is just a way of making it explicit how we compute a move in <span
+class="math inline">\(F\)</span>.</p>
+<hr />
+<h1 id="proving-accessibility-4">Proving accessibility (4)</h1>
+<p>To recall, we want to show that if <span class="math inline">\(f \in
+F\)</span> and <span class="math inline">\(f \ne \emptyset\)</span>,
+then there is an <span class="math inline">\(a \in f\)</span> such that
+<span class="math inline">\(f \setminus a \in F\)</span>.</p>
+<p>Let’s do induction on derivations of <span class="math inline">\(f
+\in F\)</span> again.</p>
+<ul>
+<li>If <span class="math inline">\(f = \emptyset\)</span>, this
+contradicts the hypothesis that <span class="math inline">\(f \ne
+\emptyset\)</span>, so this is vacuously true.</li>
+<li>If The proposition is true for <span
+class="math inline">\(f\)</span>, and there is an <span
+class="math inline">\(a\)</span> where <span
+class="math inline">\(a_{lo} \le f \le a_{hi}\)</span>, then the
+proposition is true for <span class="math inline">\(f \cup
+\{a\}\)</span>. Here, we choose <span class="math inline">\(a\)</span>
+to be the element we remove. We obtain <span
+class="math inline">\(f\)</span>, which we supposed was in <span
+class="math inline">\(F\)</span>.</li>
+</ul>
+<p>The purpose of the relation was to make it explicit how we build-up a
+feasible move from simpler moves. Accessibility just requires us to be
+able to make the move smaller. So we use what we know about <span
+class="math inline">\(R\)</span> to remove the most recent addition.</p>
+<hr />
+<h1 id="proving-the-exchange-property">Proving the exchange
+property</h1>
+<p>Recall that there was one more property we needed to show.</p>
+<p>If <span class="math inline">\(A, B \in F\)</span>, and <span
+class="math inline">\(|A| \gt |B|\)</span>, then there exists an <span
+class="math inline">\(x \in A \setminus B\)</span> such that <span
+class="math inline">\(B \cup \{x\} \in F\)</span></p>
+<p>By our completeness property earlier, we know that <span
+class="math inline">\(A \in F\)</span> implies <span
+class="math inline">\(A \in R\)</span>. We will show that for all <span
+class="math inline">\(f, f&#39; \in R\)</span>, if <span
+class="math inline">\(|f| \gt |f&#39;|\)</span>, then <span
+class="math inline">\(\exists a \in f,a \cup f&#39; \in R\)</span></p>
+<p>Let’s again do induction on <span class="math inline">\(f \in
+A\)</span>: - If <span class="math inline">\(f = \emptyset\)</span>,
+then it’s impossible for <span class="math inline">\(|f| \gt
+|f&#39;|\)</span> for any <span class="math inline">\(f&#39;\)</span>,
+because that would require <span class="math inline">\(|f| \gt
+0\)</span>, but <span class="math inline">\(|f| = 0\)</span>. So this is
+vacuously true. - For our inductive case, consider that there is some
+element <span class="math inline">\(a \in f \setminus f&#39;\)</span> we
+can copy from <span class="math inline">\(f\)</span> into <span
+class="math inline">\(f&#39;\)</span>. Is that also true for <span
+class="math inline">\(f \cup \{a\}\)</span> if <span
+class="math inline">\(|f \cup \{a\}| \gt |f&#39;|\)</span>? This
+requires some case matching…</p>
+<hr />
+<h1 id="proving-the-exchange-property-2">Proving the exchange property
+(2)</h1>
+<p>If <span class="math inline">\(|f \cup \{a\}| \gt |f&#39;|\)</span>,
+there are two possibilities: 1. <span class="math inline">\(|f| \gt
+|f&#39;|\)</span>. In this case, our goal follows from the inductive
+hypothesis. We already know there’s an element from <span
+class="math inline">\(f\)</span> that can be copied into <span
+class="math inline">\(f&#39;\)</span>. 2. <span
+class="math inline">\(|f| = |f&#39;|\)</span>. This is the trickier
+case. Now we need to actually <em>find</em> the element to copy, because
+we can’t use the inductive hypothesis (it required that <span
+class="math inline">\(|f| \gt |f&#39;|\)</span>) Luckily, we can still
+use <span class="math inline">\(a\)</span>, becuase the requirement for
+<span class="math inline">\(a\)</span> was that <span
+class="math inline">\(a_{lo} \le |f| \le a_{hi}\)</span>. But here,
+<span class="math inline">\(|f| = |f&#39;|\)</span>, so <span
+class="math inline">\(a_{lo} \le |f| \le a_{hi}\)</span>. Because of the
+derivations of our relation <span class="math inline">\(R\)</span>,
+<span class="math inline">\(f&#39; \in R \implies a_{lo} \le |f&#39;|
+\le a_{hi} \implies f&#39; \cup \{a\} \in R\)</span>. And by the
+correctness property, <span class="math inline">\(f&#39; \cup \{a\} \in
+R \implies f&#39; \cup \{a\} \in F\)</span>.</p>
+<p>So finally, we know that our entire problem meets the requirements
+for a greedoid, meaning that there is an optimal greedy solution.</p>
+<hr />
+<h1 id="reassurance">Reassurance</h1>
+<p>I know it is overwhelming to have two new induction techniques
+introduced in the same lecture.</p>
+<p>I’m just showing you how there are lots of ways to prove that a
+greedy algorithm is optimal. We can frame it as a matroid, or a
+greedoid. We can use induction on natural numbers, or lists, and now,
+even relations.</p>
+<p>When I ask you about greedy algorithms, I will leave it up to you to
+determine how you want to prove optimality.</p>
+<hr />
+<h1 id="questions-7">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="practice-problems">Practice problems:</h1>
+<ol type="1">
+<li>Consider what happens if some challenges lower Alice’s skill. Is
+that problem still greedy? How would we solve it?</li>
+<li>Consider what happens if Alice does not get to choose the order of
+the problems, but instead is given a “take it or leave” it choice for
+each problem. Is it still greedy?</li>
+<li>Consider if each problem has an “effort” rating that requires how
+much work it takes to do, but also a “reward” rating that determines how
+much skill Alice gets. Alice has 100 effort points to spend. Is this
+greedy?</li>
+</ol>
+<hr />
+<h1 id="partial-answers">Partial answers:</h1>
+<ol type="1">
+<li>This problem is still greedy, but we only want to take challenges
+that don’t lower Alice’s skill.</li>
+<li>This problem is also greedy. Alice should always take a challenge
+for which she is eligable.</li>
+<li>This problem is <em>not</em> greedy. It’s actually an instance of
+the knapsack problem, which we will learn how to solve next module. In
+short: if we always take, e.g., the most skill gain, or the highest
+ratio of skill gain to cost, or something like that, each of those
+strategies is falsifiable.</li>
+</ol>
+<hr />
+<h1 id="questions-8">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="the-quiz">The quiz</h1>
+<p>Next module, we’ll have a quiz. The quiz will have this format:</p>
+<ol type="1">
+<li><p>Here is a problem. Implement a greedy solution in C which is
+optimal.</p></li>
+<li><p>Prove that the greedy solution is optimal.</p></li>
+</ol>
+<p>You can show optimality with matroids or greedoids if applicable, but
+they might not be applicable.</p>
+<p>Very important: <strong>Even if they are applicable, remember that
+just because a “move” is a matroid does not mean the whole problem is
+solved. If the player will need to make many moves, you still need to
+use induction to show that for <em>each</em> move a greedy strategy is
+optimal.</strong></p>
+<p>You will probably need to use induction.</p>
+<hr />
+<h1 id="quiz-1">Quiz 1</h1>
+<ol type="1">
+<li><ol type="a">
+<li>(50%) Solve the following problem in C with a greedy P-time
+algorithm: You are given an array of integers <code>int* arr</code>, a
+<code>size_t n</code> and a <code>size_t k</code>. Find the maximum sum
+that can be obtained by choosing <code>k</code> integers from
+<code>arr</code>. Bounds: <code>0 &lt; k &lt;= n</code></li>
+</ol></li>
+</ol>
+<p>Example: <code>choose_k({1, 2, 3}, 3, 2) == 5</code>, because the
+largest sum of 2 integers in the array <code>{1, 2, 3}</code> is
+<code>2 + 3 == 5</code></p>
+<ol type="1">
+<li><ol start="2" type="a">
+<li>(50%) prove that your solution is optimal.</li>
+</ol></li>
+</ol>
+<hr />
+<h1 id="quiz-2">Quiz 2</h1>
+<ol start="2" type="1">
+<li><ol type="a">
+<li>(50%) Solve the fractional-backpack problem in C with a greedy
+P-time algo: You are given an array of this struct:</li>
+</ol></li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> item_t <span class="op">{</span> <span class="dt">float</span> weight<span class="op">;</span> <span class="dt">float</span> value<span class="op">;</span> <span class="op">}</span> Item<span class="op">;</span></span></code></pre></div>
+<p>You are given a maximum weight. Your goal is to return the maximum
+value you can carry. You are allowed to carry fractions of items.</p>
+<p>E.g.,
+<code>fract_bp({ {20.0f, 100.0f}, {10.0f, 5.0f}}, 15.0f) == 75.0f</code>,
+because we will take 15 of the first item. If 20 is worth 100, then 15
+is worth 75.</p>
+<ol start="2" type="1">
+<li><ol start="2" type="a">
+<li>(50%) prove that your strategy is optimal.</li>
+</ol></li>
+</ol>
+<hr />
+<h1 id="quiz-3">Quiz 3</h1>
+<ol start="3" type="1">
+<li><ol type="a">
+<li>(50%) You are given a list of jobs, each of which is defined
+entirely by its deadline <code>d</code>, which is the number of days in
+the future the job is due. You can do one job per day, and every job
+pays $200 if done on or before the deadline, and $0 otherwise. Write a
+greedy, P-time C program giving the maximum amount of money you can make
+in <code>dt</code> days.</li>
+</ol></li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> max_money<span class="op">(</span><span class="dt">size_t</span><span class="op">*</span> jobs<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">,</span> <span class="dt">size_t</span> d<span class="op">)</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span></span></code></pre></div>
+<p>Example: suppose the list is <code>{0, 1, 5, 2, 1}</code>. The best
+we can achieve is doing the day 0 job on day 0, one of the day 1
+deadline jobs on day 1, and then the day 2 and 5 jobs on days 2 and 3.
+That’s 4 jobs for $800. It’s impossible to do both jobs with a day 1
+deadline.</p>
+<ol start="3" type="1">
+<li><ol start="2" type="a">
+<li>(50%) Prove that your greedy solution is optimal</li>
+</ol></li>
+</ol>
+<hr />
+<h1 id="more-practice">More practice</h1>
+<p>Go to <a href="https://codeforces.com/problemset">CodeForces.com</a>.
+On the left, there’s a little filter for problem difficulty. You want
+1000 elo difficulty problems.</p>
+<p>Almost all of these have greedy solutions. They are often
+thoughtfully defined problems, and the writeups usually include a proof
+of greedy optimality.</p>
+<p><a href="https://leetcode.com/problem-list/greedy/">LeetCode</a> also
+has greedy problem lists. I recommend doing “Easy” difficulty problems:
+the ones I quiz you on will not be too challenging.</p>
+<hr />
+<h1 id="grinding-is-great">Grinding is great</h1>
+<p>Being able to quickly see that a problem is greedy isn’t a guaranteed
+skill. It requires some amount of grinding to see the common
+patterns.</p>
+<p>If you weren’t able to get these practice problems within 10 minutes
+each, I recommend doing some problems on the above sites.</p>
+<p>Be sure your solution is accepted! It’s tempting to say “I could do
+that”, but the problem writers think of lots of clever corner cases that
+might not be obvious. It’s a good way to test your proof for
+fallacies.</p>
+<hr />
+<h1 id="more-encouragement">More encouragement</h1>
+<p>Greedy algorithms are extremely common in coding interviews and
+competitive coding competitions. They give the appearance of being
+challenging combinatorial problems, but they often have short, quick
+solutions.</p>
+<p>They test both programming skills and mathematical reasoning. Usually
+an inductive proof is at the heart of them.</p>
+<p>I think if you get good at these skills (both finding the greedy
+solution and proving it is optimal), you will be happy you did so.</p>
+<p>It’s totally normal to feel lost or experience programmer’s-block. Go
+ahead and give yourself a quiz-length time limit to solve a problem, and
+if you don’t get it, peek at a solution or ask an AI. Over time, the
+proportion you get will go up, and the time taken will go down. The
+difficulty level on CodeForces is rather high, too, so don’t feel
+bad.</p>
+<hr />
+<h1 id="questions-9">Questions?</h1>
+<!-- _class: invert questions -->
+</body>
+</html>
