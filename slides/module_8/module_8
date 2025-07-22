@@ -1,0 +1,383 @@
+---
+marp: true
+theme: slides
+paginate: true
+---
+
+# Design and Analysis of Algorithms  
+
+## Module 8: Dynamic Programming
+
+<br>
+<br>
+
+Slides © Grant Williams, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).  
+
+<br>
+
+This is an open educational resource.
+Feel free to submit fixes, improvements, and new material [here](https://github.com/grantwill74/notes-on-algorithm-design).
+
+---
+
+# Last week
+
+Last week we learned about greedy algorithms.
+
+These are algorithms that solve problems that appear combinatorial on the surface, but which have some simplifying "trick".
+
+The algorithm can always choose according to simple function (like maximizing some variable) at each step.
+
+So instead of something like exponential time, they are in P.
+
+---
+
+# This week
+
+This week, we're going to learn about dynamic algorithms.
+
+These are algorithms that solve actual tough problems, and there's no "trick".
+
+However, they are divide and conquer algorithms where the sub-problems have overlap.
+
+By being smart about what we compute (and usually by saving some data in a table), we end up running way less code.
+
+---
+
+# Divide and Conquer
+
+Remember divide and conquer algorithms?
+
+These are algorithms that break problems up into simpler sub-problems.
+
+[What were some examples?]
+
+---
+
+# Divide and Conquer examples
+
+Quicksort and mergesort were divide and conquer problems: they both involve splitting the list in half and sorting both sides independently.
+
+Quick-select was a divide-and-conquer algorithm for finding the nth value in a list. It only searches one part of itself and ignores the other.
+
+BST functions, like insert and lookup, are divide and conquer.
+
+Heap insert, same thing.
+
+---
+
+# Divide and conquer speeds
+
+While there isn't some rule that divide and conquer algorithms have to take a certain amount of time, we saw examples that ranged from logarithmic time to, typically, linear-logarithmic.
+
+But let's look at a very simple problem, one that seems like it should be much easier, but that, if implemented in a straightforward way, is really, *really* slow.
+
+---
+
+# Fibonacci Sequence
+
+A class example of a slow computation that can be sped up with a table is computing elements of the Fibonacci sequence. 
+
+Named after [Leonardo Bonacci](https://en.wikipedia.org/wiki/Fibonacci) (called "Fibonacci" or "Fi'Bonacci", short for "Filius Bonacci", "son of Bonacci)
+
+The sequence was originally introduced in the book, [Liber Abaci](https://en.wikipedia.org/wiki/Liber_Abaci), as a simple model of a rabbit population over time.
+
+However, the mathematical sequence itself was already known in India, where it was the solution of problems involving 1 and 2 syllable language patterns.
+
+The book itself was intended to introduce the European reader to the use of Arabic numerals, and to give reasons to do arithmetic without an abacus and Roman numerals. [This was surprisingly controversial]
+
+---
+
+# Fibonacci Sequence
+
+The Fibonacci sequence is defined like this:
+$F(0) = 0$
+$F(1) = 1$
+$F(n) = F(n - 2) + f(n - 1)$
+
+That is, the nth Fibonacci number is the sum of the previous two numbers in the sequence.
+
+Here's an example of the first few numbers:
+0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377
+
+---
+
+# Calculating the Fibonacci Sequence
+
+So, how do we calculate it?
+
+We were given a definition, so it seems like the most obvious step is to implement it:
+```c
+size_t fibo(size_t n) {
+    if (n <= 1) return n;
+    return fibo(n - 2) + fibo(n - 1);
+}
+```
+
+[Make sense?]
+
+---
+
+# How fast is it?
+
+So, how fast is that code going to run?
+
+Can we give it a runtime bound? Maybe a big O?
+
+[Class?]
+
+Let's look at a diagram to make it more obvious...
+
+---
+
+![bg height:90% a diagram showing the computation of Fibonacci numbers. F(10) requires F(9) and F(8). F(9) requires F(8) and F(7). F(8) requires F(7), etc. The diagram is demonstrating the exponential growth of the naive Fibonacci calculation.](fibo1.svg)
+
+---
+
+# What does it look like?
+
+Each call is calling the function twice.
+
+This means we double the amount of work we do each function call.
+
+It's roughly a $O(2^n)$ growth rate (slightly better).
+
+This is...bad.
+
+How big can $n$ be before this is basically unworkable on a modern computer?
+
+[Let's do some live coding to find out]
+
+---
+
+# Looking at it from the bottom up
+
+To compute $F(2)$, we compute $F(1) + F(0)$
+To compute $F(3)$, we compute $F(2) + F(1) = F(1) + F(0) + F(1)$
+To compute $F(4)$, we compute $F(3) + F(2) = F(2) + F(1) + F(1) + F(0) = F(1) + F(0) + F(1) + F(1) + F(0)$
+To compute $F(5)$, we compute $F(4) + F(3) = F(3) + F(2) + F(2) + F(1) = F(2) + F(1) + F(1) + F(0) + F(1) + F(0) + F(1) = F(1) + F(0) + F(1) + F(1) + F(0) + F(1) + F(0) + F(1)$
+
+I didn't want it to run off the end of the slide there, but let's pretend it's intentional. It's too many calculations.
+
+We keep calculating $F(1)$ and $F(0)$ over and over
+
+
+---
+
+# Questions?
+<!-- _class: invert questions -->
+
+---
+
+# The fundamental issue
+
+Computing Fibonacci numbers is not hard. We're just recomputing an enormous amount of data for no reason at all.
+
+To see this, let's consider what our call-tree would look like if we didn't compute each number over and over again.
+
+---
+
+![bg right:30% height:90% a diagram showing the computation of Fibonacci numbers that is more tractable. F(10) requires F(9) and F(8). However, the F(8) that F(9) depends on is shared between F(10) and F(9), saving the calculation. This results in the "Tree" looking like a list, instead.](fibo2.svg)
+
+# More Tractable Growth
+
+Notice what happens when we *don't* recompute the values each time.
+
+Notice that the tree doesn't "fan out".
+
+This is all we *need* to calculate. We didn't need to calculate $F(6)$ a bunch of times. We only should need to calculate it once.
+
+So, how can we do this?
+
+---
+
+# Storing the result in a table?
+
+The first thing that might occur to us would be to use a table. This is a fairly common solution to this problem (although there are better ones for Fibonacci in particular)
+
+```c
+long long saved[50] = { 0, 1 };
+
+long long fibo(size_t n) {
+    if (n <= 1) return n;
+    if (saved[n] != 0) return saved[n];
+
+    long long result = fibo(n - 2) + fibo(n - 1);
+    saved[n] = result;
+    return saved[n];
+}
+
+```
+
+Make sure `n < 50` in this example.
+
+---
+
+# Storing the result in a table? (2)
+
+Here, we're using a long long, because the standard guarantees that it's large enough to store 2^64 - 1. Fibo grows very quickly.
+
+We have two base cases now. If we used a sentinel value like -1 to represent an uncomputed value, we could omit the first one and test for -1 instead. But then we couldn't use the auto-array initializer.
+
+Crucially, once we calculate the result, we store it in the table. Now we will only ever calculate it once. If that fibo comes up again, we will find it in the table instead.
+
+Now our call graph looks like the one on the previous slide. We don't recompute values.
+
+---
+
+# What is the big-O?
+
+Previously it was $O(2^n)$. What did we improve it to?
+
+[Thoughts?]
+
+---
+
+# The new big-$\Theta$
+
+Consider the recurrence relation:
+$T(\le 1) = 1$
+$T(n) = T(n - 2) + T(n - 1) + \Theta(1)$
+
+This was the naive recurrence relation. However, for this version, $F(n - 2)$ was already computed by $F(n - 1)$, so it doesn't show up again. Instead we get:
+$T(\le 1) = 1$
+$T(n) = T(n - 1) + \Theta(1)$
+
+And from our earlier lemma about linear recurrence relations, we know that this is $\Theta(n)$.
+
+---
+
+# Questions?
+
+<!-- _class: invert questions -->
+
+---
+
+# Dynamic programming
+
+This technique is what we mean by dynamic programming (DP).
+
+We originally had a problem that was based on "overlapping sub-problems". That is, $F(10)$ depended on $F(9)$ and $F(8)$.
+
+But these sub-problems had many sub-problems in common. For example, $F(7)$.
+
+We call it Dynamic Programming when we avoid re-computing the shared values.
+
+---
+
+# Top down vs. bottom up
+
+In our example, we started with the value we wanted to compute, e.g., $F(10)$, and then recursively compute $F(9)$, $F(8)$, etc.
+
+We store the intermediate recursive results in a data structure on the way back up. Doing this is called *memoization*. (not a misspelling)
+
+This is called top-down dynamic programming. What makes it top-down?
+
+We start our process by trying to obtain the value we want ($F(10)$) and work our way down the recursion tree.
+
+---
+
+# Bottom-up dynamic programming
+
+Notice that when computing $F(10)$, we end up computing $F(9)$, and $F(8)$, all the way down to $F(2)$.
+
+So, why don't we just compute those values iteratively, instead of recursively?
+
+```c
+long long saved[10] = { 0, 1 };
+
+for (int i = 2; i < 10; i++) {
+    saved[i] = saved[i - 2] + saved[i - 1];
+}
+```
+
+We don't even need a function now. The 49th Fibonacci number is `saved[49]`. 
+
+This is bottom-up dynamic programming. We compute the first value we need ($F(2)$), then the next, and the next, and so on, until reaching the actual value we want.ed
+
+---
+
+# Which one?
+
+In this case, we end up computing the same values whether we use top-down or bottom-up.
+
+So does it matter?
+
+In theory no, in practice yes.
+
+Which do you think is faster?
+
+---
+
+# Which one? (2)
+
+Bottom-up is almost always faster in my experience.
+
+A for-loop over adjacent memory cells is blazingly fast. Recursive function calls, less so.
+
+It's not that the top-down one is *slow* per se, both are $\Theta(n)$, it's just that there is a major constant performance factor between the two.
+
+It *is* possible for DP to be faster top-down with memoization than bottom-up with tabulation. Mainly when the actual number of calculations is much less than $n$.
+
+We'll see some examples of problems that are potentially faster top-down in certain circumstances later in this module.
+
+But if you have a choice: top-down is usually easier to reason about and prove, and bottom-up is usally easier to code in an imperative language and faster.
+
+---
+
+# Automatic DP in languages like Python
+
+We're using C for this class, but I wanted to show you that DP techniques are so well-understood, that some languages actually have built-in support for them.
+
+Python has a technique that lets you *automatically* turn a function into a DP version without having to actually re-code it.
+
+
+---
+
+fibo 1 source:
+```
+flowchart TD
+    F10("F(10)")
+    F9("F(9)")
+    F8_1("F(8)")
+    F8_2("F(8)")
+    F7_1("F(7)")
+    F7_2("F(7)")
+    Dots1("...")
+    Dots2("...")
+    Dots3("...")
+    Dots4("...")
+    Dots5("...")
+    Dots6("...")
+    Dots7("...")
+
+    F10 --> F9 & F8_1
+    F9 --> F8_2 & F7_1
+    F8_1 --> F7_2 & Dots5
+    F8_2 --> Dots1 & Dots2
+    F7_1 --> Dots3 & Dots4
+    F7_2 --> Dots6 & Dots7
+```
+
+---
+
+fibo 2 source:
+```
+flowchart TD
+    F10("F(10)")
+    F9("F(9)")
+    F8("F(8)")
+    F7("F(7)")
+    F6("F(6)")
+    F5("F(5)")
+    
+    F10 --> F9
+    F9 --> F8
+    F8 --> F7
+    F7 --> F6 
+    F6 --> F5
+    F10 --> F8  
+    F9 --> F7
+    F8 --> F6
+    F7 --> F5
+```
