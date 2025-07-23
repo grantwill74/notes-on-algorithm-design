@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>module_8</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="design-and-analysis-of-algorithms">Design and Analysis of
+Algorithms</h1>
+<h2 id="module-8-dynamic-programming">Module 8: Dynamic Programming</h2>
+<p><br> <br></p>
+<p>Slides © Grant Williams, <a
+href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
+4.0</a>.</p>
+<p><br></p>
+<p>This is an open educational resource. Feel free to submit fixes,
+improvements, and new material <a
+href="https://github.com/grantwill74/notes-on-algorithm-design">here</a>.</p>
+<hr />
+<h1 id="last-week">Last week</h1>
+<p>Last week we learned about greedy algorithms.</p>
+<p>These are algorithms that solve problems that appear combinatorial on
+the surface, but which have some simplifying “trick”.</p>
+<p>The algorithm can always choose according to simple function (like
+maximizing some variable) at each step.</p>
+<p>So instead of something like exponential time, they are in P.</p>
+<hr />
+<h1 id="this-week">This week</h1>
+<p>This week, we’re going to learn about dynamic algorithms.</p>
+<p>These are algorithms that solve actual tough problems, and there’s no
+“trick”.</p>
+<p>However, they are divide and conquer algorithms where the
+sub-problems have overlap.</p>
+<p>By being smart about what we compute (and usually by saving some data
+in a table), we end up running way less code.</p>
+<hr />
+<h1 id="divide-and-conquer">Divide and Conquer</h1>
+<p>Remember divide and conquer algorithms?</p>
+<p>These are algorithms that break problems up into simpler
+sub-problems.</p>
+<p>[What were some examples?]</p>
+<hr />
+<h1 id="divide-and-conquer-examples">Divide and Conquer examples</h1>
+<p>Quicksort and mergesort were divide and conquer problems: they both
+involve splitting the list in half and sorting both sides
+independently.</p>
+<p>Quick-select was a divide-and-conquer algorithm for finding the nth
+value in a list. It only searches one part of itself and ignores the
+other.</p>
+<p>BST functions, like insert and lookup, are divide and conquer.</p>
+<p>Heap insert, same thing.</p>
+<hr />
+<h1 id="divide-and-conquer-speeds">Divide and conquer speeds</h1>
+<p>While there isn’t some rule that divide and conquer algorithms have
+to take a certain amount of time, we saw examples that ranged from
+logarithmic time to, typically, linear-logarithmic.</p>
+<p>But let’s look at a very simple problem, one that seems like it
+should be much easier, but that, if implemented in a straightforward
+way, is really, <em>really</em> slow.</p>
+<hr />
+<h1 id="fibonacci-sequence">Fibonacci Sequence</h1>
+<p>A class example of a slow computation that can be sped up with a
+table is computing elements of the Fibonacci sequence.</p>
+<p>Named after <a
+href="https://en.wikipedia.org/wiki/Fibonacci">Leonardo Bonacci</a>
+(called “Fibonacci” or “Fi’Bonacci”, short for “Filius Bonacci”, “son of
+Bonacci)</p>
+<p>The sequence was originally introduced in the book, <a
+href="https://en.wikipedia.org/wiki/Liber_Abaci">Liber Abaci</a>, as a
+simple model of a rabbit population over time.</p>
+<p>However, the mathematical sequence itself was already known in India,
+where it was the solution of problems involving 1 and 2 syllable
+language patterns.</p>
+<p>The book itself was intended to introduce the European reader to the
+use of Arabic numerals, and to give reasons to do arithmetic without an
+abacus and Roman numerals. [This was surprisingly controversial]</p>
+<hr />
+<h1 id="fibonacci-sequence-1">Fibonacci Sequence</h1>
+<p>The Fibonacci sequence is defined like this: <span
+class="math inline">\(F(0) = 0\)</span> <span class="math inline">\(F(1)
+= 1\)</span> <span class="math inline">\(F(n) = F(n - 2) + f(n -
+1)\)</span></p>
+<p>That is, the nth Fibonacci number is the sum of the previous two
+numbers in the sequence.</p>
+<p>Here’s an example of the first few numbers: 0, 1, 1, 2, 3, 5, 8, 13,
+21, 34, 55, 89, 144, 233, 377</p>
+<hr />
+<h1 id="calculating-the-fibonacci-sequence">Calculating the Fibonacci
+Sequence</h1>
+<p>So, how do we calculate it?</p>
+<p>We were given a definition, so it seems like the most obvious step is
+to implement it:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> fibo<span class="op">(</span><span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span> n<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fibo<span class="op">(</span>n <span class="op">-</span> <span class="dv">2</span><span class="op">)</span> <span class="op">+</span> fibo<span class="op">(</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>[Make sense?]</p>
+<hr />
+<h1 id="how-fast-is-it">How fast is it?</h1>
+<p>So, how fast is that code going to run?</p>
+<p>Can we give it a runtime bound? Maybe a big O?</p>
+<p>[Class?]</p>
+<p>Let’s look at a diagram to make it more obvious…</p>
+<hr />
+<figure>
+<img src="fibo1.svg"
+alt="bg height:90% a diagram showing the computation of Fibonacci numbers. F(10) requires F(9) and F(8). F(9) requires F(8) and F(7). F(8) requires F(7), etc. The diagram is demonstrating the exponential growth of the naive Fibonacci calculation." />
+<figcaption aria-hidden="true">bg height:90% a diagram showing the
+computation of Fibonacci numbers. F(10) requires F(9) and F(8). F(9)
+requires F(8) and F(7). F(8) requires F(7), etc. The diagram is
+demonstrating the exponential growth of the naive Fibonacci
+calculation.</figcaption>
+</figure>
+<hr />
+<h1 id="what-does-it-look-like">What does it look like?</h1>
+<p>Each call is calling the function twice.</p>
+<p>This means we double the amount of work we do each function call.</p>
+<p>It’s roughly a <span class="math inline">\(O(2^n)\)</span> growth
+rate (slightly better).</p>
+<p>This is…bad.</p>
+<p>How big can <span class="math inline">\(n\)</span> be before this is
+basically unworkable on a modern computer?</p>
+<p>[Let’s do some live coding to find out]</p>
+<hr />
+<h1 id="looking-at-it-from-the-bottom-up">Looking at it from the bottom
+up</h1>
+<p>To compute <span class="math inline">\(F(2)\)</span>, we compute
+<span class="math inline">\(F(1) + F(0)\)</span> To compute <span
+class="math inline">\(F(3)\)</span>, we compute <span
+class="math inline">\(F(2) + F(1) = F(1) + F(0) + F(1)\)</span> To
+compute <span class="math inline">\(F(4)\)</span>, we compute <span
+class="math inline">\(F(3) + F(2) = F(2) + F(1) + F(1) + F(0) = F(1) +
+F(0) + F(1) + F(1) + F(0)\)</span> To compute <span
+class="math inline">\(F(5)\)</span>, we compute <span
+class="math inline">\(F(4) + F(3) = F(3) + F(2) + F(2) + F(1) = F(2) +
+F(1) + F(1) + F(0) + F(1) + F(0) + F(1) = F(1) + F(0) + F(1) + F(1) +
+F(0) + F(1) + F(0) + F(1)\)</span></p>
+<p>I didn’t want it to run off the end of the slide there, but let’s
+pretend it’s intentional. It’s too many calculations.</p>
+<p>We keep calculating <span class="math inline">\(F(1)\)</span> and
+<span class="math inline">\(F(0)\)</span> over and over</p>
+<hr />
+<h1 id="questions">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="the-fundamental-issue">The fundamental issue</h1>
+<p>Computing Fibonacci numbers is not hard. We’re just recomputing an
+enormous amount of data for no reason at all.</p>
+<p>To see this, let’s consider what our call-tree would look like if we
+didn’t compute each number over and over again.</p>
+<hr />
+<figure>
+<img src="fibo2.svg"
+alt="bg right:30% height:90% a diagram showing the computation of Fibonacci numbers that is more tractable. F(10) requires F(9) and F(8). However, the F(8) that F(9) depends on is shared between F(10) and F(9), saving the calculation. This results in the “Tree” looking like a list, instead." />
+<figcaption aria-hidden="true">bg right:30% height:90% a diagram showing
+the computation of Fibonacci numbers that is more tractable. F(10)
+requires F(9) and F(8). However, the F(8) that F(9) depends on is shared
+between F(10) and F(9), saving the calculation. This results in the
+“Tree” looking like a list, instead.</figcaption>
+</figure>
+<h1 id="more-tractable-growth">More Tractable Growth</h1>
+<p>Notice what happens when we <em>don’t</em> recompute the values each
+time.</p>
+<p>Notice that the tree doesn’t “fan out”.</p>
+<p>This is all we <em>need</em> to calculate. We didn’t need to
+calculate <span class="math inline">\(F(6)\)</span> a bunch of times. We
+only should need to calculate it once.</p>
+<p>So, how can we do this?</p>
+<hr />
+<h1 id="storing-the-result-in-a-table">Storing the result in a
+table?</h1>
+<p>The first thing that might occur to us would be to use a table. This
+is a fairly common solution to this problem (although there are better
+ones for Fibonacci in particular)</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">long</span> <span class="dt">long</span> saved<span class="op">[</span><span class="dv">50</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span> <span class="op">};</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">long</span> <span class="dt">long</span> fibo<span class="op">(</span><span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span> n<span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>saved<span class="op">[</span>n<span class="op">]</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> saved<span class="op">[</span>n<span class="op">];</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">long</span> <span class="dt">long</span> result <span class="op">=</span> fibo<span class="op">(</span>n <span class="op">-</span> <span class="dv">2</span><span class="op">)</span> <span class="op">+</span> fibo<span class="op">(</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    saved<span class="op">[</span>n<span class="op">]</span> <span class="op">=</span> result<span class="op">;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> saved<span class="op">[</span>n<span class="op">];</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Make sure <code>n &lt; 50</code> in this example.</p>
+<hr />
+<h1 id="storing-the-result-in-a-table-2">Storing the result in a table?
+(2)</h1>
+<p>Here, we’re using a long long, because the standard guarantees that
+it’s large enough to store 2^64 - 1. Fibo grows very quickly.</p>
+<p>We have two base cases now. If we used a sentinel value like -1 to
+represent an uncomputed value, we could omit the first one and test for
+-1 instead. But then we couldn’t use the auto-array initializer.</p>
+<p>Crucially, once we calculate the result, we store it in the table.
+Now we will only ever calculate it once. If that fibo comes up again, we
+will find it in the table instead.</p>
+<p>Now our call graph looks like the one on the previous slide. We don’t
+recompute values.</p>
+<hr />
+<h1 id="what-is-the-big-o">What is the big-O?</h1>
+<p>Previously it was <span class="math inline">\(O(2^n)\)</span>. What
+did we improve it to?</p>
+<p>[Thoughts?]</p>
+<hr />
+<h1 id="the-new-big-theta">The new big-<span
+class="math inline">\(\Theta\)</span></h1>
+<p>Consider the recurrence relation: <span class="math inline">\(T(\le
+1) = 1\)</span> <span class="math inline">\(T(n) = T(n - 2) + T(n - 1) +
+\Theta(1)\)</span></p>
+<p>This was the naive recurrence relation. However, for this version,
+<span class="math inline">\(F(n - 2)\)</span> was already computed by
+<span class="math inline">\(F(n - 1)\)</span>, so it doesn’t show up
+again. Instead we get: <span class="math inline">\(T(\le 1) = 1\)</span>
+<span class="math inline">\(T(n) = T(n - 1) + \Theta(1)\)</span></p>
+<p>And from our earlier lemma about linear recurrence relations, we know
+that this is <span class="math inline">\(\Theta(n)\)</span>.</p>
+<hr />
+<h1 id="questions-1">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="dynamic-programming">Dynamic programming</h1>
+<p>This technique is what we mean by dynamic programming (DP).</p>
+<p>We originally had a problem that was based on “overlapping
+sub-problems”. That is, <span class="math inline">\(F(10)\)</span>
+depended on <span class="math inline">\(F(9)\)</span> and <span
+class="math inline">\(F(8)\)</span>.</p>
+<p>But these sub-problems had many sub-problems in common. For example,
+<span class="math inline">\(F(7)\)</span>.</p>
+<p>We call it Dynamic Programming when we avoid re-computing the shared
+values.</p>
+<hr />
+<h1 id="top-down-vs.-bottom-up">Top down vs. bottom up</h1>
+<p>In our example, we started with the value we wanted to compute, e.g.,
+<span class="math inline">\(F(10)\)</span>, and then recursively compute
+<span class="math inline">\(F(9)\)</span>, <span
+class="math inline">\(F(8)\)</span>, etc.</p>
+<p>We store the intermediate recursive results in a data structure on
+the way back up. Doing this is called <em>memoization</em>. (not a
+misspelling)</p>
+<p>This is called top-down dynamic programming. What makes it
+top-down?</p>
+<p>We start our process by trying to obtain the value we want (<span
+class="math inline">\(F(10)\)</span>) and work our way down the
+recursion tree.</p>
+<hr />
+<h1 id="bottom-up-dynamic-programming">Bottom-up dynamic
+programming</h1>
+<p>Notice that when computing <span
+class="math inline">\(F(10)\)</span>, we end up computing <span
+class="math inline">\(F(9)\)</span>, and <span
+class="math inline">\(F(8)\)</span>, all the way down to <span
+class="math inline">\(F(2)\)</span>.</p>
+<p>So, why don’t we just compute those values iteratively, instead of
+recursively?</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">long</span> <span class="dt">long</span> saved<span class="op">[</span><span class="dv">10</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span> <span class="op">};</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">10</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    saved<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> saved<span class="op">[</span>i <span class="op">-</span> <span class="dv">2</span><span class="op">]</span> <span class="op">+</span> saved<span class="op">[</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">];</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>We don’t even need a function now. The 49th Fibonacci number is
+<code>saved[49]</code>.</p>
+<p>This is bottom-up dynamic programming. We compute the first value we
+need (<span class="math inline">\(F(2)\)</span>), then the next, and the
+next, and so on, until reaching the actual value we want.ed</p>
+<hr />
+<h1 id="which-one">Which one?</h1>
+<p>In this case, we end up computing the same values whether we use
+top-down or bottom-up.</p>
+<p>So does it matter?</p>
+<p>In theory no, in practice yes.</p>
+<p>Which do you think is faster?</p>
+<hr />
+<h1 id="which-one-2">Which one? (2)</h1>
+<p>Bottom-up is almost always faster in my experience.</p>
+<p>A for-loop over adjacent memory cells is blazingly fast. Recursive
+function calls, less so.</p>
+<p>It’s not that the top-down one is <em>slow</em> per se, both are
+<span class="math inline">\(\Theta(n)\)</span>, it’s just that there is
+a major constant performance factor between the two.</p>
+<p>It <em>is</em> possible for DP to be faster top-down with memoization
+than bottom-up with tabulation. Mainly when the actual number of
+calculations is much less than <span
+class="math inline">\(n\)</span>.</p>
+<p>We’ll see some examples of problems that are potentially faster
+top-down in certain circumstances later in this module.</p>
+<p>But if you have a choice: top-down is usually easier to reason about
+and prove, and bottom-up is usally easier to code in an imperative
+language and faster.</p>
+<hr />
+<h1 id="can-we-improve-further">Can we improve further?</h1>
+<p>Many of you might already see that we’re wasting memory with our
+table.</p>
+<p>We don’t need a table. We just need the last two values. Becuase each
+element of the Fibonacci series is defined by the previous two
+elements.</p>
+<p>How do we do this? How should we change the code to still do a
+bottom-up approach, but without needing a whole table? [Class]</p>
+<hr />
+<h1 id="my-answer">My answer</h1>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdint.h&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">uint64_t</span> fibo<span class="op">(</span><span class="dt">uint64_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span> n<span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">uint64_t</span> a <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">uint64_t</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">uint64_t</span> c <span class="op">=</span> a <span class="op">+</span> b<span class="op">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> b<span class="op">;</span> b <span class="op">=</span> c<span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> b<span class="op">;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="my-answer-2">My answer (2)</h1>
+<p>First, we’re using <code>stdint.h</code> for access to the
+<code>uint64_t</code> typedef. It’s a lot more convenient than writing
+<code>unsigned long long</code>.</p>
+<p>We have a quick check for the <code>n == 0</code> and
+<code>n == 1</code> conditions.</p>
+<p>We can think of <code>a</code> as the previous value, and
+<code>b</code> as the current one.</p>
+<p>Because we started by checking for <code>n == 0</code> and
+<code>n == 1</code>, we want <code>a</code> and <code>b</code> to start
+in a state where <code>n == 2</code>, which is why we chose to make both
+be <code>1</code>.</p>
+<hr />
+<h1 id="my-answer-3">My answer (3)</h1>
+<p>To get the next element of the series, we add <code>a</code> and
+<code>b</code>. Call it <code>c</code>.</p>
+<p>We want <code>b</code> to be the “current” value, so we cycle them:
+The current <code>b</code> because the new <code>a</code>, and the
+current <code>c</code> (the sum) becomes the new <code>b</code>.</p>
+<p>Our invariant is that <code>b</code> is the ith Fibonacci number and
+<code>a</code> is the <span class="math inline">\((i - 1)\)</span>th.
+It’s true for <code>i == 2</code>, and if it’s true for some
+<code>i</code>, then after adding and cycling, it’s true for
+<code>i + 1</code>.</p>
+<p>[Does that count as a proof? Does it make sense?]</p>
+<hr />
+<h1 id="how-fast-is-it-now">How fast is it now?</h1>
+<p>After removing the table, what’s our big-<span
+class="math inline">\(\Theta\)</span>?</p>
+<hr />
+<h1 id="its-still-thetan">It’s still <span
+class="math inline">\(\Theta(n)\)</span></h1>
+<p>We can use our basic iterative big-<span
+class="math inline">\(\Theta\)</span> analysis here. There’s a for loop
+over roughly <code>n</code> elements, so it’s <span
+class="math inline">\(\Theta(n)\)</span>.</p>
+<p>So, it doesn’t change anything fundamentally.</p>
+<p>But we’re using less memory and we don’t have to handle the case that
+there isn’t enough (we never need to allocate).</p>
+<hr />
+<h1 id="questions-2">Questions?</h1>
+<!-- _class: questions invert -->
+<hr />
+<h1 id="improving-further">Improving further</h1>
+<p>You might think that <span class="math inline">\(\Theta(n)\)</span>
+is the best we can do, but the Fibonacci series appears in a lot of
+places, and it’s heavily studied.</p>
+<p>It might surprise you to learn that we can improve to sub-linear
+time.</p>
+<p>This is more advanced than you will likely be required to do in a
+typical technical interview, but it’s a cool technique that demonstrates
+how linear algebra techniques can help us think about problems.</p>
+<hr />
+<h1 id="building-a-matrix">Building a matrix</h1>
+<p>First, recall our technique of using <code>a</code> and
+<code>b</code> and using those values to compute the next element in the
+series.</p>
+<p>As a linear transformation, it looks like this: <span
+class="math display">\[
+\begin{pmatrix} b_{n + 1} \\ a_{n + 1} \end{pmatrix} = \begin{pmatrix} 1
+&amp; 1 \\ 1 &amp; 0 \end{pmatrix}^n\begin{pmatrix}1 \\ 0\end{pmatrix}
+\]</span></p>
+<p>The <span class="math inline">\(2 \times 2\)</span> matrix in the
+middle is the fundamental linear transformation.</p>
+<p>Notice how we’re still adding <span class="math inline">\(b_n +
+a_n\)</span> to get <span class="math inline">\(b_{n + 1}\)</span>, and
+we’re still setting <span class="math inline">\(a_{n + 1} =
+b_n\)</span>. This is a way of encoding our simple iterative logic into
+a matrix equation.</p>
+<p>But how does it help?</p>
+<hr />
+<h1 id="fast-exponentiation">Fast exponentiation</h1>
+<p>Two ways: first, multiplying two <span class="math inline">\(2 \times
+2\)</span> matrices can be done in constant time. In fact, with SIMD, it
+can be a pretty fast constant time (4 dot products and stores).</p>
+<p>The critical insight is that we can use fast exponentiation to
+comptue exponents in logarithmic time.</p>
+<p>For example, if <span class="math inline">\(n = 100\)</span> how do
+we compute <span class="math inline">\(X^{100}\)</span> where X is a
+matrix? If we multiply <span class="math inline">\(X\)</span> by itself
+<span class="math inline">\(100\)</span> times, then this ends up being
+linear time, because a matrix multiplication is constant, and we do it
+<span class="math inline">\(n\)</span> times.</p>
+<p>However, notice that <span class="math inline">\(X^{100}\)</span> =
+<span class="math inline">\(X^{50} \times X^{50}\)</span>. So we really
+only need to compute <span class="math inline">\(X^{50}\)</span>, and
+then it’s one more multiplication.</p>
+<hr />
+<h1 id="fast-exponentiation-1">Fast exponentiation</h1>
+<p>But <span class="math inline">\(X^{50}\)</span> is just <span
+class="math inline">\(X^{25} \times X^{25}\)</span>. So we can compute
+<span class="math inline">\(X^{100} = ((X^{25})^2)^2\)</span>. So
+really, once we get <span class="math inline">\(X^{25}\)</span>, it’s
+just two more operations.</p>
+<p>But now we have an odd number, so we have to factor out an <span
+class="math inline">\(X\)</span> before we continue: <span
+class="math inline">\(((X^{25})^2)^2 = ((X\times X^{24})^2)^2 = ((X
+\times (X^{12})^2)^2)^2 = ((X \times ((X^{6})^2)^2)^2)^2\)</span> <span
+class="math inline">\(=((X \times (((X^{3})^2)^2)^2)^2)^2 = ((X \times
+(((X\times X^{2})^2)^2)^2)^2)^2\)</span></p>
+<p>We’ve got 8 operations now for <span class="math inline">\(n =
+100\)</span>. Each time, if our factor is odd, we add 2 operations, and
+if it’s even, we add 1. Either way, this is logarithmic time.</p>
+<hr />
+<h1 id="practice">Practice</h1>
+<ul>
+<li>Implement this method yourself. I’ve worked it in
+<code>code/dyn.c</code>.</li>
+<li>Roughly, how large do we expect <span
+class="math inline">\(n\)</span> to get before fibo overflows?</li>
+<li>If we implement this in Python with its automatic BigInt promotion,
+would we still consider it <span class="math inline">\(\Theta(\lg
+n)\)</span>?</li>
+<li>Explain why or why not, and what the new big-<span
+class="math inline">\(\Theta\)</span> would be if not. (it might
+surprise you)</li>
+</ul>
+<hr />
+<h1 id="questions-3">Questions?</h1>
+<!-- _class: questions invert -->
+<hr />
+<h1 id="closed-form-fibonacci">Closed form Fibonacci</h1>
+<p>Of course, some of you already know the closed form equation to
+compute Fibonacci numbers:</p>
+<p><span class="math display">\[
+f_n = {1 \over \sqrt{5}}\left(\left({1 + \sqrt{5} \over
+2}\right)^n-\left({1 - \sqrt{5} \over 2}\right)^n\right)
+\]</span></p>
+<p>This <span class="math inline">\(\left({1 + \sqrt{5} \over
+2}\right)^n\)</span> term is called the golden ratio.</p>
+<p><a
+href="https://www.cantorsparadise.com/deriving-and-understanding-binets-formula-for-the-fibonacci-sequence-4cc2693838b0">Deriving
+this equation</a> involves some discrete math techniques that are a
+little more advanced than we’ve seen so far (the superposition
+principle), but nothing too wild. (You don’t have to learn it for this
+class.)</p>
+<p>However, does this mean that it’s constant time?</p>
+<hr />
+<h1 id="its-not-constant-time">It’s not constant time</h1>
+<p>That equation is cool, but it runs into the same problem as our
+matrix equation.</p>
+<p>Once the exponent gets big, we start needing to use arbitrary
+precision floating point. We can’t just throw doubles in there and
+expect to get the right answer for <span
+class="math inline">\(n\)</span> values that overflow the mantissa.</p>
+<p>So, in practice, it’s unlikely to be faster. We still need a
+logarithmic number of squares, but now our arithmetic involves
+big-floats instead of big-ints. It’s still <span
+class="math inline">\(\Theta((\lg n)^2)\)</span></p>
+<hr />
+<h1 id="questions-4">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="automatic-dp-in-languages-like-python">Automatic DP in languages
+like Python</h1>
+<p>We’re using C for this class, but I wanted to show you that DP
+techniques are so well-understood, that some languages actually have
+built-in support for them.</p>
+<p>Python has a technique that lets you <em>automatically</em> turn a
+function into a DP version without having to actually re-code it.</p>
+<p>Obviously I’m not going to test you on a Python technique, I just
+thought it was cool.</p>
+<hr />
+<h1 id="starting-point">Starting point</h1>
+<p>Let’s imagine we’re starting with this:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fibo(n):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">1</span>: <span class="cf">return</span> n </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fibo(n – <span class="dv">1</span>) <span class="op">+</span> fibo(n – <span class="dv">2</span>)</span></code></pre></div>
+<p>It has the same problems as the original naive C code, except it can
+reach an <code>n</code> of probably a couple lower in a given time
+because it’s in Python.</p>
+<p>Recall that we used a table to store intermediate results before. We
+can still do that. However, there’s an approach that does this
+automatically…</p>
+<hr />
+<h1 id="cache">Cache</h1>
+<p>Check this out:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> functools <span class="im">import</span> cache</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">@cache</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fibo(n):</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">1</span>: <span class="cf">return</span> n</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fibo(n <span class="op">-</span> <span class="dv">2</span>) <span class="op">+</span> fibo(n <span class="op">-</span> <span class="dv">1</span>)</span></code></pre></div>
+<p>This magically works. It runs in <span
+class="math inline">\(\Theta(n)\)</span>, like the memoized version.</p>
+<hr />
+<h1 id="cache-2">Cache (2)</h1>
+<p>How does it work? <code>@cache</code> is something called a
+<em>decorator</em>.</p>
+<p>Basically, when you write a decorator on top of a function, the
+decorator gets called like a function, and it receives the function it’s
+on top of as an argument.</p>
+<p>It then creates a hashtable and a local function that looks up its
+argument in the hashtable, and if it’s there, returns it, and if not,
+calls itself again recursively.</p>
+<p>This requires that the value be hashable, but otherwise, it’s pretty
+flexible. It can really speed up a lot of common top-down DP
+problems.</p>
+<hr />
+<h1 id="questions-5">Questions?</h1>
+<!-- _class: questions invert -->
+<hr />
+<h1 id="more-dp">More DP</h1>
+<p>We spent a lot of time on Fibonacci. Let’s look at some other
+problems too.</p>
+<p>Let’s start with the classic problem with a sometimes greedy
+solution: making change.</p>
+<p>Suppose we have coins of denominations <span
+class="math inline">\(d_i\)</span>, where <span
+class="math inline">\(d_0\)</span> is our largest coin, <span
+class="math inline">\(d_1\)</span> our second largest, and so on. A
+denomination is just the face value of a coin or bill.</p>
+<p>In the US, the most common coins in circulation have denominations
+<span class="math inline">\(25\textcent, 10\textcent, 5\textcent,
+1\textcent\)</span></p>
+<hr />
+<h1 id="greedy-coin-counting">Greedy coin counting</h1>
+<p>This is commonly given as a basic programming problem.</p>
+<p>We want to make change for a certain value in cents. What is the
+smallest number of coins we need, given our 4 denominations?</p>
+<p>You’ve done this problem before, so here is the answer…</p>
+<hr />
+<h1 id="greedy-coin-counting-2">Greedy coin counting (2)</h1>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> greedy_fixed<span class="op">(</span><span class="dt">int</span> cents<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> n_coins <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    n_coins <span class="op">+=</span> cents <span class="op">/</span> <span class="dv">25</span><span class="op">;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    cents <span class="op">%=</span> <span class="dv">25</span><span class="op">;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    n_coins <span class="op">+=</span> cents <span class="op">/</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    cents <span class="op">%=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    n_coins <span class="op">+=</span> cents <span class="op">/</span> <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    cents <span class="op">%=</span> <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    n_coins <span class="op">+=</span> cents<span class="op">;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n_coins<span class="op">;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="greedy-coin-counting-3">Greedy coin counting (3)</h1>
+<p>Hopefully this makes sense. We try to use as many quarters as
+possible, then as many dimes, etc. The fact that we always pick the
+largest denomination first is what makes this a greedy algorithm.</p>
+<p>But why is that optimal?</p>
+<p>[Can anyone prove that the greedy solution here is the best one?]</p>
+<hr />
+<h1 id="proving-it">Proving it</h1>
+<p>We cannot have more than <span class="math inline">\(\lfloor n / d
+\rfloor\)</span> quarters without overshooting. However, could we have
+<em>fewer</em> than that?</p>
+<p>If we did, we would have to make up for it with some number of other
+coins. No coin is worth more than a quarter, so it would take <span
+class="math inline">\(\gt 1\)</span> other coins to make up for it.</p>
+<p>Therefore, the total number of coins would increase. Therefore, we
+minimize the number of coins by starting with <span
+class="math inline">\(\lfloor n / d \rfloor\)</span> quarters.</p>
+<p>The rest of the proof proceeds similarly for each denomination.</p>
+<p>Like most greedy proofs, we show that an alternate strategy must be
+inferior.</p>
+<hr />
+<h1 id="when-does-it-break">When does it break?</h1>
+<p>Currency systems have been surprisingly complicated in history. It is
+only recently that most countries use a decimal system (where you have a
+main denomination broken into 100 cents, or alternatively, the smallest
+denomination is the main one).</p>
+<p>Consider that the United Kingdom only switched to a decimal system in
+1971. Before that, they used the system that England inherited from the
+roman empire.</p>
+<p>This was called the called the Lsd system or £sd, which stood for
+“Librae, solidi, denarii”, the three major coins of the Roman
+empire.</p>
+<p>A libra (the L, of which the £ is a stylized variant) was a pound of
+silver, which is the origin of the currency “pound”. A solidus and
+denarius were made of various amounts of gold or silver depending on how
+much they had been debased at any point in time.</p>
+<hr />
+<h1 id="when-does-it-break-2">When does it break? (2)</h1>
+<p>The English version used different names: “pound” instead of “libra”,
+“shilling” instead of “solidus”, and “penny” instead of “denarius”
+(plural “pence”).</p>
+<p>There was an even smaller unit: they split a penny into 4
+farthings.</p>
+<p>The standard values, standardized after the Norman conquest, were as
+follows: - 1 pound was 20 shillings - 1 shilling was 12 pence - 1 penny
+was 4 farthings</p>
+<p>Therefore, 1 pound was 20 shillings, 240 pence, or 960 farthings</p>
+<hr />
+<h1 id="when-does-it-break-3">When does it break? (3)</h1>
+<p><a
+href="https://en.wikipedia.org/wiki/List_of_British_banknotes_and_coins">The
+actual coins in circulation were often odd-sized and strange</a>. Here
+are my favorites: - 2 farthings was a halfpenny (pronounced “haypenny”)
+- 3 pence was a thruppence - 12 pence was a shilling, as mentioned
+before, but it was often called a “bob” - 2 shillings was a “two bob
+bit” or a “two bit bob”. Also called a “florin”. - 5 shillings was a
+“crown” - 2s / 6d (two shillings and 6 pence) was a “half-crown” - 21
+shillings (1£ / 1s / 0d) was a <a
+href="https://en.wikipedia.org/wiki/Guinea_(coin)">guinea</a>. This one
+is the weirdest; according to <a
+href="https://www.projectbritain.com/moneyold.htm">this person</a>, it
+was considered a more “gentlemanly” amount of money. Professional fees,
+such as doctor or lawyer fees, would be invoiced in guineas. Apparently
+it was originally worth 1 pound, but because it was made of gold, its
+price fluctuated.</p>
+<hr />
+<h1 id="when-does-it-break-4">When does it break? (4)</h1>
+<p>Where on earth am I going with this? The point is that, with such a
+variety of currency, it is entirely possible that you would not be able
+to make exact change, and even if you were: the greedy algorithm might
+be <em>wrong</em></p>
+<p>Suppose you’re a shopkeeper in pre-decimilized UK.</p>
+<p>Prices were written as £ / s / d. So something that cost 2 pounds, 7
+shillings, and 3 pence would be: 2 / 7 / 3.</p>
+<p>Let’s imagine that you normally have the following denominations:
+pound, crown, shilling, tenpenny for some reason*, penny.</p>
+<div class="footnote">
+<p>* Tenpennies weren’t really used except during very specific points
+in history, but please work with me.</p>
+</div>
+<hr />
+<h1 id="when-does-it-break-5">When does it break? (5)</h1>
+<p>To make this easier, let’s express prices in pence. Our denominations
+are: 240, 60, 12, 10, 1</p>
+<p>Suppose something costs 31 pence.</p>
+<p>The greedy algorithm will try to use two shillings, leaving us with 7
+pence remaining. So a total of 9 coins.</p>
+<p>However, the correct answer is four coins: 3 10-pence pieces and a
+penny.</p>
+<hr />
+<h1 id="why-was-it-wrong">Why was it wrong?</h1>
+<p>What was wrong with the greedy algorithm?</p>
+<p>The issue was that not all of the denominations can divide the next
+one.</p>
+<p>If we had these denominations: 240, 60, 12, 3, 1 Then the greedy
+algorithm would always give the same results as the non-greedy one.</p>
+<p>Why? Because the optimal strategy is always to use the biggest coin
+you can. If you use a smaller coin when you could have used a bigger
+coin, you will end up needing to make the same amount of smaller change,
+but you will use more coins.</p>
+<p>But because one of our denominations does not divide the previous
+one, we have combinations that are sub-optimal.</p>
+<hr />
+<h1 id="practice-1">Practice</h1>
+<p>Find some more cent values which make the greedy algorithm wrong.</p>
+<hr />
+<h1 id="questions-6">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="fixing-it">Fixing it</h1>
+<p>Okay, so the real solution isn’t greedy, what’s our next idea?</p>
+<p>Well, Naively we could try every possible combination.</p>
+<p>How would that work?</p>
+<p>Well, suppose we’re making change for something that is 31 p.</p>
+<p>We could ask the question: what happens if we use a shilling? Then
+it’s one more the number of coins we use for 19 pence.</p>
+<p>What happens if we use a tenpenny? Then it’s one more than the
+solution for 21 p.</p>
+<p>What happense if we use a penny? Then it’s one more than the solution
+for 30 p.</p>
+<hr />
+<h1 id="fixing-it-2">Fixing it (2)</h1>
+<p>So that’s an algorithm that seems like it would return the answer.
+For <span class="math inline">\(n\)</span> pence, take the minimum of: -
+<span class="math inline">\(C(n - 240) + 1\)</span> - <span
+class="math inline">\(C(n - 60) + 1\)</span> - <span
+class="math inline">\(C(n - 12) + 1\)</span> - <span
+class="math inline">\(C(n - 10) + 1\)</span> - <span
+class="math inline">\(C(n - 1) + 1\)</span></p>
+<p>We need a base case, too: <span class="math inline">\(C(1) =
+1\)</span></p>
+<p>Does it make sense why this would give us the correct answer?</p>
+<hr />
+<h1 id="sketch-of-an-implementation">Sketch of an implementation</h1>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> slow_change<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// the - 1 is to avoid the overflow later</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> INT_MAX <span class="op">-</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span> n<span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> solution <span class="op">=</span> INT_MAX <span class="op">-</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">240</span><span class="op">));</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">60</span><span class="op">));</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">12</span><span class="op">));</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">10</span><span class="op">));</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">));</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> solution<span class="op">;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This is a janky solution with weird magic numbers. We’ll talk about
+how to improve it.</p>
+<hr />
+<h1 id="how-fast-is-it-1">How fast is it?</h1>
+<p>So, suppose we implement this algorithm. How long does it take?</p>
+<p>[Class?]</p>
+<hr />
+<h1 id="exponential-time">Exponential time</h1>
+<p>How exponential?</p>
+<p>We have 5 denominations. The number of invokations grows by a factor
+of 5.</p>
+<p>So a very loose bound is <span
+class="math inline">\(O(5^n)\)</span></p>
+<p>We can do better than that, given that the larger coins end up
+reducing the argument more. However, the result will still be
+exponential.</p>
+<p>Exponential time? No way. We can do much better. Let’s pick a DP
+approach. Why is this problem so slow naively and how can we do
+better?</p>
+<hr />
+<h1 id="the-repeating-sub-problems">The repeating sub-problems</h1>
+<p>Suppose we determine that the best way to make change for 20p is 2
+tenpence.</p>
+<p>It took time to do that. We had to try different combinations like 1
+shilling, 8 pence; 20 pence; etc.</p>
+<p>Now that we’ve done that, we shouldn’t have to do it over again.</p>
+<p>However, suppose we want to know how to make change for 50p. Then we
+might end up at 20p from many different angles: - 30p minus 10p - 21p
+minus 1p - 36p minus 12p etc.</p>
+<hr />
+<h1 id="the-repeating-sub-problems-2">The repeating sub-problems
+(2)</h1>
+<p>As a result, we end up re-calculating <span
+class="math inline">\(C(20)\)</span> over and over.</p>
+<p>And, just like Fibonacci, we don’t have to. We can just compute it
+once and save it.</p>
+<p>[So, how do we do that?]</p>
+<hr />
+<h1 id="improving-it">Improving it</h1>
+<p>Two ways: bottom-up or top-down. Let’s do top down.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> denoms<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">240</span><span class="op">,</span> <span class="dv">60</span><span class="op">,</span> <span class="dv">12</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">1</span><span class="op">};</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> dp<span class="op">[</span><span class="bn">0x10000</span><span class="op">]</span> <span class="op">=</span> <span class="op">{};</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> dyn_change<span class="op">(</span><span class="dt">int</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>p <span class="op">&lt;=</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>dp<span class="op">[</span>p<span class="op">])</span> <span class="cf">return</span> dp<span class="op">[</span>p<span class="op">];</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> sol <span class="op">=</span> INT_MAX<span class="op">;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N_DENOMS<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>denoms<span class="op">[</span>i<span class="op">]</span> <span class="op">&gt;</span> p<span class="op">)</span> <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> sub <span class="op">=</span> dyn_change<span class="op">(</span>p <span class="op">-</span> denoms<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>sub <span class="op">==</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span><span class="dv">1</span> <span class="op">+</span> sub <span class="op">&lt;</span> sol<span class="op">)</span> sol <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> sub<span class="op">;</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    dp<span class="op">[</span>p<span class="op">]</span> <span class="op">=</span> sol <span class="op">==</span> INT_MAX <span class="op">?</span> <span class="op">-</span><span class="dv">1</span> <span class="op">:</span> sol<span class="op">;</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dp<span class="op">[</span>p<span class="op">];</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="explaining-it">Explaining it</h1>
+<p>It works for solutions smaller than <span
+class="math inline">\(2^{20}\)</span> (<code>0x100000</code>)</p>
+<p>We store all of our solutions in the array <code>dp</code>.</p>
+<p>Our base cases are that either that there are no coins needed, or</p>
+<p>Once a solution is calculated, we don’t re-calculate it.</p>
+<p>[So what is a good time-bound now?]</p>
+<hr />
+<h1 id="the-new-bound">The new bound</h1>
+<p>The new time bound is linear. <span
+class="math inline">\(O(n)\)</span>.</p>
+<p>Why? Because once we compute a particular value, we never compute it
+again.</p>
+<p>Therefore, the largest number we could compute is <span
+class="math inline">\(n\)</span>.</p>
+<p>And each time, we’re doing a constant amount of work. Some table
+lookups and additions.</p>
+<hr />
+<h1 id="questions-7">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="practice-2">Practice</h1>
+<ul>
+<li>I’ve shown the top-down solution. Now write the bottom-up
+solution.</li>
+<li>Which one do you expect to be faster and why? There’s a clear answer
+with the denominations we’ve given.</li>
+<li>What would change if we didn’t just track denominations, but also
+the amount we had of each coin? How would we analyze that problem? Is
+there still a DP solution? Suppose you have as much memory as you
+want.</li>
+</ul>
+<hr />
+<h1 id="one-more-problem">One more problem</h1>
+<p>Suppose we work for a company that cuts and sells aluminum rods.</p>
+<table>
+<thead>
+<tr>
+<th>Length</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>1</td>
+<td>5</td>
+<td>8</td>
+<td>9</td>
+<td>10</td>
+<td>17</td>
+<td>17</td>
+<td>20</td>
+<td>24</td>
+<td>30</td>
+</tr>
+</tbody>
+</table>
+<p>Your job: write an algorithm that tells the company the max amount of
+money they can make with a given length of aluminum, assuming that they
+can freely cut it into pieces that make more money.</p>
+<hr />
+<h1 id="example-price">Example price</h1>
+<p>What’s the best price we can get with a length of 7?</p>
+<table>
+<thead>
+<tr>
+<th>Length</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>1</td>
+<td>5</td>
+<td>8</td>
+<td>9</td>
+<td>10</td>
+<td>17</td>
+<td>17</td>
+<td>20</td>
+<td>24</td>
+<td>30</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>We could sell it as-is and make $17.</p></li>
+<li><p>At the very least, we could shave off a length of 1, because 6
+and 7 have the same price. Now we make 18 instead.</p></li>
+<li><p>We could also do 2 + 2 + 3. That makes 18 also.</p></li>
+</ul>
+<hr />
+<h1 id="how-tractable-is-this">How tractable is this?</h1>
+<p>Can we come up with a basic algorithm for doing this?</p>
+<p>[Let’s start with a naive one.]</p>
+<hr />
+<h1 id="naive-algorithm">Naive algorithm</h1>
+<ul>
+<li>If the length is <span class="math inline">\(\le 0\)</span>, just
+return 0</li>
+<li>If the length is 1, we can’t cut anymore, so return the price of a
+length 1.</li>
+<li>Otherwise, try cutting every possible length <span
+class="math inline">\(l\)</span>. We obtain two rods: one of length
+<span class="math inline">\(l\)</span> and one of length <span
+class="math inline">\(n - l\)</span>.</li>
+<li>We get that pair for every length. So choose the pair with the
+maximum profit.</li>
+</ul>
+<hr />
+<h1 id="naive-algorithm-example">Naive algorithm example</h1>
+<table>
+<thead>
+<tr>
+<th>Length</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>1</td>
+<td>5</td>
+<td>8</td>
+<td>9</td>
+<td>10</td>
+<td>17</td>
+<td>17</td>
+<td>20</td>
+<td>24</td>
+<td>30</td>
+</tr>
+</tbody>
+</table>
+<p>Suppose we’re trying to solve <span class="math inline">\(n =
+7\)</span> again. Choose the maximum of: - 17 from price[7] - price[6] +
+rod_price(1) - price[5] + rod_price(2) - price[4] + rod_price(3) -
+price[3] + rod_price(4) - etc…</p>
+<hr />
+<h1 id="naive-problem">Naive problem</h1>
+<p>Just like before, the issue is that this scales exponentially.</p>
+<p>Furthermore, we have a lot of repeated sub-problems. For example,
+<code>rod_price(10)</code> will need to know <code>rod_price(7)</code>,
+but so will <code>rod_price(9)</code> and <code>rod_price(8)</code>.</p>
+<p>So, this is a problem that can be solved with DP.</p>
+<p>How do we do it?</p>
+<hr />
+<h1 id="dp-array">DP array</h1>
+<p>A top-down approach will store our <code>rod_price(n)</code>
+solutions in an array.</p>
+<p>Now, we can look up a value we’ve already computed.</p>
+<p>We can, again, do this top-down or bottom-up.</p>
+<p>Let’s start with top-down…</p>
+<hr />
+<h1 id="rod-cutting-in-c">Rod cutting in C</h1>
+<p>Starting out:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">int</span> N_LENGTHS <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> lengths<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">10</span><span class="op">};</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> rod_prices<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">17</span><span class="op">,</span> <span class="dv">17</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">24</span><span class="op">,</span> <span class="dv">30</span><span class="op">};</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> rod_dp<span class="op">[</span><span class="bn">0x10000</span><span class="op">]</span> <span class="op">=</span> <span class="op">{};</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> rod_price<span class="op">(</span><span class="dt">int</span> l<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>l <span class="op">&lt;=</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>rod_dp<span class="op">[</span>l<span class="op">]</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> rod_dp<span class="op">[</span>l<span class="op">];</span></span></code></pre></div>
+<p>We initialize our DP array and we have our base cases.</p>
+<hr />
+<h1 id="rod-cutting-in-c-2">Rod cutting in C (2)</h1>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">// ...</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> best_price <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N_LENGTHS<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> length <span class="op">=</span> lengths<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> other <span class="op">=</span> l <span class="op">-</span> length<span class="op">;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>other <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> potential <span class="op">=</span> rod_prices<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> rod_price<span class="op">(</span>other<span class="op">);</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>potential <span class="op">&gt;</span> best_price<span class="op">)</span> best_price <span class="op">=</span> potential<span class="op">;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    rod_dp<span class="op">[</span>l<span class="op">]</span> <span class="op">=</span> best_price<span class="op">;</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> rod_dp<span class="op">[</span>l<span class="op">];</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>For the rest, we try cutting off one of every length we can sell. If
+that results in more money than any other combination, we take it. We
+store the result.</p>
+<hr />
+<h1 id="practice-questions">Practice questions</h1>
+<ul>
+<li>Derive your own, bottom-up version of rod-cutting.</li>
+<li>Again, when would we expect bottom-up to be faster?</li>
+<li>When could the rod-cutting problem be greedy? That is, when could we
+always choose a particular length?</li>
+</ul>
+<hr />
+<h1 id="questions-8">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="quiz-format">Quiz format</h1>
+<p>The quiz will look like this:</p>
+<ol type="1">
+<li>(100%) Here is a problem. Write a C algorithm that solves it which
+uses DP and runs in polynomial time.</li>
+</ol>
+<p>That’s it. The quiz will have one question.</p>
+<p>However, grading will be strict. If there is no attempt at DP, or if
+the DP is not logical, there will be no partial credit. The learning
+goal is for you to know DP.</p>
+<p>I may require that it be bottom-up or top-down as well. This will be
+for half credit.</p>
+<hr />
+<h1 id="practice-quiz-1">Practice quiz 1</h1>
+<p>The Jaborkinacci sequence is defined like this: <span
+class="math inline">\(J(0) = 0\)</span> <span class="math inline">\(J(1)
+= 1\)</span> <span class="math inline">\(J(2) = 2\)</span> <span
+class="math inline">\(J(n \gt 2) = 3 \cdot J(n - 1) + 2 \cdot J(n - 2) +
+17\)</span></p>
+<p>Write a DP algorithm in C that computes the Jaborkinacci sequence for
+a given integer in polynomial time.</p>
+<p>For full credit, the answer must be bottom-up.</p>
+<hr />
+<h1 id="practice-quiz-2">Practice quiz 2</h1>
+<p>Suppose Alice is taking a motorcycle trip across the country. She can
+go <code>k</code> kilometers on one tank of gas.</p>
+<p>At certain points along her trip, there are gas stations. At a gas
+station, she can fill her tank up to full, but it takes time, so she
+wants to minimize it.</p>
+<p>Alice can make it to a gas station <code>d</code> km away if she has
+<code>d</code> km of fuel. Alice has planned her route so that she
+knows, how far away each gas station is from the previous one. Given a
+<code>k</code> and a list of gas station distances, write a DP algorithm
+in C that runs in polynomial time and returns the fewest number of gas
+stops. Her destination is the last gas station. You may assume the array
+of stations is global.</p>
+<p>Example: <code>k = 50</code> and
+<code>a = {49, 50, 100, 101, 150}</code> returns 2: she stops at 50 and
+100</p>
+<hr />
+<h1 id="practice-quiz-3">Practice quiz 3</h1>
+<p>Suppose Alice is the draft manager for a sports team. She and her
+scouts have identified a list of players, and their ability <span
+class="math inline">\(a_i\)</span> for each player. However, each player
+has a salary of <span class="math inline">\(s_i\)</span>. Furthermore,
+each player also has unlimited identical twins who are available to
+draft as well.</p>
+<p>The team owner wants the best team for a maximum salary <span
+class="math inline">\(m\)</span>. That is, he wants the highest sum of
+ability scores, but the sum of salaries must be <span
+class="math inline">\(\le m\)</span></p>
+<p>Write a DP algorithm in C, which runs in polynomial time that returns
+the highest obtainable sum of ability scores. You may assume that the
+arrays <code>int[] a = {...}</code> and <code>int[] s = {...}</code> for
+ability scores and salaries are global.</p>
+<p>Example: <code>a = {1, 10, 100}</code>,
+<code>s = {1, 20, 1000}</code>, <code>m = 42</code> will return 22,
+because the best solution is to draft 2 twins of the player with score
+10, and 2 of the player with 1.</p>
+<hr />
+<h1 id="questions-9">Questions?</h1>
+<!-- _class: questions invert -->
+<hr />
+<p>fibo 1 source:</p>
+<pre><code>flowchart TD
+    F10(&quot;F(10)&quot;)
+    F9(&quot;F(9)&quot;)
+    F8_1(&quot;F(8)&quot;)
+    F8_2(&quot;F(8)&quot;)
+    F7_1(&quot;F(7)&quot;)
+    F7_2(&quot;F(7)&quot;)
+    Dots1(&quot;...&quot;)
+    Dots2(&quot;...&quot;)
+    Dots3(&quot;...&quot;)
+    Dots4(&quot;...&quot;)
+    Dots5(&quot;...&quot;)
+    Dots6(&quot;...&quot;)
+    Dots7(&quot;...&quot;)
+
+    F10 --&gt; F9 &amp; F8_1
+    F9 --&gt; F8_2 &amp; F7_1
+    F8_1 --&gt; F7_2 &amp; Dots5
+    F8_2 --&gt; Dots1 &amp; Dots2
+    F7_1 --&gt; Dots3 &amp; Dots4
+    F7_2 --&gt; Dots6 &amp; Dots7</code></pre>
+<hr />
+<p>fibo 2 source:</p>
+<pre><code>flowchart TD
+    F10(&quot;F(10)&quot;)
+    F9(&quot;F(9)&quot;)
+    F8(&quot;F(8)&quot;)
+    F7(&quot;F(7)&quot;)
+    F6(&quot;F(6)&quot;)
+    F5(&quot;F(5)&quot;)
+    
+    F10 --&gt; F9
+    F9 --&gt; F8
+    F8 --&gt; F7
+    F7 --&gt; F6 
+    F6 --&gt; F5
+    F10 --&gt; F8  
+    F9 --&gt; F7
+    F8 --&gt; F6
+    F7 --&gt; F5</code></pre>
+</body>
+</html>
