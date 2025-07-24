@@ -409,6 +409,8 @@ It might surprise you to learn that we can improve to sub-linear time.
 
 This is more advanced than you will likely be required to do in a typical technical interview, but it's a cool technique that demonstrates how linear algebra techniques can help us think about problems.
 
+(Once we do this technique, it's not DP anymore, BTW. It's an algebraic technique.)
+
 ---
 
 # Building a matrix
@@ -536,7 +538,7 @@ def fibo(n):
     return fibo(n - 2) + fibo(n - 1)
 ```
 
-This magically works. It runs in $\Theta(n)$, like the memoized version.
+This magically works. It runs in $\Theta(n)$, like the memoized version (because it is memoized).
 
 ---
 

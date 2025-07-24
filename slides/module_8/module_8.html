@@ -595,6 +595,8 @@ time.</p>
 <p>This is more advanced than you will likely be required to do in a
 typical technical interview, but it’s a cool technique that demonstrates
 how linear algebra techniques can help us think about problems.</p>
+<p>(Once we do this technique, it’s not DP anymore, BTW. It’s an
+algebraic technique.)</p>
 <hr />
 <h1 id="building-a-matrix">Building a matrix</h1>
 <p>First, recall our technique of using <code>a</code> and
@@ -729,7 +731,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a hr
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">1</span>: <span class="cf">return</span> n</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fibo(n <span class="op">-</span> <span class="dv">2</span>) <span class="op">+</span> fibo(n <span class="op">-</span> <span class="dv">1</span>)</span></code></pre></div>
 <p>This magically works. It runs in <span
-class="math inline">\(\Theta(n)\)</span>, like the memoized version.</p>
+class="math inline">\(\Theta(n)\)</span>, like the memoized version
+(because it is memoized).</p>
 <hr />
 <h1 id="cache-2">Cache (2)</h1>
 <p>How does it work? <code>@cache</code> is something called a

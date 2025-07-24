@@ -1,6 +1,6 @@
 CC=clang
 STD=c23
-EXES = mod2 mod3 mod4 mod5
+EXES = mod2 mod3 mod4 mod5 mod8
 DEBUG_EXES := $(EXES:%=%.d)
 TESTS = test_pool
 CFLAGS_DEBUG = -g $(CFLAGS_BASE)
