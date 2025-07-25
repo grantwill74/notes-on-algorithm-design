@@ -456,7 +456,7 @@ We've got 8 operations now for $n = 100$. Each time, if our factor is odd, we ad
 
 # Practice
 
-- Implement this method yourself. I've worked it in `code/dyn.c`.
+- Implement this method yourself. I've worked it in `code/mod8.c`.
 - Roughly, how large do we expect $n$ to get before fibo overflows? 
 - If we implement this in Python with its automatic BigInt promotion, would we still consider it $\Theta(\lg n)$? 
 - Explain why or why not, and what the new big-$\Theta$ would be if not.
