@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>module_9</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="design-and-analysis-of-algorithms">Design and Analysis of
+Algorithms</h1>
+<h2 id="module-9-graphs-and-paths">Module 9: Graphs and Paths</h2>
+<p><br> <br></p>
+<p>Slides © Grant Williams, <a
+href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
+4.0</a>.</p>
+<p><br></p>
+<p>This is an open educational resource. Feel free to submit fixes,
+improvements, and new material <a
+href="https://github.com/grantwill74/notes-on-algorithm-design">here</a>.</p>
+<hr />
+<h1 id="last-week">Last week</h1>
+<p>Last week we learned about dynamic programming.</p>
+<p>We saw some simple 1-dimensional DP problems.</p>
+<p>We saw how DP is important when solving overlapping sub-problems.</p>
+<p>For example, to avoid re-computing Fibonacci terms over and over
+again, we could save them in a table. To avoid counting-out the same
+amount of change, we could save it in a table.</p>
+<p>Generally, DP involves some amount of tables.</p>
+<hr />
+<h1 id="this-week">This week</h1>
+<p>Now it’s time to put that knowledge to the test. DP is a very common
+algorithm approach when dealing with graphs.</p>
+<p>A lot of graph algorithms would otherwise be combinatorial, but they
+become fast, efficient P-time algorithms when we find ways to define
+sub-problems and tabulate or memoize them.</p>
+<p>But first, let’s recall how to work with graphs at all…</p>
+<hr />
+<h1 id="how-to-store-a-graph">How to store a graph</h1>
+<p>There are fundamentally four ways to store a graph: - Local adjacency
+lists - Global edge lists/maps/sets - Adjacency matrices -
+Implicitly</p>
+<p>All are common, all are useful for different kinds of graphs.</p>
+<p>There are also two kinds of graphs: directed and undirected.</p>
+<p>We’ll look at each one, but first, consider this graph…</p>
+<hr />
+<figure>
+<img src="digraph1.svg"
+alt="a diagram of a directed graph. The start node is A, which has only outbound arrows. A is connected to B with weight 5. A is connected to C with weight 4. A is connected to D with weight 1. D is connected to G with weight 1. B is connected in both directions with C with weight 1. C is connected to F with weight 10. G is connected to F with weight 2. F is connected to E with weight 1. B is connected bi-directionally with E with weight 3. E is connected to Z with weight 5. G is connected to Z with weight 10." />
+<figcaption aria-hidden="true">a diagram of a directed graph. The start
+node is A, which has only outbound arrows. A is connected to B with
+weight 5. A is connected to C with weight 4. A is connected to D with
+weight 1. D is connected to G with weight 1. B is connected in both
+directions with C with weight 1. C is connected to F with weight 10. G
+is connected to F with weight 2. F is connected to E with weight 1. B is
+connected bi-directionally with E with weight 3. E is connected to Z
+with weight 5. G is connected to Z with weight 10.</figcaption>
+</figure>
+<p>This is a directed graph. Some of the connections are symmetric, but
+it is only considered undirected if every connection is symmetric.</p>
+<p>We don’t have any bi-directional connections with non-symmetric
+weights, but we could. It’s permitted to do that (I just thought the
+diagram would look nicer without).</p>
+<hr />
+<h1 id="adjacency-lists">Adjacency lists</h1>
+<p>Recall that one way to store the graph was with adjacency lists. This
+means that we associate a list of neighbors with each node. Typically,
+this list is also where we store the edge weights.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> node_t<span class="op">;</span> <span class="co">// forward declaration so we can refer to node_t* in edge_t</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> edge_t <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> node_t<span class="op">*</span> neighbor<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> weight<span class="op">;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> Edge<span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> node_t <span class="op">{</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">size_t</span> n_neighbors<span class="op">;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    Edge<span class="op">*</span>  neighbors<span class="op">;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// We can have per-vertex data here too if we want: void* vert_data;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> Node<span class="op">;</span></span></code></pre></div>
+<hr />
+<h1 id="creating-the-list-from-before">Creating the list from
+before</h1>
+<p>Let’s use our structs to build the graph from before. It’s easiest if
+we first create our nodes, and then define our edge lists, both on the
+stack.</p>
+<p>First, the nodes, the number is the number of neighbors:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Node a <span class="op">=</span> <span class="op">{</span><span class="dv">3</span><span class="op">,</span> NULL<span class="op">};</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Node b <span class="op">=</span> <span class="op">{</span><span class="dv">2</span><span class="op">,</span> NULL<span class="op">};</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Node c <span class="op">=</span> <span class="op">{</span><span class="dv">2</span><span class="op">,</span> NULL<span class="op">};</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>Node d <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> NULL<span class="op">};</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>Node e <span class="op">=</span> <span class="op">{</span><span class="dv">2</span><span class="op">,</span> NULL<span class="op">};</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>Node f <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> NULL<span class="op">};</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>Node g <span class="op">=</span> <span class="op">{</span><span class="dv">2</span><span class="op">,</span> NULL<span class="op">};</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>Node z <span class="op">=</span> <span class="op">{</span><span class="dv">0</span><span class="op">,</span> NULL<span class="op">};</span></span></code></pre></div>
+<p>Notice how the edges are all null. We’ll overwrite the
+<code>NULL</code>s with valid edge lists soon.</p>
+<hr />
+<h1 id="creating-the-list-from-before-2">Creating the list from before
+(2)</h1>
+<p>Now we need to create the neighbors. I’ll define some of them; I’ll
+leave the rest to you.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Edge a_neigh<span class="op">[]</span> <span class="op">=</span> <span class="op">{{&amp;</span>b<span class="op">,</span> <span class="dv">5</span><span class="op">},</span> <span class="op">{&amp;</span>c<span class="op">,</span> <span class="dv">4</span><span class="op">},</span> <span class="op">{&amp;</span>d<span class="op">,</span> <span class="dv">1</span><span class="op">}};</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Edge b_neigh<span class="op">[]</span> <span class="op">=</span> <span class="op">{{&amp;</span>c<span class="op">,</span> <span class="dv">3</span><span class="op">},</span> <span class="op">{&amp;</span>e<span class="op">,</span> <span class="dv">1</span><span class="op">}};</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>Edge c_neigh<span class="op">[]</span> <span class="op">=</span> <span class="op">{{&amp;</span>f<span class="op">,</span> <span class="dv">10</span><span class="op">}};</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">// ... fill in the rest</span></span></code></pre></div>
+<p>Once we create these edge lists, we can hook them into the graph by
+setting the neighbors field in each node:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>a<span class="op">.</span>neighbors <span class="op">=</span> a_neigh<span class="op">;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>b<span class="op">.</span>neighbors <span class="op">=</span> b_neigh<span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>c<span class="op">.</span>neighbors <span class="op">=</span> c_neigh<span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">// ...</span></span></code></pre></div>
+<p>At this point, our graph is ready to use</p>
+<hr />
+<h1 id="short-note-about-memory-management">Short note about memory
+management</h1>
+<p>However, having to define everything on the stack is rather limiting.
+What if we’re loading graph data from a file, and therefore we don’t
+know exactly which nodes we need ahead of time?</p>
+<p>In that case, we can allocate a big array of nodes:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Node<span class="op">*</span> arena <span class="op">=</span> malloc<span class="op">(</span>number_we_need <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span>Node<span class="op">));</span></span></code></pre></div>
+<p>And then, because our nodes are laid out in an arena in a defined
+order, we can also iterate over that for loop and <code>malloc</code>
+the neighbors, too.</p>
+<p>This also gives us the flexibility to refer to nodes by an ID instead
+by pointer. This is useful both for stability (e.g., when
+serializing/deserializing) and also to save space: if we have fewer than
+about 4.2 billion nodes, we can use an unsigned 32-bit integer.</p>
+<hr />
+<h1 id="memory-management-2">Memory management (2)</h1>
+<p>We can also use our pool-based memory managent here if we want,
+because each node is the same size in memory.</p>
+<p>We can also store the neighbors in an array list, linked list,
+hashtable, or tree. All of these data-structures can grow dynamically so
+we don’t need to pre-allocate space for all our neighbors. Here it is as
+a linked list:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> edge_t <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> node_t<span class="op">*</span> neighbor<span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> edge_t<span class="op">*</span> next<span class="op">;</span> <span class="co">// in linked list</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> weight<span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> Edge<span class="op">;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> node_t <span class="op">{</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    Edge<span class="op">*</span> first_edge<span class="op">;</span> <span class="co">// don&#39;t need n_neighbors since it&#39;s implicit now</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> Node<span class="op">;</span></span></code></pre></div>
+<hr />
+<h1 id="summary-of-adjacency-lists">Summary of adjacency lists</h1>
+<p>So the key to using adjacency-list graphs is that we store nodes.</p>
+<p>Each node has a list of neighbors inside of it.</p>
+<p>We often attach a weight to each neighbor, using an edge struct.</p>
+<p>Memory management is complex: we need to decide where nodes will live
+and where their adjacency list will live.</p>
+<p>If we need to store per-node information and the graph is sparse,
+this is a reasonable way to store graphs. Also if we need to answer
+questions about who a vertex is connected to, or to do basic
+vertex-based searching, such as DFS.</p>
+<p>Otherwise, one of the other ways might be better…</p>
+<hr />
+<h1 id="questions">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="edge-lists">Edge lists</h1>
+<p>Some algorithms are very “edge focused”, like <a
+href="https://en.wikipedia.org/wiki/Kruskal%27s_algorithm">Kruskal’s
+Algorithm</a>, which computes a minimum spanning tree from a given
+graph.</p>
+<p>A minimum spanning tree is a subset of a graph that connects to every
+node while having the smallest possible sum of edges. It has no cycles
+and is undirected, which is why we call it a tree.</p>
+<p>You could imagine this being useful for connecting houses into a
+telecom network.</p>
+<hr />
+<h1 id="edge-lists-2">Edge lists (2)</h1>
+<p>Kruskal’s algorithm operates over a sorted list of edges, so it’s
+much more efficient if we just store our graph as a list of edges,
+rather than requiring the algorithm to search through all the adjacency
+lists inside all the nodes.</p>
+<p>Another example is the <a
+href="https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm">Bellman-Ford</a>
+shortest path algorithm, which finds the shortest path from one node to
+every other node by gradually finding shorter edges.</p>
+<p>Finally, it’s common for file formats that store graphs to store them
+in this style. For example, the mermaid diagrams that I use in these
+lectures are textual edge-lists.</p>
+<hr />
+<h1 id="simplest-edge-list">Simplest edge list</h1>
+<p>The simplest way to store an edge list is with an array:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> edge_t <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> source<span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> dest<span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> weight<span class="op">;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> Edge<span class="op">;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>Edge edge_list<span class="op">[]</span> <span class="op">=</span> <span class="op">{{</span><span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">100</span><span class="op">},</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">50</span><span class="op">},</span> <span class="op">{</span><span class="dv">0</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">25</span><span class="op">},</span> <span class="op">...};</span></span></code></pre></div>
+<p>Notice that I’m storing the source and destination nodes as
+integers.</p>
+<p>There is no “node” structure here. There <em>could</em> be, but there
+doesn’t have to be. In this representation, we usually just care
+<em>that</em> two nodes are connected, rather than putting data inside
+the nodes themselves.</p>
+<hr />
+<h1 id="node-ids">Node IDs</h1>
+<p>Here, the fact that two nodes have different integers makes them
+different.</p>
+<p>However, there’s no reason why we couldn’t use string IDs: there
+might be some memory management, but we can still compare them
+efficiently with SIMD if we avoid making the names too long.</p>
+<p>We could also have node structures as before if we need to associate
+data with nodes, and have pointers to them in our edge structure. It’s
+permitted but not required.</p>
+<hr />
+<h1 id="using-the-list">Using the list</h1>
+<p>One issue with edge-lists, though, is that we need to organize the
+list.</p>
+<p>If the list is not ordered, then any kind of query will be <span
+class="math inline">\(\Theta(|E|)\)</span> time on average, which is
+unacceptable for most applications.</p>
+<p>Kruskal’s algorithm relies on the list being sorted by edge weight.
+So why not sort the edges using <code>qsort</code>? This will take <span
+class="math inline">\(\Theta(|E| \lg |E|)\)</span> on average, but we
+only need to do it once. We just need to iterate over this list in
+order.</p>
+<p>Alternatively, what if we want to determine who the neighbors of a
+particular node are? Then we can sort by the source id instead. Now a
+quick binary-search through the list will let us find all the edges out
+of source.</p>
+<hr />
+<h1 id="drawbacks">Drawbacks</h1>
+<p>This raises the biggest drawback of edge lists, though: the need for
+the edge lists to be in a particular order.</p>
+<p>Sorting isn’t <em>slow</em>, and if we know something about our
+distribution of source or dest IDs, there might be shortcuts (like
+counting sort).</p>
+<p>We could also store our edges in a tree instead, sorted by the index
+we choose (like weight or source). We could also use a hashmap, but then
+we wouldn’t be able to get every neighbor of a particular node (if
+that’s not required, this is a good solution)</p>
+<p>If we want to have multiple kinds of queries, we would need multiple
+copies of edge lists, sorted differently. This can be problematic if we
+need to insert a new edge. Workflows with random insertion and deletion
+probably require using a tree.</p>
+<hr />
+<h1 id="practice">Practice</h1>
+<ul>
+<li>Implement the two techniques for graphs that we’ve talked about so
+far.</li>
+<li>Define our graph from earlier as an edge list.</li>
+<li>Write a qsort routine that sorts an edge list by edge weight.</li>
+<li>How could we easily implement undirected graphs using the previous
+two techniques? Would it be better to store each edge twice, once for
+each direction, or should we find ways to only store it once?</li>
+</ul>
+<hr />
+<h1 id="questions-1">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="adjacency-matrices">Adjacency matrices</h1>
+<p>So far, we’ve seen two graph data-structures that are based on lists,
+or some other data structure that supports iteration.</p>
+<p>However, in most graph applications, two nodes are connected at most
+once.</p>
+<p>If this is true, there is a limit to how many connections there can
+be.</p>
+<p>Suppose there are <span class="math inline">\(|V|\)</span> nodes.
+What is the limit to the number of edges (<span
+class="math inline">\(|E|\)</span>)?</p>
+<hr />
+<h1 id="adjacency-matrices-2">Adjacency matrices (2)</h1>
+<p>It turns out, <span class="math inline">\(|E| \le |V|^2\)</span>.</p>
+<p>That is, every vertex can be connected to every other vertex, which
+means that there are <span class="math inline">\(|V|\)</span> vertices
+for every vertex, hence <span class="math inline">\(|V|^2\)</span>.</p>
+<p>If every vertex is connected to every distinct vertex in a graph, we
+call it <em>complete</em>.</p>
+<p>If <em>most</em> vertices are connected, we call the graph
+<em>dense</em>. This is a subjective term, of course, but generally
+there’s a point at which a graph is <em>complete enough</em> for the
+following representation to be effective…</p>
+<hr />
+<h1 id="adjacency-matrices-3">Adjacency matrices (3)</h1>
+<p>An <em>adjacency matrix</em> is basically a giant matrix of numbers,
+where each number tells us the weight of one edge.</p>
+<p>The row is typcially the source and the column is typically the
+destination, simply because row-major is a common way of laying out 2D
+arrays in most languages.</p>
+<p>To look up an edge value, we typically write
+<code>matrix[row][col]</code>.</p>
+<hr />
+<h1 id="another-graph">Another graph</h1>
+<figure>
+<img src="digraph2.svg"
+alt="Another digraph. Here, A is connected to C with weight 15, to B with weight 10, and to D with weight 10. B is connected to C with weight 2. C is connected to B with weight 3 and to D with weight 2. D is connected to A with weight 1" />
+<figcaption aria-hidden="true">Another digraph. Here, A is connected to
+C with weight 15, to B with weight 10, and to D with weight 10. B is
+connected to C with weight 2. C is connected to B with weight 3 and to D
+with weight 2. D is connected to A with weight 1</figcaption>
+</figure>
+<hr />
+<h1 id="adjacency-matrix">Adjacency matrix</h1>
+<p>This matrix corresponds to the graph in the previous slide:</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>-</td>
+<td>10</td>
+<td>15</td>
+<td>10</td>
+</tr>
+<tr>
+<td>B</td>
+<td>-</td>
+<td>-</td>
+<td>2</td>
+<td>-</td>
+</tr>
+<tr>
+<td>C</td>
+<td>-</td>
+<td>3</td>
+<td>-</td>
+<td>2</td>
+</tr>
+<tr>
+<td>D</td>
+<td>-1</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>The row is the source, and the column is the destination.</p>
+<hr />
+<h1 id="why">Why?</h1>
+<p>Adjacency matrices are very fast at answering one, specific question:
+What is the weight of the edge between A and B.</p>
+<p>They can be wasteful: if we have 100 vertices, that’s a 100 by 100
+matrix. What if the graph is sparsely connected? Like, maybe there are
+200 edges. Then we’ve wasted a ton of memory.</p>
+<p>It might be worth it though: edge lookups in this format are constant
+time.</p>
+<p>So what defines whether a graph is dense, or the opposite,
+sparse?</p>
+<hr />
+<h1 id="counting-memory">Counting memory</h1>
+<p>The only real downside to an edge matrix is its memory
+consumption.</p>
+<p>Suppose we use the edge data structure we looked at previously for
+the edge-list representation. How much space does an edge take to
+represent?</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> edge_t <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> source<span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> dest<span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> weight<span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> Edge<span class="op">;</span></span></code></pre></div>
+<p>What do we expect sizeof(Edge) to be on a typical 32 or 64-bit
+machine?</p>
+<hr />
+<h1 id="counting-memory-1">Counting memory</h1>
+<p>In this case, 12 bytes. If we used pointers for source and dest, it
+would be 24 bytes (because 4 bytes of padding would be inserted after
+weight. <a href="http://www.catb.org/esr/structure-packing/">Read
+this</a> to learn why.)</p>
+<p>On the other hand how big do we expect the adjacency matrix to
+be?</p>
+<p>[Class?]</p>
+<hr />
+<h1 id="size-of-adjacency-matrix">Size of adjacency matrix</h1>
+<p>In this case, there is space allocated for <span
+class="math inline">\(4 \times 4 = 16\)</span> edges.</p>
+<p>Each edge is an int, and <code>sizeof(int)</code> is usally 4.
+Therefore we expect it to use 64 bytes.</p>
+<p>Is that a lot? Well, there are 7 edges. So, amortizing it: roughly
+<span class="math inline">\(9.14\)</span> bytes per edge.</p>
+<p>On the other hand, our edge struct required <span
+class="math inline">\(12\)</span> bytes per edge. So the matrix is more
+efficient for this particular graph.</p>
+<p>We can think of one definition of <em>dense</em> as being a graph
+with enough edges so that the matrix is more efficient than the
+list.</p>
+<hr />
+<h1 id="seems-too-good-to-be-true">Seems too good to be true?</h1>
+<p>But our graph only has 7 out of 16 edges! And it’s still more
+efficient? Why even bother with edge lists if the matrix is so good?</p>
+<p>Because what happens if we add another node?</p>
+<p>Now we have <span class="math inline">\(5 \times 5 \times 4 =
+100\)</span> bytes to store instead of 64. And if we add another? <span
+class="math inline">\(6 \times 6 \times 4 = 144\)</span> bytes. It’s
+quadratic, so we keep adding more and more each time we add one
+node.</p>
+<p>In applications where we might have a lot of sparsely connected
+nodes, this does not work at all. Imagine if there were 1 million nodes?
+How many ints would we need to allocate?</p>
+<hr />
+<h1 id="too-much-space">Too much space</h1>
+<p>A million nodes is completely forseeable. A GPS or pathfinding
+database can easily have more. 3D scenes, connectivity graphs, many
+different realistic data structures can easily exceed this.</p>
+<p>And yet, that’s 1 trillion ints. How many ints can fit in your
+computer if you have 64 GB of ram? Exactly <span
+class="math inline">\(68\;719\;476\;736\)</span> ints.</p>
+<p>That’s around 69 billion. So it wouldn’t even fit in RAM even with
+lots of it and with theoretically your entire memory dedicated to
+storing this one graph.</p>
+<p>However, this is assuming the graph is sparse (meaning: the matrix
+wastes space). If the graph is dense, then the matrix <em>doesn’t</em>
+waste space, and it might just be impossible to store the whole thing in
+RAM at once. It might need to be broken up.</p>
+<hr />
+<h1 id="and-yet">And yet…</h1>
+<p>And yet the adjacency matrix is super easy to use. Just allocate a
+big 2D array (or a 1D and do the math for row-column access).</p>
+<p>If you’re doing a competitive programming or interview problem, and
+it’s clearly a graph problem with <span class="math inline">\(\le
+1000\)</span> nodes, that can be a hint that an adjacency matrix is
+appropriate.</p>
+<p>It’s easy to set up, easy to use, and maximally fast at determine
+whether two nodes are connected and what that connection’s weight
+is.</p>
+<p>If the graph is dense, iterating over all the neighbors of a node is
+going to be on average <span class="math inline">\(\Theta(|V|)\)</span>,
+which is as good as an adjacency-list.</p>
+<hr />
+<h1 id="questions-2">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="using-adjacency-matrices">Using adjacency matrices</h1>
+<p>There are two basic data layouts we typically use for an adjacency
+matrix: 1. A 2D array: works in C, but in some languages, either not
+available, or involves indirection, which is slow. 2. A 1D array: works
+in any language with arrays</p>
+<p>In C, we can easily allocate a 2D array on the stack:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> mat<span class="op">[</span><span class="dv">200</span><span class="op">][</span><span class="dv">200</span><span class="op">];</span></span></code></pre></div>
+<p>Unfortunately, we often <em>can’t</em> do this. Stacks have limited
+sizes, and matrix representations of graphs can easily overflow it. Even
+for static memory, especially on Windows, there are limits. So how can
+we fix that?</p>
+<hr />
+<h1 id="dynamic-allocation">Dynamic allocation</h1>
+<p>If we know the size of the matrix, we can store it as a fixed-size
+array of rows:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">(*</span>mat<span class="op">)[</span><span class="dv">200</span><span class="op">]</span> <span class="op">=</span> malloc<span class="op">(</span><span class="dv">200</span> <span class="op">*</span> <span class="kw">sizeof</span> <span class="op">*</span>mat<span class="op">);</span></span></code></pre></div>
+<p>Pay close attention to the parentheses on the left. This is
+<strong>different</strong>:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>mat<span class="op">[</span><span class="dv">200</span><span class="op">]</span> <span class="op">=</span> malloc<span class="op">(</span><span class="dv">200</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">*));</span> <span class="co">// wrong</span></span></code></pre></div>
+<p>The first one defines <code>mat</code> to be a pointer to arrays of
+200 ints. That means we can index <code>mat[row]</code> to get one of
+these arrays, and <code>mat[row][col]</code> to get an element. This is
+what we want, because it means the array is densely packed.</p>
+<p>[What is the second one?]</p>
+<hr />
+<h1 id="dynamic-allocation-1">Dynamic allocation</h1>
+<p>The second one defines mat to be an array of 200 pointers. However,
+then the malloc is erroneous, because the array of poitners is on the
+stack. Instead, we would have to iterate over that array and malloc a
+row for each pointer. Accessing an edge weight would require extra
+indirection: we would need to follow a pointer first.</p>
+<p>The first one is singly-indirect. It also only requires one
+<code>malloc</code> and one <code>free</code>.</p>
+<p><a href="https://c-faq.com/decl/spiral.anderson.html">Read this</a>
+if the syntax is confusing. We generally start with the variable name,
+and go right to left, inside parentheses to outside. The author relates
+it to a spiral shape.</p>
+<p>In C, higher-dimensional arrays are still densely packed. That is, we
+can treat 1000 adjacent ints as if they were a <span
+class="math inline">\(10 \times 100\)</span> array or a <span
+class="math inline">\(200 \times 5\)</span> array, etc. But if we use
+dynamic allocation, we typically treat the pointer as pointing to a
+single row with a width equal to the number of columns.</p>
+<hr />
+<h1 id="using-it">Using it</h1>
+<p>To use it, just set the row and col weights like this:
+<code>mat[row][col] = weight;</code></p>
+<p>When you’re done, just free the whole array:
+<code>free(mat)</code></p>
+<p>If you used the array of pointers, you would need to free each
+one:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> row <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> row <span class="op">&lt;</span> N_ROWS<span class="op">;</span> row<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    free<span class="op">(</span>mat<span class="op">[</span>row<span class="op">]);</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>So for a graph representation, the 2D array is more convenient.</p>
+<p>Unfortunately, we often can’t use it!</p>
+<hr />
+<h1 id="using-it-2">Using it (2)</h1>
+<p>The main inconvenience is passing to functions:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> do_something_to_graph<span class="op">(</span><span class="dt">int</span> <span class="op">(*</span>mat<span class="op">)[</span><span class="dv">200</span><span class="op">])</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span></span></code></pre></div>
+<p>We have to know the inner dimensions at compile time. In this case,
+the number of columns. But what if our graph is dynamically sized?</p>
+<p>C (in theory) has variable length arrays (VLAs), so we could do
+this:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> do_something_to_graph<span class="op">(</span><span class="dt">int</span> dim<span class="op">,</span> <span class="dt">int</span> <span class="op">(*</span>mat<span class="op">)[</span>dim<span class="op">])</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span></span></code></pre></div>
+<p>Unfortunately, VLA support is optional as of C11, and Microsoft
+Visual C does not support it. It is also C only (C++ prefers heap-based
+vectors rather than alloca-based VLAs). So how do we use matrix
+representations of graphs with dynamic size?</p>
+<hr />
+<h1 id="using-1d-addressing">Using 1D addressing</h1>
+<p>We do it ourselves! It was nice having compiler support for
+mat[row][col], but the math the compiler was doing behind the scenes is
+not that hard.</p>
+<p>With square matrices of size <code>dim * dim</code>: - For each row
+we go down, we add <code>dim</code> columns. - Once we’ve got the
+address of the correct row, we just add <code>col</code> to get the
+element we want.</p>
+<hr />
+<h1 id="using-1d-addressing-2">Using 1D addressing (2)</h1>
+<p>So if we want the element at row 24, col 15 of a 30 node graph, we
+do: <code>mat[24 * 30 + 15]</code></p>
+<p>And in general,</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="kw">inline</span> <span class="dt">int</span> to_1d<span class="op">(</span><span class="dt">int</span> row<span class="op">,</span> <span class="dt">int</span> col<span class="op">,</span> <span class="dt">int</span> dim<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> row <span class="op">*</span> dim <span class="op">+</span> col<span class="op">;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> somewhere_else<span class="op">(</span><span class="dt">int</span><span class="op">*</span> mat<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    mat<span class="op">[</span>to_1d<span class="op">(</span><span class="dv">24</span><span class="op">,</span> <span class="dv">15</span><span class="op">,</span> <span class="dv">30</span><span class="op">)]</span> <span class="op">=</span> <span class="op">...;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="using-1d-addressing-3">Using 1D addressing (3)</h1>
+<p>Fun fact: this is why we like 0-based indexing in computer science.
+Any time we need to “flatten” a higher-dimensional array, or an array of
+structures, the math is easier if we start at 0. Otherwise we have to
+subtract 1.</p>
+<p>Instead of the <code>to_1d</code> function, we might sometimes see a
+macro. Nowadays, an inline function would be preferable. The macro looks
+like this:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define IDX</span><span class="op">(</span><span class="pp">r</span><span class="op">,</span><span class="pp">c</span><span class="op">,</span><span class="pp">ncols</span><span class="op">)</span><span class="pp">  </span><span class="op">((</span><span class="pp">r</span><span class="op">)*(</span><span class="pp">ncols</span><span class="op">)</span><span class="pp"> </span><span class="op">+</span><span class="pp"> </span><span class="op">(</span><span class="pp">c</span><span class="op">))</span></span></code></pre></div>
+<p>Note the parentheses. Text macros do all kinds of weird things, which
+the parenethesis are supposed to foil. For example, if I wrote:
+<code>IDX(row, col, dim + 1)</code> we would not want the inside to
+evaluate as (r * ncols + 1 + c). They don’t foil every weirdness,
+though: <code>if IDX { ... }</code> without parentheses unfortunately
+works now.</p>
+<hr />
+<h1 id="questions-3">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="implicit-storage">implicit storage</h1>
+<p>Recall that there were three ways we’ve dicussed to store graphs: -
+Adjacency list - Edge list - Adjacency matrix</p>
+<p>But there’s one more, and it’s very important: implicit storage</p>
+<hr />
+<h1 id="lets-make-a-game">Let’s make a game</h1>
+<p>Raise your hand if you’ve seen a game that uses tile-based
+graphics?</p>
+<p>[examples?]</p>
+<hr />
+<h1 id="lets-make-a-game-2">Let’s make a game (2)</h1>
+<figure>
+<img src="pokemon-gen1-ss.gif"
+alt="bg height: 100% right:50% a screenshot from the original generation of Pokemon game on the Nintendo Gameboy. The screenshot shows the main character standing on a path, near another trainer. The tilegrid used to generate the image is apparent, with repeating rock, tree, grass, and flower textures." />
+<figcaption aria-hidden="true">bg height: 100% right:50% a screenshot
+from the original generation of Pokemon game on the Nintendo Gameboy.
+The screenshot shows the main character standing on a path, near another
+trainer. The tilegrid used to generate the image is apparent, with
+repeating rock, tree, grass, and flower textures.</figcaption>
+</figure>
+<p>Here’s an example of a tile-based game: one of the Gen1 pokemon games
+on Gameboy.</p>
+<p>Notice the repeating rocks, trees, grass, and flowers. They can only
+exist at certain defined points on the screen, and there are few
+graphics, which is why they repeat.</p>
+<p>We store this as a matrix of tiles. Each <code>mat[row][col]</code>
+stores a number that tells us what image to draw.</p>
+<hr />
+<h1 id="is-this-a-graph">Is this a graph?</h1>
+<p>So my question to you is: is this a graph?</p>
+<p>If not, why not? If so: really? How could it be represented?</p>
+<p>[class?]</p>
+<hr />
+<h1 id="yes-this-is-a-graph">Yes, this is a graph</h1>
+<p>…but it is not an adjacency matrix.</p>
+<p>Yes, we usually store a tile-grid as a matrix, but the elements of
+the matrix do not tell you the distance or weight between any two nodes
+on the graph.</p>
+<p>Instead, they just store what tile to draw.</p>
+<p>We actually don’t store edge weights anywhere.</p>
+<p>You can clearly see the difference if you imagine that adjacency
+matrices are usually dense: that means if we have a 100 by 100 matrix,
+usually each element is connected to 100 others.</p>
+<p>But here, each tile is certainly not connected to 100 other
+tiles!</p>
+<hr />
+<h1 id="yes-this-is-a-graph-2">Yes, this is a graph (2)</h1>
+<p>Think about who a tile’s neighbors are: the 4 tiles surrounding
+it.</p>
+<p>Games that allow diagonal movement would consider a tile to have 8
+neighbors.</p>
+<p>However, we are not storing specifically which neighbors a tile is:
+the neighbors are implied by the tile’s location:</p>
+<p>A tile at location 24, 19 has neighbors: (24, 20), (25, 19), (24,
+18), and (23, 19) A tile at location 0, 0 only has two neighbors: (0, 1)
+and (1, 0).</p>
+<hr />
+<h1 id="implied-graphs">Implied graphs</h1>
+<p>In this case, the neighbors are implied. We don’t store them.</p>
+<p>That means their weights are implied too: the graph doesnt’ store
+them.</p>
+<p>If we need weights, for example, to make it so that some terrain is
+more expensive to walk through, we can either use the terrain in the
+tile we’re walking into, the tile we’re walking from, or some kind of
+function of the two.</p>
+<hr />
+<h1 id="implied-graphs-2">Implied graphs (2)</h1>
+<p>Alternatively, we could store the edge weights for each tile
+separately:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> tile_t <span class="op">{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> weights<span class="op">[</span><span class="dv">4</span><span class="op">];</span> <span class="co">// east, south, west, north</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> tile_id<span class="op">;</span> <span class="co">// which graphic to use</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> Tile<span class="op">;</span></span></code></pre></div>
+<p>This is still an implied graph, though, because we don’t store
+<em>which</em> nodes are the neighbors. It’s whichever tiles are
+adjacent!</p>
+<hr />
+<h1 id="questions-4">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="practice-1">Practice</h1>
+<ul>
+<li>Is it possible to represent one of the graphs from earlier as a tile
+graph?</li>
+<li>Implied graphs seem convenient: why don’t we always use them?</li>
+<li>What are their speed characteristics? How long does it take to check
+if two nodes are connected?</li>
+</ul>
+<hr />
+<h1 id="basic-traversal">Basic traversal</h1>
+<p>Regardless of which representation we use, searching or traversing a
+graph is a little more complicated than searching a tree.</p>
+<p>(Note: traversing a graph means iterating over every node. Searching
+means looking for a given node.)</p>
+<p>Why? Because the graph might have cycles in it.</p>
+<p>If we naively iterate through a graph like we do a tree, we’ll end up
+going in loops forever for any cyclic graph. Cyclic graphs are
+common.</p>
+<p>We fix this problem by marking which nodes we’ve searched, and
+refusing to search a node that has already been visited.</p>
+<hr />
+<h1 id="searching-orders">Searching orders</h1>
+<p>Just like for trees, there are two orders to iterate over a graph: -
+Depth first - Breadth first</p>
+<p>Both will eventually visit every reachable node, so often it doesn’t
+matter.</p>
+<p>However, sometimes one is more desirable. I have an example later of
+where we must use breadth first.</p>
+<p>Let’s use an example: the flood fill algorithm in most painting
+programs.</p>
+<hr />
+<h1 id="basic-demo">Basic demo</h1>
+<p>[Let’s open up MS Paint and use the paint bucket tool.]</p>
+<p>This paint bucket tool searches for every pixel in a same-color
+region and changes their color to the selected color.</p>
+<p>This is the basic version of the algorithm: image editors like
+Photoshop let you treat similar colors like they are in a common region.
+But the simple version just sets every pixel of an exact color that are
+all in a mutual region (i.e., reachable from each other).</p>
+<p>The algorithm used here is the flood-fill algorithm. But how does it
+work?</p>
+<hr />
+<h1 id="the-flood-fill-algorithm">The flood fill algorithm</h1>
+<p>Imagine that our image is an array of colors. We’ll treat each unique
+color as a unique integer. (In computer graphics class we learn that
+this is a reasonable thing to do)</p>
+<p>Suppose we have an image that looks like this:</p>
+<pre><code>0 0 0 0 0 0 0 0
+0 0 1 1 1 1 0 0
+0 1 2 2 1 2 1 0
+1 1 2 2 2 2 1 1 
+1 1 2 2 1 2 1 1
+0 1 1 1 1 1 1 0
+0 0 1 1 1 1 0 0
+0 0 0 0 0 0 0 0 </code></pre>
+<p>It’s an abstract image. A circle of 1s with some 2s in a blotchy
+pattern inside.</p>
+<hr />
+<h1 id="the-flood-fill-algorithm-1">The flood fill algorithm</h1>
+<p>Let’s say the user has the paintbuck tool active, and the current
+color is <code>1</code>.</p>
+<p>They click in the lower left <code>2</code> pixel of the wide part of
+the blotchy pattern. So they want the whole blotch to be color
+<code>3</code> instead of color <code>2</code>.</p>
+<p>In code, we now have two sets we want to consider: - The set of
+pixels we need to change. - The set of pixels that has been visited.</p>
+<p>Technically, we can change the pixels immediately so that we don’t
+have to store which ones have been visited, but let’s not do that so
+that our algorithm matches a canonical search. Sometimes we won’t be
+allowed to modify the graph (i.e., flood select instead of flood
+fill).</p>
+<hr />
+<h1 id="flood-fill-2">Flood fill (2)</h1>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">// array list of pixels to search. we treat each element as a (row, col) pair</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>arr_list<span class="op">*</span> search <span class="op">=</span> al_new<span class="op">();</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">// image that stores the pixels already searched. </span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span><span class="op">*</span> visited <span class="op">=</span> malloc<span class="op">(</span>rows <span class="op">*</span> cols <span class="op">*</span> <span class="kw">sizeof</span> <span class="op">*</span>visited<span class="op">);</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>memset<span class="op">(</span>visited<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> rows <span class="op">*</span> cols<span class="op">);</span> <span class="co">// zero it out</span></span></code></pre></div>
+<p>Here, I’m pretending we have an array list already. They are easy to
+make if you don’t.</p>
+<p>We need these functions:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>ArrList<span class="op">*</span> al_new<span class="op">();</span> <span class="co">// malloc space for an ArrList with some default capacity.</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> al_delete<span class="op">(</span>ArrList<span class="op">*</span> l<span class="op">);</span> <span class="co">// free the list</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> al_push<span class="op">(</span>ArrList<span class="op">*</span> l<span class="op">,</span> <span class="dt">void</span><span class="op">*</span> data<span class="op">);</span> <span class="co">// push onto the list</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span><span class="op">*</span> al_pop<span class="op">(</span>ArrList<span class="op">*</span> l<span class="op">);</span> <span class="co">// remove and return the last value</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> al_size<span class="op">(</span>ArrList<span class="op">*</span> l<span class="op">);</span> <span class="co">// return the number of elements pushed</span></span></code></pre></div>
+<hr />
+<h1 id="flood-fill-3">Flood fill (3)</h1>
+<p><code>search</code> stores all of the pixels we need to visit. And
+<code>visited</code> is a big 2d array of bools tracking which pixels
+have been visited. We could use a hashset for <code>visited</code>
+too.</p>
+<p>For simplicity, let’s assume we’re using 1 dimensional pixel
+locations (i.e., using the <code>to_1d</code> function from
+earlier.)</p>
+<p>We start by inserting our clicked pixel into search.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">// in our flood fill algorithm</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>al_push<span class="op">(</span>search<span class="op">,</span> to_1d<span class="op">(</span>start_row<span class="op">,</span> start_col<span class="op">,</span> img_width<span class="op">));</span></span></code></pre></div>
+<p>I’m re-interpreting an <code>int</code> as a <code>void*</code>,
+which is technically not standards compliant, but will work on almost
+any 32 or 64-bit platform.</p>
+<p>At this point, we have one pixel to search, and we’ve visited no
+pixels.</p>
+<hr />
+<h1 id="filling-the-pixel">Filling the pixel</h1>
+<p>As long as there are pixels to search, we color the most recent
+one:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>al_size<span class="op">(</span>search<span class="op">)</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> which_pixel <span class="op">=</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span>al_pop<span class="op">(</span>search<span class="op">);</span> <span class="co">// next pixel to search</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>visited<span class="op">[</span>which_pixel<span class="op">])</span> <span class="cf">continue</span><span class="op">;</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    visited<span class="op">[</span>which_pixel<span class="op">]</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    the_image<span class="op">[</span>which_pixel<span class="op">]</span> <span class="op">=</span> active_color<span class="op">;</span> <span class="co">// color it</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// now search neighbors </span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>But after coloring the pixel, we now need to queue up its neighbors
+which haven’t been searched yet. How do we do that?</p>
+<hr />
+<h1 id="searching-the-neighbors">Searching the neighbors</h1>
+<p>For each neighbor there are three requirements: 1. It’s inside the
+image 2. It hasn’t been searched yet 3. It’s the same color as we
+started with (call it <code>start_color</code>)</p>
+<p>If all those conditions are met, we add the neighbor to the list of
+pixels to be searched.</p>
+<hr />
+<h1 id="searching-the-neighbors-1">Searching the neighbors</h1>
+<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">// now search neighbors. start with top:</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> top_neighbor <span class="op">=</span> which_pixel <span class="op">-</span> img_width<span class="op">;</span> <span class="co">// why do you think this works?</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>in_bounds<span class="op">(</span>top_neighbor<span class="op">,</span> n_pixels<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">!</span>visited<span class="op">[</span>top_neighbor<span class="op">]</span> <span class="op">&amp;&amp;</span> </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    the_image<span class="op">[</span>top_neighbor<span class="op">]</span> <span class="op">==</span> start_color</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    al_push<span class="op">(</span>search<span class="op">,</span> top_neighbor<span class="op">);</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a> <span class="co">// right neighbor:</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> col <span class="op">=</span> from_1d_col<span class="op">(</span>which_pixel<span class="op">,</span> img_width<span class="op">)</span> <span class="op">+</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>col <span class="op">&lt;</span> img_width <span class="op">&amp;&amp;</span> <span class="op">!</span>visited<span class="op">[</span>which_pixel <span class="op">+</span> <span class="dv">1</span><span class="op">]</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    the_image<span class="op">[</span>which_pixel <span class="op">+</span> <span class="dv">1</span><span class="op">]</span> <span class="op">==</span> start_color</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    al_push<span class="op">(</span>search<span class="op">,</span> which_pixel <span class="op">+</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>I’ll leave the bottom and left neighbors to you.</p>
+<hr />
+<h1 id="how-does-this-work">How does this work?</h1>
+<p>We start with some pixel, and we change its color.</p>
+<p>Then we check its neighbors: those that are in bounds, the old color,
+and which have not been changed, and pushed onto the stack to visit.</p>
+<p>Eventually, we will visit those neighbors, and change their colors,
+and when we do, we will mark them as visited (so we don’t repeat), and
+we will add all <em>their</em> neighbors, too.</p>
+<p>Eventually, every connected pixel will be visited exactly once and
+will have its color changed.</p>
+<hr />
+<h1 id="practice-2">Practice</h1>
+<ul>
+<li>Implement this algorithm yourself. You’ll need to write:
+<ul>
+<li>An array list</li>
+<li><code>in_bounds</code></li>
+<li><code>to_1d</code></li>
+<li><code>from_1d_col</code> for detecting if the pixel is on the
+edge</li>
+<li>Some kind of image (you can define your own in an array)</li>
+</ul></li>
+<li>Make sure to free the visited array and anything else
+<code>malloc</code>’d</li>
+</ul>
+<hr />
+<h1 id="breadth-first-or-depth-first">Breadth-first or depth first?</h1>
+<p>So back to our discussion on breadth-first vs. depth-first, which one
+is our flood fill algorithm and why?</p>
+<p>[Class]</p>
+<hr />
+<h1 id="breadth-first-or-depth-first-2">Breadth-first or depth first?
+(2)</h1>
+<p>It’s depth first: the next pixel to search comes from the top of a
+stack ()<code>al_pop</code>)</p>
+<p>Does that matter? Here, no it doesn’t.</p>
+<p>However, I’m about to show an example of where it does matter, so how
+do we change it?</p>
+<p>[class?]</p>
+<hr />
+<h1 id="breadth-first-or-depth-first-3">Breadth-first or depth first?
+(3)</h1>
+<p>We use a queue instead of a stack!</p>
+<p>Queues are slightly more advanced, because implementing them
+efficiently requires using a rope (i.e., a linked list of arrays).</p>
+<p>However, if you understood our pool memory allocator from earlier in
+the semester, you should be capable of doing this.</p>
+<hr />
+<h1 id="implementing-a-dequeue">Implementing a dequeue</h1>
+<p>The most common kind of array-based queue is a dequeue. Pronounced
+either “deck” or “dee-kyoo”. It stands for double-ended queue, because
+it’s equally fast at inserting or removing from either end.</p>
+<p>A dequeue will have two pointers, one to the start and one to the
+end. We can insert in either direction, making the start pointer move
+left or the end pointer move right. When we remove from one end, we move
+its pointer the other way.</p>
+<p>The issue is, if we kept inserting left and removing right (or vice
+versa), our pointers would keep moving in one direction, and eventually
+we’d have a very large pointer with tons of empty, wasted space on the
+other side.</p>
+<hr />
+<h1 id="implementing-a-dequeue-1">Implementing a dequeue</h1>
+<p>It’s a little out of scope for this lecture, but for your own
+benefit, I recommend seeing how a dequeue works in practice: <a
+href="https://github.com/Seng3694/Deque">here is a link to one on
+GitHub</a>.</p>
+<p>They are a useful structure in practice that you might not be aware
+of.</p>
+<hr />
+<h1 id="building-a-bridge">Building a bridge</h1>
+<p>Earlier I promised that I would cover an example problem where you
+had to use BFS.</p>
+<p>Consider <a
+href="https://leetcode.com/problems/shortest-bridge/description/">this
+Leetcode problem</a>.</p>
+<p>It asks you to connect two islands together with the shortest
+possible bridge.</p>
+<p>The islands are connected regions of 1s on a tile grid. Everything
+that is not an island is sea (a 0).</p>
+<p>There are exactly two islands.</p>
+<hr />
+<h1 id="building-a-bridge-2">Building a bridge (2)</h1>
+<p>You are supposed to flood-search one of the islands to mark all of
+its sea-borders. Then, starting with the search-list of the border of
+the island, we visit each neighbor.</p>
+<p>Set a secret length value to 1 for every tile on the border. Then for
+their neighbors we set it to 2. Every time we insert a neighbor into the
+queue to visit, we set the number higher.</p>
+<p>This number represents how long a bridge would be to reach that point
+from the island.</p>
+<p>Once we reach the other island, the bridge length is the answer.
+Because we’re moving breadth-first, we always visit the cells around the
+island in equally-spaced rings. Each cell in the ring has the same
+distance. Once one of the rings touches the other island, that’s the
+smallest bridge we have to build.</p>
+<p>[whiteboard]</p>
+<hr />
+<h1 id="practice-3">Practice</h1>
+<p><a
+href="https://leetcode.com/problems/shortest-bridge/description/">Do
+it!</a></p>
+<p>The number of cells is limited, so you can allocate a giant array
+that could store every cell, and keep to pointers, and use that as your
+queue. That’s what I did.</p>
+<p>Alternatively, you can use a linked list as a queue.</p>
+<hr />
+<h1 id="questions-5">Questions</h1>
+<!-- _class: questions invert -->
+<hr />
+<h1 id="dijkstras-algorithm">Dijkstra’s algorithm</h1>
+<p>One incredibly important thing we can do with graphs is to find the
+shortest path between two nodes.</p>
+<p>Many of you made video games for CS 320, and this is often a sticking
+point. Doing path finding is challenging.</p>
+<p>Dijkstra’s algorithm is a simple, useful algorithm for doing it. It
+can be modified to make it practically faster on real maps (A*), and it
+can also be modified to search through complex, interactive systems
+(graph modelling).</p>
+<p>It’s honestly ridiculous how useful Dijkstra’s algorithm is for how
+simple it is. And it features prominently in code interviews and
+competitive coding, too.</p>
+<p>First, let’s repeat the graph from earlier you we don’t have to
+scroll up…</p>
+<hr />
+<h1 id="the-graph-to-be-searched">The graph to be searched</h1>
+<figure>
+<img src="digraph1.svg"
+alt="repeated alt text from the first digraph: a diagram of a directed graph. The start node is A, which has only outbound arrows. A is connected to B with weight 5. A is connected to C with weight 4. A is connected to D with weight 1. D is connected to G with weight 1. B is connected in both directions with C with weight 1. C is connected to F with weight 10. G is connected to F with weight 2. F is connected to E with weight 1. B is connected bi-directionally with E with weight 3. E is connected to Z with weight 5. G is connected to Z with weight 10." />
+<figcaption aria-hidden="true">repeated alt text from the first digraph:
+a diagram of a directed graph. The start node is A, which has only
+outbound arrows. A is connected to B with weight 5. A is connected to C
+with weight 4. A is connected to D with weight 1. D is connected to G
+with weight 1. B is connected in both directions with C with weight 1. C
+is connected to F with weight 10. G is connected to F with weight 2. F
+is connected to E with weight 1. B is connected bi-directionally with E
+with weight 3. E is connected to Z with weight 5. G is connected to Z
+with weight 10.</figcaption>
+</figure>
+<p>Suppose we want to know the shortest path from <code>A</code> to
+<code>Z</code>.</p>
+<p>First: what is it? Second: how do we <em>know</em> for sure that we
+found it?</p>
+<hr />
+<h1 id="shortest-paths">Shortest paths</h1>
+<p>In general, the problem of shortest paths can be defined
+inductively.</p>
+<p>What is the shortest path from node <code>Z</code> to
+<code>Z</code>?</p>
+<p>Answer: the empty path. We’re already there.</p>
+<p>So where does the induction come in?</p>
+<p>If we know the shortest path to <code>E</code> and <code>G</code>, we
+can make an intelligent choice: - Let <code>sE = shortest(E)</code> and
+<code>sG = shortest(G)</code> be our paths. - If
+<code>length(sE) + 5 &lt; length(sG) + 10</code>, then we know that the
+shortest way to get to Z is through E. If it’s greater, then we go
+through G instead. Otherwise same.</p>
+<p>Why? Lets say the shortest path to E is 100, and the shortest path to
+g is 90. Then to go to Z through E takes 105 (edge is 5), and from g
+takes 100 (edge is 10).</p>
+<hr />
+<h1 id="shortest-paths-2">Shortest paths (2)</h1>
+<p>So, we’ve simplified our problem. Now, instead of solving the problem
+of getting to Z, we’ve solved the problem of getting to E and G.</p>
+<p>Wait, why is that simpler? Now we have <em>two</em> paths to
+consider!</p>
+<p>It’s simpler because both nodes are closer to our starting node!</p>
+<p>If the start and end are connected, then each time we repeat this
+step, we get closer to our starting point.</p>
+<hr />
+<h1 id="shortest-paths-issue">Shortest paths: issue</h1>
+<p>But there’s a problem: our arrows don’t go that way.</p>
+<p>To do this kind of analysis, we need to know all the nodes that go
+into the destination.</p>
+<p>If we’re using, say, an adjacency list, we don’t have access to this
+information. We only know outbound edges.</p>
+<p>This isn’t a fundamental issue. We can traverse the graph and build a
+new graph with flipped edges if we want.</p>
+<p>However, in principle, is there any reason we can’t flip this problem
+around?</p>
+<hr />
+<h1 id="going-from-source-to-dest">Going from source to dest</h1>
+<p>Instead of starting at the destination, and reducing the problem to
+getting to one of the neighbors, what if we start at the source?</p>
+<p>We can compute the shortest path from the source to each of our
+neighbors, and then to each of the neighbors’ neighbors, and so on,
+until we reach the destination.</p>
+<p>For example, consider this very simple graph:</p>
+<pre><code>a --- 5 --&gt; b
+|           | 1
+---- 10 ----c</code></pre>
+<p>In English, a is connected to b with weight 5, a is connected to c
+with weight 10, and b is connected to c with weight 1. So what’s the
+fastest rout from a to c?</p>
+<hr />
+<h1 id="going-from-source-to-dest-1">Going from source to dest</h1>
+<p>It’s to go through b. The length is 6 if we go through b, but it’s 10
+if we jump straight from a to c.</p>
+<p>So, if we start at a, we might believe that the shortest route to
+visit b is 5, and the shortest rout to visit c is 10. But, once we visit
+b, we see that there is a path to c in 1.</p>
+<p>Therefore, we update our estimate to visit c to 6. We’ve found a
+shorter path.</p>
+<hr />
+<h1 id="remember-the-bridge">Remember the bridge</h1>
+<p>Remember the bridge problem, where we went in a breadth first
+direction? This caused us to explore in rings around the island.</p>
+<p>Here, we’re going in a breadth first direction too. We kept moving
+outward from the neighbors of the start node, to the neighbors of those
+nodes, etc. And when we find a shorter path through a newly searched
+node to a previous node, we update it.</p>
+<p>But this breadth-first shortest path algorithm isn’t actually the one
+we typically use, because there is a tiny modification we can make to
+make it much better.</p>
+<p>The problem: we can’t currently stop as soon as we reach the
+destination. What if we find a shorter path later that goes through some
+nodes we haven’t seen yet?</p>
+<hr />
+<h1 id="remember-the-bridge-2">Remember the bridge (2)</h1>
+<p>The nice thing about the bridge problem was that we could stop as
+soon as we reached the second island. At that point, we knew the exact
+length of the shortest bridge.</p>
+<p>Why? Because we always explored paths from the order of short to
+long.</p>
+<p>And that is the key insight that motivates Dijkstra’s algorithm: if
+we just <em>order</em> our paths so that we always search from shortest
+to longest, then we can stop as soon as we find the destination.</p>
+<p>How do we keep them ordered? By storing them in a priority queue.</p>
+<p>We’ve already made a heap, which is a valid priority queue, so we’re
+good there! (but be sure to upgrade it so that it can sort structures
+using a comparison function instead of just ints)</p>
+<hr />
+<h1 id="dijkstras-algorithm-1">Dijkstra’s algorithm</h1>
+<p>Dijkstra’s algorithm requires the following: - A set of visited
+nodes. Could be an array of bools, one element per node. - A map that
+stores the <em>predicessor</em> of each node. This is the node through
+which we reach the node in the shortest time if we follow the shortest
+path. - And the key that makes it Dijkstra’s algorithm: a priority queue
+of paths. Each path is a structure that stores the node we’re visiting
+from, the node we want to search, and the total cost to reach the search
+node so far.</p>
+<p>The priority queue will be sorted by the total cost of each path.
+That means, when we remove a path from the priority queue, we will get
+the one that is the least total cost of every remaining path.</p>
+<hr />
+<h1 id="dijkstras-algorithm-2">Dijkstra’s algorithm</h1>
+<p>Here are the basic steps: 1. Insert the start node into the priority
+queue. 2. Repeat the following: 1. Remove the path from the queue. This
+is the lowest cost path remaining. 2. Check to see if the node we’re
+visiting has been visited. If it has, continue, otherwise, mark it as
+visited and set predicessor of this node to path source. 3. Check to see
+if this path ends at the destination. If it does, we’re done! 4. For
+each unvisited neighbor: 1. Compute the cost to visit the neighbor if we
+follow the current path. 2. Create a new path, coming from the current
+node, with the neighbor as the destination. Its cost:
+<code>current_cost</code> + cost of edge to neighbor. —</p>
+<h1 id="working-it-on-paper">Working it on paper</h1>
+<figure>
+<img src="digraph1.svg"
+alt="repeated alt text from the first digraph: a diagram of a directed graph. The start node is A, which has only outbound arrows. A is connected to B with weight 5. A is connected to C with weight 4. A is connected to D with weight 1. D is connected to G with weight 1. B is connected in both directions with C with weight 1. C is connected to F with weight 10. G is connected to F with weight 2. F is connected to E with weight 1. B is connected bi-directionally with E with weight 3. E is connected to Z with weight 5. G is connected to Z with weight 10." />
+<figcaption aria-hidden="true">repeated alt text from the first digraph:
+a diagram of a directed graph. The start node is A, which has only
+outbound arrows. A is connected to B with weight 5. A is connected to C
+with weight 4. A is connected to D with weight 1. D is connected to G
+with weight 1. B is connected in both directions with C with weight 1. C
+is connected to F with weight 10. G is connected to F with weight 2. F
+is connected to E with weight 1. B is connected bi-directionally with E
+with weight 3. E is connected to Z with weight 5. G is connected to Z
+with weight 10.</figcaption>
+</figure>
+<p>It’s a bit easier to understand if we walk through it together, so
+let’s apply Dijkstra’s algorithm to this graph to find the shortest path
+from <code>A</code> to <code>Z</code>.</p>
+<p>I’m going to walk through this with Paint, but the following notes
+cover it exhaustively.</p>
+<hr />
+<h1 id="first-steps">First steps</h1>
+<p>First, imagine we have a priority queue <code>Q</code>, our visited
+set <code>v</code> is empty, our predicessor map <code>p</code> is
+empty.</p>
+<p>Now, we add a path to the queue starting with <code>null</code> and
+ending at <code>A</code> of length zero (because <code>A</code> is the
+start node, there’s nothing before it, and it takes no cost to reach
+it)</p>
+<p><code>heap_insert({prev: null, end: A, cost: 0})</code></p>
+<p>I’m using psuedocode. We’re storing our path as a structure with a
+previous node, an ending node, and a total cost.</p>
+<p>The total cost represents the complete cost to follow that path from
+start to end. But prev just represents the immediate previous node in
+sequence. We don’t store the entire path inside this structure.</p>
+<hr />
+<h1 id="the-algorithm">The algorithm</h1>
+<p>Now, we remove the path from the Q:
+<code>{prev: null, end: A, cost: 0}</code></p>
+<p>This is not the destination. It has not been visited. Mark it as
+visited: <code>v = { A }</code></p>
+<p>Our previous node is null, so we record <code>p = { A: null }</code>
+in the predecessors.</p>
+<p>There are three neighbors, all unvisited: B, C, and D. We create a
+path for each one and push it into the heap. I will keep the heap
+ordered when I write it down:</p>
+<pre><code>Q = {
+    {prev: A, end: D, cost: 0 + 1 = 1},
+    {prev: A, end: C, cost: 0 + 4 = 4},
+    {prev: A, end: B, cost: 0 + 5 = 5},
+}
+v = { A }</code></pre>
+<hr />
+<h1 id="the-algorithm-2">The algorithm (2)</h1>
+<p>Now there are three paths on our “frontier” (set to search). The next
+one will be: <code>{prev: A, end: D, cost: 1}</code></p>
+<p>We heap_pop, and it returns this path. It’s not the destination. We
+mark it as visited. We set <code>p[D] = A</code>, because the fastest
+way to get to <code>D</code> is to go through <code>A</code>.</p>
+<p>Now we consider the neighbors of <code>D</code>. There is only one:
+<code>G</code>. To reach <code>D</code>, we had a cost of 1. The edge
+from <code>D</code> to <code>G</code> has distance 1. Therefore, the
+total cost to enter <code>G</code> from <code>D</code> is 2. Insert it
+in the queue:</p>
+<pre><code>Q = {
+    {prev: D, end: G, cost: 1 + 1 = 2},
+    {prev: A, end: C, cost: 4},
+    {prev: A, end: B, cost: 5},
+}
+v = { A, D }</code></pre>
+<hr />
+<h1 id="the-algorithm-3">The algorithm (3)</h1>
+<p>Next up is path <code>{prev: D, end: G, cost: 2}</code></p>
+<p>Is <code>G</code> the destination? No. Is it visited? No. Mark it
+visited and set <code>p[G] = D</code></p>
+<p>G has two unvisited neighbors: <code>F</code> and <code>Z</code>.
+Insert them in <code>Q</code> after adding the edge cost:</p>
+<pre><code>Q = {
+    {prev: A, end: C, cost: 4},
+    {prev: G, end: F, cost: 2 + 2 = 4},
+    {prev: A, end: B, cost: 5},
+    {prev: G, end: Z, cost: 12}
+}
+v = { A, D, G }</code></pre>
+<p>Notice that <code>G</code> to <code>F</code> has the same cost as
+<code>A</code> to <code>C</code>. Most heaps will not re-order if they
+don’t have to, so this order is most likely, but it works either
+way.</p>
+<hr />
+<h1 id="the-algorithm-4">The algorithm (4)</h1>
+<p>Now we’re searching <code>{prev: A, end: C, cost: 4}</code>. Is C the
+dest? No. Is it visited? No. Mark it visited and continue.
+<code>v = { A, D, G, C }, p[C] = A</code></p>
+<p>Now search the unvisited neighbors. There are two: <code>B</code> and
+<code>F</code>. Update <code>Q</code>:</p>
+<pre><code>Q = {
+    {prev: G, end: F, cost: 4},
+    {prev: A, end: B, cost: 5},
+    {prev: C, end: B, cost: 4 + 1 = 5},
+    {prev: G, end: Z, cost: 12},
+    {prev: C, end: F, cost: 4 + 10 = 14}
+}</code></pre>
+<hr />
+<h1 id="the-algorithm-5">The algorithm (5)</h1>
+<p>Now we’re searching <code>{prev: G, end: F, cost: 4}</code> Mark it
+visited and note that it’s not the destination:
+<code>v = { A, D, G, C, F }, p[F] = G</code></p>
+<p>Only one neighbor, E, which is not visited. Add it to the queue:</p>
+<pre><code>Q = {
+    {prev: A, end: B, cost: 5},
+    {prev: C, end: B, cost: 5},
+    {prev: F, end: E, cost: 1 + 4 = 5},
+    {prev: G, end: Z, cost: 12},
+    {prev: C, end: F, cost: 14}
+}</code></pre>
+<hr />
+<h1 id="the-algorithm-6">The algorithm (6)</h1>
+<p>Now we’re searching <code>{prev: A, end: B, cost: 5}</code>. Mark
+<code>B</code> as visited, and it’s not the destination:
+<code>v = { A, D, G, C, F, B }, p[B] = A</code></p>
+<p>This time, we have two neighbors, but one is <code>C</code>, which is
+already visited. Therefore, we don’t have to add it, we already found a
+faster path to it. We do have to add E, though.</p>
+<pre><code>Q = {
+    {prev: C, end: B, cost: 5},
+    {prev: F, end: E, cost: 5},
+    {prev: B, end: E, cost: 8},
+    {prev: G, end: Z, cost: 12},
+    {prev: C, end: F, cost: 14}
+}</code></pre>
+<hr />
+<h1 id="the-algorithm-7">The algorithm (7)</h1>
+<p>Now we’re searching <code>{prev: C, end: B, cost: 5}</code></p>
+<p>But what’s that? <code>B</code> has already been visited?</p>
+<p>Then there’s no point searching it again!</p>
+<p>Just continue instead.</p>
+<pre><code>Q = {
+    {prev: F, end: E, cost: 5},
+    {prev: B, end: E, cost: 8},
+    {prev: G, end: Z, cost: 12},
+    {prev: C, end: F, cost: 14}
+}
+v = { A, D, G, C, F, B }</code></pre>
+<hr />
+<h1 id="the-algorithm-8">The algorithm (8)</h1>
+<p>Now we’re searching <code>{prev: F, end: E, cost: 5}</code> Not
+visited, so update
+<code>v = { A, D, G, C, F, B, E }, p[E] = F</code></p>
+<p><code>E</code> has two neighbors: 1. <code>B</code>, which we’ve
+already visited, so we ignore 2. <code>Z</code>, which is the
+destination. We don’t stop here though: in theory there could be another
+path to <code>Z</code> which is faster (there isn’t, but there could
+be)</p>
+<p>Insert <code>Z</code> into the queue:</p>
+<pre><code>Q = {
+    {prev: B, end: E, cost: 8},
+    {prev: E, end: Z, cost: 5 + 5 = 10},
+    {prev: G, end: Z, cost: 12},
+    {prev: C, end: F, cost: 14}}</code></pre>
+<hr />
+<h1 id="the-algorithm-9">The algorithm (9)</h1>
+<p>We would search <code>{prev: B, end: E, cost: 8}</code>, but
+<code>E</code> is visited, so skip it. Now we search
+<code>{prev: E, end: Z, cost: 10}</code> Mark as visited and set p:
+<code>visited = { A, D, G, C, F, B, E, Z}, p[Z] = E</code></p>
+<p>And what’s that? <code>Z</code> <em>is</em> the destination. Since
+we’ve ordered our paths shortest-to-longest, that means, as soon as we
+visit <code>Z</code>, we’ve found the shortest path.</p>
+<p>It has a length of 10, but what is the actual path?</p>
+<p>To reconstruct it, we need to look at the map of predecessors,
+<code>p</code>. Go through the previous steps and write down all the
+predecessors we set…</p>
+<hr />
+<h1 id="the-predecessors">The predecessors</h1>
+<pre><code>p[A] = null (it&#39;s the start)
+p[D] = A
+p[G] = D
+p[C] = A
+p[F] = G
+p[B] = A
+p[E] = F
+p[Z] = E</code></pre>
+<p>Every time we visited a node, because of our shortest-to-longest
+order, we knew that we had found the shortest path to that node from the
+original source.</p>
+<p>And therefore, the node we entered it from was the shortest way to
+get there.</p>
+<p>Therefore, the shortest path to <code>Z</code> goes through
+<code>E</code>. And the shortest path to <code>E</code> goes through
+<code>F</code>.</p>
+<hr />
+<h1 id="the-precessors-2">The precessors (2)</h1>
+<p>Just work your way backwards from the destination and you’ll
+reconstruct the whole graph: <span class="math inline">\(Z \leftarrow E
+\leftarrow F \leftarrow G \leftarrow D \leftarrow A\)</span></p>
+<p>Therefore, the shortest path from <code>A</code> to <code>Z</code>
+is: <span class="math inline">\(A \to D \to G \to F \to E \to
+Z\)</span></p>
+<p>And we know it costs 10.</p>
+<hr />
+<h1 id="questions-6">Questions?</h1>
+<!-- _class: questions invert -->
+<hr />
+<h1 id="summary">Summary</h1>
+<p>Technically, the version of Dijkstra’s I showed you was Lazy
+Dijkstra’s.</p>
+<p>There’s a more complex version that only allows one path to a given
+node to be in the heap at a time. It replaces it with a faster one if it
+finds it.</p>
+<p>The lazy version just lets there be a wasted path in the heap.</p>
+<p>The eager version is the original, canonical version, but it’s a bit
+more work, and it requires storing the minimum lengths next to the
+predecessor array, so I like the lazy one more.</p>
+<hr />
+<h1 id="next-time">Next time</h1>
+<p>Dijkstra’s algorithm is already powerful for computing shortest
+paths.</p>
+<p>Next time, we’ll improve it further, using A*, for optimizing common
+use-cases (like games).</p>
+<p>We’ll also see how we can use it to solve graph modelling problems.
+These problems are often extremely hard to solve otherwise, but using
+Dijkstra’s and some clever transformations, we can solve them in
+polynomial time.</p>
+<hr />
+<h1 id="practice-4">Practice</h1>
+<ul>
+<li>It’s very important to be good at Dijstra’s algorithm. Try modifying
+my graph or generating your own and find shortest paths between
+arbitrary points.</li>
+<li>Implement the algorithm in C. You’ll need to do this for project 5
+anyway. How do you need to modify the heap to make it work on paths? (we
+can discuss this if there is time)</li>
+</ul>
+<hr />
+<h1 id="questions-7">Questions?</h1>
+<!-- _class: questions invert -->
+<hr />
+<p>Marp source 1 (digraph):</p>
+<pre><code>flowchart LR
+    A --&gt;|5| B 
+    A --&gt;|4| C 
+    A --&gt;|1| D
+    B &lt;--&gt;|3| E
+    F --&gt;|1| E
+    C --&gt;|10| F
+    G --&gt;|2| F
+    C &lt;--&gt;|1| B
+    D --&gt;|1| G
+    E --&gt;|5| Z
+    G --&gt;|10| Z</code></pre>
+<hr />
+<p>Marp source 2 (digraph 2):</p>
+<pre><code>flowchart LR
+    A --&gt;|10| B
+    A --&gt;|15| C
+    C --&gt;|2| D
+    C --&gt;|3| B
+    D --&gt;|1| A
+    B --&gt;|2| C
+    A --&gt;|10| D</code></pre>
+</body>
+</html>
