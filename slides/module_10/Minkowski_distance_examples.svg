@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="-175 -300 550 550">
+ <title>Minkowski distance examples</title>
+ <desc>Comparison of Chebyshev, Euclidean and taxicab distances for the hypotenuse of a 3-4-5 triangle on a chessboard by CMG Lee.</desc>
+ <style type="text/css">
+svg   { fill:#000000; stroke:none; stroke-width:2; stroke-linecap:round; }
+text  { font-family:'Liberation Sans',Helvetica,Arial,sans-serif; font-size:32px; text-anchor:middle; stroke:none; }
+.path { font-weight:bold; fill:none; stroke-width:4; stroke-dasharray:40,10; }
+ </style>
+ <defs>
+  <radialGradient id="grad_ant" cx="50%" cy="50%" r="50%" fx="50%" fy="25%">
+   <stop offset="30%" stop-color="#ff0000"/>
+   <stop offset="90%" stop-color="#990000"/>
+  </radialGradient>
+  <pattern id="pattern_checker" patternUnits="userSpaceOnUse" width="100" height="100">
+   <circle cx="0" cy="0" r="999" fill="#d18b47"/>
+   <path d="M 50,0 v 100 h 50 V 50 H 0 V 0" fill="#ffce9e"/>
+  </pattern>
+  <pattern id="pattern_ones" patternUnits="userSpaceOnUse" width="100" height="100">
+   <text transform="translate(25,75)" x="0" y="0.7ex">1</text>
+   <text transform="translate(75,25)" x="0" y="0.7ex">1</text>
+  </pattern>
+  <pattern id="pattern_chebyshev" patternUnits="userSpaceOnUse" width="100" height="100">
+   <text transform="translate(25,25)" x="0" y="0.7ex">1</text>
+   <text transform="translate(75,75)" x="0" y="0.7ex">1</text>
+  </pattern>
+  <pattern id="pattern_euclidean" patternUnits="userSpaceOnUse" width="100" height="100">
+   <text transform="translate(25,25)" x="-0.2ex" y="0.7ex">&#8730;2</text>
+   <text transform="translate(75,75)" x="-0.2ex" y="0.7ex">&#8730;2</text>
+  </pattern>
+  <pattern id="pattern_taxicab" patternUnits="userSpaceOnUse" width="100" height="100">
+   <text transform="translate(25,25)" x="0" y="0.7ex">2</text>
+   <text transform="translate(75,75)" x="0" y="0.7ex">2</text>
+  </pattern>
+  <g id="common" transform="translate(-75,-75)">
+   <rect x="0" y="0" width="150" height="150" fill="url(#pattern_checker)"/>
+   <rect x="0" y="0" width="150" height="150" fill="url(#pattern_ones)"/>
+  </g>
+  <path id="ring" d="M 0,0 H 150 V 150 H 0 M 50,50 V 100 H 100 V 50" transform="translate(-75,-75)"/>
+  <path id="king" d="M 0,0 C 0,-15 28,-5 10,5 V 13 Q 0,19 -10,13 V 5 C -28,-5 0,-15 0,0 M -10,4 q 10,-6 20,0 M -10,8 q 10,-6 20,0 M -10,12 q 10,-6 20,0 M -3,-7 q 3,-9 6,0 L 0,-3 M -3,-14 h 6 M 0,-17 v 5" fill="#ffffff" stroke="#000000" stroke-width="2" stroke-dasharray="none"/>
+  <g id="rook">
+   <path d="M -12,-7 v -8 h 4 v 4 h 5 v -4 h 6 v 4 h 5 v -4 h 4 v 8 l -3,3 v 9 l 6,6 v 3 h -30 v -3 l 6,-6 v -9 z" fill="#000000" stroke="none"/>
+   <path d="M -8,-4 H 8 M -8,6 H 8" stroke="#ffffff" stroke-width="1" stroke-dasharray="none"/>
+  </g>
+  <g id="wazir">
+   <use xlink:href="#rook" transform="scale(-1)"/>
+  </g>
+  <g id="ant" fill="url(#grad_ant)" stroke="none">
+   <path d="M -16,-8 q 8,4 3,-2 M -13,4 Q -2,0 -11,6 M -7,7 Q 0,0 -4,9 M 0,8 Q -2,0 3,9" fill="none" stroke="#990000" stroke-width="1.5" stroke-dasharray="none"/>
+   <ellipse cx="10" cy="4" rx="8" ry="6"/>
+   <ellipse cx="-2" cy="0" rx="6" ry="4"/>
+   <ellipse cx="-9" cy="-4" rx="3" ry="4"/>
+  </g>
+  <path id="arrowhead" d="M -9,-3 L -3,0 L -9,3" stroke-dasharray="none"/>
+ </defs>
+ <circle cx="0" cy="0" r="99999" fill="#ffffff"/>
+ <rect x="-50" y="0" width="350" height="300" transform="translate(-25,-75)" fill="url(#pattern_checker)"/>
+ <g class="path" stroke="#ffffff">
+  <path d="M 4,4 L 150,150" stroke-dasharray="60,10"/>
+  <path d="M 155,150 H 200"/>
+  <use xlink:href="#arrowhead" transform="translate(200,150)"/>
+  <use xlink:href="#king"      transform="translate(  0,150)"/>
+  <text transform="translate(50,150)" x="0" y="0.7ex" fill="#ffffff">:&#8202;4</text>
+ </g>
+ <g class="path" stroke="#000000">
+  <path d="M 5,0 H 200 V 150"/>
+  <use xlink:href="#arrowhead" transform="translate(200,150) rotate(90)"/>
+  <use xlink:href="#wazir"     transform="translate(200,-50)"/>
+  <text transform="translate(250,-50)" x="0" y="0.7ex" fill="#000000">:&#8202;7</text>
+ </g>
+ <g class="path" stroke="#cc0000">
+  <path d="M 4,3 L 200,150"/>
+  <use xlink:href="#arrowhead" transform="translate(200,150) rotate(37)"/>
+  <use xlink:href="#ant"       transform="translate(100,50)"/>
+  <text transform="translate(150,50)" x="0" y="0.7ex" fill="#990000">:&#8202;5</text>
+ </g>
+ <g transform="translate(-75,-200)">
+  <text transform="translate(0,95)" x="0" y="0.7ex" letter-spacing="-1">Chebyshev</text>
+  <use xlink:href="#common"/>
+  <use xlink:href="#ring" fill="url(#pattern_chebyshev)"/>
+  <use xlink:href="#king"/>
+ </g>
+ <g transform="translate(100,-200)">
+  <text transform="translate(2,95)" x="0" y="0.7ex">Euclidean</text>
+  <use xlink:href="#common"/>
+  <use xlink:href="#ring" fill="url(#pattern_euclidean)"/>
+  <use xlink:href="#ant"/>
+ </g>
+ <g transform="translate(275,-200)">
+  <text transform="translate(0,95)" x="0" y="0.7ex">Taxicab</text>
+  <use xlink:href="#common"/>
+  <use xlink:href="#ring" fill="url(#pattern_taxicab)"/>
+  <use xlink:href="#wazir"/>
+ </g>
+</svg>
