@@ -244,8 +244,8 @@ Algorithms</h1>
 href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
 4.0</a>.</p>
 <p><br></p>
-<p>This is an open educational resource. Submit fixes, improvements, and
-new material <a
+<p>This is an open educational resource. Feel free to submit fixes,
+improvements, and new material <a
 href="https://github.com/grantwill74/notes-on-algorithm-design">here</a>.</p>
 <hr />
 <h1 id="welcome-back">Welcome back!</h1>
@@ -342,44 +342,49 @@ of each one.</p>
 <hr />
 <h1 id="before-the-midterm">Before the midterm</h1>
 <ol type="1">
-<li>You will be able to understand Bachmann-Landau notation (i.e.,
-Big-O, Big-ϴ, small-o, etc.). You will be able to demonstrate this
-understanding by proving that algorithms have a given runtime
-bound.</li>
-<li>You will be able to implement and analyze a self-balancing tree,
-specifically a scapegoat tree, modify it to fit problem-specific
-constraints, and compare it to the performance of other data
-structures.</li>
-<li>You will be able to design and implement a custom sorting algorithm
-that exceeds the speed of standard sorting algorithms on data with
-certain characteristics.</li>
+<li>You will be able to write relevant set-theoretic and inductive
+proofs for this class, both to prove correctness and to prove
+runtime-bounds. You will be able to demonstrate understand
+Bachmann-Landau notation (i.e., Big-O, Big-ϴ, small-o, etc.) needed to
+describe the latter.</li>
+<li>You will learn the divide and conquer concept, how to recognize such
+algorithms, and how to prove their runtime using the <em>master
+theorem</em>.</li>
 <li>You will learn about complexity categories, such as P, NP, and
 NP-complete. You will learn how to determine and prove which category a
 problem belongs to.</li>
 </ol>
+<!--  
+3. You will be able to implement and analyze a self-balancing tree, specifically a scapegoat tree, and modify it to fit problem-specific constraints. (measured by assignment--not quiz)
+-->
 <hr />
 <h1 id="after-the-midterm">After the midterm</h1>
-<ol start="5" type="1">
+<ol start="4" type="1">
 <li>You will be able to identify when a greedy algorithm is appropriate
-and design one.</li>
-<li>You will be able to recognize when pre-computation is appropriate,
-and will demonstate the <em>prefix-sums</em> technique.</li>
-<li>You will be able to recognize when to use full dynamic programming,
-and to solve a dynamic programming problem with a reasonable technique
-(such as memoization).</li>
+to a problem, and when an algorithm is greedy. You will be able to
+demonstrate these facts. You will be able to implement a greedy
+algorithm.</li>
+<li>You will be able to recognize when to use dynamic programming, and
+to solve a dynamic programming problem with a reasonable technique (such
+as memoization).</li>
 <li>You will be able to work with graphs. You will demonstrate the
-algorithm design technique of “graph modelling”, and implement an
-algorithm using this technique.</li>
+algorithm design technique of “graph modelling”, and design an algorithm
+using this technique.</li>
 </ol>
+<!-- 
+6. You will be able to recognize when pre-computation is appropriate, and will demonstate the *prefix-sums* technique.
+-->
 <hr />
 <h1 id="short-modules">Short modules</h1>
 <p>In addition, there are some shorter modules that cover interesting
 information you haven’t seen in other classes, such as: 1. How to make a
 blazingly fast memory-allocator, and the issues with garbage collection
-and less structured allocators like malloc and free. 2. How b-trees
-work, why they’re so fast, and why they are Rust’s sorted dictionary. 3.
-Some basic number theory, so you can solve a common kind of technical
-interview and competitive programming problem.</p>
+and less structured allocators like malloc and free. 2. How to make a
+priority queue, which is useful for solving some cool problems we will
+see. 3. How b-trees work, why they’re so fast, and why they are Rust’s
+sorted dictionary. 4. The prefix-sums trick, a useful form of
+preprocessing which shows up in tons of technical interview and
+competitive programming problems.</p>
 <p>These aren’t specifically measured by standards, but they might show
 up in the other problems, and they are still important to learn.</p>
 <hr />

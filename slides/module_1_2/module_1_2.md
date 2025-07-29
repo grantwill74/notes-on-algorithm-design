@@ -170,8 +170,9 @@ Let's learn what these areas will be!
 
 In addition, there are some shorter modules that cover interesting information you haven't seen in other classes, such as:
 1. How to make a blazingly fast memory-allocator, and the issues with garbage collection and less structured allocators like malloc and free.
-2. How b-trees work, why they're so fast, and why they are Rust's sorted dictionary.
-3. Some basic number theory, so you can solve a common kind of technical interview and competitive programming problem.
+2. How to make a priority queue, which is useful for solving some cool problems we will see.
+3. How b-trees work, why they're so fast, and why they are Rust's sorted dictionary.
+4. The prefix-sums trick, a useful form of preprocessing which shows up in tons of technical interview and competitive programming problems.
 
 These aren't specifically measured by standards, but they might show up in the other problems, and they are still important to learn.
 
