@@ -1822,17 +1822,17 @@ like quizzes.</p>
 <hr />
 <h1 id="appendix-d-practice-quiz-1">Appendix D: Practice Quiz 1</h1>
 <ol type="1">
-<li><p>(20 points) Write a function in C that returns the smallest
+<li><p>(25 points) Write a function in C that returns the smallest
 magnitude negative int in a given list, or 0 if there are no negative
 numbers. For example
 <code>lsmall({-2, -5, 2, 5, 7, -100}, 6) == -2</code>.
 <code>lsmall({}, 0) == 0</code></p></li>
-<li><p>(20 points) Prove that it is correct.</p></li>
-<li><p>(20 points) Determine its big-<span
+<li><p>(25 points) Prove that it is correct.</p></li>
+<li><p>(25 points) Determine its big-<span
 class="math inline">\(\Theta\)</span></p></li>
-<li><p>(20 points) Prove that it has that big-<span
+<li><p>(25 points) Prove that it has that big-<span
 class="math inline">\(\Theta\)</span></p></li>
-<li><p>(20 points) for accurate self grading. Rubric after
+<li><p>(grading points) for accurate self grading. Rubric after
 answers.</p></li>
 </ol>
 <hr />
@@ -1868,7 +1868,7 @@ by the linear recurrence relation lemma.</p>
 <h1 id="appendix-d-quiz-1-self-grading-rubric">Appendix D: Quiz 1
 self-grading rubric</h1>
 <ol type="1">
-<li>give yourself 4 points for each edge case:
+<li>give yourself 5 points for each edge case:
 <ol type="1">
 <li><code>lsmall({}, 0) == 0</code></li>
 <li><code>lsmall({1, 2, 3, -20}, 4) == -20</code></li>
@@ -1879,9 +1879,9 @@ self-grading rubric</h1>
 <li>If you used a loop invariant <em>or</em> and inductive hypothesis,
 give yourself 5 points base. The loop invariant or inductive hypotheses
 must be related to the returned value: give yourself 5 points if it is.
-You will have to be the judge of the remaining 10 points. Check for
+You will have to be the judge of the remaining 15 points. Check for
 fallacies. If you randomly wrote something without trying to convince
-yourself, please do not award credit.</li>
+yourself, <em>do not award credit</em>.</li>
 </ol>
 <hr />
 <h1 id="appendix-d-quiz-1-self-grading-rubric-2">Appendix D: Quiz 1
@@ -1907,52 +1907,52 @@ correctly, -10. If you did not annotate a loop correctly, -10.</p></li>
 <hr />
 <h1 id="appendix-d-quiz-2">Appendix D: Quiz 2</h1>
 <ol type="1">
-<li><p>(20 points) Write a function in C that returns the sum of every
+<li><p>(25 points) Write a function in C that returns the sum of every
 even-index element, starting with index 0. e.g.,
 <code>even_sum({1, 2, 3, 4}, 4) == 4</code>,
 <code>even_sum({}, 0) == 0</code></p></li>
-<li><p>(20 points) Prove that it is correct.</p></li>
-<li><p>(20 points) Determine its big-<span
+<li><p>(25 points) Prove that it is correct.</p></li>
+<li><p>(25 points) Determine its big-<span
 class="math inline">\(\Theta\)</span></p></li>
-<li><p>(20 points) Prove that it has that big-<span
+<li><p>(25 points) Prove that it has that big-<span
 class="math inline">\(\Theta\)</span></p></li>
-<li><p>(20 points) for accurate self grading. Try to be consistent with
-Quiz 1’s rubric.</p></li>
+<li><p>(grading points) for accurate self grading. Try to be consistent
+with Quiz 1’s rubric.</p></li>
 </ol>
 <hr />
 <h1 id="appendix-d-quiz-3">Appendix D: Quiz 3</h1>
 <ol type="1">
-<li><p>(20 points) Write a function in C that returns the largest sum of
+<li><p>(25 points) Write a function in C that returns the largest sum of
 adjacent pairs of an array. For example, <code>{1,2,3,1}</code> has
 adjacent pairs (1, 2); (2, 3); and (3, 1). (2, 3) has the largest sum,
 5, so it would return 5.
 <code>max_adj_sum({1,2,3,4}, 4) == 3 + 4 == 7</code>
 <code>max_adj_sum({1}, 1) == 0</code>
 <code>max_adj_sum({}, 0) == 0</code></p></li>
-<li><p>(20 points) Prove that it is correct.</p></li>
-<li><p>(20 points) Determine its big-<span
+<li><p>(25 points) Prove that it is correct.</p></li>
+<li><p>(25 points) Determine its big-<span
 class="math inline">\(\Theta\)</span></p></li>
-<li><p>(20 points) Prove that it has that big-<span
+<li><p>(25 points) Prove that it has that big-<span
 class="math inline">\(\Theta\)</span></p></li>
-<li><p>(20 points) for accurate self grading. Try to be consistent with
-Quiz 1’s rubric.</p></li>
+<li><p>(grading points) for accurate self grading. Try to be consistent
+with Quiz 1’s rubric.</p></li>
 </ol>
 <hr />
 <h1 id="appendix-d-quiz-4">Appendix D: Quiz 4</h1>
 <ol type="1">
-<li>(20 points) Write a function in C that finds the last zero-based
+<li>(25 points) Write a function in C that finds the last zero-based
 index of the lowercase letter ‘q’ in an ascii string. If the letter ‘q’
 is not present, return -1. Otherwise, return the index of the last ‘q’.
 <code>rscan_q("hello world") == -1</code>
 <code>rscan_q("quello quorld") == 7</code>
 <code>rscan_q("") == -1</code></li>
-<li>(20 points) Prove that it is correct.</li>
-<li>(20 points) Determine its <em>worst case</em> big-<span
+<li>(25 points) Prove that it is correct.</li>
+<li>(25 points) Determine its <em>worst case</em> big-<span
 class="math inline">\(\Theta\)</span></li>
-<li>(20 points) Prove that it has that worst case big-<span
+<li>(25 points) Prove that it has that worst case big-<span
 class="math inline">\(\Theta\)</span></li>
-<li>(20 points) for accurate self grading. Try to be consistent with
-Quiz 1’s rubric.</li>
+<li>(grading points) for accurate self grading. Try to be consistent
+with Quiz 1’s rubric.</li>
 </ol>
 <hr />
 <h1 id="appendix-d-quiz-5">Appendix D: Quiz 5</h1>
@@ -1990,8 +1990,7 @@ eval., etc.)</td>
 </tr>
 <tr>
 <td><span class="math inline">\(n\)</span></td>
-<td>linear search, many string operations, arithmetic on BigInts,
-counting sort</td>
+<td>linear search, many string operations, counting sort</td>
 </tr>
 <tr>
 <td><span class="math inline">\(n \lg n\)</span></td>

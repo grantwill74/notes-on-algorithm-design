@@ -1479,13 +1479,13 @@ And remember to bring pen and paper for the quiz next week!
 
 # Appendix D: Practice Quiz 1
 
-1. (20 points) Write a function in C that returns the smallest magnitude negative int in a given list, or 0 if there are no negative numbers.
+1. (25 points) Write a function in C that returns the smallest magnitude negative int in a given list, or 0 if there are no negative numbers.
  For example `lsmall({-2, -5, 2, 5, 7, -100}, 6) == -2`. `lsmall({}, 0) == 0`
 
-2. (20 points) Prove that it is correct.
-3. (20 points) Determine its big-$\Theta$
-4. (20 points) Prove that it has that big-$\Theta$
-5. (20 points) for accurate self grading. Rubric after answers.
+2. (25 points) Prove that it is correct.
+3. (25 points) Determine its big-$\Theta$
+4. (25 points) Prove that it has that big-$\Theta$
+5. (grading points) for accurate self grading. Rubric after answers.
 
 ---
 
@@ -1528,14 +1528,14 @@ int lsmall(int* arr, size_t n) {
 
 # Appendix D: Quiz 1 self-grading rubric
 
-1. give yourself 4 points for each edge case:
+1. give yourself 5 points for each edge case:
     1. `lsmall({}, 0) == 0`
     2. `lsmall({1, 2, 3, -20}, 4) == -20`
     3. `lsmall({-20, 1, 2, -21}, 4) == -20`
     4. `lsmall({-20, 1, 2, -19}, 4) == -19`
     5. `lsmall({1, 2, 3, 4}, 4) == 0`
     
-2. If you used a loop invariant *or* and inductive hypothesis, give yourself 5 points base. The loop invariant or inductive hypotheses must be related to the returned value: give yourself 5 points if it is. You will have to be the judge of the remaining 10 points. Check for fallacies. If you randomly wrote something without trying to convince yourself, please do not award credit.
+2. If you used a loop invariant *or* and inductive hypothesis, give yourself 5 points base. The loop invariant or inductive hypotheses must be related to the returned value: give yourself 5 points if it is. You will have to be the judge of the remaining 15 points. Check for fallacies. If you randomly wrote something without trying to convince yourself, *do not award credit*.
 
 ---
 
@@ -1549,39 +1549,39 @@ int lsmall(int* arr, size_t n) {
 
 # Appendix D: Quiz 2
 
-1. (20 points) Write a function in C that returns the sum of every even-index element, starting with index 0. e.g., `even_sum({1, 2, 3, 4}, 4) == 4`, `even_sum({}, 0) == 0`
+1. (25 points) Write a function in C that returns the sum of every even-index element, starting with index 0. e.g., `even_sum({1, 2, 3, 4}, 4) == 4`, `even_sum({}, 0) == 0`
 
-2. (20 points) Prove that it is correct.
-3. (20 points) Determine its big-$\Theta$
-4. (20 points) Prove that it has that big-$\Theta$
-5. (20 points) for accurate self grading. Try to be consistent with Quiz 1's rubric.
+2. (25 points) Prove that it is correct.
+3. (25 points) Determine its big-$\Theta$
+4. (25 points) Prove that it has that big-$\Theta$
+5. (grading points) for accurate self grading. Try to be consistent with Quiz 1's rubric.
 
 ---
 
 # Appendix D: Quiz 3
 
-1. (20 points) Write a function in C that returns the largest sum of adjacent pairs of an array. For example, `{1,2,3,1}` has adjacent pairs (1, 2); (2, 3); and (3, 1). (2, 3) has the largest sum, 5, so it would return 5.
+1. (25 points) Write a function in C that returns the largest sum of adjacent pairs of an array. For example, `{1,2,3,1}` has adjacent pairs (1, 2); (2, 3); and (3, 1). (2, 3) has the largest sum, 5, so it would return 5.
 `max_adj_sum({1,2,3,4}, 4) == 3 + 4 == 7`
 `max_adj_sum({1}, 1) == 0`
 `max_adj_sum({}, 0) == 0`
 
-2. (20 points) Prove that it is correct.
-3. (20 points) Determine its big-$\Theta$
-4. (20 points) Prove that it has that big-$\Theta$
-5. (20 points) for accurate self grading. Try to be consistent with Quiz 1's rubric.
+2. (25 points) Prove that it is correct.
+3. (25 points) Determine its big-$\Theta$
+4. (25 points) Prove that it has that big-$\Theta$
+5. (grading points) for accurate self grading. Try to be consistent with Quiz 1's rubric.
 
 ---
 
 # Appendix D: Quiz 4
 
-1. (20 points) Write a function in C that finds the last zero-based index of the lowercase letter 'q' in an ascii string. If the letter 'q' is not present, return -1. Otherwise, return the index of the last 'q'.
+1. (25 points) Write a function in C that finds the last zero-based index of the lowercase letter 'q' in an ascii string. If the letter 'q' is not present, return -1. Otherwise, return the index of the last 'q'.
 `rscan_q("hello world") == -1`
 `rscan_q("quello quorld") == 7`
 `rscan_q("") == -1`
-2. (20 points) Prove that it is correct.
-3. (20 points) Determine its *worst case* big-$\Theta$
-4. (20 points) Prove that it has that worst case big-$\Theta$
-5. (20 points) for accurate self grading. Try to be consistent with Quiz 1's rubric.
+2. (25 points) Prove that it is correct.
+3. (25 points) Determine its *worst case* big-$\Theta$
+4. (25 points) Prove that it has that worst case big-$\Theta$
+5. (grading points) for accurate self grading. Try to be consistent with Quiz 1's rubric.
 
 ---
 
@@ -1603,7 +1603,7 @@ Still feel like it's not clicking? Try writing your own quiz!
 |-----------|----------------------------------------------
 | $1$       | simple machine operation (arithmetic on int, boolean expression eval., etc.)
 | $\lg n$   | binary search, search tree traversal
-| $n$       | linear search, many string operations, arithmetic on BigInts, counting sort
+| $n$       | linear search, many string operations, counting sort
 | $n \lg n$ | fast comparison sorts
 | $n^2$     | slow comparison sorts, vector matrix multiplication, convolution
 | $n^3$     | linear optimization, simple matrix multiplication
