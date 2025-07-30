@@ -1160,10 +1160,12 @@ What do you think? There is a right answer here, so feel free to come talk about
 The quiz for this material will take this form:
 - Here is a problem requiring graph modelling
     - How do you encode the state space for the priority queue? (25%)
-    - How are neighbor states determined? (25%)
-- Here is a heuristic for A\*.
-    - Is it consistent? (10%)
-    - Prove it (40%)
+    - How are neighbor states derived? I.e., mathematically show me how to construct htem (25%)
+- Here is a heuristic for A\* or I will ask for an heuristic.
+    - If I give a heuristic: Is it consistent? (10%), Prove it (40%)
+    - If I ask:
+        - Give me a consistent heuristic (10%)
+        - Prove it is consistent (40%)
 
 ---
 
@@ -1188,14 +1190,62 @@ In this case, if $n \ge 2$, it's shortest to blow up the two walls between `S` a
 # Sample quiz 1
 
 1. If we treat this as a graph modelling problem, how do we encode a state?
-2. How do we compute the neighboring states? You can show how it works for one cardinal direction, and then state that the others are derived similarly.
-3. Suppose we use Chebyshev distance as our heuristic. Chebyshev distance is the . Is that consistent?
+2. Show how the neighboring states are derived. You can show how it works for one cardinal direction, and then state that the others are derived similarly.
+3. Suppose we use Chebyshev distance as our heuristic. Chebyshev distance is the one where diagonals cost the same as horizontals or verticals. Is that consistent?
 4. Prove it one way or the other.
 
 
 ---
 
 # Sample quiz 1 hints
+
+1. Your state must include at least the number of bombs...
+2. Remember to consider situations where we use a bomb versus don't.
+3. First, ask yourself if it's admissible. If it is, it's likely consistent, too. If it's not, you know it's not consistent.
+4. The proof doesn't need to consider the number of bombs, because we didn't use those in the heuristic.
+
+---
+
+# Sample quiz 2
+
+Suppose you're a formula 1 racer. You have $n$ laps of fuel, you are in position $p$, and there are $r$ laps remaining. You have the following options:
+- You may drive agressively for one lap. You use 2 laps of fuel, but you gain a position ($p - 1$).
+- You may maintain position by spending 1 lap of fuel. 
+- You may conserve fuel. You lose 1 position, but only spend 0.5 laps of fuel.
+- You may take a pit stop. You refill your fuel, but you lose $10$ positions ($p + 10$).
+
+Regardless of which action you take, it always decrements the number of laps remaining by 1. Your goal is to determine the minimum amount of fuel needed to win the race (i.e., finish with $p = 1$ and $r = 0$ without running out of fuel).
+
+---
+
+# Sample quiz 2 (2)
+
+Treat this as a graph modelling problem and answer the following questions:
+- How do we encode a state in this space?
+- How are the neighbors derived. Show all the neighbor derivations for this one.
+- Suppose we use "laps of fuel remaining" as a heuristic. Is that consistent?
+- Prove it one way or the other.
+
+(Here's a hint that wouldn't be on the actual quiz: you can prove inconsistency by showing inadmissability. Can we show how laps of fuel left might overestimate the fuel it takes to win?)
+
+---
+
+# Sample quiz 3
+
+Suppose we're playing the subtraction game. There is a score, $v$, shared between two players. The players take turns. When a player moves, they may subtract 1 or 2 from the shared score. The goal of the players is to be the one who reduces it to 0.
+
+Now, technically there is a greedy algorithm that can solve this, and it's actually possible for one player to play perfectly and win, but treat it as a graph-modelling problem.
+
+Our goal is to make player 1 win (i.e., the player who moves first) in as few player 1 moves as possible.
+
+---
+
+# Sample quiz 3 (2)
+
+- How do we encode the state space?
+- How do we derive all the neighbors? Careful: we need to consider the ways the opponent will move, too.
+- Come up with a metric that would be guaranteed to be inconsistent (it would be pointless to use A\* for this problem, and doing this will help us understand why)
+- Prove that it is inconsistent
 
 
 
