@@ -1175,80 +1175,53 @@ strategies is falsifiable.</li>
 <h1 id="the-quiz">The quiz</h1>
 <p>Next module, we’ll have a quiz. The quiz will have this format:</p>
 <ol type="1">
-<li><p>Here is a problem. Implement a greedy solution in C which is
-optimal.</p></li>
-<li><p>Prove that the greedy solution is optimal.</p></li>
+<li>Here is a problem. Implement a greedy solution in C which is
+optimal.</li>
 </ol>
-<p>You can show optimality with matroids or greedoids if applicable, but
-they might not be applicable.</p>
-<p>Very important: <strong>Even if they are applicable, remember that
-just because a “move” is a matroid does not mean the whole problem is
-solved. If the player will need to make many moves, you still need to
-use induction to show that for <em>each</em> move a greedy strategy is
-optimal.</strong></p>
-<p>You will probably need to use induction.</p>
+<p>That’s it.</p>
+<p>Why did we have to learn proofs? Because in real life, it won’t be
+obvious that a problem is greedy, and understanding the math will help
+you recognize it.</p>
+<p>However, as you’ve seen in this section, the proofs can get pretty
+long, and I don’t think it’s fair to ask for one on the test.</p>
+<p>(Originally I had them on there, but when I was practicing the
+quizzes myself, I was realizing that it often took me longer than 15
+minutes!)</p>
 <hr />
 <h1 id="quiz-1">Quiz 1</h1>
-<ol type="1">
-<li><ol type="a">
-<li>(50%) Solve the following problem in C with a greedy P-time
-algorithm: You are given an array of integers <code>int* arr</code>, a
+<p>Solve the following problem in C with a greedy P-time algorithm: You
+are given an array of integers <code>int* arr</code>, a
 <code>size_t n</code> and a <code>size_t k</code>. Find the maximum sum
 that can be obtained by choosing <code>k</code> integers from
-<code>arr</code>. Bounds: <code>0 &lt; k &lt;= n</code></li>
-</ol></li>
-</ol>
+<code>arr</code>. Bounds: <code>0 &lt; k &lt;= n</code></p>
 <p>Example: <code>choose_k({1, 2, 3}, 3, 2) == 5</code>, because the
 largest sum of 2 integers in the array <code>{1, 2, 3}</code> is
 <code>2 + 3 == 5</code></p>
-<ol type="1">
-<li><ol start="2" type="a">
-<li>(50%) prove that your solution is optimal.</li>
-</ol></li>
-</ol>
 <hr />
 <h1 id="quiz-2">Quiz 2</h1>
-<ol start="2" type="1">
-<li><ol type="a">
-<li>(50%) Solve the fractional-backpack problem in C with a greedy
-P-time algo: You are given an array of this struct:</li>
-</ol></li>
-</ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> item_t <span class="op">{</span> <span class="dt">float</span> weight<span class="op">;</span> <span class="dt">float</span> value<span class="op">;</span> <span class="op">}</span> Item<span class="op">;</span></span></code></pre></div>
-<p>You are given a maximum weight. Your goal is to return the maximum
-value you can carry. You are allowed to carry fractions of items.</p>
+<p>Solve the fractional-backpack problem in C with a greedy P-time algo:
+You are given an array of this struct:
+<code>c   typedef struct item_t { float weight; float value; } Item;</code>
+You are given a maximum weight. Your goal is to return the maximum value
+you can carry. You are allowed to carry fractions of items.</p>
 <p>E.g.,
 <code>fract_bp({ {20.0f, 100.0f}, {10.0f, 5.0f}}, 15.0f) == 75.0f</code>,
 because we will take 15 of the first item. If 20 is worth 100, then 15
 is worth 75.</p>
-<ol start="2" type="1">
-<li><ol start="2" type="a">
-<li>(50%) prove that your strategy is optimal.</li>
-</ol></li>
-</ol>
 <hr />
 <h1 id="quiz-3">Quiz 3</h1>
-<ol start="3" type="1">
-<li><ol type="a">
-<li>(50%) You are given a list of jobs, each of which is defined
-entirely by its deadline <code>d</code>, which is the number of days in
-the future the job is due. You can do one job per day, and every job
-pays $200 if done on or before the deadline, and $0 otherwise. Write a
-greedy, P-time C program giving the maximum amount of money you can make
-in <code>dt</code> days.</li>
-</ol></li>
-</ol>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> max_money<span class="op">(</span><span class="dt">size_t</span><span class="op">*</span> jobs<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">,</span> <span class="dt">size_t</span> d<span class="op">)</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span></span></code></pre></div>
+<p>You are given a list of jobs, each of which is defined entirely by
+its deadline <code>d</code>, which is the number of days in the future
+the job is due. You can do one job per day, and every job pays $200 if
+done on or before the deadline, and $0 otherwise. Write a greedy, P-time
+C program giving the maximum amount of money you can make in
+<code>dt</code> days.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> max_money<span class="op">(</span><span class="dt">size_t</span><span class="op">*</span> jobs<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">,</span> <span class="dt">size_t</span> d<span class="op">)</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span></span></code></pre></div>
 <p>Example: suppose the list is <code>{0, 1, 5, 2, 1}</code>. The best
 we can achieve is doing the day 0 job on day 0, one of the day 1
 deadline jobs on day 1, and then the day 2 and 5 jobs on days 2 and 3.
 That’s 4 jobs for $800. It’s impossible to do both jobs with a day 1
 deadline.</p>
-<ol start="3" type="1">
-<li><ol start="2" type="a">
-<li>(50%) Prove that your greedy solution is optimal</li>
-</ol></li>
-</ol>
 <hr />
 <h1 id="more-practice">More practice</h1>
 <p>Go to <a href="https://codeforces.com/problemset">CodeForces.com</a>.

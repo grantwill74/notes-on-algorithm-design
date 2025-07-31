@@ -1594,6 +1594,8 @@ Still feel like it's not clicking? Try writing your own quiz!
 3. Take the quiz. Time yourself!
 4. Grade it the same as the above.
 
+Note: I like linear time problems for these, but they aren't guaranteed to be linear! Try writing a quiz based around binary search for an example of a fair problem that isn't $\Theta(n)$.
+
 ---
 
 # Appendix E: Example table of Big-$\Theta$'s

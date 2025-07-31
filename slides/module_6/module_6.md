@@ -1064,7 +1064,7 @@ There is a functional version of this problem to find the *minimum* vertex cover
 
 # VC $\le$ INDSET $\le$ VC
 
-It turns out, if there are $n$ nodes and there is a click of size $k$, then there is an indset of size $n - k$
+It turns out, if there are $n$ nodes and there is a clique of size $k$, then there is an indset of size $n - k$
 
 Consider the graph on the right. There are vertex covers of size 2. One of them is $\{A, B\}$
 

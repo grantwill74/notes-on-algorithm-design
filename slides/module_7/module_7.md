@@ -837,32 +837,31 @@ Next module, we'll have a quiz. The quiz will have this format:
 
 1. Here is a problem. Implement a greedy solution in C which is optimal.
 
-2. Prove that the greedy solution is optimal.
+That's it. 
 
-You can show optimality with matroids or greedoids if applicable, but they might not be applicable. 
+Why did we have to learn proofs? Because in real life, it won't be obvious that a problem is greedy, and understanding the math will help you recognize it.
 
-Very important: **Even if they are applicable, remember that just because a "move" is a matroid does not mean the whole problem is solved. If the player will need to make many moves, you still need to use induction to show that for *each* move a greedy strategy is optimal.**
+However, as you've seen in this section, the proofs can get pretty long, and I don't think it's fair to ask for one on the test.
 
-You will probably need to use induction.
+(Originally I had them on there, but when I was practicing the quizzes myself, I was realizing that it often took me longer than 15 minutes!)
 
 ---
 
 # Quiz 1
 
-1. a. (50%) Solve the following problem in C with a greedy P-time algorithm:
+Solve the following problem in C with a greedy P-time algorithm:
   You are given an array of integers `int* arr`, a `size_t n` and a `size_t k`.
   Find the maximum sum that can be obtained by choosing `k` integers from `arr`.
   Bounds: `0 < k <= n`
 
   Example: `choose_k({1, 2, 3}, 3, 2) == 5`, because the largest sum of 2 integers in the array `{1, 2, 3}` is `2 + 3 == 5`
 
-1. b. (50%) prove that your solution is optimal.
 
 ---
 
 # Quiz 2
 
-2. a. (50%) Solve the fractional-backpack problem in C with a greedy P-time algo:
+Solve the fractional-backpack problem in C with a greedy P-time algo:
   You are given an array of this struct:
   ```c
   typedef struct item_t { float weight; float value; } Item;
@@ -871,21 +870,17 @@ You will probably need to use induction.
 
   E.g., `fract_bp({ {20.0f, 100.0f}, {10.0f, 5.0f}}, 15.0f) == 75.0f`, because we will take 15 of the first item. If 20 is worth 100, then 15 is worth 75.
 
-  2. b. (50%) prove that your strategy is optimal.
-
 ---
 
 # Quiz 3
 
-3. a. (50%) You are given a list of jobs, each of which is defined entirely by its deadline  `d`, which is the number of days in the future the job is due. You can do one job per day, and every job pays $200 if done on or before the deadline, and $0 otherwise. Write a greedy, P-time C program giving the maximum amount of money you can make in `dt` days. 
+ You are given a list of jobs, each of which is defined entirely by its deadline  `d`, which is the number of days in the future the job is due. You can do one job per day, and every job pays $200 if done on or before the deadline, and $0 otherwise. Write a greedy, P-time C program giving the maximum amount of money you can make in `dt` days. 
 
 ```c
 size_t max_money(size_t* jobs, size_t n, size_t d) { ... }
 ```
 
 Example: suppose the list is `{0, 1, 5, 2, 1}`. The best we can achieve is doing the day 0 job on day 0, one of the day 1 deadline jobs on day 1, and then the day 2 and 5 jobs on days 2 and 3. That's 4 jobs for $800. It's impossible to do both jobs with a day 1 deadline.
-
-3. b. (50%) Prove that your greedy solution is optimal
 
 ---
 
