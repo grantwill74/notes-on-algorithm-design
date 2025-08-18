@@ -298,9 +298,9 @@ So how can I permit flexible attendence while still *making sure* that you know 
 
 # The quizzes
 
-This class will measure exactly 8 skills (We'll list them later)
+This class will measure exactly 6 skills (We'll list them later)
 
-There will be 8 short, in-class, pen-and-paper quizzes, each measuring one  skill.
+There will be 6 short, in-class, pen-and-paper quizzes, each measuring one  skill.
 
 After the quiz, we will see the answer(s) so you can see how you did, and argue for more correct answers to be considered.
 
