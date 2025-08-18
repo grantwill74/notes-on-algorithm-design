@@ -314,7 +314,7 @@ There will be a midterm and endterm exam as well.
 
 Both of these exams will occur during the term, with the specific schedule being on the syllabus (which we'll look at in a second).
 
-Each exam will contain 4 problems, which cover the same mastery components as the quizzes. 
+Each exam will contain 3 problems, which cover the same mastery components as the quizzes. 
 
 **The exams will be another chance** to demonstrate that you have learned the skill. I will take the maximum score between the two as your grade for that skill.
 
