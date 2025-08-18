@@ -1160,7 +1160,7 @@ What do you think? There is a right answer here, so feel free to come talk about
 The quiz for this material will take this form:
 - Here is a problem requiring graph modelling
     - How do you encode the state space for the priority queue? (25%)
-    - How are neighbor states derived? I.e., mathematically show me how to construct htem (25%)
+    - How are neighbor states derived? I.e., mathematically show me how to construct them (25%)
 - Here is a heuristic for A\* or I will ask for an heuristic.
     - If I give a heuristic: Is it consistent? (10%), Prove it (40%)
     - If I ask:

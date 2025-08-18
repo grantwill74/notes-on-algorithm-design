@@ -155,7 +155,7 @@ Let's learn what these areas will be!
 
 # After the midterm
 
-4. You will be able to identify when a greedy algorithm is appropriate to a problem, and when an algorithm is greedy. You will be able to demonstrate these facts. You will be able to implement a greedy algorithm.
+4. You will be able to identify when a greedy algorithm is appropriate to a problem. You will be able to implement a greedy algorithm.
 5. You will be able to recognize when to use dynamic programming, and to solve a dynamic programming problem with a reasonable technique (such as memoization).
 6. You will be able to work with graphs. You will demonstrate the algorithm design technique of "graph modelling", and design an algorithm using this technique.
 
