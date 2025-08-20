@@ -135,7 +135,7 @@ Like I mentioned before, this class will follow a standard-based learning approa
 
 That means that there will be certain skills that you are expected to master, and you will be given multiple attempts to demonstrate mastery of each one.
 
-There are 8: 4 before the midterm and 4 after.
+There are 6: 3 before the midterm and 3 after.
 
 Let's learn what these areas will be!
 
