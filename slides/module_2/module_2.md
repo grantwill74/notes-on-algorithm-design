@@ -798,10 +798,12 @@ Remember that $O(f(n))$ and $O(g(n))$ are really *members* of a set in the above
 1. Simplify $O(n) + O(n^2)$ 
    By the first rule, $O(n) + O(n^2) = O(n + n^2) = O(n^2)$
 
-Notice how the higher degree term *swallows* the lower degree term.
+Notice how the higher degree term *swallows* the lower degree term with addition.
 
 2. Simplify $O(n) \times O(\lg n)$
    By the second rule, $O(n) \times O(\lg n) = O(n \lg n)$
+
+Notice how that's *not* the case with multiplication.
 
 ---
 
@@ -815,7 +817,7 @@ $O(n^2) - O(n^2)$ looks like $0$, but it's not true for $(n^2 - n) - n^2$! Likew
 
 # Warning \#2
 
-Be *very careful* going backwards. It's sometimes reasonable to say $O(n + m) = O(n) + O(m), but you can get in trouble doing this.
+Be *very careful* going backwards. It's sometimes reasonable to say $O(n + m) = O(n) + O(m)$, but you can get in trouble doing this.
 
 Later we will see recursive time-functions where adding a constant factor to one expression ends up adding a linear factor to the whole function.
 
@@ -1170,7 +1172,7 @@ Not quite:
 
 # Unit testing in C
 
-Check the code on the [GitHub](https://github.com/grantwill74/notes-on-algorithm-design). Go to `slides/module_2/code/sorts.c`. 
+Check the code on the [GitHub](https://github.com/grantwill74/notes-on-algorithm-design). Go to `code/mod2.c`. 
 
 I'm using a unit testing framework based on [minunit](https://jera.com/techinfo/jtns/jtn002).
 
