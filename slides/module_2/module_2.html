@@ -1142,12 +1142,13 @@ first rule, <span class="math inline">\(O(n) + O(n^2) = O(n + n^2) =
 O(n^2)\)</span></li>
 </ol>
 <p>Notice how the higher degree term <em>swallows</em> the lower degree
-term.</p>
+term with addition.</p>
 <ol start="2" type="1">
 <li>Simplify <span class="math inline">\(O(n) \times O(\lg n)\)</span>
 By the second rule, <span class="math inline">\(O(n) \times O(\lg n) =
 O(n \lg n)\)</span></li>
 </ol>
+<p>Notice how that’s <em>not</em> the case with multiplication.</p>
 <hr />
 <h1 id="warning-1">Warning #1</h1>
 <p>We <em>cannot</em> combine <span class="math inline">\(O\)</span>
@@ -1159,8 +1160,8 @@ division.</p>
 <hr />
 <h1 id="warning-2">Warning #2</h1>
 <p>Be <em>very careful</em> going backwards. It’s sometimes reasonable
-to say $O(n + m) = O(n) + O(m), but you can get in trouble doing
-this.</p>
+to say <span class="math inline">\(O(n + m) = O(n) + O(m)\)</span>, but
+you can get in trouble doing this.</p>
 <p>Later we will see recursive time-functions where adding a constant
 factor to one expression ends up adding a linear factor to the whole
 function.</p>
@@ -1463,7 +1464,7 @@ making these slides.</p>
 <h1 id="unit-testing-in-c">Unit testing in C</h1>
 <p>Check the code on the <a
 href="https://github.com/grantwill74/notes-on-algorithm-design">GitHub</a>.
-Go to <code>slides/module_2/code/sorts.c</code>.</p>
+Go to <code>code/mod2.c</code>.</p>
 <p>I’m using a unit testing framework based on <a
 href="https://jera.com/techinfo/jtns/jtn002">minunit</a>.</p>
 <p>It takes like, 10 lines of code to add unit testing. Just copy

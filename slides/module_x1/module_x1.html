@@ -319,8 +319,8 @@ interfere.</p>
 <p>When a function returns, it restores the stack to where it was. That
 memory can easily be overwritten.</p>
 <p>Usually the stack grows down. The idea is that static memory would be
-at the top of a typical address space, then the heap, and stack would be
-at the end. This would allow the stack and heap to grow towards each
+at the bottom of a typical address space, then the heap, and stack would
+be at the end. This would allow the stack and heap to grow towards each
 other and maximize the space available.</p>
 <hr />
 <h1 id="stacks-3">Stacks (3)</h1>
@@ -350,7 +350,7 @@ it has some downsides…</p>
 <hr />
 <h1 id="downsides-of-stacks">Downsides of stacks</h1>
 <p>Stacks are built to assume that, once memory is allocated, it is held
-onto it until the function eventually returns.</p>
+onto until the function eventually returns.</p>
 <p>This means that the stack generally does not have “gaps” in it. You
 can’t release higher stack memory for use by a child function. The
 memory stays in use.</p>
@@ -380,7 +380,7 @@ dynamic allocation.</p>
 <p>The most basic primitives for dynamic allocation in C are
 <code>malloc</code> and <code>free</code>.</p>
 <p>Calling <code>malloc</code> earmarks some memory as being “used”, and
-gives ou a pointer to it.</p>
+gives you a pointer to it.</p>
 <p>Calling <code>free</code> returns that memory to being unused, so
 that it can be used by someone else.</p>
 <p>Forgetting to call <code>free</code> leads to a memory leak, where
