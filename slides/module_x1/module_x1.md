@@ -88,7 +88,7 @@ If that function calls another function, as long as the other function uses memo
 
 When a function returns, it restores the stack to where it was. That memory can easily be overwritten.
 
-Usually the stack grows down. The idea is that static memory would be at the top of a typical address space, then the heap, and stack would be at the end. This would allow the stack and heap to grow towards each other and maximize the space available.
+Usually the stack grows down. The idea is that static memory would be at the bottom of a typical address space, then the heap, and stack would be at the end. This would allow the stack and heap to grow towards each other and maximize the space available.
 
 ---
 
@@ -119,7 +119,7 @@ However, while stack-based memory management is extremely efficient, it has some
 
 # Downsides of stacks
 
-Stacks are built to assume that, once memory is allocated, it is held onto it until the function eventually returns.
+Stacks are built to assume that, once memory is allocated, it is held onto until the function eventually returns.
 
 This means that the stack generally does not have "gaps" in it. You can't release higher stack memory for use by a child function. The memory stays in use.
 
@@ -149,7 +149,7 @@ If both of these circumstances apply, we typically need to use dynamic allocatio
 
 The most basic primitives for dynamic allocation in C are `malloc` and `free`.
 
-Calling `malloc` earmarks some memory as being "used", and gives ou a pointer to it.
+Calling `malloc` earmarks some memory as being "used", and gives you a pointer to it.
 
 Calling `free` returns that memory to being unused, so that it can be used by someone else.
 
