@@ -488,8 +488,8 @@ that the resulting implications about inequalities follow.</p>
 between <span class="math inline">\(O\)</span> and <span
 class="math inline">\(\Omega\)</span></h1>
 <p>Subgoal: <span class="math inline">\(f = O(g(n)) \implies g =
-\Omega(f(n))\)</span> - Apply the definitions of <span
-class="math inline">\(O(g(n))\)</span> and <span
+\Omega(f(n))\)</span> (practice: show the other half) - Apply the
+definitions of <span class="math inline">\(O(g(n))\)</span> and <span
 class="math inline">\(\Omega(f(n))\)</span> Now we must show: <span
 class="math inline">\(\exists C \gt 0, \exists n_0 \in \mathbb{N},
 \forall n \ge n_0, f(n) \leq C \cdot g(n) \implies\)</span> <span
@@ -646,7 +646,7 @@ class="math inline">\(O\)</span> can be tighter”.</p>
 <p>But how can we express that mathematically? - It’s not good enough to
 say something like “it’s not tight if <span
 class="math inline">\(f(n)=O(n^k)\)</span>, but <span
-class="math inline">\(\exists k&#39; \le k,f(n)=O(n^{k&#39;})\)</span>,
+class="math inline">\(\exists k&#39; \lt k,f(n)=O(n^{k&#39;})\)</span>,
 because what if the function isn’t a polynomial? - It’s also not good
 enough to say something like”it’s not tight if <span
 class="math inline">\(\exists g&#39;(n), f(n)=O(g&#39;n) \land \forall
