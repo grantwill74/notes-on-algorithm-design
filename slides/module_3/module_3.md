@@ -284,7 +284,7 @@ Let's follow this strategy:
 
 # Proving similarity between $O$ and $\Omega$
 
-Subgoal: $f = O(g(n)) \implies g = \Omega(f(n))$
+Subgoal: $f = O(g(n)) \implies g = \Omega(f(n))$ (practice: show the other half)
 - Apply the definitions of $O(g(n))$ and $\Omega(f(n))$
   Now we must show:
   $\exists C \gt 0, \exists n_0 \in \mathbb{N}, \forall n \ge n_0, f(n) \leq C \cdot g(n) \implies$ $\exists C' \gt 0, \exists n'_0 \in \mathbb{N}, \forall n \ge n'_0, g(n) \geq C' \cdot f(n)$ 
@@ -412,7 +412,7 @@ But for $n = O(n^2)$, the bound has room for improvement. We could improve it to
 We can understand intuitively what it means to say "that big-$O$ can be tighter".
 
 But how can we express that mathematically?
-- It's not good enough to say something like "it's not tight if $f(n)=O(n^k)$, but $\exists k' \le k,f(n)=O(n^{k'})$, because what if the function isn't a polynomial?
+- It's not good enough to say something like "it's not tight if $f(n)=O(n^k)$, but $\exists k' \lt k,f(n)=O(n^{k'})$, because what if the function isn't a polynomial?
 - It's also not good enough to say something like "it's not tight if $\exists g'(n), f(n)=O(g'n) \land \forall n, g'(n) < g(n)$, i.e., "if we can find a smaller function that is also in the order of $g(n)$. The reason this definition is not useful is that it would mean $n = O(n)$ is not tight, because $n=O(n / 2)$ (and so on).
 
 So we want to express "that big-$O$ can be tighter" in a way that is rigorous, which could potentially apply to any kind of function, and which still has reflexivity (i.e., $f(n)=O(f(n))$ should be tight)

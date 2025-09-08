@@ -56,7 +56,6 @@ from, with a link to that file, along with my name:
 (or other copyright holder if the slide is marked with a distinct copyright),
 and the license CC BY-SA 4.0, with a link to the license deed or text.
 
-Example: TODO
 
 ## Contributing
 Please see [Contributing](CONTRIBUTING.md) for information on how to
