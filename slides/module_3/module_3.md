@@ -786,7 +786,7 @@ Here, we're saying that running the function on the empty array or a singleton a
 
 ---
 
-# Don't bother with substitution
+# Don't bother with infinite substitution
 
 Obviously we could substitute if we wanted:
 $T(n)= T(n - 1) + \Theta(n), \mathrm{if}\ n \ge 0$
@@ -870,7 +870,7 @@ They don't depend on one another, so we can move their order around mutually.
 
 $n_0$ is a constant that is important for the base case. Consider $P(0)$:
 
-Is it true that $C_1 \cdot 0^2 \le (T(0) = c) \le C_2 \cdot 0^2$?
+If $c \gt 0$, is it true that $C_1 \cdot 0^2 \le (T(0) = c) \le C_2 \cdot 0^2$?
 
 No, and there are no positive $C_1$ and $C_2$ that will make that work. 
 
@@ -935,7 +935,7 @@ $C_1 (2n + 1) - a(n + 1) \le 0 \equiv C_1 (2n + 1) \le a(n + 1)\equiv C_1 \le {a
 
 But $C_1$ cannot depend on $n$. Luckily, we can bound it.
 
-$C_1 \le {a(n + 1) \over (2n + 1)} \le {a(n+1) \over 2n + 2} \le{a(n+1) \over 2(n + 1)} \le {a \over 2}$. So we will go back and choose $C_1 = {a \over 2}$.
+$C_1 \le {a(n+1) \over 2n + 2} \le{a(n+1) \over 2(n + 1)} \le {a \over 2}$. So we will go back and choose $C_1 = {a \over 2}$.
 
 What about $C_2$? It's basically the same:
 $T(n) \le C_2 \cdot n^2 \implies T(n) + a(n + 1) \le C_2 \cdot (n^2 +2n +1)$
@@ -1294,7 +1294,7 @@ The outer loop clearly runs $m$ times.
 
 The inner loop is a little strange. It runs once for every count. Luckily, we know that sum(counts) = len(array) = n, so The inner loop runs, in total, n times (regardless of how many times the outer loop runs).
 
-Because the inner loop always  takes $\Theta(n)$ time, regardless of the time the outer loop takes, *we do not multiply them*!
+Because the inner assignment always occurs $\Theta(n + m)$ times, regardless of the time the outer loop takes, *we do not multiply them*!
 
 ---
 
@@ -1457,9 +1457,9 @@ The quiz will test the first learning mastery standard.
 
 # Appendix D: How should I study?
 
-Do all the practice exercises from this week and last week.
+Take the following practice quzzes. Time yourself!
 
-Then, take the following practice quzzes. Time yourself!
+Then do all the practice exercises from this week and module 2.
 
 You will have a base-time of 15 minutes (unless accomodations were made in advance). If you aren't doing the practice sessions under the same time you will have in class, you aren't actually practicing for the quiz.
 
