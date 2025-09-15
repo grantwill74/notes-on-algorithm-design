@@ -156,7 +156,7 @@ Here's a simple implementation...
 # `merge` in C (scrunched to fit)
 
 ```c
-void merge(const int* lo, const int* hi, 
+void merge(const int* restrict lo, const int* restrict hi, 
     size_t n_lo, size_t n_hi, int* restrict merge_buf) 
 {
     int i_lo = 0, i_hi = 0, i_merge = 0;
@@ -278,7 +278,7 @@ Is this true when `lo` is empty? Then we need this to be true after:
 
 This checks out. `n` = `len(lo) + len(hi)`.
 
-Once `lo` is empty, we have `sorted(merge_buf[0 .. lo + i_hi)]`
+Once `lo` is empty, we have `sorted(merge_buf[0 .. len(lo) + i_hi)]`
 And this array is less than everything remaining in `hi`.
 Then we concat the rest of that array to the end. Solid!
 
@@ -462,7 +462,7 @@ The only way that strong induction differs from weak induction is in the inducti
 $\forall n \in \mathbb{N}, (\forall i \le n, P(i)) \implies P(n + 1)$
 
 Compare this to weak induction:
-$\forall n \in \mathbb{N}, P(N) \implies P(N + 1)$
+$\forall n \in \mathbb{N}, P(n) \implies P(n + 1)$
 
 Weak induction requires: "if we have proven the proposition for some number $n$, we can prove it for $n + 1$
 Strong induction requires: "if we have proven the proposition for *every number up to and including* $n$, we can prove it for $n + 1$.
@@ -474,12 +474,12 @@ Strong induction requires: "if we have proven the proposition for *every number 
 Let our proposition be that for natural numbers $n$ and arrays `arr`, where $n$ is the length of `arr`, `mergesort(arr, n)` leaves `arr` sorted.
 
 Does `mergesort([], 0)` work? Yes, it does. This is the base case.
-There's a second base-case here: `mergesort([a], 0)`. This also works.
+There's a second base-case here: `mergesort({a}, 1)`. This also works.
 
 Now, here's the key. We need to show:
 $(\forall i \le n, P(i)) \implies P(n + 1)$
 
-So we "suppose" that `mergesort(arr', i)` works, for all  up to and including `mergesort(arr, n)`, and we need to show that `mergesort([a] ++ arr, n + 1)` works.
+So we "suppose" that `mergesort(arr', i)` works, for all  up to and including `mergesort(arr, n)`, and we need to show that `mergesort({a} ++ arr, n + 1)` works.
 
 ---
 
@@ -656,9 +656,9 @@ $T(0) = 1$
 $T(1) = 1$
 $T(n) = 2T(n / 2) + \Theta(n)$
 
-The proposition we want to prove is: $T(n) = \Theta(n)$
+The proposition we want to prove is: $T(n) = \Theta(n \lg n)$
 
-Let's start with $T(n) = O(n)$. I'll leave $T(n) = \Omega(n)$ to you.
+Let's start with $T(n) = O(n \lg n)$. I'll leave $T(n) = \Omega(n \lg n)$ to you.
 
 ---
 
@@ -685,7 +685,7 @@ Is the conclusion true? It's not true for $n_0 = 0$. Because $\lg 0$ is undefine
 
 If we choose $n_0 = 1$, it's vacuously true, becuase $0 \lt 1$. 
 
-We actually don't want vacuous truth here because of the inductive step. If we pick $n_0 = 1$, then, when we want to (in the next step) show $(\forall i \le n, P(i)) \implies P(n + 1)$, we actually won't be able to. $P(0) \implies P(1)$ is false with $n_0 = 1$, becuase $P(1)$ is $1 \le C(1 \lg 1) = 0$.
+We actually don't want vacuous truth here because of the inductive step. If we pick $n_0 = 1$, then, when we want to (in the next step) show $(\forall i \le n, P(i)) \implies P(n + 1)$, we actually won't be able to. $P(0) \implies P(1)$ is false with $n_0 = 1$, becuase $P(1)$ is $1 \le C(1 \lg 1) = 0$. Basically there will be no $C$ we can pick.
 
 Therefore we *have* to choose $n_0 = 2$
 
@@ -699,7 +699,7 @@ $(\forall i \lt n, n \ge 1 \implies T(i) \le C(i \lg i)) \implies n \ge n_0 \imp
 
 We start by supposing this hypothesis: $(\forall i \lt n, i \ge n_0 \implies T(i) \le C(n \lg n))$
 
-Then we suppose $n \ge 1$. We must show $T(n) \le C(n \lg n)$
+Then we suppose $n \ge 2$. We must show $T(n) \le C(n \lg n)$
 
 Let's simplify $T(n) = 2\cdot T({n \over 2}) + \Theta(n)$. We're assuming integer division.
 
