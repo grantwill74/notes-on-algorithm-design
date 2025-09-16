@@ -368,7 +368,7 @@ reference.</p>
 <hr />
 <h1 id="merge-in-c-scrunched-to-fit"><code>merge</code> in C (scrunched
 to fit)</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> merge<span class="op">(</span><span class="dt">const</span> <span class="dt">int</span><span class="op">*</span> lo<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span><span class="op">*</span> hi<span class="op">,</span> </span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> merge<span class="op">(</span><span class="dt">const</span> <span class="dt">int</span><span class="op">*</span> <span class="dt">restrict</span> lo<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span><span class="op">*</span> <span class="dt">restrict</span> hi<span class="op">,</span> </span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">size_t</span> n_lo<span class="op">,</span> <span class="dt">size_t</span> n_hi<span class="op">,</span> <span class="dt">int</span><span class="op">*</span> <span class="dt">restrict</span> merge_buf<span class="op">)</span> </span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> i_lo <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> i_hi <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> i_merge <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
@@ -486,9 +486,9 @@ true after:
 <code>everything in merge_buf &lt;= lo (vacuous), everything in merge_buf &lt;= hi</code></p>
 <p>This checks out. <code>n</code> = <code>len(lo) + len(hi)</code>.</p>
 <p>Once <code>lo</code> is empty, we have
-<code>sorted(merge_buf[0 .. lo + i_hi)]</code> And this array is less
-than everything remaining in <code>hi</code>. Then we concat the rest of
-that array to the end. Solid!</p>
+<code>sorted(merge_buf[0 .. len(lo) + i_hi)]</code> And this array is
+less than everything remaining in <code>hi</code>. Then we concat the
+rest of that array to the end. Solid!</p>
 <p>The same applies when <code>hi</code> is empty conversely.</p>
 <hr />
 <h1 id="proving-it-3">Proving it (3)</h1>
@@ -675,7 +675,7 @@ we cannot derive a proof of 1 from a proof of 0 in this case.</p>
 the inductive case: <span class="math inline">\(\forall n \in
 \mathbb{N}, (\forall i \le n, P(i)) \implies P(n + 1)\)</span></p>
 <p>Compare this to weak induction: <span class="math inline">\(\forall n
-\in \mathbb{N}, P(N) \implies P(N + 1)\)</span></p>
+\in \mathbb{N}, P(n) \implies P(n + 1)\)</span></p>
 <p>Weak induction requires: “if we have proven the proposition for some
 number <span class="math inline">\(n\)</span>, we can prove it for <span
 class="math inline">\(n + 1\)</span> Strong induction requires:”if we
@@ -691,13 +691,13 @@ class="math inline">\(n\)</span> and arrays <code>arr</code>, where
 sorted.</p>
 <p>Does <code>mergesort([], 0)</code> work? Yes, it does. This is the
 base case. There’s a second base-case here:
-<code>mergesort([a], 0)</code>. This also works.</p>
+<code>mergesort({a}, 1)</code>. This also works.</p>
 <p>Now, here’s the key. We need to show: <span
 class="math inline">\((\forall i \le n, P(i)) \implies P(n +
 1)\)</span></p>
 <p>So we “suppose” that <code>mergesort(arr', i)</code> works, for all
 up to and including <code>mergesort(arr, n)</code>, and we need to show
-that <code>mergesort([a] ++ arr, n + 1)</code> works.</p>
+that <code>mergesort({a} ++ arr, n + 1)</code> works.</p>
 <hr />
 <h1 id="proving-mergesort-correct">Proving mergesort correct</h1>
 <p>Mergesort on <span class="math inline">\(n\)</span> always breaks its
@@ -885,10 +885,10 @@ there’s anything inductive about the proof.</p>
 1\)</span> <span class="math inline">\(T(1) = 1\)</span> <span
 class="math inline">\(T(n) = 2T(n / 2) + \Theta(n)\)</span></p>
 <p>The proposition we want to prove is: <span class="math inline">\(T(n)
-= \Theta(n)\)</span></p>
-<p>Let’s start with <span class="math inline">\(T(n) = O(n)\)</span>.
-I’ll leave <span class="math inline">\(T(n) = \Omega(n)\)</span> to
-you.</p>
+= \Theta(n \lg n)\)</span></p>
+<p>Let’s start with <span class="math inline">\(T(n) = O(n \lg
+n)\)</span>. I’ll leave <span class="math inline">\(T(n) = \Omega(n \lg
+n)\)</span> to you.</p>
 <hr />
 <h1 id="using-induction">Using induction</h1>
 <p>We can prove this using strong induction. But we don’t know what
@@ -929,7 +929,8 @@ class="math inline">\((\forall i \le n, P(i)) \implies P(n +
 class="math inline">\(P(0) \implies P(1)\)</span> is false with <span
 class="math inline">\(n_0 = 1\)</span>, becuase <span
 class="math inline">\(P(1)\)</span> is <span class="math inline">\(1 \le
-C(1 \lg 1) = 0\)</span>.</p>
+C(1 \lg 1) = 0\)</span>. Basically there will be no <span
+class="math inline">\(C\)</span> we can pick.</p>
 <p>Therefore we <em>have</em> to choose <span class="math inline">\(n_0
 = 2\)</span></p>
 <p>As a rule, when using strong induction, we usually want to actually
@@ -942,7 +943,7 @@ n)\)</span></p>
 <p>We start by supposing this hypothesis: <span
 class="math inline">\((\forall i \lt n, i \ge n_0 \implies T(i) \le C(n
 \lg n))\)</span></p>
-<p>Then we suppose <span class="math inline">\(n \ge 1\)</span>. We must
+<p>Then we suppose <span class="math inline">\(n \ge 2\)</span>. We must
 show <span class="math inline">\(T(n) \le C(n \lg n)\)</span></p>
 <p>Let’s simplify <span class="math inline">\(T(n) = 2\cdot T({n \over
 2}) + \Theta(n)\)</span>. We’re assuming integer division.</p>
@@ -1757,8 +1758,7 @@ optimize base-2 to not require more than 1 additional buffer?</li>
 </ul>
 <hr />
 <h1 id="mermaid-source-1">Mermaid source (1)</h1>
-<pre class="mermaid"><code>&lt;---
-
+<pre class="mermaid"><code>
 ---
 config:
       theme: redux
