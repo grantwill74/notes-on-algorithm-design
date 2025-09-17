@@ -695,7 +695,7 @@ As a rule, when using strong induction, we usually want to actually find the fir
 
 # The (strong) inductive case
 
-$(\forall i \lt n, n \ge 1 \implies T(i) \le C(i \lg i)) \implies n \ge n_0 \implies T(n) \le C(n \lg n)$
+$(\forall i \lt n, n \ge 2 \implies T(i) \le C(i \lg i)) \implies n \ge n_0 \implies T(n) \le C(n \lg n)$
 
 We start by supposing this hypothesis: $(\forall i \lt n, i \ge n_0 \implies T(i) \le C(n \lg n))$
 
@@ -713,13 +713,13 @@ Now, every time we see $T({n \over 2})$ we can replace it with $C {n  \over 2}\l
 
 Start with $T({n\over 2}) \le C \cdot {n\over 2}\lg {n\over 2}$, this is the induction hypothesis.
 $\implies 2 \cdot T({n\over 2}) \le C \cdot n\lg {n\over 2}$
-$\implies 2 \cdot T({n \over 2}) \le C \cdot n \lg {n\over 2} = C\cdot n \lg n - \lg 2 = C \cdot n \lg n - 1$
-$\implies 2 \cdot T({n \over 2})+ 1 \le C n\lg n$
+$\implies 2 \cdot T({n \over 2}) \le C \cdot n \lg {n\over 2} = C\cdot n (\lg n - \lg 2) = C \cdot n \lg n - n$
+<!-- $\implies 2 \cdot T({n \over 2})+ 1 \le C n\lg n$
 $\implies2 \cdot T({n \over 2})+ 1 + an \le C n\lg n + an$
-$\implies2 \cdot T({n \over 2})+ 1 + an \le C n\lg n + an$
+$\implies2 \cdot T({n \over 2})+ 1 + an \le C n\lg n + an$ -->
 
-Why did we add $an$? Because it's a family of functions in $\Theta(n)$, with the same leading term. So this shows:
-$2 \cdot T({n \over 2})+ 1 + \Theta(n) \le C n\lg n + an = O(n \lg n)$ $\square$
+So this shows:
+$2 \cdot T({n \over 2})+ 1 + \Theta(n) \le C n\lg n = O(n \lg n)$ $\square$
 
 
 ---
@@ -990,13 +990,14 @@ We haven't sorted the list, but we've sorted the pivot.
 
 ---
 
+# Questions?
 <!-- _class: invert questions -->
 
 ---
 
 # The big-$\Theta$ of quickselect average case
 
-In the best case, quickselect finds the kth value instantly (it's the pivot). So $\Theta(1)$
+In the best case, quickselect finds the kth value instantly (it's the pivot). But, we had to partition it once to know that, so it's still $\Theta(n)$.
 
 In the worst case, either the pivot keeps being the biggest value and we want the smallest, or vice versa. This means we pivot $n$ times, and pivot is $\Theta(n)$, so it ends up being $\Theta(n^2)$ worse case.
 
@@ -1036,7 +1037,7 @@ Mergesort had this recurrence:
 $T(0) = T(1) = 1$
 $T(n) = 2\cdot T(n / 2) + \Theta(n)$
 
-`count_nodes` had this recurrence for the balanced case:
+count BST nodes had this recurrence for the balanced case:
 $T(0) = 1$
 $T(n) = 2\cdot T(n / 2) + 1$
 
