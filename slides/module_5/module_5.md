@@ -286,7 +286,7 @@ void insert(BstNode** node, value) {
         *node = create a new node with value
     else if (value < (*node)->value)
         insert ((*node)->left, value);
-    else if (value == (*node0)->value)
+    else if (value == (*node)->value)
         *node = deallocate the old value and replace
     else 
         insert((*node)->right, value);
@@ -546,7 +546,7 @@ Technically, we allow 1 node of give. So the larger child needs to have *more th
 This system allows us to decide how often we want to rebalance.
 
 - If we want a perfectly balanced tree, we want $\alpha = 50\%$. That means that the "larger" child must be no more than half the size of the total tree. But that means the other child has the other half. So they're 50/50.
-  (In practice, perfectly balanced trees only happen at powers of 2, so we allow a slight amount of imbalance even with $\alpha = 50\%$)
+  (In practice, perfectly balanced trees only happen at powers of 2 minus 1, so we allow a slight amount of imbalance even with $\alpha = 50\%$)
 - If we want to turn off re-balancing, we pick $\alpha=100\%$. Now we allow the largest child to have up to all the nodes. This will always be the case.
 - The meaningful range is $\alpha \in [.5, 1.0]$ $\alpha \lt .5$ is contradictory: how can the *larger* child have less than half the tree? Then the *smaller* child has more than half? 
   $\alpha \gt 1.0$ is redundant. The larger child can have *more* than all the nodes?
