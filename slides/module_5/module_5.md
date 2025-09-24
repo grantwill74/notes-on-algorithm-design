@@ -685,7 +685,7 @@ Nope, it's fine, let's keep going.
 
 The parent is $5$. Is that node imbalanced?
 $2 \le \lfloor \log(2) / \log(1.67) \rfloor + 1 = 1 + 1 = 2$
-Yup, $2 \le 2$, let's keep going.
+Nope, $2 \le 2$, let's keep going.
 
 ---
 
@@ -726,7 +726,7 @@ What does it mean to rebuild the tree?
 Here are the nodes in the sub-tree, in order:
 `3, 4, 5, 6`
 
-Choose the median, round down. That's the new root. Do the same to the left and right. 
+Choose the median index, round down. That's the new root. Do the same to the left and right. 
 We get this new sub-tree: $3 \leftarrow 4 \rightarrow 5 \rightarrow 6$
 And this is inserted back into the whole tree:
 $1 \leftarrow 2 \rightarrow (3 \leftarrow 4 \rightarrow 5 \rightarrow 6)$
