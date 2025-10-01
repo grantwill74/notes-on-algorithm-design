@@ -726,7 +726,7 @@ However, in the latter half of this course, we'll see some examples of NP-comple
 
 A program can't use more space than time. However, it can use much more time than space.
 
-PSpace is the set of problems that take a polynomial amount of time. It actually includes some problems that are harder than the hardest problems in NP.
+PSpace is the set of problems that take a polynomial amount of space. It actually includes some problems that are harder than the hardest problems in NP.
 
 ---
 
