@@ -548,8 +548,8 @@ integer in the second matrix, multiply it by the <span
 class="math inline">\(n\)</span> integers in each column of of the first
 one, and do some additions.</p>
 <p>This particular reduction (there are others) takes longer: <span
-class="math inline">\(\Theta(n^3)\)</span> multiplications need to
-happen. <strong>But it is still polynomial time.</strong></p>
+class="math inline">\(O(n^3)\)</span> multiplications need to happen.
+<strong>But it is still polynomial time.</strong></p>
 <hr />
 <h1 id="alchemy-of-reduction">Alchemy of reduction</h1>
 <p>You notice that our reduction of matrix multiplication to scalar
@@ -637,7 +637,7 @@ or had enough threads.</p>
 <p>There is an interesting problem in NP called
 <strong>SAT</strong>.</p>
 <p>This is the boolean satisfiability problem. It is the problem of,
-given some boolean formula like <span class="math inline">\(a \lor b
+given some boolean formula like <span class="math inline">\((a \lor b)
 \land (\lnot b \land c)\)</span>, is there some set of booleans that
 satisfies it? I.e., are there some true/false values we can fill in for
 <span class="math inline">\(a\)</span>, <span
@@ -1079,7 +1079,7 @@ space. So it does still matter.</p>
 <h1 id="pspace">PSpace</h1>
 <p>A program can’t use more space than time. However, it can use much
 more time than space.</p>
-<p>PSpace is the set of problems that take a polynomial amount of time.
+<p>PSpace is the set of problems that take a polynomial amount of space.
 It actually includes some problems that are harder than the hardest
 problems in NP.</p>
 <hr />

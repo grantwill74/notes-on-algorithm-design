@@ -281,7 +281,7 @@ I'm just re-encoding a simple data type twice, so this reduction takes $\Theta(1
 
 Conversely, the problem of testing a product of square integer matrices *can also be reduced* to the problem of multiplying integers. For every $n\times n$ integer in the second matrix, multiply it by the $n$ integers in each column of of the first one, and do some additions.
 
-This particular reduction (there are others) takes longer: $\Theta(n^3)$ multiplications need to happen. **But it is still polynomial time.**
+This particular reduction (there are others) takes longer: $O(n^3)$ multiplications need to happen. **But it is still polynomial time.**
 
 ---
 
@@ -359,7 +359,7 @@ NP is an important category because it contains all the problems that we could t
 
 There is an interesting problem in NP called **SAT**. 
 
-This is the boolean satisfiability problem. It is the problem of, given some boolean formula like $a \lor b \land (\lnot b \land c)$, is there some set of booleans that satisfies it? I.e., are there some true/false values we can fill in for $a$, $b$, or $c$ that makes the expression true?
+This is the boolean satisfiability problem. It is the problem of, given some boolean formula like $(a \lor b) \land (\lnot b \land c)$, is there some set of booleans that satisfies it? I.e., are there some true/false values we can fill in for $a$, $b$, or $c$ that makes the expression true?
 
 In this case, yes. $a$ = true, $b$ = false, $c$ = true.
 
