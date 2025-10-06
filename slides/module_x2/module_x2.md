@@ -58,8 +58,8 @@ Binary search trees have the property that a node's left child has a smaller val
 
 # The heap property (2)
 
-Min-heaps have the property that every element is smaller than its children.
-Max-heaps have the property that every element is bigger than its children.
+Min-heaps have the property that every element is no larger than its children.
+Max-heaps have the property that every element is no smaller than its children.
 
 There is another property that practical heaps have that we will mention soon, but the heap property is the main one.
 
@@ -269,7 +269,7 @@ Is it cheap? To find out, we'll need to consider how to remove things from the h
 
 ---
 
-# Questions
+# Questions?
 <!-- _class: invert questions -->
 
 ---
@@ -326,8 +326,8 @@ Once we do this, we might not be at the bottom of the heap, so we recurse.
 
 # Summary of heap removal
 
-- We take the top value out of the heap.
-- We replace it with the very last value.
+- We take the top (root) value out of the heap.
+- We replace it with the very last value (highest index value).
 - We swap that value down as far as it will go
 
 ---
@@ -350,7 +350,7 @@ int heap_pop(int* heap, size_t n) {
 ---
 
 <!-- _class: questions invert -->
-# Questions
+# Questions?
 
 ---
 
