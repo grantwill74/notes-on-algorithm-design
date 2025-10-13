@@ -130,7 +130,7 @@ How would we prove this ideal strategy? You guessed it: induction!
 
 But this time, let's do induction over a set of a particular type. Suppose a set of cards is constructed like this:
 - $\emptyset$ is a set of cards.
-- If $H$ is a set of cards and $c$ is a card, $H \cup { c }$ is a set of cards.
+- If $H$ is a set of cards and $c$ is a card, $H \cup { \{c\} }$ is a set of cards.
 
 This type is inductive because it has a finite number of constructors. We can use induction on this type to prove statements that begin with $\forall H \in \mathrm{Hands}$
 
@@ -403,7 +403,7 @@ $E$ is the set of **E**lements. These are usually the "things" that you can take
 $I$ is the set of **I**ndependent subsets. Each element of $I$ is a set which consists of zero or more elements of $E$. These sets represent combinations of choices in the game. $I$ must have the following properties:
 - $\emptyset \in I$
 - "heredity": $A \in I \implies B \subset A \implies B \in I$
-- "exchange": $A, B \in I$
+- "exchange": $A, B \in I$ and $|A| \gt |B|$, then $\exists a \in A, \{a\} \cup B \in I$
 
 ---
 
