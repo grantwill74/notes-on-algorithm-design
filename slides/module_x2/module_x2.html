@@ -273,9 +273,9 @@ smaller value than it, and its right child has a larger value than it
 <p>[What property do heaps have?]</p>
 <hr />
 <h1 id="the-heap-property-2">The heap property (2)</h1>
-<p>Min-heaps have the property that every element is smaller than its
-children. Max-heaps have the property that every element is bigger than
-its children.</p>
+<p>Min-heaps have the property that every element is no larger than its
+children. Max-heaps have the property that every element is no smaller
+than its children.</p>
 <p>There is another property that practical heaps have that we will
 mention soon, but the heap property is the main one.</p>
 <p>It is also called the “heap invariant”, because it is expected to be
@@ -430,7 +430,7 @@ and convenient sorting algorithm.</p>
 <p>Is it cheap? To find out, we’ll need to consider how to remove things
 from the heap.</p>
 <hr />
-<h1 id="questions">Questions</h1>
+<h1 id="questions">Questions?</h1>
 <!-- _class: invert questions -->
 <hr />
 <h1 id="taking-things-out-of-a-heap">Taking things out of a heap</h1>
@@ -477,8 +477,8 @@ recurse.</p>
 <hr />
 <h1 id="summary-of-heap-removal">Summary of heap removal</h1>
 <ul>
-<li>We take the top value out of the heap.</li>
-<li>We replace it with the very last value.</li>
+<li>We take the top (root) value out of the heap.</li>
+<li>We replace it with the very last value (highest index value).</li>
 <li>We swap that value down as far as it will go</li>
 </ul>
 <hr />
@@ -494,7 +494,7 @@ recurse.</p>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <hr />
 <!-- _class: questions invert -->
-<h1 id="questions-1">Questions</h1>
+<h1 id="questions-1">Questions?</h1>
 <hr />
 <h1 id="sorting">Sorting?</h1>
 <p>I mentioned sorting before. How can we sort with a heap?</p>
