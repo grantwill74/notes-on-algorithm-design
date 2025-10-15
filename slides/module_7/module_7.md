@@ -512,7 +512,7 @@ Here's another example input:
 0 10; 0 0; 1 1
 ```
 
-Here, if she takes the first challenge, the second doesn't help. But if she skips the first challenge, the second helps. So one answer is $\{0, 2\}$, but there are others.
+Here, if she takes the first challenge, the second doesn't help. But if she skips the first challenge, the second helps. So the answer is 2 points. One from $\{0, 2\}$, but there are others.
 
 ---
 
@@ -542,7 +542,7 @@ If you disagree, try to find a counter example.
 
 Here, our problem forms a matroid. 
 
-$I$ is generate the set of decisions we could make, so let's let $I$ be the set of all answers (i.e., the combinations of challenges we could take).
+$I$ is the set of decisions we could make, so let's let $I$ be the set of all answers (i.e., the combinations of challenges we could take).
 
 If $I$ is the set of all combinations of challenges themselves, then $E$ must be the set of challenges (i.e, $E = \{0, 1, 2, 3, 4, 5, \ldots\}$)
 
@@ -583,7 +583,7 @@ Our goal is to show that always taking a challenge is optimal. That means that a
 
 Now, let's represent the amount of skill points Alice gets as a recurrence relation:
 - $f(l)$ is the number of points Alice gets from a list of problems $l$
-- $f(0) = 0$
+- $f([]) = 0$
 - $f(h : l) =$
     - $f(l) + 1$ if $h_{lo} \le f(l) \le h_{hi}$
     - $f(l)$ otherwise
@@ -619,7 +619,7 @@ Proofs of greedy algorithms typically involve showing that if we deviate from th
 
 ---
 
-# Modification 1: Alice doesn't waste time
+# Modifications: Alice doesn't waste time
 
 Suppose that Alice is not permitted to waste time. So if she has an input like this: `0 0; 0 0; 1 1`, valid answers are $\{0, 2\}$ and $\{1, 2\}$. However, $\{0, 1, 2\}$ is not valid, because doing problem 1 after problem 0 would be a waste of time (it would not make Alice gain a skill point).
 
@@ -684,7 +684,7 @@ Which challenge can we remove? The one with the highest skill requirement.
 
 If there are 10 challenges in our answer, and the answer is valid, then Alice will have a skill of 10.
 
-That means, every challenge must have a skill requirement $\le 9$, otherwise at least one challenge would have been a waste of time.
+That means, every challenge must have a minimum skill requirement $\le 9$, otherwise at least one challenge would have been a waste of time.
 
 There might be a challenge with a requirement of 9. We had to build up to it by doing all the other challenges. After doing it, the skill level is 10. Pick this challenge to remove.
 
@@ -793,7 +793,7 @@ If $|f \cup \{a\}| \gt |f'|$, there are two possibilities:
 2. $|f| = |f'|$. This is the trickier case. Now we need to actually *find* the element to copy, because we can't use the inductive hypothesis (it required that $|f| \gt |f'|$)
 Luckily, we can still use $a$, becuase the requirement for $a$ was that $a_{lo} \le |f| \le a_{hi}$. But here, $|f| = |f'|$, so $a_{lo} \le |f| \le a_{hi}$. Because of the derivations of our relation $R$, $f' \in R \implies a_{lo} \le |f'| \le a_{hi} \implies f' \cup \{a\} \in R$. And by the correctness property, $f' \cup \{a\} \in R \implies f' \cup \{a\} \in F$.
 
-So finally, we know that our entire problem meets the requirements for a greedoid, meaning that there is an optimal greedy solution.
+So finally, we know that our entire problem meets the requirements for a greedoid, meaning that there is greedy solution.
 
 ---
 
@@ -868,7 +868,7 @@ Solve the fractional-backpack problem in C with a greedy P-time algo:
   ```
   You are given a maximum weight. Your goal is to return the maximum value you can carry. You are allowed to carry fractions of items.
 
-  E.g., `fract_bp({ {20.0f, 100.0f}, {10.0f, 5.0f}}, 15.0f) == 75.0f`, because we will take 15 of the first item. If 20 is worth 100, then 15 is worth 75.
+  E.g., `fract_bp({ {20.0f, 100.0f}, {10.0f, 5.0f}}, 2, 15.0f) == 75.0f`, because we will take 15 of the first item. If 20 is worth 100, then 15 is worth 75.
 
 ---
 
@@ -877,7 +877,7 @@ Solve the fractional-backpack problem in C with a greedy P-time algo:
  You are given a list of jobs, each of which is defined entirely by its deadline  `d`, which is the number of days in the future the job is due. You can do one job per day, and every job pays $200 if done on or before the deadline, and $0 otherwise. Write a greedy, P-time C program giving the maximum amount of money you can make in `dt` days. 
 
 ```c
-size_t max_money(size_t* jobs, size_t n, size_t d) { ... }
+size_t max_money(size_t* jobs, size_t n, size_t dt) { ... }
 ```
 
 Example: suppose the list is `{0, 1, 5, 2, 1}`. The best we can achieve is doing the day 0 job on day 0, one of the day 1 deadline jobs on day 1, and then the day 2 and 5 jobs on days 2 and 3. That's 4 jobs for $800. It's impossible to do both jobs with a day 1 deadline.
