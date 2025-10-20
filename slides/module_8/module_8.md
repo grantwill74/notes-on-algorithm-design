@@ -82,7 +82,7 @@ Named after [Leonardo Bonacci](https://en.wikipedia.org/wiki/Fibonacci) (called 
 
 The sequence was originally introduced in the book, [Liber Abaci](https://en.wikipedia.org/wiki/Liber_Abaci), as a simple model of a rabbit population over time.
 
-However, the mathematical sequence itself was already known in India, where it was the solution of problems involving 1 and 2 syllable language patterns.
+However, the mathematical sequence itself was already known in India, where it was the solution of problems involving 1 and 2 syllable language patterns. I would talk about these, but they make for good quiz material (hint hint)
 
 The book itself was intended to introduce the European reader to the use of Arabic numerals, and to give reasons to do arithmetic without an abacus and Roman numerals. [This was surprisingly controversial]
 
