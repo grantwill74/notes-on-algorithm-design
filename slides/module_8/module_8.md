@@ -746,7 +746,7 @@ What happense if we use a penny? Then it's one more than the solution for 30 p.
 # Fixing it (2)
 
 So that's an algorithm that seems like it would return the answer.
-For $n$ pence, take the minimum of:
+For $n$ pence, take the minimum greater than zero of:
 - $C(n - 240) + 1$
 - $C(n - 60) + 1$
 - $C(n - 12) + 1$
@@ -870,13 +870,13 @@ Once a solution is calculated, we don't re-calculate it.
 
 # The new bound
 
-The new time bound is linear. $O(n)$.
+The new time bound is polynomial. $O(nd)$ where $d$ is the number of denominations.
 
 Why? Because once we compute a particular value, we never compute it again.
 
 Therefore, the largest number we could compute is $n$. 
 
-And each time, we're doing a constant amount of work. Some table lookups and additions.
+And each time, we're doing a for loop of size $d$. Some table lookups and additions.
 
 ---
 
@@ -1069,10 +1069,10 @@ Suppose Alice is taking a motorcycle trip across the country. She can go `k` kil
 
 At certain points along her trip, there are gas stations. At a gas station, she can fill her tank up to full, but it takes time, so she wants to minimize it.
 
-Alice can make it to a gas station `d` km away if she has `d`  km of fuel. Alice has planned her route so that she knows, how far away each gas station is from the previous one. Given a `k` and a list of gas station distances, write a DP algorithm in C that runs in polynomial time and returns the fewest number of gas stops. Her destination is the last gas station. You may assume the array of stations is global.
+Alice can make it to a gas station `d` km away if she has `d`  km of fuel. Alice has planned her route so that she knows, how far away each gas station is from the start. Given a `k` and a list of gas station distances, write a DP algorithm in C that runs in polynomial time and returns the fewest number of gas stops. Her destination is the last gas station which counts as a stop. You may assume the array of stations is global.
 
 Example:
-`k = 50` and `a = {49, 50, 100, 101, 150}` returns 2: she stops at 50 and 100
+`k = 50` and `a = {49, 50, 100, 101, 150}` returns 3: she stops at 50, 100, and 150
 
 ---
 
