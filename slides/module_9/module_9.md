@@ -89,7 +89,7 @@ typedef struct node_t {
 
 ---
 
-# Creating the list from before
+# Creating the graph from before
 
 Let's use our structs to build the graph from before. It's easiest if we first create our nodes, and then define our edge lists, both on the stack.
 
@@ -109,7 +109,7 @@ Notice how the edges are all null. We'll overwrite the `NULL`s with valid edge l
 
 ---
 
-# Creating the list from before (2)
+# Creating the graph from before (2)
 
 Now we need to create the neighbors. I'll define some of them; I'll leave the rest to you.
 
@@ -325,7 +325,7 @@ This matrix corresponds to the graph in the previous slide:
 | A | - | 10| 15| 10|
 | B | - | - | 2 | - |
 | C | - | 3 | - | 2 |
-| D | -1| - | - | - |
+| D | 1 | - | - | - |
 
 The row is the source, and the column is the destination.
 
@@ -376,7 +376,7 @@ On the other hand how big do we expect the adjacency matrix to be?
 
 In this case, there is space allocated for $4 \times 4 = 16$ edges.
 
-Each edge is an int, and `sizeof(int)` is usally 4. Therefore we expect it to use 64 bytes.
+Each weight is an int, and `sizeof(int)` is usally 4. Therefore we expect it to use 64 bytes.
 
 Is that a lot? Well, there are 7 edges. So, amortizing it: roughly $9.14$ bytes per edge.
 
