@@ -734,7 +734,7 @@ It's an abstract image. A circle of 1s with some 2s in a blotchy pattern inside.
 
 # The flood fill algorithm 
 
-Let's say the user has the paintbuck tool active, and the current color is `1`.
+Let's say the user has the paintbucket tool active, and the current color is `3`.
 
 They click in the lower left `2` pixel of the wide part of the blotchy pattern. So they want the whole blotch to be color `3` instead of color `2`.
 
