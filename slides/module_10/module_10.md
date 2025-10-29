@@ -1155,6 +1155,20 @@ What do you think? There is a right answer here, so feel free to come talk about
 
 ---
 
+# An actual example of someone doing this
+
+[Here's an actual state-space analysis for the puzzle game "Stephen's Sausage Roll"](https://www.youtube.com/watch?v=AK8OLuRBFTw)
+
+This puzzle game is a famous brain-bender. I honestly just pulled this youtube video randomly in my algorithm from a front-page refresh, but it's a perfect example of state-space graph modelling. 
+
+---
+
+# Questions?
+
+<!-- _class: invert questions -->
+
+---
+
 # Sample quizzes
 
 The quiz for this material will take this form:
