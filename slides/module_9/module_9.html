@@ -308,7 +308,7 @@ this list is also where we store the edge weights.</p>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// We can have per-vertex data here too if we want: void* vert_data;</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> Node<span class="op">;</span></span></code></pre></div>
 <hr />
-<h1 id="creating-the-list-from-before">Creating the list from
+<h1 id="creating-the-graph-from-before">Creating the graph from
 before</h1>
 <p>Let’s use our structs to build the graph from before. It’s easiest if
 we first create our nodes, and then define our edge lists, both on the
@@ -325,7 +325,7 @@ stack.</p>
 <p>Notice how the edges are all null. We’ll overwrite the
 <code>NULL</code>s with valid edge lists soon.</p>
 <hr />
-<h1 id="creating-the-list-from-before-2">Creating the list from before
+<h1 id="creating-the-graph-from-before-2">Creating the graph from before
 (2)</h1>
 <p>Now we need to create the neighbors. I’ll define some of them; I’ll
 leave the rest to you.</p>
@@ -560,7 +560,7 @@ with weight 2. D is connected to A with weight 1</figcaption>
 </tr>
 <tr>
 <td>D</td>
-<td>-1</td>
+<td>1</td>
 <td>-</td>
 <td>-</td>
 <td>-</td>
@@ -606,7 +606,7 @@ be?</p>
 <h1 id="size-of-adjacency-matrix">Size of adjacency matrix</h1>
 <p>In this case, there is space allocated for <span
 class="math inline">\(4 \times 4 = 16\)</span> edges.</p>
-<p>Each edge is an int, and <code>sizeof(int)</code> is usally 4.
+<p>Each weight is an int, and <code>sizeof(int)</code> is usally 4.
 Therefore we expect it to use 64 bytes.</p>
 <p>Is that a lot? Well, there are 7 edges. So, amortizing it: roughly
 <span class="math inline">\(9.14\)</span> bytes per edge.</p>
@@ -911,8 +911,8 @@ this is a reasonable thing to do)</p>
 pattern inside.</p>
 <hr />
 <h1 id="the-flood-fill-algorithm-1">The flood fill algorithm</h1>
-<p>Let’s say the user has the paintbuck tool active, and the current
-color is <code>1</code>.</p>
+<p>Let’s say the user has the paintbucket tool active, and the current
+color is <code>3</code>.</p>
 <p>They click in the lower left <code>2</code> pixel of the wide part of
 the blotchy pattern. So they want the whole blotch to be color
 <code>3</code> instead of color <code>2</code>.</p>
