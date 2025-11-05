@@ -1237,10 +1237,9 @@ Regardless of which action you take, it always decrements the number of laps rem
 Treat this as a graph modelling problem and answer the following questions:
 - How do we encode a state in this space?
 - How are the neighbors derived. Show all the neighbor derivations for this one.
-- Suppose we use "laps of fuel remaining" as a heuristic. Is that consistent?
+- Suppose we use "laps of fuel remaining assuming we drive aggressively" as a heuristic. Is that consistent?
 - Prove it one way or the other.
 
-(Here's a hint that wouldn't be on the actual quiz: you can prove inconsistency by showing inadmissability. Can we show how laps of fuel left might overestimate the fuel it takes to win?)
 
 ---
 
