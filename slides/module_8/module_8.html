@@ -909,9 +909,9 @@ for 30 p.</p>
 <hr />
 <h1 id="fixing-it-2">Fixing it (2)</h1>
 <p>So that’s an algorithm that seems like it would return the answer.
-For <span class="math inline">\(n\)</span> pence, take the minimum of: -
-<span class="math inline">\(C(n - 240) + 1\)</span> - <span
-class="math inline">\(C(n - 60) + 1\)</span> - <span
+For <span class="math inline">\(n\)</span> pence, take the minimum
+greater than zero of: - <span class="math inline">\(C(n - 240) +
+1\)</span> - <span class="math inline">\(C(n - 60) + 1\)</span> - <span
 class="math inline">\(C(n - 12) + 1\)</span> - <span
 class="math inline">\(C(n - 10) + 1\)</span> - <span
 class="math inline">\(C(n - 1) + 1\)</span></p>
@@ -1000,14 +1000,15 @@ class="math inline">\(2^{20}\)</span> (<code>0x100000</code>)</p>
 <p>[So what is a good time-bound now?]</p>
 <hr />
 <h1 id="the-new-bound">The new bound</h1>
-<p>The new time bound is linear. <span
-class="math inline">\(O(n)\)</span>.</p>
+<p>The new time bound is polynomial. <span
+class="math inline">\(O(nd)\)</span> where <span
+class="math inline">\(d\)</span> is the number of denominations.</p>
 <p>Why? Because once we compute a particular value, we never compute it
 again.</p>
 <p>Therefore, the largest number we could compute is <span
 class="math inline">\(n\)</span>.</p>
-<p>And each time, we’re doing a constant amount of work. Some table
-lookups and additions.</p>
+<p>And each time, we’re doing a for loop of size <span
+class="math inline">\(d\)</span>. Some table lookups and additions.</p>
 <hr />
 <h1 id="questions-7">Questions?</h1>
 <!-- _class: invert questions -->
@@ -1247,14 +1248,14 @@ station, she can fill her tank up to full, but it takes time, so she
 wants to minimize it.</p>
 <p>Alice can make it to a gas station <code>d</code> km away if she has
 <code>d</code> km of fuel. Alice has planned her route so that she
-knows, how far away each gas station is from the previous one. Given a
+knows, how far away each gas station is from the start. Given a
 <code>k</code> and a list of gas station distances, write a DP algorithm
 in C that runs in polynomial time and returns the fewest number of gas
-stops. Her destination is the last gas station. You may assume the array
-of stations is global.</p>
+stops. Her destination is the last gas station which counts as a stop.
+You may assume the array of stations is global.</p>
 <p>Example: <code>k = 50</code> and
-<code>a = {49, 50, 100, 101, 150}</code> returns 2: she stops at 50 and
-100</p>
+<code>a = {49, 50, 100, 101, 150}</code> returns 3: she stops at 50,
+100, and 150</p>
 <hr />
 <h1 id="practice-quiz-3">Practice quiz 3</h1>
 <p>Suppose Alice is the draft manager for a sports team. She and her
@@ -1272,9 +1273,9 @@ the highest obtainable sum of ability scores. You may assume that the
 arrays <code>int[] a = {...}</code> and <code>int[] s = {...}</code> for
 ability scores and salaries are global.</p>
 <p>Example: <code>a = {1, 10, 100}</code>,
-<code>s = {1, 20, 1000}</code>, <code>m = 42</code> will return 22,
-because the best solution is to draft 2 twins of the player with score
-10, and 2 of the player with 1.</p>
+<code>s = {2, 10, 1000}</code>, <code>m = 42</code> will return 41,
+because the best solution is to draft 4 twins of the player with score
+10, and 1 of the player with 1.</p>
 <hr />
 <h1 id="questions-9">Questions?</h1>
 <!-- _class: questions invert -->
