@@ -1084,7 +1084,7 @@ The team owner wants the best team for a maximum salary $m$. That is, he wants t
 
 Write a DP algorithm in C, which runs in polynomial time that returns the highest obtainable sum of ability scores. You may assume that the arrays `int[] a = {...}` and `int[] s = {...}` for ability scores and salaries are global. 
 
-Example: `a = {1, 10, 100}`, `s = {1, 20, 1000}`, `m = 42` will return 22, because the best solution is to draft 2 twins of the player with score 10, and 2 of the player with 1.
+Example: `a = {1, 10, 100}`, `s = {2, 10, 1000}`, `m = 42` will return 41, because the best solution is to draft 4 twins of the player with score 10, and 1 of the player with 1.
 
 ---
 
