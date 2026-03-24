@@ -1482,7 +1482,7 @@ And remember to bring pen and paper for the quiz next week!
 1. (25 points) Write a function in C that returns the smallest magnitude negative int in a given list, or 0 if there are no negative numbers.
  For example `lsmall({-2, -5, 2, 5, 7, -100}, 6) == -2`. `lsmall({}, 0) == 0`
 
-2. (25 points) Prove that it is correct.
+2. (25 points) Provide a useful invariant or inductive proof that gives us confidence the algorithm is correct.
 3. (25 points) Determine its big-$\Theta$
 4. (25 points) Prove that it has that big-$\Theta$
 5. (grading points) for accurate self grading. Rubric after answers.
