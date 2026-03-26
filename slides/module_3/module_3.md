@@ -773,7 +773,7 @@ void ins_sort_rec(int* arr, size_t n) {
 
 ---
 
-# Recursive inseriton sort analysis
+# Recursive insertion sort analysis
 
 This is a fun one because in order to know the big-$\Theta$ of the recursive function, we have to know the big-$\Theta$ of the recursive function.
 
