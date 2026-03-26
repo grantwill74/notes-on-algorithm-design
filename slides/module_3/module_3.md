@@ -257,7 +257,7 @@ Some correct answers:
 - $g(n) = \lg n$
 - $g(n) = (\lg n)^2$
 - $g(n) = (\lg n)^k$ for any k
-- $g(n) = 1
+- $g(n) = 1$
 
 ---
 
