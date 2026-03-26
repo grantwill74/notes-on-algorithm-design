@@ -1585,6 +1585,18 @@ int lsmall(int* arr, size_t n) {
 
 ---
 
+# Appendix D: Older quizzes
+
+Do the older quizzes! I've posted last year's problems. 
+
+They're in the `old_problems` folder in the repo.
+
+These were the actual problems (with maybe some slight wording differences) I used for the ME graded assessments.
+
+They are named fairly boringly. Just a number for each one. The number is just the order of problems I made for that outcome. It doesn't mean anything specific.
+
+---
+
 # Appendix D: Quiz 5
 
 Still feel like it's not clicking? Try writing your own quiz!
@@ -1593,6 +1605,12 @@ Still feel like it's not clicking? Try writing your own quiz!
 2. Write the quiz to mimic those above.
 3. Take the quiz. Time yourself!
 4. Grade it the same as the above.
+
+---
+
+# Appendix D: AI Prompt
+
+Alternatively give this prompt to an LLM
 
 Note: I like linear time problems for these, but they aren't guaranteed to be linear! Try writing a quiz based around binary search for an example of a fair problem that isn't $\Theta(n)$.
 
