@@ -1610,7 +1610,9 @@ Still feel like it's not clicking? Try writing your own quiz!
 
 # Appendix D: AI Prompt
 
-Alternatively give this prompt to an LLM
+Alternatively give this prompt to an LLM along with this markdown file (`module_3.md`) and the markdown documents and keys from the `old_problems` folder:
+
+> Please generate a quiz like the practice quizzes in the attached slides along with the old problems and their keys. Don't reveal the answer. I will try to solve it, and please score me afterwards. 
 
 Note: I like linear time problems for these, but they aren't guaranteed to be linear! Try writing a quiz based around binary search for an example of a fair problem that isn't $\Theta(n)$.
 
