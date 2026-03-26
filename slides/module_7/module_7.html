@@ -240,7 +240,7 @@
 Algorithms</h1>
 <h2 id="module-7-greedy-algorithms">Module 7: Greedy Algorithms</h2>
 <p><br> <br></p>
-<p>Slides © Grant Williams, <a
+<p>These notes are © Grant Williams, <a
 href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
 4.0</a>.</p>
 <p><br></p>
@@ -360,7 +360,7 @@ Suppose a set of cards is constructed like this: - <span
 class="math inline">\(\emptyset\)</span> is a set of cards. - If <span
 class="math inline">\(H\)</span> is a set of cards and <span
 class="math inline">\(c\)</span> is a card, <span
-class="math inline">\(H \cup { c }\)</span> is a set of cards.</p>
+class="math inline">\(H \cup { \{c\} }\)</span> is a set of cards.</p>
 <p>This type is inductive because it has a finite number of
 constructors. We can use induction on this type to prove statements that
 begin with <span class="math inline">\(\forall H \in
@@ -644,8 +644,9 @@ combinations of choices in the game. <span
 class="math inline">\(I\)</span> must have the following properties: -
 <span class="math inline">\(\emptyset \in I\)</span> - “heredity”: <span
 class="math inline">\(A \in I \implies B \subset A \implies B \in
-I\)</span> - “exchange”: <span class="math inline">\(A, B \in
-I\)</span></p>
+I\)</span> - “exchange”: <span class="math inline">\(A, B \in I\)</span>
+and <span class="math inline">\(|A| \gt |B|\)</span>, then <span
+class="math inline">\(\exists a \in A, \{a\} \cup B \in I\)</span></p>
 <hr />
 <h1 id="matroids-for-alice-and-bobs-simple-card-game">Matroids for Alice
 and Bob’s simple card game</h1>
@@ -765,8 +766,9 @@ of skill. She does not benefit from skipping any.</p>
 <p>Here’s another example input:</p>
 <pre><code>0 10; 0 0; 1 1</code></pre>
 <p>Here, if she takes the first challenge, the second doesn’t help. But
-if she skips the first challenge, the second helps. So one answer is
-<span class="math inline">\(\{0, 2\}\)</span>, but there are others.</p>
+if she skips the first challenge, the second helps. So the answer is 2
+points. One from <span class="math inline">\(\{0, 2\}\)</span>, but
+there are others.</p>
 <hr />
 <h1 id="another-problem-4">Another problem (4)</h1>
 <p>So the question is: how do we do this? What is an algorithm that is
@@ -786,10 +788,10 @@ The optimum result is just be the set of all challenges.</p>
 <hr />
 <h1 id="building-a-matroid">Building a matroid</h1>
 <p>Here, our problem forms a matroid.</p>
-<p><span class="math inline">\(I\)</span> is generate the set of
-decisions we could make, so let’s let <span
-class="math inline">\(I\)</span> be the set of all answers (i.e., the
-combinations of challenges we could take).</p>
+<p><span class="math inline">\(I\)</span> is the set of decisions we
+could make, so let’s let <span class="math inline">\(I\)</span> be the
+set of all answers (i.e., the combinations of challenges we could
+take).</p>
 <p>If <span class="math inline">\(I\)</span> is the set of all
 combinations of challenges themselves, then <span
 class="math inline">\(E\)</span> must be the set of challenges (i.e,
@@ -840,7 +842,7 @@ equivalent).</p>
 <p>Now, let’s represent the amount of skill points Alice gets as a
 recurrence relation: - <span class="math inline">\(f(l)\)</span> is the
 number of points Alice gets from a list of problems <span
-class="math inline">\(l\)</span> - <span class="math inline">\(f(0) =
+class="math inline">\(l\)</span> - <span class="math inline">\(f([]) =
 0\)</span> - <span class="math inline">\(f(h : l) =\)</span> - <span
 class="math inline">\(f(l) + 1\)</span> if <span
 class="math inline">\(h_{lo} \le f(l) \le h_{hi}\)</span> - <span
@@ -878,7 +880,7 @@ deviate from the greedy strategy, we don’t end up being better off.</p>
 <h1 id="questions-6">Questions?</h1>
 <!-- _class: questions invert  -->
 <hr />
-<h1 id="modification-1-alice-doesnt-waste-time">Modification 1: Alice
+<h1 id="modifications-alice-doesnt-waste-time">Modifications: Alice
 doesn’t waste time</h1>
 <p>Suppose that Alice is not permitted to waste time. So if she has an
 input like this: <code>0 0; 0 0; 1 1</code>, valid answers are <span
@@ -954,9 +956,9 @@ always remove one more challenge.</p>
 requirement.</p>
 <p>If there are 10 challenges in our answer, and the answer is valid,
 then Alice will have a skill of 10.</p>
-<p>That means, every challenge must have a skill requirement <span
-class="math inline">\(\le 9\)</span>, otherwise at least one challenge
-would have been a waste of time.</p>
+<p>That means, every challenge must have a minimum skill requirement
+<span class="math inline">\(\le 9\)</span>, otherwise at least one
+challenge would have been a waste of time.</p>
 <p>There might be a challenge with a requirement of 9. We had to build
 up to it by doing all the other challenges. After doing it, the skill
 level is 10. Pick this challenge to remove.</p>
@@ -1128,7 +1130,7 @@ derivations of our relation <span class="math inline">\(R\)</span>,
 correctness property, <span class="math inline">\(f&#39; \cup \{a\} \in
 R \implies f&#39; \cup \{a\} \in F\)</span>.</p>
 <p>So finally, we know that our entire problem meets the requirements
-for a greedoid, meaning that there is an optimal greedy solution.</p>
+for a greedoid, meaning that there is greedy solution.</p>
 <hr />
 <h1 id="reassurance">Reassurance</h1>
 <p>I know it is overwhelming to have two new induction techniques
@@ -1205,7 +1207,7 @@ You are given an array of this struct:
 You are given a maximum weight. Your goal is to return the maximum value
 you can carry. You are allowed to carry fractions of items.</p>
 <p>E.g.,
-<code>fract_bp({ {20.0f, 100.0f}, {10.0f, 5.0f}}, 15.0f) == 75.0f</code>,
+<code>fract_bp({ {20.0f, 100.0f}, {10.0f, 5.0f}}, 2, 15.0f) == 75.0f</code>,
 because we will take 15 of the first item. If 20 is worth 100, then 15
 is worth 75.</p>
 <hr />
@@ -1216,7 +1218,7 @@ the job is due. You can do one job per day, and every job pays $200 if
 done on or before the deadline, and $0 otherwise. Write a greedy, P-time
 C program giving the maximum amount of money you can make in
 <code>dt</code> days.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> max_money<span class="op">(</span><span class="dt">size_t</span><span class="op">*</span> jobs<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">,</span> <span class="dt">size_t</span> d<span class="op">)</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> max_money<span class="op">(</span><span class="dt">size_t</span><span class="op">*</span> jobs<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">,</span> <span class="dt">size_t</span> dt<span class="op">)</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span></span></code></pre></div>
 <p>Example: suppose the list is <code>{0, 1, 5, 2, 1}</code>. The best
 we can achieve is doing the day 0 job on day 0, one of the day 1
 deadline jobs on day 1, and then the day 2 and 5 jobs on days 2 and 3.

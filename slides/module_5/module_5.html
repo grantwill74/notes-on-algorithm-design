@@ -240,7 +240,7 @@
 Algorithms</h1>
 <h2 id="module-5-trees">Module 5: Trees</h2>
 <p><br> <br></p>
-<p>Slides © Grant Williams, <a
+<p>These notes are © Grant Williams, <a
 href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
 4.0</a>.</p>
 <p><br></p>
@@ -448,7 +448,7 @@ trees.</p>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>node <span class="op">=</span> create a new node with value</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>value <span class="op">&lt;</span> <span class="op">(*</span>node<span class="op">)-&gt;</span>value<span class="op">)</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        insert <span class="op">((*</span>node<span class="op">)-&gt;</span>left<span class="op">,</span> value<span class="op">);</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>value <span class="op">==</span> <span class="op">(*</span>node0<span class="op">)-&gt;</span>value<span class="op">)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>value <span class="op">==</span> <span class="op">(*</span>node<span class="op">)-&gt;</span>value<span class="op">)</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>node <span class="op">=</span> deallocate the old value and replace</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> </span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        insert<span class="op">((*</span>node<span class="op">)-&gt;</span>right<span class="op">,</span> value<span class="op">);</span></span>
@@ -692,8 +692,8 @@ answers</h1>
 class="math inline">\(\alpha = 50\%\)</span>. That means that the
 “larger” child must be no more than half the size of the total tree. But
 that means the other child has the other half. So they’re 50/50. (In
-practice, perfectly balanced trees only happen at powers of 2, so we
-allow a slight amount of imbalance even with <span
+practice, perfectly balanced trees only happen at powers of 2 minus 1,
+so we allow a slight amount of imbalance even with <span
 class="math inline">\(\alpha = 50\%\)</span>)</li>
 <li>If we want to turn off re-balancing, we pick <span
 class="math inline">\(\alpha=100\%\)</span>. Now we allow the largest
@@ -836,7 +836,7 @@ node imbalanced? <span class="math inline">\(1 \le \log(1) / \log(1.67)
 + 1 = 0 + 1 = 1\)</span> Nope, it’s fine, let’s keep going.</p>
 <p>The parent is <span class="math inline">\(5\)</span>. Is that node
 imbalanced? <span class="math inline">\(2 \le \lfloor \log(2) /
-\log(1.67) \rfloor + 1 = 1 + 1 = 2\)</span> Yup, <span
+\log(1.67) \rfloor + 1 = 1 + 1 = 2\)</span> Nope, <span
 class="math inline">\(2 \le 2\)</span>, let’s keep going.</p>
 <hr />
 <h1 id="finding-the-scapegoat-4">Finding the scapegoat (4)</h1>
@@ -865,8 +865,8 @@ fault!</p>
 <p>What does it mean to rebuild the tree?</p>
 <p>Here are the nodes in the sub-tree, in order:
 <code>3, 4, 5, 6</code></p>
-<p>Choose the median, round down. That’s the new root. Do the same to
-the left and right. We get this new sub-tree: <span
+<p>Choose the median index, round down. That’s the new root. Do the same
+to the left and right. We get this new sub-tree: <span
 class="math inline">\(3 \leftarrow 4 \rightarrow 5 \rightarrow
 6\)</span> And this is inserted back into the whole tree: <span
 class="math inline">\(1 \leftarrow 2 \rightarrow (3 \leftarrow 4

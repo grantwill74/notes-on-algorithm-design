@@ -11,7 +11,7 @@ paginate: true
 <br>
 <br>
 
-Slides © Grant Williams, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).  
+These notes are © Grant Williams, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).  
 
 <br>
 
@@ -275,7 +275,7 @@ The problem is that now we have large language models for which Elo score on com
 
 I used to heavily rely on take-home assignments to make it easier on students who couldn't make every class, but I cannot do that anymore for classes that aren't based on making massive software systems.
 
-I still want you to do take-home assignments, so they are worth some points, but this issue is that I can't *rely* on completing a take-home assignment
+I still want you to do take-home assignments, so they are worth some points, but the issue is that I can't *rely* on completing a take-home assignment
 
 Therefore, most of the grade has to come from in-class proctored tests, otherwise I can't prove .
 
@@ -316,7 +316,7 @@ Both of these exams will occur during the term, with the specific schedule being
 
 Each exam will contain 3 problems, which cover the same mastery components as the quizzes. 
 
-**The exams will be another chance** to demonstrate that you have learned the skill. I will take the maximum score between the two as your grade for that skill.
+**The exams will be a universal retake opportunity** to demonstrate that you have learned the skill. I will take the maximum score between the two as your grade for that skill.
 
 
 ---
@@ -335,11 +335,11 @@ Therefore there will be *three chances* to demonstrate mastery on all the compon
 
 # Does that mean I can skip?
 
-Technically, yes.
+Technically, yes. Since there are two retake opportunities for every test, you could technically...
 
-You can skip the quizzes, and just take the in-terms.
+...skip the quizzes, and just take the in-terms.
 
-You can skip the quizzes and the in-terms and just take the final.
+...skip the quizzes and the in-terms and just take the final.
 Unwise, but you can do it.
 
 You can ace all the quizzes and skip every test
@@ -425,7 +425,7 @@ However, the quiz requires you to certify that you did it totally by yourself, w
 
 If you later get in trouble, either with grades or with class policy, you cannot use "I never read the syllabus" as an excuse without admitting to academic dishonesty.
 
-Please forgive the litigousness with which I am treating this subject. The rest of the class won't be like this, I promise. I just really need you to read the syllabus, especially because it's so different from previous semesters'. The whole standards-based grading is completely new for me and for many of you.
+Please forgive the litigousness with which I am treating this subject. The rest of the class won't be like this, I promise. I just really need you to read the syllabus, especially because it's so different from previous semesters'. The whole standards-based grading is still new for me and for many of you.
 
 --- 
 <!-- _class: questions invert -->

@@ -246,7 +246,7 @@ Algorithms</h1>
 <h3 id="linear-time-sorting">Linear-time sorting</h3>
 </center>
 <p><br></p>
-<p>Slides © Grant Williams, <a
+<p>These notes © Grant Williams, <a
 href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
 4.0</a>.</p>
 <p>This is an open educational resource. Feel free to submit fixes,
@@ -458,8 +458,8 @@ n\)</span> - <span class="math inline">\(g(n) = {n \lg (n / 2) \over
 2}\)</span> - <span class="math inline">\(g(n) = n\)</span> - <span
 class="math inline">\(g(n) = \lg n\)</span> - <span
 class="math inline">\(g(n) = (\lg n)^2\)</span> - <span
-class="math inline">\(g(n) = (\lg n)^k\)</span> for any k - $g(n) =
-1</p>
+class="math inline">\(g(n) = (\lg n)^k\)</span> for any k - <span
+class="math inline">\(g(n) = 1\)</span></p>
 <hr />
 <h1 id="compare-to-our-earlier-knowledge-check">Compare to our earlier
 knowledge check</h1>
@@ -1078,7 +1078,7 @@ class="math inline">\(\Theta\)</span> of this function?</p>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    arr<span class="op">[</span>j<span class="op">]</span> <span class="op">=</span> t<span class="op">;</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <hr />
-<h1 id="recursive-inseriton-sort-analysis">Recursive inseriton sort
+<h1 id="recursive-insertion-sort-analysis">Recursive insertion sort
 analysis</h1>
 <p>This is a fun one because in order to know the big-<span
 class="math inline">\(\Theta\)</span> of the recursive function, we have
@@ -1096,8 +1096,8 @@ class="math inline">\(n - 1\)</span>, which takes <span
 class="math inline">\(T(n - 1)\)</span>, and then we have a loop that
 takes <span class="math inline">\(\Theta(n)\)</span>.</p>
 <hr />
-<h1 id="dont-bother-with-substitution">Don’t bother with
-substitution</h1>
+<h1 id="dont-bother-with-infinite-substitution">Don’t bother with
+infinite substitution</h1>
 <p>Obviously we could substitute if we wanted: <span
 class="math inline">\(T(n)= T(n - 1) + \Theta(n), \mathrm{if}\ n \ge
 0\)</span> <span class="math inline">\(T(n)= T(n - 2) + \Theta(n) +
@@ -1196,8 +1196,9 @@ mutually.</p>
 <p><span class="math inline">\(n_0\)</span> is a constant that is
 important for the base case. Consider <span
 class="math inline">\(P(0)\)</span>:</p>
-<p>Is it true that <span class="math inline">\(C_1 \cdot 0^2 \le (T(0) =
-c) \le C_2 \cdot 0^2\)</span>?</p>
+<p>If <span class="math inline">\(c \gt 0\)</span>, is it true that
+<span class="math inline">\(C_1 \cdot 0^2 \le (T(0) = c) \le C_2 \cdot
+0^2\)</span>?</p>
 <p>No, and there are no positive <span
 class="math inline">\(C_1\)</span> and <span
 class="math inline">\(C_2\)</span> that will make that work.</p>
@@ -1283,10 +1284,9 @@ class="math inline">\(C_1 (2n + 1) - a(n + 1) \le 0 \equiv C_1 (2n + 1)
 class="math inline">\(\Theta\)</span> (6)</h1>
 <p>But <span class="math inline">\(C_1\)</span> cannot depend on <span
 class="math inline">\(n\)</span>. Luckily, we can bound it.</p>
-<p><span class="math inline">\(C_1 \le {a(n + 1) \over (2n + 1)} \le
-{a(n+1) \over 2n + 2} \le{a(n+1) \over 2(n + 1)} \le {a \over
-2}\)</span>. So we will go back and choose <span
-class="math inline">\(C_1 = {a \over 2}\)</span>.</p>
+<p><span class="math inline">\(C_1 \le {a(n+1) \over 2n + 2} \le{a(n+1)
+\over 2(n + 1)} \le {a \over 2}\)</span>. So we will go back and choose
+<span class="math inline">\(C_1 = {a \over 2}\)</span>.</p>
 <p>What about <span class="math inline">\(C_2\)</span>? It’s basically
 the same: <span class="math inline">\(T(n) \le C_2 \cdot n^2 \implies
 T(n) + a(n + 1) \le C_2 \cdot (n^2 +2n +1)\)</span> We need <span
@@ -1638,9 +1638,9 @@ times.</p>
 Luckily, we know that sum(counts) = len(array) = n, so The inner loop
 runs, in total, n times (regardless of how many times the outer loop
 runs).</p>
-<p>Because the inner loop always takes <span
-class="math inline">\(\Theta(n)\)</span> time, regardless of the time
-the outer loop takes, <em>we do not multiply them</em>!</p>
+<p>Because the inner assignment always occurs <span
+class="math inline">\(\Theta(n + m)\)</span> times, regardless of the
+time the outer loop takes, <em>we do not multiply them</em>!</p>
 <hr />
 <h1 id="what-if-it-were-recursive">What if it were recursive?</h1>
 <p>The recurrence relation could look like this: <span
@@ -1802,8 +1802,8 @@ time and resource controls, you aren’t studying for the quiz!</p>
 <hr />
 <h1 id="appendix-d-how-should-i-study">Appendix D: How should I
 study?</h1>
-<p>Do all the practice exercises from this week and last week.</p>
-<p>Then, take the following practice quzzes. Time yourself!</p>
+<p>Take the following practice quzzes. Time yourself!</p>
+<p>Then do all the practice exercises from this week and module 2.</p>
 <p>You will have a base-time of 15 minutes (unless accomodations were
 made in advance). If you aren’t doing the practice sessions under the
 same time you will have in class, you aren’t actually practicing for the
@@ -1827,7 +1827,8 @@ magnitude negative int in a given list, or 0 if there are no negative
 numbers. For example
 <code>lsmall({-2, -5, 2, 5, 7, -100}, 6) == -2</code>.
 <code>lsmall({}, 0) == 0</code></p></li>
-<li><p>(25 points) Prove that it is correct.</p></li>
+<li><p>(25 points) Provide a useful invariant or inductive proof that
+gives us confidence the algorithm is correct.</p></li>
 <li><p>(25 points) Determine its big-<span
 class="math inline">\(\Theta\)</span></p></li>
 <li><p>(25 points) Prove that it has that big-<span
@@ -1955,6 +1956,15 @@ class="math inline">\(\Theta\)</span></li>
 with Quiz 1’s rubric.</li>
 </ol>
 <hr />
+<h1 id="appendix-d-older-quizzes">Appendix D: Older quizzes</h1>
+<p>Do the older quizzes! I’ve posted last year’s problems.</p>
+<p>They’re in the <code>old_problems</code> folder in the repo.</p>
+<p>These were the actual problems (with maybe some slight wording
+differences) I used for the ME graded assessments.</p>
+<p>They are named fairly boringly. Just a number for each one. The
+number is just the order of problems I made for that outcome. It doesn’t
+mean anything specific.</p>
+<hr />
 <h1 id="appendix-d-quiz-5">Appendix D: Quiz 5</h1>
 <p>Still feel like it’s not clicking? Try writing your own quiz!</p>
 <ol type="1">
@@ -1964,6 +1974,16 @@ runtime.</li>
 <li>Take the quiz. Time yourself!</li>
 <li>Grade it the same as the above.</li>
 </ol>
+<hr />
+<h1 id="appendix-d-ai-prompt">Appendix D: AI Prompt</h1>
+<p>Alternatively give this prompt to an LLM along with this markdown
+file (<code>module_3.md</code>) and the markdown documents and keys from
+the <code>old_problems</code> folder:</p>
+<blockquote>
+<p>Please generate a quiz like the practice quizzes in the attached
+slides along with the old problems and their keys. Don’t reveal the
+answer. I will try to solve it, and please score me afterwards.</p>
+</blockquote>
 <p>Note: I like linear time problems for these, but they aren’t
 guaranteed to be linear! Try writing a quiz based around binary search
 for an example of a fair problem that isn’t <span

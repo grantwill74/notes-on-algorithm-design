@@ -19,7 +19,7 @@ paginate: true
 
 <br>
 
-Slides © Grant Williams, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).  
+These notes © Grant Williams, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).  
 
 
 This is an open educational resource.
