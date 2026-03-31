@@ -426,7 +426,7 @@ If your goal starts with $\forall$, a typical way to start your proof is by sayi
 
 To make it easier to track, let's track the goal, and the proof so far, at the same time.
 
-Proof: *empty*
+Proof so far: *empty*
 Goal: $\forall f: N \to R^+, f \in O(n) \implies f \in O(n^2)$
 
 ---
@@ -445,7 +445,7 @@ So, how do we prove $f \in O(n) \implies f \in O(n^2)$?
 
 # Proving implications
 
-So how, do we prove that $P \implies Q$?
+So how do we prove that $P \implies Q$?
 
 We have three options:
 1. Assume that $P$ (aka, the hypothesis) is true, and show that you can prove $Q$ (the conclusion). This is a direct proof.
@@ -605,7 +605,7 @@ Goal: $\cancel{\forall n' \geq n_0,} f(n') \leq C \cdot n^2$
 
 # Subsets example: what now?
 
-Notice that we have some natural number named $n'$ in our context.
+Notice that we have some natural number named $n'$ in our *context*. The context is the set of all the things we have "supposed".
 
 And notice that we have an assumption: $\forall n, n \ge n_0 \implies f(n) \leq C \cdot n$
 
@@ -986,11 +986,11 @@ Because natural numbers are inductive, there is an algorithm that gives you a wa
 
 There are many inductive principles for each inductive datatype. The most basic inductive principle for natural numbers is called *weak induction*\*.
 
-Weak induction is a proof algorithm. If you give it two proofs, it will spit out a proof of $P(n)$ for any n. 
+Weak induction is a proof algorithm. It will generate proofs of the form $\forall n \in N, P(n)$ If you give it two proofs, it will spit out a proof of $\forall n \in N, P(n)$ for any n. 
 
 Here are the proofs we must give it:
 1. $P(0)$
-2. $\forall n, P(n) \implies P(n + 1)$
+2. $\forall n, [P(n) \implies P(n + 1)]$ (notice the brackets: we fix $n$ first. Then, $P(n)$ for whatever choice of $n$ also must imply $P(n+1)$
 
 These proofs each correspond to one of the constructors of natural numbers.
 
@@ -1007,7 +1007,7 @@ These proofs each correspond to one of the constructors of natural numbers.
 Because this (half-functional psuedocode) is the function that weak induction requires*
 
 ```c
-P(n) weak_induction(P, n, P(0) base, P(forall n, P(n) -> P(n + 1)) ind) {
+P(n) weak_induction(P, n, P(0) base, P(forall n, (P(n) -> P(n + 1))) ind) {
     case n of
     | 0 => return base
     | n' + 1 =>                                     // n' is the number before n
