@@ -54,7 +54,7 @@ These conventions are called *Bachmann-Landau* notation after its inventors.
 
 There's nothing wrong with measuring how long an algorithm takes.
 
-In fact: you should do that. It's a good idea. Sometimes algorithms can be theoretically fast an practically slow.
+In fact: you should do that. It's a good idea. Sometimes algorithms can be theoretically fast and practically slow.
 
 For example, [there are ways of multiplying matrices that are theoretically faster than the iterative way you learned](https://en.wikipedia.org/wiki/Computational_complexity_of_matrix_multiplication), but they are only *actually* faster if the matrix is huge.
 
@@ -70,7 +70,7 @@ Mathematicians don't want to be like: "proof of running time: go get Alice's com
 
 Also, it's more work to deterine how an algorithm *scales* when doing purely empirical measurement. You have to take multiple measurements to determine exponents, plus additional measurements to get a feel for how much they vary.
 
-Doing high quality empirical benchmarks is surprisingly involved.
+Doing high quality empirical benchmarks is surprisingly involved/difficult (we have a couple we discuss in later lectures: check the code in the repo to see how much work we have to do to force the compiler to not throw microbenchmark code away).
 
 <div class="footnote">
 * unless you're hosting an unsecure SSH or something.
@@ -205,6 +205,8 @@ But we don't want to abuse mathematical notation and just randomly delete variab
 
 The Big-O of $f(n)$, written $O(f(n))$ is the set of functions that are eventually bounded by $f(n)$ if n is large enough and if we multiply by a large enough positive constant $C$.
 
+That means two things: we can ignore constant multiples (by choosing a big $C$), and that we can assume that $n$ is really big.
+
 For example:
 - $n \in O(n)$, because $n \leq C \cdot n$ if we choose $C=1$ (or 2, or 3, or anything $\geq$ 1)
 - $n \in O(2n)$, because $n \leq C \cdot 2n$ if we choose $C=1$ (or as small as $0.5$)
@@ -225,6 +227,30 @@ It actually doesn't matter what base the log is. The log functions with differen
 Notice how, eventually all those functions get bigger than $f(n)=n$.
 
 This would be true even of a smaller linear function, because we can multiply by any constant.
+
+Therefore, we can say $f(n) = n$ $\in O(n^2)$, $\in O(1.25n)$, and $\in O(n \log n)$
+
+---
+
+# Even smaller functions can "bound" bigger ones
+
+We can even say that $n \in O(0.001n)$
+
+But how? Isn't $g(n) = 0.001n$ a lot smaller than $f(n) = n$? How could it ever be the same or larger?
+
+Remember, $f(n) \in O(g(n))$ does not mean $g(n)$ is bigger. It means that we can *make* it be bigger if we let $n$ be large enough *or* we multiply it by a big enough constant $C$!
+
+So multiply it by 1,000! Now it's the same size and we're good.
+
+If *some* constant can be multiplied by the function to make $g(n)$ bigger than $f(n)$ for any choice of "big enough" $n$, we're good. $f(n) \in O(g(n))$
+
+Another way to think about it: $O(g(n))$ is the set of functions that can be *bounded* by $g(n)$ (with a big enough $C$). We're saying that $f$ is in that set.
+
+---
+
+# Questions?
+
+<!-- _class: invert questions -->
 
 ---
 
