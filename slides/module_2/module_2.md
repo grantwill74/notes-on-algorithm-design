@@ -1253,7 +1253,113 @@ One more thing: most competitive and technical interview problems start from a p
 
 ---
 
-# Proof practice
+# Making good invariants
+
+An invariant *must* have these properties:
+1. Initialization: it must be true before the structure (usually a loop) is entered.
+2. Maintenance: it must be true after each complete iteration.
+3. Termination: It must be true when exiting the structure. This is often implied by the maintenance condition, but if you allow early breaks, you also need to consider that it's true after one of those.
+
+But technically, `1 + 1 = 2` is an invariant that will always meet those requirements, and I won't accept it on a test. So what does an invariant need to be actually useful?
+
+---
+
+# Making good invariants (2)
+
+In general, the invariant needs to do three things:
+1. Include the variables actually modified by the loop. If it doesn't describe things the loop changes, it's not really describing the behavior of the loop.
+2. Progressively reach the goal. This is important for inductive reasoning. We want to know that after each iteration of the loop, we're one step closer. Ask yourself: is the property I want now true for at least one more element in the collection or range I'm iterating over? 
+3. Make it easy to see that the goal is met. If our algorithm is supposed to sort things, the invariant should demonstrate that the result will be sorted. If our algorithm is supposed to count things, the invariant should show that the count is correct.
+
+---
+
+# Good invariant knowledge check
+
+Write a good invariant for this loop which sums all the elements of an array and returns 0 on an empty range. We're allowing overflow to happen:
+
+```c
+uint64_t sum(uint64_t* arr, size_t n) {
+    uint64_t sum = 0; 
+    for (size_t i = 0; i < n; i++)
+        sum += arr[i]
+    return sum;
+}
+```
+
+---
+
+# Good invariant knowledge check answer
+
+```c
+uint64_t sum(uint64_t* arr, size_t n) {
+    uint64_t acc = 0; 
+    // I: acc is the sum of values from [0 .. i) 
+    for (size_t i = 0; i < n; i++)
+        acc += arr[i]
+    return acc;
+}
+```
+
+Here, the invariant relates the accumulator `acc` to the sum of values up to but not including `i`.
+
+This is trivially true before the loop: [0 .. 0) is an empty range.
+After each loop iteration, we have included one more value, and `i` increases.
+When the loop is finished, it is still true, and it's easy to see that `i == n`. So we have also shown that `acc is the sum of values from [0 .. n)`, which is the goal.
+
+---
+
+# Good invariant knowledge check (2)
+
+Write one for this loop, which computes the totient of a positive natural number `n` (the number of smaller natural numbers `m` which are coprime, i.e., `gcd(n, m) == 1`)
+
+We will assume that `gcd` is defined.
+
+```c
+unsigned totient(unsigned n) {
+    unsigned count = 0;
+    for (unsigned m = 1; m < n; m++)
+        if (gcd(n, m) == 1)
+            count ++;
+    return count;
+}
+```
+
+---
+
+# Good invariant knowledge check 2 answers
+
+```c
+unsigned totient(unsigned n) {
+    unsigned count = 0;
+    // I: count contains the number of totatives (co-prime smaller numbers)
+    // between the range [0 .. m).
+    // 0 is never a totative, so starting at 1 is valid.
+    for (unsigned m = 1; m < n; m++)
+        if (gcd(n, m) == 1)
+            count ++;
+    return count;
+}
+```
+
+---
+
+# More invariant practice
+
+Write simple C programs to solve these problems using loops, and then add high-quality invariants:
+
+1. Define a function that computes the intersection between two sets. These are arrays of booleans, where `a[20]` means that the value `20` is in set `a`, and `!a[20]` means it isn't. Write the intersection to set `c`. You may assume both sets are the same size. `void set_inter(bool* a, bool* b, bool* c, size_t size);`
+2. Given an array of integers, compute the longest span of `0`s in the array. That is, `{1, 0, 0, 0, 2, 0, 0}` has a span of 3 consecutive `0`s, which is its longest span. (Hint: your invariant will cover the loop, but you also need to insure that the length of your span so far is handled correctly after the loop). This problem shows why an invariant isn't always a complete proof. `uint32_t max_span(int* arr, size_t n);` 
+
+
+---
+
+# Questions?
+
+<!-- _class: invert questions -->
+
+---
+
+# More Proof practice
 
 This is selection sort:
 ```c
@@ -1629,6 +1735,150 @@ Prove the following propositions by induction:
 
 <!-- _class: questions invert -->
 # Questions?
+
+---
+
+# Actual quiz next week
+
+Next week we will have a quiz on this material.
+
+This quiz counts! It's going to measure your understanding of this module.
+
+**You must bring paper and a writing implement! This is your responsibility! Set reminders on your phone!**
+
+I think when you see the practice quizzes, you're going to be a little relieved. I'm not going to make you write mega complex proofs!
+
+---
+
+# Actual quiz next week (2)
+
+Take the following practice quzzes. Time yourself!
+
+Start studying now, and try to resolve any feelings of meta-cognitive unease. If you feel like "I don't quite get this", listen to the feeling!
+
+Test yourself. The quiz will be proctored, pen-and-paper, and timed (15 minutes). If you aren't studying under these time and resource controls, you aren't fully studying for the quiz!
+
+The quiz will test the first learning mastery standard.
+
+You can also try quizzes from previous semesters. They are in this repository, in the `old_problems` folder. Note that the format of the quiz may have changed somewhat. In particular, in the first semester, I tested on big-$\Theta$ instead of big-O, which we haven't covered yet (but will next week)
+
+---
+
+# Quiz: How should I study? (2)
+
+Remember: *if you aren't studying under time controls with pen and paper, **you aren't studying!*** So actually take these like quizzes.
+
+The first practice quiz is worked. The others aren't.
+
+And remember to bring pen and paper for the quiz next week!
+
+---
+
+# Practice Quiz 1
+
+1. (25 points) Write an iterative function in C that returns the smallest magnitude negative int in a given list, or 0 if there are no negative numbers.
+ For example `lsmall({-2, -5, 2, 5, 7, -100}, 6) == -2`. `lsmall({}, 0) == 0`
+
+2. (50 points) Provide a useful invariant that gives us confidence the algorithm's loop is correct. It should be true before the first iteration of the loop and after each iteration of the loop. It should also relate the inputs of the function to the goal.
+3. (25 points) Determine the algorithm's *tight* big-$O$, and prove it by putting the big-$O$ in the margins like we did in the slides. You don't have to *prove*, but you must use the tightest big-$O$ that fits.
+
+---
+
+# Practice Quiz 1 answers
+
+You could also do it iteratively:
+```c
+int lsmall(int* arr, size_t n) {
+    int res = 0;
+    // I: res is the least-magnitude negative number in arr[0..i)
+    // I: (more mathematically) res = maximum (filter negatives (arr))
+    for (size_t i = 0; i < n; i++)                          // O(n)
+        // if we found a negative, if it's the first one or it's > res
+        if (arr[i] < 0 && (res == 0 || arr[i] > res))       // O(1)
+            res = arr[i];
+    return res;
+}
+```
+
+This algorithm is `O(n)`. The for loop runs `n` times, and the if statement inside of it is bounded by constant time.
+
+---
+
+# How will I grade?
+
+I generally grade like this:
+- For extremely minor syntax errors (forgetting a semicolon, forgetting a paren where it was clearly implied, etc.) I don't take any points off.
+- For minor issues like type coercions where it's wrong but it would require pretty strong knowledge of C to know about (like that signed negative overflow is undefiend behavior), I deduct 1 point.
+- For small but significant logic errors (like off-by-ones), I deduct 5 points.
+- For more serious logic errors but where I can still see that you understand, either 10 or 15 depending on how serious the error is. 
+- Point values are doubled for 50 point questions.
+
+---
+
+# Practice Quiz 2
+
+1. (25 points) Write an iterative function in C that returns the sum of every even-index element, starting with index 0. e.g., `even_sum({1, 2, 3, 4}, 4) == 4`, `even_sum({}, 0) == 0`
+2. (50 points) Provide a useful invariant that gives us confidence the algorithm's loop is correct. It should be true before the first iteration of the loop and after each iteration of the loop. It should also relate the inputs of the function to the goal.
+3. (25 points) Determine the algorithm's *tight* big-$O$, and prove it by putting the big-$O$ in the margins like we did in the slides. You don't have to *prove*, but you must use the tightest big-$O$ that fits.
+
+---
+
+# Pratice Quiz 3
+
+1. (25 points) Write an iterative function in C that returns the largest sum of adjacent pairs of an array. For example, `{1,2,3,1}` has adjacent pairs (1, 2); (2, 3); and (3, 1). (2, 3) has the largest sum, 5, so it would return 5.
+`max_adj_sum({1,2,3,4}, 4) == 3 + 4 == 7`
+`max_adj_sum({1}, 1) == 0`
+`max_adj_sum({}, 0) == 0`
+2. (50 points) Provide a useful invariant that gives us confidence the algorithm's loop is correct. It should be true before the first iteration of the loop and after each iteration of the loop. It should also relate the inputs of the function to the goal.
+3. (25 points) Determine the algorithm's *tight* big-$O$, and prove it by putting the big-$O$ in the margins like we did in the slides. You don't have to *prove*, but you must use the tightest big-$O$ that fits.
+
+---
+
+# Practice Quiz 34
+
+1. (25 points) Write an iterative function in C that finds the last zero-based index of the lowercase letter 'q' in an ascii string. If the letter 'q' is not present, return -1. Otherwise, return the index of the last 'q'.
+`rscan_q("hello world") == -1`
+`rscan_q("quello quorld") == 7`
+`rscan_q("") == -1`
+2. (50 points) Provide a useful invariant that gives us confidence the algorithm's loop is correct. It should be true before the first iteration of the loop and after each iteration of the loop. It should also relate the inputs of the function to the goal.
+3. (25 points) Determine the algorithm's *tight* big-$O$, and prove it by putting the big-$O$ in the margins like we did in the slides. You don't have to *prove*, but you must use the tightest big-$O$ that fits.
+
+
+---
+
+# More practice
+
+Do the older quizzes! I've posted last year's problems. 
+
+They're in the `old_problems` folder in the repo.
+
+These were the actual problems (with maybe some slight wording differences) I used for the ME graded assessments.
+
+Note: The first semester under this new outcome-based system I asked about big-$\Theta$ on quiz 1 which this semester we haven't covered yet. Replace big-$\Theta$ with tight big-$O$ for now. The midterm and final can cover the other notation besides big-$O$. They can also ask for recursive functions (which we will show how to analyze next time)
+
+They are named fairly boringly. Just a number for each one. The number is just the order of problems I made for that outcome. It doesn't mean anything specific.
+
+---
+
+# Even more practice
+
+Give this markdown file to an LLM, along with the problems from last year.
+
+Ask it to generate a quiz like the these.
+
+Then, pull out a pen and paper and set a timer (both important) and try to take its quiz. 
+
+Transcribe your pen-and-paper quiz and have the LLM grade you following my loose guidelines above. I recommend asking it to be strict.
+
+This is a *great* way to use LLMs. They can be excellent learning tools.
+
+---
+
+# A sample prompt
+
+> Please generate a quiz like the practice quizzes in the attached slides and also in the attached problems from previous semesters. Don't reveal the answer. I will try to solve it, and please score me afterwards. Be fairly strict.
+
+Note: I like linear time problems for these, but they aren't guaranteed to be linear! Try writing a quiz based around binary search for an example of a fair problem that isn't $\Theta(n)$.
 
 ---
 

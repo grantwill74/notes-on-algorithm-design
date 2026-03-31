@@ -1358,8 +1358,7 @@ There is another approach, though. It is listed in Appendix B.
 
 - Finish the proof in the previous slides
 - Read the appendices A and B to check your work
-- Then, read appendix D for practice quizzes. 
-- There will be a quiz for a grade next week!
+- Then, read appendix D for practice quizzes. Future versions of the ME 1 quiz can incorporate material from this lecture. (Specifically, the other Bachmann-Landau bounds besides big-O and also inductive algorithms)
 
 ---
 
@@ -1431,61 +1430,16 @@ length 100: 0.304964 mean microseconds, stdev: 0.007011
 length 1000: 0.760517 mean microseconds, stdev: 0.026178
 ```
 
-
 ---
 
-
-# Appendix D: Actual quiz next class
-
-Next class we will have a quiz on this material.
-
-This quiz counts! It's going to measure your understanding of this module.
-
-**You must bring paper and a writing implement! This is your responsibility! Set six different reminders on your phone!**
-
----
-
-# Appendix D: Actual quiz next class (2)
-
-Start studying now, and try to resolve any feelings of meta-cognitive unease. If you feel like "I don't quite get this", listen to the feeling!
-
-Test yourself. The quiz will be proctored, pen-and-paper, and timed (15 minutes). If you aren't studying at least a little bit under these time and resource controls, you aren't studying for the quiz!
-
-The quiz will test the first learning mastery standard.
-
----
-
-# Appendix D: How should I study?
-
-Take the following practice quzzes. Time yourself!
-
-Then do all the practice exercises from this week and module 2.
-
-You will have a base-time of 15 minutes (unless accomodations were made in advance). If you aren't doing the practice sessions under the same time you will have in class, you aren't actually practicing for the quiz.
-
-This is an open-written-materials quiz. You can bring your book, notes, a cheat sheet you printed off or wrote, anything written. No electronic devices
-
----
-
-# Appendix D: How should I study? (2)
-
-Remember: *if you aren't studying under time controls with pen and paper, **you aren't studying!*** So actually take these like quizzes.
-
-The first practice quiz is worked. The others aren't.
-
-And remember to bring pen and paper for the quiz next week!
-
----
 
 # Appendix D: Practice Quiz 1
 
-1. (25 points) Write a function in C that returns the smallest magnitude negative int in a given list, or 0 if there are no negative numbers.
+1. (25 points) Write a recursive function in C that returns the smallest magnitude negative int in a given list, or 0 if there are no negative numbers.
  For example `lsmall({-2, -5, 2, 5, 7, -100}, 6) == -2`. `lsmall({}, 0) == 0`
 
-2. (25 points) Provide a useful invariant or inductive proof that gives us confidence the algorithm is correct.
-3. (25 points) Determine its big-$\Theta$
-4. (25 points) Prove that it has that big-$\Theta$
-5. (grading points) for accurate self grading. Rubric after answers.
+2. (50 points) Provide a useful inductive proof that gives us confidence the algorithm is correct.
+3. (25 points) Determine the algorithm's big-$\Theta$, and prove it. Start with the recurrence relation. You can use lemmas and theorems from the slides.
 
 ---
 
@@ -1508,113 +1462,38 @@ Its recurrence relation is, $T(0) = c$, $T(n) = T(n - 1) + d$, which is $\Theta(
 
 ---
 
-# Appendix D: Quiz 1 answers (2)
-
-You could also do it iteratively:
-```c
-int lsmall(int* arr, size_t n) {
-    int res = 0;
-    // I: res = lsmall(arr[0..i), i)
-    // I: res = maximum (filter negatives (arr))
-    for (size_t i = 0; i < n; i++)                          // Theta(n)
-        // if we found a negative, if it's the first one or it's > res
-        if (arr[i] < 0 && (res == 0 || arr[i] > res))       // Theta(1)
-            res = arr[i];
-    return res;
-}
-```
-
----
-
-# Appendix D: Quiz 1 self-grading rubric
-
-1. give yourself 5 points for each edge case:
-    1. `lsmall({}, 0) == 0`
-    2. `lsmall({1, 2, 3, -20}, 4) == -20`
-    3. `lsmall({-20, 1, 2, -21}, 4) == -20`
-    4. `lsmall({-20, 1, 2, -19}, 4) == -19`
-    5. `lsmall({1, 2, 3, 4}, 4) == 0`
-    
-2. If you used a loop invariant *or* and inductive hypothesis, give yourself 5 points base. The loop invariant or inductive hypotheses must be related to the returned value: give yourself 5 points if it is. You will have to be the judge of the remaining 15 points. Check for fallacies. If you randomly wrote something without trying to convince yourself, *do not award credit*.
-
----
-
-# Appendix D: Quiz 1 self-grading rubric (2)
-
-3. You'll have to be the judge of big-$\Theta$, and we'll check. If you sorted the array first, you should have assumed that it took either $n + m$, $n \lg n$, or $n^2$ time. Otherwise you should expect $\Theta(n)$. This one is normally all or nothing. If you sorted first and made a bad assumption about the sort, deduct 10 points if that is your *only* error. Otherwise deduct all 20.
-
-4. The proof should follow either from our linear recurrence lemma or from simple iterative multiplication. 20 points if so. If you went the hard route and tried to find $C_1$, $C_2$, etc., check for fallacies the same way as you did for number 2. If you did not state the recurrence correctly, -10. If you did not annotate a loop correctly, -10.
-
----
-
 # Appendix D: Quiz 2
 
-1. (25 points) Write a function in C that returns the sum of every even-index element, starting with index 0. e.g., `even_sum({1, 2, 3, 4}, 4) == 4`, `even_sum({}, 0) == 0`
+1. (25 points) Write a function (iterative or recursive) in C that returns the sum of every even-index element, starting with index 0. e.g., `even_sum({1, 2, 3, 4}, 4) == 4`, `even_sum({}, 0) == 0`
+2. (50 points) Prove that it is correct.
+3. (25 points) Determine its big-$\Theta$ and prove it. Start with its recurrence relation. You may use lemmas and theorems from the slides.
 
-2. (25 points) Prove that it is correct.
-3. (25 points) Determine its big-$\Theta$
-4. (25 points) Prove that it has that big-$\Theta$
-5. (grading points) for accurate self grading. Try to be consistent with Quiz 1's rubric.
 
 ---
 
 # Appendix D: Quiz 3
 
-1. (25 points) Write a function in C that returns the largest sum of adjacent pairs of an array. For example, `{1,2,3,1}` has adjacent pairs (1, 2); (2, 3); and (3, 1). (2, 3) has the largest sum, 5, so it would return 5.
+1. (25 points) Write a recursive function in C that returns the largest sum of adjacent pairs of an array. For example, `{1,2,3,1}` has adjacent pairs (1, 2); (2, 3); and (3, 1). (2, 3) has the largest sum, 5, so it would return 5.
 `max_adj_sum({1,2,3,4}, 4) == 3 + 4 == 7`
 `max_adj_sum({1}, 1) == 0`
 `max_adj_sum({}, 0) == 0`
 
-2. (25 points) Prove that it is correct.
-3. (25 points) Determine its big-$\Theta$
-4. (25 points) Prove that it has that big-$\Theta$
-5. (grading points) for accurate self grading. Try to be consistent with Quiz 1's rubric.
+2. (50 points) Prove that it is correct.
+3. (25 points) Compute a tight $\Omega$ bound for the function.
 
 ---
 
 # Appendix D: Quiz 4
 
-1. (25 points) Write a function in C that finds the last zero-based index of the lowercase letter 'q' in an ascii string. If the letter 'q' is not present, return -1. Otherwise, return the index of the last 'q'.
+1. (25 points) Write a recursive function in C that finds the last zero-based index of the lowercase letter 'q' in an ascii string. If the letter 'q' is not present, return -1. Otherwise, return the index of the last 'q'.
 `rscan_q("hello world") == -1`
 `rscan_q("quello quorld") == 7`
 `rscan_q("") == -1`
 2. (25 points) Prove that it is correct.
 3. (25 points) Determine its *worst case* big-$\Theta$
 4. (25 points) Prove that it has that worst case big-$\Theta$
-5. (grading points) for accurate self grading. Try to be consistent with Quiz 1's rubric.
 
----
-
-# Appendix D: Older quizzes
-
-Do the older quizzes! I've posted last year's problems. 
-
-They're in the `old_problems` folder in the repo.
-
-These were the actual problems (with maybe some slight wording differences) I used for the ME graded assessments.
-
-They are named fairly boringly. Just a number for each one. The number is just the order of problems I made for that outcome. It doesn't mean anything specific.
-
----
-
-# Appendix D: Quiz 5
-
-Still feel like it's not clicking? Try writing your own quiz!
-
-1. Try coming up with an algorithm that has an easy to analyze runtime. 
-2. Write the quiz to mimic those above.
-3. Take the quiz. Time yourself!
-4. Grade it the same as the above.
-
----
-
-# Appendix D: AI Prompt
-
-Alternatively give this prompt to an LLM along with this markdown file (`module_3.md`) and the markdown documents and keys from the `old_problems` folder:
-
-> Please generate a quiz like the practice quizzes in the attached slides along with the old problems and their keys. Don't reveal the answer. I will try to solve it, and please score me afterwards. 
-
-Note: I like linear time problems for these, but they aren't guaranteed to be linear! Try writing a quiz based around binary search for an example of a fair problem that isn't $\Theta(n)$.
+(this one's format is slightly different. That can happen! It won't differ too much, though.)
 
 ---
 
