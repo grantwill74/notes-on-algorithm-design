@@ -1196,6 +1196,35 @@ Not quite:
 
 ---
 
+# Proofs aid unit testing
+
+However, it's still very useful to do this. For real. In actual code.
+
+You don't have to decorate your loops with detailed logical arguments, but looking at the code and clearly understanding its invariant is often key to understanding it.
+
+Once you understand the proof, you get a nice "unit test generator". You basically have a road map for every way the code could be wrong:
+* If we swapped the wrong values, the inner invariant would not be true. 
+* If the inner loop had the wrong bounds (both starting and ending), the invariant would not be true. Test for both. Same for the outer loop.
+* If by some weird fluke the increment was wrong: the invariant would not hold true.
+
+By testing for all these things, we gain confidence that the code conforms to our model.
+
+---
+
+# "How would I convince someone else?"
+
+At this point, we're used to writing software, but not necessarily *reliable* software.
+
+"How do I know this is right?" Right now a lot of us use vibes.
+
+I recommend asking the question: how would I convince someone else this works?
+
+A good invariant is a very strong argument that the approach is good.
+
+Good unit tests that test the invariant are a strong argument that the actual code is good.
+
+---
+
 # Unit testing in C
 
 Check the code on the [GitHub](https://github.com/grantwill74/notes-on-algorithm-design). Go to `code/mod2.c`. 
@@ -1210,7 +1239,7 @@ Feel free to copy my unit testing solution for your assignments.
 
 # Proofs are still valuable
 
-"Then why bother with proofs?"
+"Seriously, why bother with proofs?"
 
 Proofs force you to deeply understand the code.
 
