@@ -192,9 +192,10 @@ First, let's look at the parameters:
 
 If you say `int* restrict a = array1; int* restrict b = array2;`, you're saying that a and b will never point to the same array.
 
-Why is this useful? Because if they could point to the same data, then many optimizations don't work. 
+Why is this useful? Because if they could point to the same data, then many optimizations don't work.
 
-For example, if we did not make the pointer `restrict`, the compiler would have to reload the data from `lo` and `hi` every time we wrote to `merge_buf`, because it might have changed.
+Without `restrict` the compiler would have to consider the theoretical possibility that changing `merge_buf` could also change what is read from `lo` or `hi`, forcing it to reload the data after writing it. 
+
 
 ---
 
@@ -204,12 +205,12 @@ The `restrict` keyword in C only applies to pointers, so it must go after the `*
 
 Remember that `const int*` and `int const*` both mean a pointer that points to a constant int, so the pointer can change, but a new value cannot be written to the underlying memory. But `int* const` means that the pointer itself is constant (it cannot be moved to a different value) but the underlying value can be changed.
 
-Restrict works the same way. It is an error to say `restrict int*` or `int restrict*`. It must come after the `*`.
+Restrict works the same way. It is an error to say `restrict int*` or `int restrict*`. It must come after the `*`. 
 
 
 <div class="footnote">
 
-Note: when referring to a pointer to an int that is constant, people who write `const int*` are called "left-consters", and people who write `int const*` are called "right-consters." The main benefit of being a right-conster is that the underlying types will line up if you have a non-const type a line below a const type or vice versa. The main drawback is that less experienced programmers will think that you're declaring a constant pointer. It's also kind of weird that a modifier is coming after the thing it modifies, which is why I don't usually do it.
+Note: when referring to a pointer to an int that is constant, people who write `const int*` are called "left-consters", and people who write `int const*` are called "right-consters." The main benefit of being a right-conster is that the underlying types will line up if you have a non-const type a line below a const type or vice versa. The main drawback is that less experienced programmers will think that you're declaring a constant pointer. It's also kind of weird that a modifier is coming after the thing it modifies, which is why I usually don't do it.
 
 </div>
 
@@ -264,7 +265,8 @@ How can we prove our merge is correct?
 
 We need some kind of loop invariant. How about this one:
 `sorted(lo), sorted(hi), sorted(merge_buf[0 .. i_merge)),`
-`everything in merge_buf <= lo, everything in merge_buf <= hi`
+`all elements in merge buf <= lo[i_lo] and also <= hi[i_hi]`
+
 
 So, basically, both our sub-arrays are sorted, our merge buffer so far is sorted, and everything in the merge buffer is smaller than everything in either sub array.
 
@@ -288,9 +290,9 @@ The same applies when `hi` is empty conversely.
 
 # Proving it (3)
 
-But what if neither `lo` or `hi` are empty?
+But what if neither `lo` nor `hi` are empty?
 
-Say that the front of `lo` is smaller or equal. We have that `everything in merge_buf <= lo`. So that means, `merge_buf ++ [head lo]` is sorted. And, we don't violate our `everything in merge_buf <= hi` assumption, because we took something that was smaller than everything in `hi`.
+Say that the front of `lo` is smaller or equal. We have that `everything in merge_buf <= lo[lo_i]`. So that means, `merge_buf ++ [head lo]` is sorted. And, we don't violate our `everything in merge_buf <= hi` assumption, because we took something that was smaller than everything in `hi`.
 
 Likewise, if the front of `hi` is smaller, the invariant is maintained by the same logic.
 
@@ -398,6 +400,8 @@ void merge_sort_slow(int* arr, size_t n) {
 }
 ```
 
+It's slow because we allocate repeatedly. [what tells us that allocation is happening?] [Can you come up with a way to avoid this?]
+
 ---
 
 # Proving it
@@ -445,7 +449,7 @@ The issue is that the machine assumes that each proposition only depends on the 
 
 But, what if we wanted to prove $P(10)$ using $P(5)$?
 
-There's really no reason why we shouldn't be able to do this. If $P(2)$ and $P(3)$ depend on $P(1)$, and $P(4)$ depends on $P(2)$, and $P(5)$ depends on $P(3)$, then by the time we reach a high number, a lower number has been proven.
+There's really no reason why we shouldn't be able to do this. If $P(2)$ and $P(3)$ depend on $P(1)$, and $P(4)$ depends on $P(2)$, and $P(5)$ depends on $P(3)$, then by the time we reach a high number, the proposition has been proven for the lower number it needs.
 
 If we could use $P(5)$ in the proof of $P(10)$, then we could prove that mergesort works for array size 10, because it works for 5. How do we know it works for 5?
 
@@ -649,7 +653,7 @@ Now that we've determined that mergesort is likely $\Theta(n \lg n)$, let's prov
 
 # Proving this
 
-The purpose of drawing a sketch of how many rows and columns there are was to give us a proposition for induction. Remember: it's called induction because induction is how we come up with the goal, not because there's anything inductive about the proof.
+The purpose of drawing a sketch of how many rows and columns there are was to give us a proposition for induction.
 
 Here is the recurrence relation:
 $T(0) = 1$
@@ -685,7 +689,7 @@ Is the conclusion true? It's not true for $n_0 = 0$. Because $\lg 0$ is undefine
 
 If we choose $n_0 = 1$, it's vacuously true, becuase $0 \lt 1$. 
 
-We actually don't want vacuous truth here because of the inductive step. If we pick $n_0 = 1$, then, when we want to (in the next step) show $(\forall i \le n, P(i)) \implies P(n + 1)$, we actually won't be able to. $P(0) \implies P(1)$ is false with $n_0 = 1$, becuase $P(1)$ is $1 \le C(1 \lg 1) = 0$. Basically there will be no $C$ we can pick.
+We actually don't want vacuous truth here because it will complicate the inductive step. If we pick $n_0 = 1$, then, when we want to (in the next step) show $(\forall i \le n, P(i)) \implies P(n + 1)$, we actually won't be able to. $P(0) \implies P(1)$ is false with $n_0 = 1$, becuase $P(1)$ is $1 \le C(1 \lg 1) = 0$. Basically there will be no $C$ we can pick.
 
 Therefore we *have* to choose $n_0 = 2$
 
@@ -695,9 +699,9 @@ As a rule, when using strong induction, we usually want to actually find the fir
 
 # The (strong) inductive case
 
-$(\forall i \lt n, n \ge 2 \implies T(i) \le C(i \lg i)) \implies n \ge n_0 \implies T(n) \le C(n \lg n)$
+$(\forall i \lt n, n \ge 2 \implies T(i) \le C(i \lg i)) \implies n \ge 2 \implies T(n) \le C(n \lg n)$
 
-We start by supposing this hypothesis: $(\forall i \lt n, i \ge n_0 \implies T(i) \le C(n \lg n))$
+We start by supposing this hypothesis: $(\forall i \lt n, i \ge 2 \implies T(i) \le C(n \lg n))$
 
 Then we suppose $n \ge 2$. We must show $T(n) \le C(n \lg n)$
 
@@ -833,9 +837,9 @@ I'm going to hold off on proving this one. You'll see why.
 
 Suppose we want to find the $k^{th}$ largest value in a list of $n$ items.
 
-(This is a common tech-interview question. You can also efficiently solve it with an $n$-sized min-heap)
+(This is a common tech-interview question. You can also efficiently solve it with an $k$-sized min-heap)
 
-The naive approach is to just sort the list and take the middle. That will not pass you the tech interview. Instead, we can improve on the time it takes to sort by recognizing that we don't need the whole list to be sorted. We just need to know the top $k$.
+The naive approach is to just sort the list and take element `k - 1`. That is not optimal, however. Instead, we can improve on the time it takes to sort by recognizing that we don't need the whole list to be sorted. We just need to know the top $k$.
 
 Think of it like this: it you want to know the max, it's clearly $\Theta(n)$. What if you want the $2^{nd}$ largest? It should be almost as fast.
 
@@ -851,6 +855,8 @@ Suppose we have the ability to magically determine the median value (we don't, b
 
 We can split the list into three pieces:
 $\lt$ median `++` median `++` $\ge$ median
+
+That is, those elements that are less than the median, the median itself, and those that are greater.
 
 Suppose the values are all different. We expect the lower half to have 7 elements, and the upper half to have the same.
 
@@ -905,6 +911,8 @@ We can randomly choose a number in the array, and then put all the values smalle
 
 Sometimes the left array will be tiny, and sometimes the right array will be tiny. However, we might get lucky and have the value we're looking for be in the tiny part. That would really speed things up.
 
+From an information-theory point of view, ideally, the two halves will be the same size. This will minimize the expected number of searches.
+
 ---
 
 # Example partition function
@@ -934,9 +942,9 @@ size_t partition(int* arr, size_t n) {
 
 First, we select a "pivot", which is the value we want to be in the middle. 
 
-Actually figuring out the median would require us to sort the array, which is typically $\Theta(n \lg n)$, which is not good. 
+Actually figuring out the median would require us to sort the array, which is typically $\Theta(n \lg n)$. Not good. 
 
-Instead we just guess randomly and assume it's the last element.
+Instead we just guess randomly by assuming the pivot is the last element.
 
 Then, we enter a loop: `for(;;) ...`
 
@@ -1010,7 +1018,7 @@ But what is its average case? It's when there are an equal number of values on e
 $T(0) = 1$
 $T(n) = T(n / 2) + \Theta(n)$
 
-Interesting. So we split it in half, but only once. Then we do something that takes roughly $n$ time.
+Interesting. So we split it in half, but only once (it's not $2\cdot T(n/2)$). Then we do something that takes roughly $n$ time.
 
 
 ---
@@ -1086,7 +1094,7 @@ At row $r$, each node has $(n / 3^r)$ elements. $(n / B^r)$ in general.
 
 So, in general, we invoke $f$ like this: $f(n) + A(f(n / B)) + A^2(f(n / B^2)) + \ldots=\large \sum_{i = 0}^{(\log_B n) - 1}(A^{i}f(n/B^{i}))$
 
-But that's not the only source of work we need to care about
+But that's not the only source of work we need to care about!
 
 ---
 
@@ -1132,7 +1140,7 @@ Then the cost per node is $\Theta(n / B^i)^c$. So the cost per row is $\Theta(n^
 
 Let $L=\log_B n$, how do we get $\sum_{i = 0}^{L - 1} \Theta(n^c \cdot A^i/B^{ic})$?
 
-First, we can factor out $n^c$, and factor *in* the sum:
+First, we can refactor a bit:
 $\Theta(n^c \cdot \sum_{i = 0}^{L - 1} A^i/B^{ic}) = \Theta(n^c \cdot \sum_{i = 0}^{L - 1} (A/B^c)^i)$
 
 ---
@@ -1157,8 +1165,9 @@ $T(n) = \Theta(n^c \cdot \sum_{i = 0}^{L - 1} (A/B^c)^i) + \Theta(n^{\log_B A})$
 
 $T(n) = \Theta(n^c \cdot \sum_{i = 0}^{(\log_B n) - 1} (A/B^c)^i) + \Theta(n^{\log_B A})$ 
 
-Now look at that sum. It's a geometric series with $r = A / B^c$
+The sum is actually a geometric series with $r = A / B^c$
 So everything hinges on that ratio: $r=A/B^c$
+(if you've forgotten: you learned about geometric series in one of your calculus classes)
 
 One last substitution will give us something to make a decision on...
 
@@ -1387,7 +1396,7 @@ Ponder these. All of them have definite solutions, and are solvable using math y
 - $T(n) = T(n / 2) + 2^n$
   Hint: This one *does* pass the regularity test.
 - $T(n) = 2 \cdot T(n / 2) + sin(n)$
-  Hint: is this like the ones that failed the regularity test? Or is $\sin(n)$ bounded?$
+  Hint: is this like the ones that failed the regularity test? Or is $\sin(n)$ bounded?
 - $T(n) = 4 \cdot T(n / 2) + n^2 + n$
   Hint: what kind of bound can we apply to $n^2 + n$?
 - $T(n) = 8 \cdot T(n / 2) + (\log n)^3$
