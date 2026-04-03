@@ -238,7 +238,8 @@
 <body>
 <h1 id="design-and-analysis-of-algorithms">Design and Analysis of
 Algorithms</h1>
-<h2 id="module-5-trees">Module 5: Trees</h2>
+<h2 id="module-5-complexity-categories">Module 5: Complexity
+Categories</h2>
 <p><br> <br></p>
 <p>These notes are © Grant Williams, <a
 href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
@@ -248,912 +249,1541 @@ href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
 improvements, and new material <a
 href="https://github.com/grantwill74/notes-on-algorithm-design">here</a>.</p>
 <hr />
-<h1 id="introduction">Introduction</h1>
-<p>In this module we will review trees.</p>
-<p>We will learn about their benefits, their drawbacks, and how to
-mitigate them.</p>
-<p>However, before we get too much into it, I have a quesiton:</p>
-<p>What is the point? Why do we care about trees?</p>
-<p>They feature prominently in CS education, but how often have you been
-like “I need a binary tree for this” when doing your software
-engineering or capstone projects?</p>
+<h1 id="this-week">This week</h1>
+<p>This week we are going to talk about a very abstract topic:
+<strong>complexity categories</strong>.</p>
+<p>A complexity category is a set of <strong>problems</strong> (not
+algorithms) that all share certain time bounds and characteristics.</p>
+<p>Up til now, we have considered the bounds of <em>algorithms</em>. We
+have not yet considered that <em>problems</em> can be bounded too.</p>
+<p>But why would we do this?</p>
 <hr />
-<h1 id="the-point-of-trees">The point of trees?</h1>
-<p>Trees are <em>one</em> way of implementing dictionaries (aka
-<em>maps</em>).</p>
-<p>Hashmaps are another.</p>
-<p>These two completely different approaches both allow us to create the
-same abstract structure. And it turns out, there are reasons to use
-both.</p>
-<p>[So what is a dictionary, and how does it work?]</p>
+<h1 id="why-bound-problems">Why bound problems</h1>
+<p>Bounding problems is useful because it lets us describe the essential
+difficulty of solving that problem.</p>
+<p>For example, general sorting is <span
+class="math inline">\(\Omega(n)\)</span>. E.g., counting sort is <span
+class="math inline">\(\Theta(n)\)</span>. <em>You cannot go lower than
+this and still see every element in the array</em>.</p>
+<p>Does that mean that it’s worthless to try to find a <span
+class="math inline">\(O(\lg n)\)</span> sorting algorithm?</p>
+<p>No, it means it’s worthless to try to find a <span
+class="math inline">\(O(\lg n)\)</span> sorting algorithm that makes no
+assumptions at all (general sorting). There are situations where you
+might know that only a couple of indices of a skip list are out of
+place, and where they are.</p>
+<p>Bounding problems helps us know when it’s more productive to adjust
+our assumptions or desires than to try to solve a problem that may be
+impossible in the general case.</p>
 <hr />
-<h1 id="dictionaries">Dictionaries</h1>
-<p>A dictionary can be seen either as a generalization of an array, or
-as a special case of relation (partial map).</p>
-<p>Ordinarily, arrays are a kind of function. You give them an index,
-and they give you some kind of value.</p>
-<p>We say that they are <em>partial</em> functions, because arrays are
-not required to have a value for every index. Some indices might not
-have a value. If an array has size 100, then any index <span
-class="math inline">\(\ge\)</span> 100 is not going to be there.</p>
-<p>However, array indices are limited to natural numbers (usually,
-technically in C you can access arrays with negative indices for
-extremely arcane purposes). And the keys need to be adjacent for
-efficiency reasons.</p>
+<h1 id="grouping-problems">Grouping problems</h1>
+<p>It turns out, when bounding problems, we often group them into
+sets.</p>
+<p>A very important set is <span class="math inline">\(P\)</span>, which
+is the set of <em>decision</em> problems for which a deterministic
+turing machine that solves them in polynomial time is known.</p>
+<p>What is a decision problem? Think of it as a problem that asks for a
+boolean solution.</p>
+<p>All of these are decision problems, but not all have known solutions
+in <span class="math inline">\(P\)</span>: - Is this list sorted? (This
+one is in <span class="math inline">\(P\)</span>) - Is this a prime
+number? (In <span class="math inline">\(P\)</span> <a
+href="https://en.wikipedia.org/wiki/AKS_primality_test">as of 2002</a>)
+- Is this the shortest path through this graph? (<span
+class="math inline">\(\in P\)</span>) - Is this the <em>longest</em>
+simple path through this cyclic graph? (<span
+class="math inline">\(\notin P\)</span>) - <a
+href="https://en.wikipedia.org/wiki/Mathematics_of_Sudoku">Is this
+arbitrarily-sized sudoku solvable?</a> (<span
+class="math inline">\(\notin P\)</span>)</p>
 <hr />
-<h1 id="dictionaries-2">Dictionaries (2)</h1>
-<p>Dictionaries are data structures that break those two limitations: 1.
-You can associate (almost) any kind of key with any kind of value. 2.
-Integer keys don’t need to be adjacent. You can have 1: “Hello” and
-1000000000: “Goodbye” in the same data structure without allocating a
-one billion and one cell array.</p>
-<p>[So, how do we implement them?]</p>
+<h1 id="motivation">Motivation</h1>
+<p>Determining whether a list is sorted is <span
+class="math inline">\(\Theta(n)\)</span>. Multiplying two matrices
+together is <span class="math inline">\(\Theta(n^3)\)</span>
+(technically faster solutions are known, but the fastest is <span
+class="math inline">\(\omega(n^2)\)</span>).</p>
+<p>Why group these problems together? They seem like one is way faster
+than the other.</p>
+<p>Let’s revisit our basic machine model. We decided early on to use the
+RAM model of computation, where basically every memory or register
+access (and therefore, machine instruction in general) counts as 1 time
+unit.</p>
+<p>Consider 3 different machines…</p>
 <hr />
-<h1 id="default-hashmaps">Default: hashmaps</h1>
-<p>By default, dictionaries are almost always just a thin wrapper over a
-hashmap.</p>
-<p>That’s how it works in Python, Lua, Ruby, and many other
-languages.</p>
-<p>Hashmaps are fast, cache efficient, and typically waste no more than
-twice the amount of memory necessary when they are reasonably large.</p>
-<p>However, Hashmaps have a major limitation [what is it?]</p>
+<h1 id="machines">3 machines</h1>
+<ol type="1">
+<li>A modern x64 desktop with terabytes of RAM, a bazillion core CPU,
+and a sick RTX video card that gets the high score on whatever 3D Max
+benchmark is current.</li>
+<li>A Nintendo Entertainment System (NES)</li>
+<li>A computer someone made in Minecraft.</li>
+</ol>
+<p>I hope you will agree that these machines are different in their
+performance characteristics.</p>
+<p>It’s not just that one machine is faster than another (although it is
+absolutely the case that one machine is faster than the others). Basic
+operations have fundamentally different time bounds.</p>
+<p>For example…</p>
 <hr />
-<h1 id="hashmaps-are-not-sorted">Hashmaps are not sorted</h1>
-<p>The whole point of a hash function is that it be as close to uniform
-random as possible.</p>
-<p>That is, the hashvalue of a particular input should be as
-unpredictable as possible without evaluating the function.</p>
-<p>Why? Because we want to use the whole hashtable. If the function
-frequently returns some keys more than others, we end up with more
-collisions.</p>
-<p>So it’s not only unsorted: it’s <em>super</em> unsorted. It’s as
-unsorted as possible.</p>
-<p>On the other hand…</p>
+<h1 id="machines-2">3 machines (2)</h1>
+<p>Consider multiplication. For any reasonable multiplication need (not
+considering BigInts) for most algorithms, the x64 desktop’s
+<code>imul</code> or <code>mulsd</code> instruction suffices.</p>
+<p>This instruction is <span class="math inline">\(\Theta(1)\)</span>.
+It’s contant time.</p>
+<p>Again, technically we could say “but what if the number was really
+big”, but say we only want to multiply numbers that fit in a machine
+register. It’s <span class="math inline">\(\Theta(1)\)</span>.</p>
 <hr />
-<h1 id="trees-are-sorted">Trees are sorted</h1>
-<p>Binary search trees in particular are sorted.</p>
-<p>Specifically, an in-order traversal will be in order.</p>
-<p>[Why?]</p>
+<h1 id="machines-3">3 machines (3)</h1>
+<p>But the NES has a processor based on the classic 6502 CPU. This
+processor does not have a multiply instruction. If you want to multiply
+two integers, you have to code that with addition.</p>
+<p>The naive approach to multiply <span class="math inline">\(n \times
+m\)</span> is:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> product <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>n <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    product <span class="op">+=</span> m<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    n<span class="op">--;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This naive approach is <span
+class="math inline">\(\Theta(n)\)</span>.</p>
 <hr />
-<h1 id="trees-are-sorted-2">Trees are sorted (2)</h1>
-<p>By induction on a tree: - If it’s empty, it’s sorted - If in-order
-traversal of its child nodes is sorted, and everything in left &lt; root
-&lt; everything in right, than inorder(left) ++ root ++ inorder(right)
-is sorted.</p>
-<p>So the normal property of BSTs, that the node’s value is always
-between the values of its left and right children, naturally makes it so
-that in-order traversal is sorted.</p>
+<h1 id="machines-3-1">3 machines (3)</h1>
+<p>A faster approach is to use an algorithm that applies the
+distributive property to binary numerals. It treats 7 * 7 as 7 * (1 + 2
++ 4), adding a power of 2 for every <span
+class="math inline">\(1\)</span> in the numeral.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> product <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>m <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>m <span class="op">&amp;</span> <span class="dv">1</span><span class="op">)</span> product <span class="op">+=</span> n<span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    n <span class="op">&lt;&lt;=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    m <span class="op">&gt;&gt;=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This algorithm is <span class="math inline">\(\Theta(\lg m)\)</span>.
+Because it takes different amounts of time depending on how many bits
+are set in <span class="math inline">\(m\)</span>. It’s not constant. We
+can’t do constant time multiplication on the NES.</p>
+<hr />
+<h1 id="machines-4">3 machines (4)</h1>
+<p>Minecraft is a popular video game in which you can explore and build
+in a world made of blocks.</p>
+<p>Some of these blocks, called redstone blocks, have special properties
+that allow them to turn lights and switches on and off, in response to
+other lights and switches.</p>
+<p>It turns out, the logic behind how this works is turing complete.
+Meaning that turing machines, and therefore programs, can be simulated
+inside this game.</p>
+<hr />
+<h1 id="machines-5">3 machines (5)</h1>
+<p>However, using these blocks is <a
+href="https://minecraft.wonderhowto.com/how-to/build-simple-redstone-adding-machine-minecraft-0131892/">tricky
+and slow</a>.</p>
+<p>The game looks at adjacent blocks and to slowly propagate the state
+forward.</p>
+<p>As a result, adding even two bits is somewhat slow; adding an entire
+integer is orders of magnitude slower than doing it in an NES.</p>
+<figure>
+<img src="redstone_adder.webp"
+alt="bg right:60% a screenshot of the game Minecraft depicting a single bit full adder circuit. There are roughly 15 blocks visible, with torches sticking out at odd angles and lots of wiring on the floor, indicating the high complexity of doing anything with this model of computation" />
+<figcaption aria-hidden="true">bg right:60% a screenshot of the game
+Minecraft depicting a single bit full adder circuit. There are roughly
+15 blocks visible, with torches sticking out at odd angles and lots of
+wiring on the floor, indicating the high complexity of doing anything
+with this model of computation</figcaption>
+</figure>
+<hr />
+<h1 id="machines-6">3 machines (6)</h1>
+<p>The NES can add reasonable-sized integers in <span
+class="math inline">\(O(1)\)</span>, but multiplication is <span
+class="math inline">\(O(\lg n)\)</span>.</p>
+<p>Minecraft redstone computers cannot even perform addition quickly.
+Even adding two numbers is <span class="math inline">\(O(\lg
+n)\)</span>, where <span class="math inline">\(n\)</span> is the larger
+number. The time depends on the number of bits in that number.</p>
+<p>If we apply the clever multiplication algorithm we saw before, it
+relies on bit shifts and additions, both of which are <span
+class="math inline">\(O(\lg n)\)</span> in minecraft. Since we are
+performing an addition of <span class="math inline">\(n\)</span> and
+some shifts for each 1 in the <span class="math inline">\(m\)</span>
+operand, multiplication is <span class="math inline">\(O((\lg
+n)^2)\)</span>.</p>
+<p>If we had used the naive multiplication algorithm, and naive addition
+by increment, multiplication would be <span
+class="math inline">\(O(n^2)\)</span></p>
+<hr />
+<h1 id="computation-in-general">Computation in general</h1>
+<p>Changing from one kind of machine to another radically altered how
+long it took to do even basic things, let alone more complex
+operations.</p>
+<p>However, one thing remained the same: multiplication takes a
+polynomial amount of time for all of these.</p>
+<p>And therefore, the decision problem of “is this integer the result of
+multiplying these other two integers” can also be solved in polynomial
+time: do the multiplication and check the result.</p>
+<hr />
+<h1 id="abstract-computation">Abstract computation</h1>
+<p>And we want to consider how long multiplication should take, but as a
+computer scientist. And a computer scientist should be able to work with
+many different media of computation: - There are the digital electronic
+computers we know and love. - There are <a
+href="https://en.wikipedia.org/wiki/Analog_computer">analog
+electronic</a> computers, which have been useful in the past and which
+people theorize may be useful for implementing neural networks. - There
+are <a href="https://en.wikipedia.org/wiki/Optical_computing">optical
+computers</a> that use light for calculations - There are <a
+href="https://en.wikipedia.org/wiki/Chemical_computer">chemical
+computers</a>, where chemical reactions do computation. - There are even
+<a href="https://en.wikipedia.org/wiki/Biological_computing">biological
+computers</a> (your brain may be/have one). - Really, <a
+href="https://en.wikipedia.org/wiki/Unconventional_computing">there are
+a whole bunch of computing paradigms</a>.</p>
+<hr />
+<h1 id="turing-computation">Turing computation</h1>
+<p>But remember, turing machines are extremely simple. They are just
+collections of states and transitions guarded by the current state and
+the state of memory.</p>
+<p>And in fact, there are many versions of the Turing machine. Some
+versions have RAM. Some verisons have variables. Some version have 2
+tapes. Some versions have the tape as a circle. These have all been
+proven equivalent to one another.</p>
+<p>So when we’re talking about the difficulty of a problem, we really
+need to be abstract, because we could be solving that problem in all
+kinds of wacky media or turing machines with different capabilities.</p>
+<p>And yet, we can still say something about it…</p>
+<hr />
+<h1 id="class-p-is-robust-across-models-of-computation">Class-P is
+robust across models of computation</h1>
+<p>A decision problem is in <span class="math inline">\(P\)</span> if
+there is a deterministic turing machine (TM) which decides it in <span
+class="math inline">\(O(n^k)\)</span> time, for some constant <span
+class="math inline">\(k\)</span>.</p>
+<p>If you have an <span class="math inline">\(O(n^k)\)</span> algorithm
+on one reasonable model of TM, there is an equivalent algorithm that
+will run it in <span class="math inline">\(O(n^{k + c})\)</span> on
+another reasonable TM, for some constant <span
+class="math inline">\(c\)</span>.</p>
+<p>A TM model is <em>reasonable</em> if its state-changes and basic
+operations are simulable on a classical TM in polynomial time, and vice
+versa (no magic instructions).</p>
+<p>It does not matter if you are using a classical Turing machine, a DNA
+computer, a redstone contraption, or an iPhone. Your polynomial time
+problem will have a polynomial time algorithm if you have a poly-time
+algorithm for any (reasonable) turing-equivalent computer.</p>
 <hr />
 <h1 id="questions">Questions?</h1>
 <!-- _class: invert questions -->
 <hr />
-<h1 id="who-cares">Who cares?</h1>
-<p>I have a question: why do we need dictionaries to be sorted?</p>
-<p>It seems like every time we use a dictionary it’s because we know the
-keys.</p>
-<p>And even if we don’t, like, if we want to iterate over all of them,
-we can just put the keys in an array. That still seems better than using
-a tree.</p>
+<h1 id="classes-other-than-p">Classes other than P</h1>
+<p>Remember, P is the set of <em>decision problems</em> (problems with a
+yes/no answer) that can be solved in polynomial time on a deterministic
+turing machine, such as your computer.</p>
+<p>There are many useful problems in P.</p>
+<p>But there are many important problems we want the answer to for which
+there is no known solution that is in P.</p>
+<p>What does that mean? There are at least three possibilities …</p>
 <hr />
-<h1 id="good-examples">Good examples</h1>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Transactions <span class="kw">WHERE</span> TxDate <span class="kw">BETWEEN</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> DATEADD(<span class="dt">month</span>, <span class="op">-</span><span class="dv">1</span>, <span class="fu">CURRENT_DATE</span>) <span class="kw">AND</span> <span class="fu">CURRENT_DATE</span>;</span></code></pre></div>
-<p>We’re choosing all transactions in the last month.</p>
-<p>How does the database actually do that?</p>
-<p>One way to do it: put the dates in a tree.</p>
-<p>The key is the date, the value (aka satellite data, we’ll talk about
-it soon) is the row.</p>
+<h1 id="classes-other-than-p-2">Classes other than P (2)</h1>
+<ol type="1">
+<li>There <em>would</em> be a P solution if we magically knew which
+action to take at every step. Equivalently, if someone gives us a
+solution, we can verify it polynomialy. If we had the ability to try
+every possibility non-deterministically, we could solve it in polynomial
+time. The set of these problems is called <strong>NP</strong>.</li>
+<li>Some NP problems are harder than others. Some NP problems are so
+hard, that if we found a way to reformulate any of them into P problems,
+it would bust the paradigm wide open (all the exponential time NP
+problems would have polynomial time solutions). These special problems
+are in a subset of NP called <strong>NP-Complete</strong>.</li>
+<li>Some problems are so hard, that they are at least as hard as
+<strong>NP-Complete</strong>, but can be even harder. <em>Sometimes even
+checking that a solution is correct is hard</em>, so even using a magic
+oracle we cannot obtain a solution in P time. We call the set of these
+kinds of problems <strong>NP-Hard</strong></li>
+</ol>
 <hr />
-<h1 id="good-examples-2">Good examples (2)</h1>
-<p>The database can quickly scan over the date tree, in order, to find
-the start and end.</p>
-<p>This ends up being <span class="math inline">\(O(\lg n + k)\)</span>:
-- <span class="math inline">\(\lg n\)</span> for the initial search in
-the BST - <span class="math inline">\(k\)</span> for the number of
-elements in the range</p>
-<p>But it needs to stay sorted. We don’t want to have inserts take too
-long.</p>
+<h1 id="put-another-way">Put another way…</h1>
+<ol type="1">
+<li>P is the set of problems with deterministic polynomial time
+solutions (<span class="math inline">\(O(n^k)\)</span>)</li>
+<li>NP is the set of problems with polynomial time <em>verification</em>
+of a solution, whether or not there is a known algorithm that solves it
+in <span class="math inline">\(O(n^k)\)</span>. It turns out that every
+problem in NP is <span class="math inline">\(O(2^{n^c})\)</span> on a
+deterministic TM where c is a constant.</li>
+<li>NP-complete is the set of the hardest problems in NP. We’ll explain
+more why it’s important to define this subset in a bit.</li>
+<li>NP-hard is the set of problems that are at least as hard as
+NP-complete</li>
+</ol>
+<p>Later, I’ll show you a diagram of these sets. However, the reason I
+haven’t done that yet, is it actually has to be two diagrams,
+because…</p>
 <hr />
-<h1 id="tree-dictionaries">Tree dictionaries</h1>
-<p>So, sometimes we need a structure that stays sorted, but also can
-implement dictionaries.</p>
-<p>How do we implement a dictionary with a tree?</p>
-<p>Let’s review the BST data structure to make sure we understand it,
-and then implement a simple dictionary.</p>
+<h1 id="p-np">P = NP?</h1>
+<p>We don’t actually know that P and NP are different sets. No one has
+proven it.</p>
+<p>NP is <em>definitely</em> a superset of P. That is, if we have a
+polynomial time solution that runs on a TM, then we definitely have a
+polynomial time solution that runs on a non-deterministic TM
+(abbreviated NTM).</p>
+<p>An NTM is just a TM that can magically predict what to do next. So if
+we’re polynomial time <em>without</em> that magic power, giving it to us
+does not slow us down.</p>
+<p>Therefore, all problems in P are also in NP. <span
+class="math inline">\(P \subseteq NP\)</span>.</p>
 <hr />
-<h1 id="bstnode">BstNode</h1>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> bst_node_t <span class="op">{</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> bst_node_t <span class="op">*</span>left<span class="op">,</span> <span class="op">*</span>right<span class="op">;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span><span class="op">*</span> data<span class="op">;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> BstNode<span class="op">;</span></span></code></pre></div>
-<p>You’ve seen it before, but maybe not in C.</p>
-<p>Remember: the typedef only works outside the struct, so we need to
-scope our <code>bst_node_t</code> pointer with “struct”.</p>
+<h1 id="p-np-2">P = NP? (2)</h1>
+<p>However, we don’t actually know whether all problems in NP are in
+P.</p>
+<p>We can’t really say that a problem in NP is <em>not</em> in P. Maybe
+we just haven’t figured out how to solve it yet in polynomial time.</p>
+<p>There might be a polynomial-time <em>reduction</em> from the problem
+to a problem in P.</p>
+<p><em>Reduction</em> means converting one problem into another, such
+that solving the other means solving the one.</p>
 <hr />
-<h1 id="the-data">The data</h1>
-<p>What is <code>data</code>?</p>
-<p>It’s whetever you want it to be. That’s why it’s a
-<code>void*</code>.</p>
-<p>It could be a string, a tuple, or even an integer casted to a
-pointer.</p>
-<p>When you first learned about BSTs, likely the data was hardcoded to
-be an <code>int</code> or a string. But think back to the database
-example: a database row is a lot more complicated.</p>
+<h1 id="reduction">Reduction</h1>
+<p>For example, I can <em>reduce</em> the problem of determining whether
+a given number is the product of two other numbers to the problem of
+determining if a matrix is the result of multiplying two other matrices.
+I just encode the two integers as if they were both <span
+class="math inline">\(1\times 1\)</span> matrices, and apply my solution
+for matrices. Then I convert back.</p>
+<p>I’m just re-encoding a simple data type twice, so this reduction
+takes <span class="math inline">\(\Theta(1)\)</span>.</p>
+<p>Conversely, the problem of testing a product of square integer
+matrices <em>can also be reduced</em> to the problem of multiplying and
+adding integers. For every <span class="math inline">\(n\times
+n\)</span> integer in the second matrix, multiply it by the <span
+class="math inline">\(n\)</span> integers in each column of of the first
+one, and do some additions.</p>
+<p>This particular reduction (there are others) takes longer: <span
+class="math inline">\(O(n^3)\)</span> multiplications need to happen.
+<strong>But it is still polynomial time.</strong></p>
 <hr />
-<h1 id="the-comparator">The comparator</h1>
-<p>First, to make a BST, we need a comparator. A comparator is something
-that compares two data elements and tells you which one is smaller.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="kw">inline</span> <span class="dt">int</span> node_compare_int_default<span class="op">(</span><span class="dt">void</span><span class="op">*</span> a<span class="op">,</span> <span class="dt">void</span><span class="op">*</span> b<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">(</span><span class="dt">intptr_t</span><span class="op">)</span>a <span class="op">-</span> <span class="op">(</span><span class="dt">intptr_t</span><span class="op">)</span>b<span class="op">;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>This is a simple comparator that assumes the void* aren’t actually
-pointing to anything useful, and instead they are just reinterpreted as
-integers (<code>intptr_t</code> is guaranteed to be as large as a
-pointer, but it’s signed).</p>
-<p>It’s important to decide when you’re going to do this, vs have the
-pointer actually point to something. For db-rows we would definitely do
-the latter:</p>
-<p><code>return ((SomeRow*)a)-&gt;date - ((SomeRow*)b)-&gt;date</code>;</p>
+<h1 id="alchemy-of-reduction">Alchemy of reduction</h1>
+<p>You notice that our reduction of matrix multiplication to scalar
+multiplication is pretty much how we usually mutliply (small)
+matrices.</p>
+<p>But sometimes we have a choice of different reductions. Example, my
+problem is that I want to know if an element is contained in a list? -
+One reduction involves sorting the list first, typically <span
+class="math inline">\(\Theta(n \lg n)\)</span> for comparison sorts, and
+then solving the problem “is this element in this <em>sorted</em> list”,
+which can be solved in <span class="math inline">\(\Theta(\lg
+n)\)</span>. - Another reduction involves building a hash-set from the
+list <span class="math inline">\(\Theta(n)\)</span> and then asking the
+question, “is this value contained in this hashset”, with expected time
+<span class="math inline">\(\Theta(1)\)</span>.</p>
 <hr />
-<h1 id="function-pointer-reminder">Function pointer reminder</h1>
-<p>In an OO language the comparator could be an object or a class.</p>
-<p>In this case it is a function. It returns &lt; 0 if a is less than b.
-0 if equal. &gt; 0 otherwise.</p>
-<p>The type looks like this: <code>int (*)(void* a, void* b)</code></p>
-<p>That’s a function pointer. And we never, ever use them without a
-typedef.</p>
-<hr />
-<h1 id="function-pointer-typedef">Function pointer typedef</h1>
-<p><code>typedef int (*NodeComparer)(void* a, void* b);</code></p>
-<p>Now the pointer has a name: it’s a <code>NodeComparer</code>.</p>
-<p>How is it used? We create a field of this type in our tree structure,
-and call it every time we do an insertion or a lookup.</p>
-<p>Speaking of the tree structure…</p>
-<hr />
-<h1 id="the-struct">The struct</h1>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> bst_t <span class="op">{</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    Pool pool<span class="op">;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">size_t</span> size<span class="op">;</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    BstNode<span class="op">*</span> root<span class="op">;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    NodeComparer comparer<span class="op">;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> Bst<span class="op">;</span></span></code></pre></div>
-<p>The root and size are self-explanatory. The comparer is an instance
-of that typedef. What about the pool?</p>
-<p>It’s the pool allocator we saw in the first extra lecture.</p>
-<p>[Why are we using the pool?]</p>
-<hr />
-<h1 id="the-pool">The pool</h1>
-<p>If we didn’t use the pool, over time, through insertions and
-deletions, the tree would become scattered. This is worse for cache
-locality.</p>
-<p>That said, our pool pages are still in a linked list, and trees are
-non-linear data structures, so it’s not like they’re guaranteed to be
-adjacent.</p>
-<p>However, we can free the entire tree with a single
-<code>pool_destroy</code> call.</p>
-<p>It’s not absolutely required to use a pool. Feel free to use
-<code>malloc</code> and <code>free</code>. There are other benefits,
-too,</p>
+<h1 id="alchemy-of-reduction-2">Alchemy of reduction (2)</h1>
+<p>As programmers, we have flexibility in which reductions we can
+perform.</p>
+<p>There are a huge number of ways to re-imagine a problem. Doing so can
+give you more insight into both problems, but it can also offer a new
+solution.</p>
+<p>So don’t just think about what you’re doing as solving a problem. Try
+to think about it as reducing one problem into another that you have a
+solution for. It’s a kind of alchemy of problem solving.</p>
 <hr />
 <h1 id="questions-1">Questions?</h1>
 <!-- _class: invert questions -->
 <hr />
-<h1 id="inserting-into-the-tree">Inserting into the tree</h1>
-<p>You’ve already seen a simple insertion method for binary search
-trees.</p>
-<p>Briefly here is a review of the pseudo-code:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> insert<span class="op">(</span>BstNode<span class="op">**</span> node<span class="op">,</span> value<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(!*</span>node<span class="op">)</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>node <span class="op">=</span> create a new node with value</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>value <span class="op">&lt;</span> <span class="op">(*</span>node<span class="op">)-&gt;</span>value<span class="op">)</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        insert <span class="op">((*</span>node<span class="op">)-&gt;</span>left<span class="op">,</span> value<span class="op">);</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>value <span class="op">==</span> <span class="op">(*</span>node<span class="op">)-&gt;</span>value<span class="op">)</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>node <span class="op">=</span> deallocate the old value and replace</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        insert<span class="op">((*</span>node<span class="op">)-&gt;</span>right<span class="op">,</span> value<span class="op">);</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>Here, we’re using a double pointer. Why? [Ideas?]</p>
+<h1 id="a-little-warning-about-problems">A little warning about
+problems</h1>
+<p>Before we continue, I feel like I should highlight something.</p>
+<p>In this lecture we’re specifically talking about P and NP, which
+contain <em>decision problems</em>.</p>
+<p>Many of the problems we solve as programmers are not decision
+problems. For example, computing the product of two numbers is a
+function problem, not a decision problem.</p>
+<p>But determining whether a given product actually <em>is</em> the
+product is a decision problem.</p>
+<p>Practically computable function problems live in the sets FP and
+FNP.</p>
+<p>Many of the theorems that apply to P and NP <em>do not</em> apply to
+FP and FNP. It’s important to keep them straight! Keep me honest too, if
+I give a problem in the wrong set!</p>
 <hr />
-<h1 id="the-double-pointer">The double pointer</h1>
-<p>We have two fundamentally different behaviors to handle: - The tree
-is empty and root is null - The tree has a root</p>
-<p>If we insert to a null node, we want to fill it in with an actual
-node.</p>
-<p>If there is a node there, we want to do normal insert things (go left
-or right depending on the result of the comparison)</p>
+<h1 id="reduction-basics">Reduction basics</h1>
+<p>To say that A reduces to problem B in polynomial time, on a
+deterministic TM, we write: <span class="math display">\[A \le_m^p
+B\]</span></p>
+<p>This is confusing, because if we <em>reduce</em> A to B, it sounds
+like A must be <em>bigger</em> than B, otherwise how could we reduce it?
+And yet we use <span class="math inline">\(\le\)</span>.</p>
+<p>But really, this notation is about difficulty. If we can reduce A to
+B in polynomial time, then we know either that A is in the same class as
+B, or an easier class. For example, a polynomial is less than an
+exponential as <span class="math inline">\(n\)</span> goes to
+infinity.</p>
+<p>The <span class="math inline">\(p\)</span> means “polynomial time”.
+We don’t care about reductions that are so slow we don’t gain anything
+by doing them. The <span class="math inline">\(m\)</span> means many to
+one (as opposed to many-to-many). It means that you can’t generate lots
+of reductions and ask an oracle to choose the best one. We will create
+one instance of B for each instance of A.</p>
 <hr />
-<h1 id="the-double-pointer-2">The double pointer (2)</h1>
-<p>If we used a single pointer:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> insert<span class="op">(</span>BstNode<span class="op">*</span> node<span class="op">,</span> value<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(!</span>node<span class="op">)</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> create a new node with value<span class="op">;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">// ^^ doesn&#39;t do anything</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span></code></pre></div>
-<p>Would leak memory, because we’d be changing the pointer which is a
-parameter to the function, but the caller of the function would not be
-aware of it.</p>
+<h1 id="np-completeness">NP completeness</h1>
+<p>For this class, assume that <span class="math inline">\(A \le
+B\)</span> is equivalent to writing <span class="math inline">\(A
+\le_m^p B\)</span> for problems A and B. We’re going to assume that
+reductions are polynomial time and deterministic unless I say
+otherwise.</p>
+<p>Suppose that the problem of checking scalar multiplication is called
+MUL. And suppose that the problem of checking matrix multiplication is
+called MATMUL.</p>
+<p>We saw that MUL <span class="math inline">\(\le\)</span> MATMUL, and
+MATMUL <span class="math inline">\(\le\)</span> MUL, implying that they
+are “equally” hard (and they are: they are both in P).</p>
+<p>They aren’t literally equally hard. Matrices take longer to multiply
+than scalars. But they are both polynomial time; they are in the same
+set.</p>
 <hr />
-<h1 id="the-double-pointer-3">The double pointer (3)</h1>
-<p>Alternatively, we could return the new pointer…</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>BstNode<span class="op">*</span> insert<span class="op">(</span>BstNode<span class="op">*</span> node<span class="op">,</span> value<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(!</span>node<span class="op">)</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">(</span>create a new node with value<span class="op">);</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span></code></pre></div>
-<p>But then the user of the function would have to check if the root
-were changed, and then assign the result to the root of the tree. A more
-complicated design.</p>
+<h1 id="np-completeness-2">NP completeness (2)</h1>
+<p>NP is an important category because it contains all the problems that
+we could theoretically solve in polynomial time if we were smart enough
+or had enough threads.</p>
+<p>There is an interesting problem in NP called
+<strong>SAT</strong>.</p>
+<p>This is the boolean satisfiability problem. It is the problem of,
+given some boolean formula like <span class="math inline">\((a \lor b)
+\land (\lnot b \land c)\)</span>, is there some set of booleans that
+satisfies it? I.e., are there some true/false values we can fill in for
+<span class="math inline">\(a\)</span>, <span
+class="math inline">\(b\)</span>, or <span
+class="math inline">\(c\)</span> that makes the expression true?</p>
+<p>In this case, yes. <span class="math inline">\(a\)</span> = true,
+<span class="math inline">\(b\)</span> = false, <span
+class="math inline">\(c\)</span> = true.</p>
+<p>This is the only solution, but sometimes there are more than one, and
+sometimes there are zero. The problem is to determine if at least one
+solution exists.</p>
 <hr />
-<h1 id="the-double-pointer-4">The double pointer (4)</h1>
-<p>In the same way that a single pointer can be used to modify a
-non-pointer variable from a function, a double pointer can be used to
-modify a pointer.</p>
-<p>So we can pass the <em>address</em> of the root pointer (not the root
-pointer itself), and then it will be overwritten if the root
-changes.</p>
-<p>Does this make sense? We have time for questions if we need to cover
-double pointers in more detail.</p>
+<h1 id="np-completeness-3">NP completeness (3)</h1>
+<p>In 1971, computer scientist Stephen Cook had <a
+href="https://en.wikipedia.org/wiki/Cook%E2%80%93Levin_theorem">an
+important realization</a>. He realized that <em>every problem in NP
+could be reduced to SAT</em>.</p>
+<p>First, how do we know that SAT is in NP? Let’s imagine you have some
+complicated boolean formula with <span class="math inline">\(n\)</span>
+terms.</p>
+<p>Determining if there is a solution is hard. We have to potentially
+consider every assignment of true or false to every variable, and there
+can be as many variables as terms.</p>
+<p>In principle, this is <span class="math inline">\(O(2^n)\)</span>,
+because there can be up to <span class="math inline">\(n\)</span>
+variables, and there are 2 possibilities per variable.</p>
 <hr />
-<h1 id="questions-2">Questions?</h1>
-<!-- _class: invert questions -->
+<h1 id="np-completeness-4">NP completeness (4)</h1>
+<p>But, given a solution, determining if it is correct is very easy. We
+just fill in the trues and falses and evaluate all the operators. This
+takes linear time in the number of operands.</p>
+<p>So on a non-deterministic turing machine, SAT is in NP. It has a
+polynomial time solution if we have the ability to try every combination
+at the same time.</p>
+<p>Okay, SAT is in NP. But why would we care?</p>
 <hr />
-<h1 id="practice">Practice</h1>
+<h1 id="everything-in-np-can-be-reduced-to-sat">Everything in NP can be
+reduced to SAT</h1>
+<p>The Cook-Levin theorem, named after Stephen Cook and Leonid Levin, a
+Soviet (at the time) computer scientist who independently discovered the
+same things as Stephen Cook, states:</p>
+<p><em>Any problem in NP can be many-to-one reduced to SAT in polyomial
+time</em></p>
+<p>In other words, <span class="math inline">\(\forall X \in
+\mathrm{NP}, X \le \mathrm{SAT}\)</span></p>
+<p>Why? What’s so special about boolean satisfiability?</p>
+<hr />
+<h1 id="the-sat-reduction">The SAT reduction</h1>
+<p>Imagine we have a SAT solver. SAT solvers are not things that only
+exist in theory: <a href="https://satcompetition.github.io/">people
+compete every year to make the fastest one</a>.</p>
+<p>We can give a boolean expression to our SAT solver, and it will tell
+us whether it has a solution or not. In practice, it will also tell us
+the solution, but to be strictly a decider, it is only required to
+output “yes” or “no”.</p>
+<p>Cook and Levin’s goal was to convert <em>any</em> decision problem in
+NP into a SAT problem. For a problem to be in NP, there must exist a
+Turing Machine (deterministic or not) that solves it in polynomial
+time.</p>
+<p>So we must assume that machine exists, and convert it into a SAT
+problem somehow.</p>
+<hr />
+<h1 id="the-big-idea">The big idea</h1>
+<p>Given some problem X, our goal is to create a rule that converts each
+input of the problem into a giant boolean expression (in poly time) that
+answer three questions: 1. The machine runs correctly (it’s not in two
+states at once or writing two symbols to one point at memory, etc.) 2.
+The machine actually halts 3. When the machine does halt, it answers
+“yes” (i.e., it accepts).</p>
+<p>If the boolean expression we generate has a solution, then that means
+it is possible for the machine to run correctly, to halt, and to answer
+yes on that input. The problem was originally solved by a
+non-deterministic TM, so if it is capable of accepting the input, it
+<em>does</em> accept the input. So if we solved the original problem,
+this boolean expression will have a solution and vice versa.</p>
+<hr />
+<h1 id="the-sat-reduction-2">The SAT reduction (2)</h1>
+<p>To determine whether the machine runs correctly, we literally encode
+a Turing Machine simulator as a boolean expression.</p>
+<p>First, we can describe states of a TM. What do we need to know about
+a TM to simulate its next steps? - We need to know its current state -
+We need to know the state of every cell of the tape - We need to know
+the location of the tape’s head (which cell is “current”)</p>
+<p>We can encode these in boolean expressions. For example, we can have
+a list of variables <span class="math inline">\(Q_{t,q}\)</span>, each
+of which is true only if the machine can be in state <span
+class="math inline">\(q\)</span> at time <span
+class="math inline">\(t\)</span>, and false otherwise. The number of
+states is constant, so there are <span class="math inline">\(C \cdot
+p(n)\)</span> of these variables in total.</p>
+<hr />
+<h1 id="the-sat-reduction-3">The SAT reduction (3)</h1>
+<p>What about the tape? Turing machines have an input alphabet, which is
+the set of symbols that can be in any cell of the tape.</p>
+<p>Define a giant list of boolean variables <span
+class="math inline">\(S_{t, i,a}\)</span>, each of which means “at time
+<span class="math inline">\(t\)</span>, index <span
+class="math inline">\(i\)</span> on the tape has symbol <span
+class="math inline">\(a\)</span>”.</p>
+<p>And also, define a list <span class="math inline">\(H_{t,
+i}\)</span>, each of which means “at time <span
+class="math inline">\(t\)</span> the head is over index <span
+class="math inline">\(i\)</span>”.</p>
+<p>We add a boolean clause <span class="math inline">\({\large
+\lor}_{t=0}^{t=p(n)}Q_{t,q_a}\)</span> for every accepting state <span
+class="math inline">\(q_a\)</span>. So our boolean expression only has a
+solution if it is possible for the machine to be in an accepting state
+at some point.</p>
+<p>All of these variables together define the set of states the machine
+<em>could</em> be in. So we can say “hey, if there is some way the
+machine <em>could</em> accept, then we say”yes” for this input.</p>
+<hr />
+<h1 id="the-sat-reduction-4">The SAT reduction (4)</h1>
+<p>What if the machine is in two states at once? Or what if one tape
+cell has two different symbols in it? These conditions can’t happen with
+turing machines, but they could happen with the boolean expressions we
+just introduced.</p>
+<p>We need additional conditions that prevent the boolean expression
+from having a solution when the Turing Machine being simulated does
+not.</p>
+<p>Enforce the following (using lots of “or-but-not” logic) for each
+<span class="math inline">\((i, t)\)</span>: - Exactly one <span
+class="math inline">\(S_{t, i, a}\)</span> is true for all <span
+class="math inline">\(a\)</span> in the alphabet. - Exactly one <span
+class="math inline">\(Q_{t, q}\)</span> is true for all <span
+class="math inline">\(q\)</span> in the set of states. - Exactly one
+<span class="math inline">\(H_{t, i}\)</span> is true. (the head is over
+exactly one cell)</p>
+<p>But what about transitions?</p>
+<hr />
+<h1 id="the-sat-reduction-5">The SAT reduction (5)</h1>
+<p>For every transition in the original machine, <span
+class="math inline">\(q \overset {a} \mapsto (q&#39;, d)\)</span>, where
+<span class="math inline">\(q\)</span> is the initial state, <span
+class="math inline">\(q&#39;\)</span> is the destination state, <span
+class="math inline">\(a\)</span> is the symbol that needs to be under
+the head, and <span class="math inline">\(d\)</span> is the direction to
+move the tape head, we add even more clauses to require:</p>
+<p><span class="math display">\[
+(Q_{t, q} \land H_{t, i} \land S_{t, i, a}) \implies (Q_{t + 1, q&#39;}
+\land H_{t+1, i + d} \land S_{t+ 1, i, a&#39;})
+\]</span></p>
+<p>That is, for every state and transition, either one of those
+variables on the left is not set, or all of the variables on the right
+are set.</p>
+<p>So any time we <em>are</em> in the state on the left, it has to be
+the case that the machine at the next time step is in the correct state,
+too.</p>
+<hr />
+<h1 id="the-sat-reduction-6">The SAT reduction (6)</h1>
+<p>The head must be over exactly one cell at a given time <span
+class="math inline">\(t\)</span>.</p>
+<p>So it must be over at <em>most</em> one cell…: for all <span
+class="math inline">\(i, i&#39;, i \ne i&#39;, \lnot H_{t, i} \lor \lnot
+H_{t, i&#39;}\)</span></p>
+<p>But also at <em>least</em> one cell: <span
+class="math inline">\({\large \lor}_{-p(n) \le i \le
+p(n)}H_{t,i}\)</span></p>
+<p>Note the bounds on <span class="math inline">\(i\)</span>. We could
+start going left or right with every transition, and since we take <span
+class="math inline">\(p(n)\)</span> steps, that’s as far to the left or
+right that the head could be.</p>
+<p>Similary, we can only be in one state at a time.</p>
+<hr />
+<h1 id="the-sat-reduction-7">The SAT reduction (7)</h1>
+<p>The tape can only be changed at the head: <span
+class="math display">\[
+\forall a, a&#39;, a \ne a&#39;, S_{t, i, a} \land S_{t + 1, i, a&#39;}
+\implies H_{t, i}
+\]</span></p>
+<p>In other words, if the tape at position <span
+class="math inline">\(i\)</span> changes from <span
+class="math inline">\(a\)</span> to <span
+class="math inline">\(a&#39;\)</span> at time <span
+class="math inline">\(t\)</span>, then the head needs to be there at
+time <span class="math inline">\(t\)</span>.</p>
+<hr />
+<h1 id="the-sat-reduction-8">The SAT reduction (8)</h1>
+<p>The machine needs to start out in the right state.</p>
+<p><span class="math inline">\(S_{0, i, a}\)</span> is true if the
+initial input has symbol ‘a’ at position ‘i’.</p>
+<p>Also, we need to start in the right state: <span
+class="math inline">\(Q_{0, q_s}\)</span>, where <span
+class="math inline">\(q_s\)</span> is the starting state.</p>
+<p>Finally, the tape needs to start at position 0: <span
+class="math inline">\(H_{0, 0}\)</span></p>
+<hr />
+<h1 id="the-final-problem">The final problem</h1>
+<p>As a summary from <a
+href="https://en.wikipedia.org/wiki/Cook%E2%80%93Levin_theorem#Proof">here</a>,
+we have this giant boolean expression, consisting of all the following
+anded together: - <span class="math inline">\(S_{0, i, a}\)</span> for
+all <span class="math inline">\(i\)</span> and <span
+class="math inline">\(a\)</span>, meaning that we start in a given state
+- <span class="math inline">\(Q_{0, q_s}\)</span> we start in state
+<span class="math inline">\(q\)</span> at time <span
+class="math inline">\(0\)</span> - <span class="math inline">\(H_{0,
+0}\)</span> the head starts at position <span
+class="math inline">\(0\)</span> at time <span
+class="math inline">\(0\)</span>. - for all <span
+class="math inline">\(i, a, a&#39;, a \ne a&#39;\)</span>, <span
+class="math inline">\(\lnot S_{t, i, a} \lor S_{t, i, a&#39;}\)</span>,
+at most one symbol per tape cell - <span class="math inline">\({\large
+\lor}_{a \in \Sigma}S_{t, i, a}\)</span>, at <em>least</em> one symbol
+per tape cell - <span class="math inline">\(\forall a, a&#39;, a \ne
+a&#39;, S_{t, i, a} \land S_{t + 1, i, a&#39;} \implies H_{t,
+i}\)</span>, tape only written at head</p>
+<p>and…</p>
+<hr />
+<h1 id="the-final-problem-2">The final problem (2)</h1>
 <ul>
-<li>Recall the tree lookup function you learned in Algorithms and Data
-Structures. Can you implement it using our Bst structure?</li>
-<li>Does it require a double pointer?</li>
-<li>How would you prove that tree insertions are <span
-class="math inline">\(\Theta(\lg n)\)</span> on a balanced tree?</li>
-<li>How would you prove that tree insertions are <span
-class="math inline">\(\Theta(n)\)</span> in the worst case?</li>
-<li>What is the best case <span class="math inline">\(\Theta\)</span>
-for an insertion?</li>
+<li><span class="math inline">\(\forall q, q&#39;, q \ne q&#39;, \lnot
+Q_{t, q} \lor \lnot Q_{t, q&#39;}\)</span>, we’re in at <em>most</em>
+one state</li>
+<li><span class="math inline">\({\large \lor}_q Q_{t, q}\)</span>, we’re
+in at <em>least</em> one state.</li>
+<li>for all <span class="math inline">\(i, i&#39;, i \ne i&#39;, \lnot
+H_{t, i} \lor \lnot H_{t, i&#39;}\)</span>, the head is over at
+<em>most</em> one cell</li>
+<li><span class="math inline">\({\large \lor}_{-p(n) \le i \le
+p(n)}H_{t,i}\)</span>, and at <em>least</em> one cell</li>
+<li><span class="math inline">\((Q_{t, q} \land H_{t, i} \land S_{t, i,
+a}) \implies (Q_{t + 1, q&#39;} \land H_{t+1, i + d} \land S_{t + 1, i,
+a&#39;})\)</span>, transitions respected</li>
+<li><span class="math inline">\({\large \lor}_{0 \le t \le p(n)}{\large
+\lor}_{q_a}Q_{t, q_a}\)</span>, must be in an accepting state at some
+valid point in time</li>
 </ul>
 <hr />
-<h1 id="the-drawbacks-of-bsts">The drawbacks of BSTs</h1>
-<p>BSTs are useful, but they have a huge drawback.</p>
-<p>[what is it?]</p>
+<h1 id="the-final-problem-3">The final problem (3)</h1>
+<p>If that giant, massive boolean expression has a solution, then it
+means that the turing machine we’re simulating has the possibility of
+reaching an accepting state.</p>
+<p>Which means it <em>does</em> reach an accepting state (because NTMs
+explore every possibility)</p>
+<p>Which means we can answer the original problem, but using the
+solution for SAT instead of the turing machine we had originally.</p>
+<p>This is a reduction, and it’s one of the most important ones. It’s a
+reduction that works for any problem in the entire, massive set of
+NP.</p>
+<p>That is, if we have a turing machine that solves a problem in NP, we
+can now convert it to a SAT problem in polynomial time without an oracle
+and solve it with a SAT solver. Therefore, if anyone makes a SAT solver
+in P, we have a guaranteed P time solution.</p>
 <hr />
-<h1 id="they-can-become-imbalanced">They can become imbalanced</h1>
-<p>Some BSTs are good and some are bad.</p>
-<p>If we insert 10, 5, and 15, in that order, we have a balanced
-BST.</p>
-<p>If we insert 5, 10, and 15, in that order, <em>or the reverse</em>,
-we have an imbalanced BST.</p>
-<p>[What’s the problem with imbalanced BSTs?]</p>
+<h1 id="questions-2">Questions ?</h1>
+<!-- _class: questions invert -->
 <hr />
-<h1 id="imbalanced-trees-become-linked-lists">Imbalanced trees become
-linked lists</h1>
-<p>The most perfectly imbalanced tree is a linked list with extra
-pointers.</p>
-<p>So it’s not even a <em>good</em> linked list.</p>
-<p>Unfortunately, we can’t reasonably say “hey make sure your data is
-random”. We don’t know the data in advance.</p>
-<p>We need a lower bound on insertion and lookup time, but to get that,
-we need to modify the tree.</p>
+<h1 id="practice-problems">Practice problems</h1>
+<p>All of these problems suppose that we’ve performed the reduction from
+X to SAT.</p>
+<ol type="1">
+<li>If we know <span class="math inline">\(H_{t, i}\)</span>, what do we
+know about <span class="math inline">\(H_{t + 1, i&#39;}\)</span>?</li>
+<li>If we know that <span class="math inline">\(S_{t, i, a}\)</span>,
+what can we say about <span class="math inline">\(S_{t, i, b}\)</span>,
+where <span class="math inline">\(a \ne b\)</span>? Are any of those
+true?</li>
+<li>If the original Turing machine had no accepting states, what can we
+say about the number of solutions to the boolean expression we
+create?</li>
+<li>Suppose the following <span class="math inline">\(Q_{t, q}\)</span>
+terms are true: <span class="math inline">\(Q_{0, 1}\)</span>, <span
+class="math inline">\(Q_{1, 2}\)</span>, <span
+class="math inline">\(Q_{2, 3}\)</span>, <span
+class="math inline">\(Q_{1, 4}\)</span> Why is this set of terms
+invalid?</li>
+</ol>
 <hr />
-<h1 id="first-approaches">First approaches</h1>
-<p>The earliest approach was to just to rotate the tree if it gets even
-a little out of height-balance. This approach was called the AVL
-tree.</p>
-<p>The AVL tree was named after the Latinized names of its inventers:
-Georgy Adelson-Velsky and Evgenii Mikhailovich Landis</p>
+<h1 id="practice-answers">Practice answers</h1>
+<ol type="1">
+<li>We know <span class="math inline">\(H_{t+1, i - 1} \lor H_{t + 1, i}
+\lor H_{t + 1, i + 1}\)</span>, because the head can only move one cell
+per time unit.</li>
+<li>No. If <span class="math inline">\(S_{t, i, a}\)</span>, then <span
+class="math inline">\(\lnot S_{t, i, b}\)</span> for all <span
+class="math inline">\(b \ne a\)</span>. Otherwise, we could have more
+than one symbol written to the same tape cell.</li>
+<li>There won’t be any. The answer will be “no”, just like it was for
+the original TM.</li>
+<li>At time <span class="math inline">\(t = 1\)</span>, we are in two
+states, <span class="math inline">\(2\)</span> and <span
+class="math inline">\(4\)</span>.</li>
+</ol>
 <hr />
-<h1 id="avl-trees">AVL trees</h1>
-<p>The basic operation is simple: - Every node tracks either its height,
-or the height difference between its children. - This difference is
-called the “balance”. It must always be within <span
-class="math inline">\(-1 \le b \le 1\)</span> - If inserting causes an
-imbalance, we rotate the node at which there is an imbalance.</p>
+<h1 id="how-long-does-it-take">How long does it take?</h1>
+<p>That’s a ton of work.</p>
+<p>Imagine we have a simple problem like “is this list sorted”, and we
+convert it into that boolean monstrosity so we can run it on a SAT
+solver. Is this transformation really polynomial time?</p>
+<p>Yes. Building the table takes, at worst, <span
+class="math inline">\(O((p(n))^3)\)</span>, because: - There can’t be
+more than <span class="math inline">\(p(n)\)</span> time units, so <span
+class="math inline">\(t\)</span> is bounded. - Even if there were more
+than <span class="math inline">\(p(n)\)</span> alphabet symbols, we
+wouldn’t have time to write them all in <span
+class="math inline">\(p(n)\)</span>, so take a subset of size <span
+class="math inline">\(p(n)\)</span>. - We can only write to, at most,
+<span class="math inline">\(p(n)\)</span> tape cells.</p>
 <hr />
-<h1 id="avl-trees-example">AVL trees example</h1>
-<p>For example, if we insert 1, then 2, then 3, an ordinary BST would
-look like this: <span class="math inline">\(1 \rightarrow 2 \rightarrow
-3\)</span> This is imbalanced, because <span
-class="math inline">\(1\)</span>, has a right-child height of 2, but a
-left-child height of 0. So its balance is 2, which is outside the legal
-range.</p>
-<p>A BST would then rotate the root to the left to obtain: <span
-class="math inline">\(1 \leftarrow 2 \rightarrow 3\)</span> [We can do
-more examples on the whiteboard]</p>
+<h1 id="how-long-does-it-take-2">How long does it take? (2)</h1>
+<p>Therefore, creating that giant table of tape states <span
+class="math inline">\(S_{t, i, a}\)</span> is cubic in <span
+class="math inline">\(p(n)\)</span>. It might require us to write up to
+<span class="math inline">\(p(n) \times p(n) \times p(n)\)</span>
+variables.</p>
+<p>And if <span class="math inline">\(p(n)\)</span> is a polynomial,
+<span class="math inline">\((p(n))^3\)</span> is a polynomial. This is
+the most expensive step, and it dominates the others.</p>
+<p>However, it’s a little slower even, because we need to run this on a
+Turing Machine. We often use the bit model for runtime bounds on
+classical Turing Machines, and storing the time <span
+class="math inline">\(t\)</span> and index <span
+class="math inline">\(i\)</span> is usually done in binary. This
+requires a logarithmic number of bits.</p>
+<p>So the final runtime on a turing machine is bounded by <span
+class="math inline">\(O(\lg (p(n)) (p(n))^3)\)</span></p>
 <hr />
-<h1 id="avl-tree-properties">AVL tree properties</h1>
-<p>AVL trees are very tightly balanced. Even the slightest bit of
-imbalance will force a rotation.</p>
-<p>Deleting is more expensive: sometimes you have to rotate many times
-after a delete.</p>
-<p>However, these downsides come with an upside: a tightly balanced tree
-is fast to do lookups on.</p>
+<h1 id="how-long-does-it-take-3">How long does it take? (3)</h1>
+<p>But maybe you’re curious how long SAT takes?</p>
+<p>Modern SAT solvers have all kinds of clever heuristics and
+multi-threading capabilities. Many package managers, like Conda and Apt,
+(but not Pacman, sorry Arch users), are basically just wrappers around a
+SAT solver.</p>
+<p>Most of the time, it’s possible to make these solvers run quickly.
+But, fundamentally, there are still <span
+class="math inline">\(2^n\)</span> combinations of variables to consider
+(with each representing whether a particular package and version is
+included). That’s why sometimes Pip can take 15 minutes and then crash:
+it got stuck in a bad SAT solve.</p>
+<p>For this reason, some dependency managers just say “we will only use
+the latest version”. And you get Arch + pacman. In the worst case, SAT
+takes <span class="math inline">\(\Theta(2^n)\)</span></p>
 <hr />
-<h1 id="other-self-balancing-bsts">Other self-balancing BSTs</h1>
-<p>There are other kinds of self-balancing BSTs. For example, red-black
-trees.</p>
-<p>Red-black trees don’t have as strict height balance requirements that
-AVL trees do. Instead, one side won’t be twice as deep as the other.</p>
-<p>This ends up being a tradeoff. Insertions are typically a bit
-cheaper, because they are less likely to result in rotations. However,
-the tree isn’t kept in as good of a condition.</p>
+<h1 id="why-would-anyone-do-this">Why would anyone do this?</h1>
+<p>“Would anyone really do this?” No. If you have an algorithm that
+tells you whether a list is sorted, and you want to <em>actually use
+it</em>, to, you know, see if a list is sorted, you would never encode
+it as a SAT problem and run a SAT solver.</p>
+<p>It goes from being <span class="math inline">\(\Theta(n)\)</span> to
+<span class="math inline">\(O(2^n)\)</span>, where <span
+class="math inline">\(n\)</span> is a way bigger number. Awful.
+Horrible.</p>
+<p>So what was the point?</p>
+<hr />
+<h1 id="p-np-2-1">P = NP? (2)</h1>
+<p>By showing that every problem could be reduced to SAT in polynomial
+time, Cook and Levin did something very interesting.</p>
+<p>Imagine that we go the other way around, and reduce SAT to something
+else in polynomial time?</p>
+<p>Now we have proven that SAT and the other problem are “equally-ish”
+hard.</p>
+<p>So what if we somehow proved that SAT could be reduced (in polynomial
+time) to the problem of checking if two matrices multiplied gave a
+particular product? …</p>
+<hr />
+<h1 id="p-np-3">P = NP? (3)</h1>
+<p>…Then we would have a poly time solution on a <em>deterministic</em>
+turing machine for SAT.</p>
+<p>That is, we would have proved that SAT is actually in P.</p>
+<p>And you know what? Everything in NP can be reduced to SAT…</p>
+<p>Which means that everything in NP can be reduced to the problem of
+checking a matrix product (by way of SAT)…</p>
+<p>Which means that everything in NP has a polynomial time algorithm
+that runs on a deterministic turing machine…</p>
+<p>Which means that everything in NP is actually in P!</p>
+<hr />
+<h1 id="np-complete">NP-complete</h1>
+<p>In fact, SAT has been reduced to many, many other problems. But none
+of them is in P.</p>
+<p>The set of problems that is equally as hard as SAT is called
+“NP-complete”. It is the set of the hardest problems in NP.</p>
+<hr />
+<h1 id="p-np-4">P = NP? (4)</h1>
+<p>We already know that P <span class="math inline">\(\subseteq\)</span>
+NP</p>
+<p>If you could reduce SAT, or any NP-complete problem, to something in
+P, you would prove that NP <span
+class="math inline">\(\subseteq\)</span> P.</p>
+<p>And this would prove that P = NP.</p>
+<p>And you would win <a
+href="https://en.wikipedia.org/wiki/Millennium_Prize_Problems">a million
+dollars</a>.</p>
+<p>You would also win a million dollars if you proved that P <span
+class="math inline">\(\ne\)</span> NP, which seems much harder (you’d
+have to show that there is no possible reduction from any np-complete
+problem to any problem in P in poly time)</p>
+<hr />
+<h1 id="p-np-5">P = NP? (5)</h1>
+<p>According to <a
+href="https://mags.acm.org/communications/201205?pg=12#pg12">polls</a>,
+most (about 80%) of computer science researchers believe P <span
+class="math inline">\(\ne\)</span> NP.</p>
+<p>It makes sense. It’s hard to imagine how you could convert SAT into
+something that runs in polynomial time.</p>
+<p>However, there’s a weird possibility. <a
+href="https://www.informit.com/articles/article.aspx?p=2213858&amp;WT.mc_id=Author_Knuth_20Questions">Donald
+Knuth</a> (question 17) believes actually that P = NP. He feels that
+there is space for polynomial algorithms with enormous exponents that do
+rote operations on all the bits of a problem. However, he feels that the
+proof will likely be non-constructive. Meaning, it will be an indirect
+proof, and it won’t come with an algorithm that tells you how to convert
+an NP problem to a P problem.</p>
+<p>So you would know your RSA encryption isn’t quite as secure as you
+thought, but wouldn’t know for sure if the algorithm that breaks it is
+practical. Great.</p>
+<hr />
+<figure>
+<img src="P_np_np-complete_np-hard.svg"
+alt="height:100% width:100% an image showing the sets P, NP, NP-complete, and NP-hard. If P = NP, there are only two sets, P and NP-hard, and NP-hard contains P. Otherwise, all 4 sets are somewhat distinct. NP contains P and NP-complete. NP-hard contains NP-complete. So NP-hard overlaps NP, and the intersection is NP-complete" />
+<figcaption aria-hidden="true">height:100% width:100% an image showing
+the sets P, NP, NP-complete, and NP-hard. If P = NP, there are only two
+sets, P and NP-hard, and NP-hard contains P. Otherwise, all 4 sets are
+somewhat distinct. NP contains P and NP-complete. NP-hard contains
+NP-complete. So NP-hard overlaps NP, and the intersection is
+NP-complete</figcaption>
+</figure>
+<p>(<a
+href="https://en.wikipedia.org/wiki/File:P_np_np-complete_np-hard.svg">Image</a>
+by Behnam Esfahbod, <a
+href="https://creativecommons.org/licenses/by-sa/3.0/deed.en">CC-BY-SA
+3.0</a>, 2007-11-01)</p>
+<p>(NP-hard is just everything at least as hard as NP-complete)</p>
+<hr />
+<h1 id="why-dont-we-care-as-much-about-space">Why don’t we care as much
+about space?</h1>
+<p>One last thing: why so much about bounding time and not bounding
+space?</p>
+<p>Because so far, we’ve focused on polynomial time algorithms in this
+course. And an algorithm that uses polynomial time also uses polynomial
+space.</p>
+<p>If writing to ram takes 1 operation, and you perform <span
+class="math inline">\(p(n)\)</span> operations total, then you can write
+to at most <span class="math inline">\(p(n)\)</span> cells of ram.</p>
+<p>This is generally why we focus more on time bounds than space
+bounds.</p>
+<p>However, in the latter half of this course, we’ll see some examples
+of NP-complete problems that can be sped up a lot by using a bunch of
+space. So it does still matter.</p>
+<hr />
+<h1 id="pspace">PSpace</h1>
+<p>A program can’t use more space than time. However, it can use much
+more time than space.</p>
+<p>PSpace is the set of problems that take a polynomial amount of space.
+It actually includes some problems that are harder than the hardest
+problems in NP.</p>
+<hr />
+<h1 id="more-practice">More practice</h1>
+<p>These are some practice problems based on popular games. If you don’t
+know the rules for one of these games, try to come up with a question
+about a game you are familiar with, and encode it as a SAT problem.</p>
+<ol type="1">
+<li>Suppose you wanted to solve the decision problem “this sudoku has a
+solution”. How could you express that as a SAT problem?</li>
+<li>Suppose you were looking at a chess board and you wanted to know
+whether the game was over (in checkmate), how could you express that as
+a SAT input? No need to be too precise.</li>
+<li>Suppose you wanted to know if a given wordle game could be won with
+a given word list, based on the highlighted tiles you’ve seen on the
+last guess. How would you encode that?</li>
+</ol>
 <hr />
 <h1 id="questions-3">Questions?</h1>
 <!-- _class: invert questions -->
 <hr />
-<h1 id="why-choose">Why choose?</h1>
-<p>So, we really have a choice: - More balance means faster lookups, but
-expensive inserts and deletes. - Less balance means slower lookups, and
-eventually it can get so bad that inserts will start to slow down
-too.</p>
-<p>Who says that the right amount of balance is to be between <span
-class="math inline">\(-1 \le b \le 1\)</span>? Who says it’s within a
-2/1 ratio? What if the perfect amount of balance for a given problem is
-to have no more than exactly 72% of nodes on one side of the tree?</p>
-<p>This is where we get to scapegoat trees.</p>
+<h1 id="last-class">Last Class</h1>
+<p>Last class we learned a ton: - The importance of complexity
+categories: different computers have different capabilities, but
+polytime is polytime. - The complexity categories P, NP, and NP-complete
+- Why SAT is so important - How to reduce an NP problem to SAT</p>
 <hr />
-<h1 id="scapegoat-trees">Scapegoat Trees</h1>
-<p>Scapegoat trees are a kind of self-balancing BST which let you
-configure exactly how out of whack you want the tree to be allowed to
-get before it rebalances.</p>
-<p>Rebalancing a scapegoat tree is very expensive: it rebalances
-<em>perfectly</em>. You will get the theoretically most balanced tree
-you can get with that data.</p>
-<p>However, you don’t have to do it very often, and you also can pick
-how <em>much</em> you rebalance. You typically choose a small portion of
-the tree to rebalance.</p>
+<h1 id="this-class">This class</h1>
+<p>But there’s one thing missing…</p>
+<p>Remember how we said that any problem in NP can be reduced to SAT,
+but what about reducing SAT to other problems?</p>
+<p>There is an entire class of problems in NP that SAT has been reduced
+to. These are called the NP-complete problems.</p>
+<p>Many of these reductions are creative, and it helps to understand
+them. Let’s take a look!</p>
 <hr />
-<h1 id="scapegoat-trees-2">Scapegoat Trees (2)</h1>
-<p>Scapegoat trees are actually required by the master syllabus for this
-class. I have to assign a project requiring them.</p>
-<p>Also, according to the master syllabus, you are required to read the
-papers in which they were introduced yourself and implement the data
-structure.</p>
-<p>That’s a little overwhelming, so I’m going to give you a high-level
-understanding. I won’t provide code, but the following slides should
-give you a better understanding so that when you do read the papers, it
-will be a bit more familiar.</p>
-<p>What even is a scapegoat?</p>
+<h1 id="sat-to-3sat">SAT <span class="math inline">\(\to\)</span>
+3SAT</h1>
+<p>SAT feels like a very open-ended problem. Given any legal expression
+composed of boolean variables and boolean operators, determine whether
+it has a solution.</p>
+<p>It turns out, this problem is actually equivalent to a problem that
+seems much simpler: 3SAT</p>
+<p>The problem statement is like this: Given a boolean expression in
+3CNF, does it have a solution?</p>
+<p>But what is 3CNF?</p>
 <hr />
-<h1 id="the-scapegoat">The scapegoat</h1>
-<p>Scapegoat rituals are found in many cultures around the world.</p>
-<p>An animal (e.g., a goat) is symbolically burdened with the sins of
-the community, and cast out.</p>
-<figure>
-<img src="scapegoat_manchester.jpg"
-alt="bg right:65% height:80% The Manchester Art Gallery version of the Scapegoat, by William Holman Hunt. An image of a goat, with its horns wrapped in red cloth. Standing in the shallows of the dead sea, the goat looks mournfully at the viewer. There is an obvious rainbow visible, and in the distance dark clouds giving way to a clear, sunny, evening sky, which seems to sarcastically suggest that everything got better once the goat was cast out." />
-<figcaption aria-hidden="true">bg right:65% height:80% The Manchester
-Art Gallery version of the Scapegoat, by William Holman Hunt. An image
-of a goat, with its horns wrapped in red cloth. Standing in the shallows
-of the dead sea, the goat looks mournfully at the viewer. There is an
-obvious rainbow visible, and in the distance dark clouds giving way to a
-clear, sunny, evening sky, which seems to sarcastically suggest that
-everything got better once the goat was cast out.</figcaption>
-</figure>
+<h1 id="cnf">3-CNF</h1>
+<p>3-CNF stands for “three term conjunctive normal form”.</p>
+<p>Conjunctive normal form means that all of the conjunctions (ands)
+appear at only the highest level. That is, they happen last when
+evaluating.</p>
+<p><span class="math inline">\(A \land (\lnot B \lor C) \land (D \lor F
+\lor G \lor H)\)</span> is in conjunctive normal form <span
+class="math inline">\(A \land (\lnot B \lor (C \land D)) \land (F \lor G
+\lor H)\)</span> is not, because of the <span class="math inline">\(C
+\land D\)</span> hapenning early.</p>
 <hr />
-<h1 id="the-scapegoat-2">The scapegoat (2)</h1>
-<p>In our modern society, we only do this figuratively. A scapegoat is
-someone we blame for something going wrong so that we don’t have to
-address the real causes, and can instead just kick the person out and
-keep everything the same.</p>
-<p>When it comes to self-balancing trees, we can’t really change the
-underlying process. Data is going to come in in some kind of order, and
-we have to keep it sorted.</p>
-<p>But we can blame a sub-tree. If we say “hey, this tree is out of
-whack and it screwed up the insert”, we can then replace that sub-tree
-with a perfectly balanced one.</p>
+<h1 id="cnf-2">3-CNF (2)</h1>
+<p>3-CNF is when we follow the rules for CNF, but also each term is the
+disjunction (or) of 3 terms, like this: <span class="math inline">\((A
+\lor B \lor C) \land (D \lor \lnot E \lor F) \land (G \lor H \lor I)
+\land \cdots\)</span></p>
+<p><a
+href="https://en.wikipedia.org/wiki/Conjunctive_normal_form#Conversion_to_CNF">Every
+boolean expression can be converted to CNF</a>. The main trick is to
+replace every operator (such as xor or nand) with its equivalents using
+only and, or, and not. And then, to apply DeMorgan’s laws. And it turns
+out, any CNF expression can be 3CNF.</p>
 <hr />
-<h1 id="scapegoat-trees-1">Scapegoat trees</h1>
-<p>Scapegoat trees follow this principle.</p>
-<p>We decide in advance how imbalanced we want them to be allowed to
-be.</p>
-<p>If inserting into the tree breaks that invariant for the whole tree,
-we search for the deepest node for which it is broken. Then we blame
-that node for causing the problem, and rebuild the sub-tree perfectly
-balanced at that node.</p>
-<p>So how do we represent balance?</p>
+<h1 id="sat-to-3sat-2">SAT <span class="math inline">\(\to\)</span> 3SAT
+(2)</h1>
+<p>It might surprise you that the general problem of SAT can be reduced
+to the seemingly simpler problem of 3SAT. But it can: we just have to
+add more terms.</p>
+<p>Given an arbitrary boolean expression composed of and, or, and not,
+we can convert it into a 3SAT expression by following some rules. We do
+it clause by clause</p>
+<p>First, the SAT clause might already be in 3SAT: <span
+class="math inline">\(A \lor B \lor C\)</span>. In this case, we’re
+done.</p>
+<p>What if it only has 1 term? Then <span class="math inline">\(A \equiv
+A \lor A \lor A\)</span> And 2 terms? <span class="math inline">\(A \lor
+B \equiv A \lor B \lor B\)</span></p>
+<p>Okay, so for 3 or fewer terms, it’s easy to turn a SAT clause into
+3SAT clause. But what do we do for 4 or more terms?</p>
 <hr />
-<h1 id="alpha-balance"><span class="math inline">\(\alpha\)</span>
-balance</h1>
-<p>We represent max-imbalance, called <span
-class="math inline">\(\alpha\)</span>, as the largest proportion of the
-tree which is allowed on either side.</p>
-<p>So if <span class="math inline">\(\alpha = 75\%\)</span>, that means
-that the largest child of the root may have up to <span
-class="math inline">\(75\%\)</span> of the total amount of nodes. We
-call such a tree <span class="math inline">\(75\%\)</span>
-weight-balanced.</p>
-<p>Weight balance refers to the total size of the trees on either side.
-As opposed to height balance, which is based on their height.</p>
-<p>If the tree has <span class="math inline">\(1000\)</span> nodes,
-then, with an <span class="math inline">\(\alpha\)</span> of <span
-class="math inline">\(75\%\)</span>, the root’s largest child can have
-up to <span class="math inline">\(750\)</span>. If it has more, than the
-tree is no longer <span
-class="math inline">\(\alpha\)</span>-weight-balanced.</p>
-<p>Technically, we allow 1 node of give. So the larger child needs to
-have <em>more than</em> 75% + 1 nodes before we do anything. We’ll
-explain why later.</p>
+<h1 id="sat-to-3sat-3">SAT <span class="math inline">\(\to\)</span> 3SAT
+(3)</h1>
+<p>We’re assuming that we’re already in CNF, so each clause (the ones
+being anded) looks like this: <span class="math inline">\(C_i = (\ell_0
+\lor \ell_1 \lor \ell_2 \lor \ell_3 \lor \cdots \lor
+\ell_k)\)</span></p>
+<p>We can convert this to a number of 3CNF clauses by adding more
+variables like this: <span class="math inline">\(C_i = (\ell_0 \lor
+\ell_1 \lor y_0) \land (\lnot y_0 \lor \ell_2 \lor y_1) \land (\lnot y_1
+\lor \ell_3 \lor y_2) \land \cdots \land(\lnot y_{k - 3} \lor \ell_{k -
+1}\lor \ell_k)\)</span></p>
+<hr />
+<h1 id="the-y-variables.">The “y” variables.</h1>
+<p>These <span class="math inline">\(y\)</span> variables are just added
+to the formula, but they don’t change whether or not there is a
+solution. Think of <span class="math inline">\(y_0\)</span> as meaning
+“there’s a true clause later”. For example, if <span
+class="math inline">\(y_0\)</span> is true, then <span
+class="math inline">\((\lnot y_0 \lor \ell_2 \lor y_1)\)</span> means
+that <span class="math inline">\(\ell_2\)</span> is true or there’s a
+true value later (<span class="math inline">\(y_1\)</span>).</p>
+<p>Another way of seeing <span class="math inline">\((\lnot y_0 \lor
+\ell_2 \lor y_1)\)</span>, is that it’s saying “or maybe there
+<em>isn’t</em> a true value later, and actually it’s <span
+class="math inline">\(\ell_2\)</span> that is the true one. But if not,
+then there’s a separate true variable in a future clause (<span
+class="math inline">\(y_1)\)</span></p>
+<p>If there <em>isn’t</em> a true clause later and if <span
+class="math inline">\(\ell_0\)</span> and <span
+class="math inline">\(\ell_1\)</span> are both false, then the whole
+original clause would have been false. Likewise, if there is a clause
+later that is true, only one of the original clause variables could
+satisfy it, because the</p>
+<hr />
+<h1 id="sat-to-3sat-4">SAT <span class="math inline">\(\to\)</span> 3SAT
+(4)</h1>
+<p>If this is confusing consider this: the original clause was a giant
+“or” of lots of variables.</p>
+<p>A single one of them being true makes the whole clause true.</p>
+<p>Therefore, if, say <span class="math inline">\(\ell_1\)</span> is
+true, we can now set all the <span class="math inline">\(y\)</span>
+variables to false, and the whole thing will be true.</p>
+<p>If <span class="math inline">\(\ell_0\)</span> and <span
+class="math inline">\(\ell_1\)</span> are false, then we need one of the
+other ones to be true. So <span
+class="math inline">\(y_0=\mathrm{true}\)</span> forces <span
+class="math inline">\(l_2\)</span> to be true (because its clause has
+<span class="math inline">\(\lnot y_0\)</span>), or else, it forces
+<span class="math inline">\(l_3\)</span> to be true (because of <span
+class="math inline">\(\lnot y_1\)</span>), etc.</p>
+<p>A solution to the 3SAT clause implies a solution to the original
+clause, and that is true for all the clauses in the expression.</p>
+<hr />
+<h1 id="sat-to-3sat-5">SAT <span class="math inline">\(\to\)</span> 3SAT
+(5)</h1>
+<p>How fast is this reduction?</p>
+<p>It should be reasonable that it is a polynomial time reduction. We
+iterate over every clause in the original expression. We iterate over
+every term in every clause. We construct at most one new clause per
+term. Therefore, if <span class="math inline">\(n\)</span> is the number
+of terms, this reduction is <span
+class="math inline">\(\Theta(n)\)</span>.</p>
+<p>It should also be reasonable that 3SAT is a member of NP. We could
+try every combination of truth-value assignments on a non-deterministic
+machine and verify the results in polytime, the same as we did with
+SAT.</p>
+<p>We know that NP <span class="math inline">\(\le\)</span> SAT by
+Cook-Levin, and now we know SAT <span class="math inline">\(\le\)</span>
+3SAT by the reduction we just did, so we know 3SAT is in NP-hard. 3SAT
+<span class="math inline">\(\le\)</span> SAT is trivial (a 3SAT formula
+is already a SAT formula). Therefore 3-SAT is NP-complete.</p>
+<hr />
+<h1 id="reasoning-about-reductions">Reasoning about reductions</h1>
+<p>Any problem that is both NP-hard and NP is NP-complete. SAT <span
+class="math inline">\(\le\)</span> 3SAT proves the hardness of 3SAT,
+3SAT <span class="math inline">\(\le\)</span> SAT, means that 3SAT and
+SAT are in the same category. NP-complete is the name of that
+category.</p>
+<p>If problem A can be reduced in polynomial time to problem B, then A
+is “less or equally hard” than B: <span class="math inline">\(A \le
+B\)</span></p>
+<p>If problem B can be reduced in polynomial time to problem A, same
+thing: <span class="math inline">\(B \le A\)</span></p>
+<p>If they both apply, then A and B are roughly equally hard. They are
+in the same class.</p>
+<p>Let’s do a quick knowledge check…</p>
 <hr />
 <h1 id="knowledge-check">Knowledge check</h1>
-<ul>
-<li>What <span class="math inline">\(\alpha\)</span> would we pick if we
-wanted the tree to be perfectly balanced?</li>
-<li>What <span class="math inline">\(\alpha\)</span> would we pick if we
-never wanted the tree to be re-balanced?</li>
-<li>What is the meaningful range of values that <span
-class="math inline">\(\alpha\)</span> can inhabit? Does an <span
-class="math inline">\(\alpha\)</span> of 2 make sense? What about an
-alpha of <span class="math inline">\(25\%\)</span>?</li>
-</ul>
+<ol type="1">
+<li><p>Suppose we reduce a problem to SAT. What does that tell us about
+the problem?</p></li>
+<li><p>Suppose we then reduce SAT to that problem? What do we know then?
+Consider the two cases that the problem is in P, or that it is in NP but
+not P (NP <span class="math inline">\(-\)</span> P).</p></li>
+<li><p>Give an example of a reduction that would prove P = NP.</p></li>
+</ol>
 <hr />
-<h1 id="alpha-tradeoffs-knowledge-check-answers"><span
-class="math inline">\(\alpha\)</span> tradeoffs: knowledge check
-answers</h1>
-<p>This system allows us to decide how often we want to rebalance.</p>
-<ul>
-<li>If we want a perfectly balanced tree, we want <span
-class="math inline">\(\alpha = 50\%\)</span>. That means that the
-“larger” child must be no more than half the size of the total tree. But
-that means the other child has the other half. So they’re 50/50. (In
-practice, perfectly balanced trees only happen at powers of 2 minus 1,
-so we allow a slight amount of imbalance even with <span
-class="math inline">\(\alpha = 50\%\)</span>)</li>
-<li>If we want to turn off re-balancing, we pick <span
-class="math inline">\(\alpha=100\%\)</span>. Now we allow the largest
-child to have up to all the nodes. This will always be the case.</li>
-<li>The meaningful range is <span class="math inline">\(\alpha \in [.5,
-1.0]\)</span> <span class="math inline">\(\alpha \lt .5\)</span> is
-contradictory: how can the <em>larger</em> child have less than half the
-tree? Then the <em>smaller</em> child has more than half? <span
-class="math inline">\(\alpha \gt 1.0\)</span> is redundant. The larger
-child can have <em>more</em> than all the nodes?</li>
-</ul>
+<h1 id="kc-answers">KC answers</h1>
+<ol type="1">
+<li>It tells us the problem is NP. Because A <span
+class="math inline">\(\le\)</span> SAT and SAT <span
+class="math inline">\(\le\)</span> NP.</li>
+<li>If the problem is in P, it means P = NP. If the problem is NP <span
+class="math inline">\(-\)</span> P, it means the problem is
+NP-complete.</li>
+<li>Reducing 3SAT to the problem of determining if a list is sorted
+would prove P = NP.</li>
+</ol>
 <hr />
 <h1 id="questions-4">Questions?</h1>
 <!-- _class: questions invert -->
 <hr />
-<h1 id="detecting-imbalance">Detecting imbalance</h1>
-<p>Consider this goofy tree:</p>
-<p><span class="math inline">\(1 \leftarrow 2 \leftarrow 3 \leftarrow 4
-\leftarrow 5 \rightarrow 6 \rightarrow 7 \rightarrow 8 \rightarrow
-9\)</span></p>
-<p>This tree’s root is technically both weight-balanced and
-height-balanced: - The left child of root has the same number of nodes
-as the right child (4 each). - They also both have the same height (4
-each).</p>
-<p>And yet, this tree itself is not balanced. The problem is that while
-the root is balanced, the left and right children of the root (the 4 and
-6) are not balanced. Each is, in fact, perfectly imbalanced in opposite
-directions.</p>
-<p>We’d like to be able to detect this as it happens. After an insert,
-we’d like to know that part of the tree has become imbalanced.</p>
+<h1 id="the-clique-problem">The clique problem</h1>
+<p>In everyday language, a clique is a group of friends who behave
+exclusively, keeping other people from joining their group.</p>
+<p>In computer science, a clique of size K is a set of K vertices in a
+graph that are all connected to each other.</p>
+<p>The image to the right shows a clique of size 3. 5, 2, and 1 are all
+adjacent. This is called a 3-clique. Can you find some cliques of size
+2?</p>
+<figure>
+<img src="6n-graf-clique.svg"
+alt="bg right:45% height:50% an undirected graph with the following connections. 6 is connected to 4. 4 is connected to 3 and 5. 5 is connected to 4, 2, and 1. 2 is connected to 3, 5, and 1. 1 is connected only to 2 and 5. Because 1, 2, and 5 are all connected to each other, they are in a clique. There are 3 of them, so it is a 3-clique." />
+<figcaption aria-hidden="true">bg right:45% height:50% an undirected
+graph with the following connections. 6 is connected to 4. 4 is
+connected to 3 and 5. 5 is connected to 4, 2, and 1. 2 is connected to
+3, 5, and 1. 1 is connected only to 2 and 5. Because 1, 2, and 5 are all
+connected to each other, they are in a clique. There are 3 of them, so
+it is a 3-clique.</figcaption>
+</figure>
+<div class="footnote">
+<p><a
+href="https://en.wikipedia.org/wiki/File:6n-graf-clique.svg">Image</a>
+by <a href="https://en.wikipedia.org/wiki/User:Chmod007">David
+Remahl</a>, public domain.</p>
+</div>
 <hr />
-<h1 id="alpha-height"><span
-class="math inline">\(\alpha\)</span>-height</h1>
-<p>It turns out, knowing the <span
-class="math inline">\(\alpha\)</span>-weight tells us how high a
-sub-tree can be. The max height for a given <span
-class="math inline">\(\alpha\)</span>-weight is called <span
-class="math inline">\(\alpha\)</span>-height.</p>
-<p>How do we compute the <span
-class="math inline">\(\alpha\)</span>-height?</p>
-<p>Imagine that <span class="math inline">\(\alpha=2/3\)</span>. We’d
-like that no more than two-thirds of the nodes be on one side. What does
-that say about the maximum depth we can achieve?</p>
+<h1 id="the-clique-problem-2">The clique problem (2)</h1>
+<p>This is an NP problem. Finding whether there is a clique of size 10
+in a graph can be brute-forced by considering every combination of 10
+nodes and checking to see if they are adjacent.</p>
+<p>Checking a solution is easy, just check to see if there are enough
+vertices given, and that they are connected. This is clearly polynomial,
+so this is an NP problem.</p>
+<p>If it’s a problem in NP, we know that it can be reduced to SAT. It
+turns out, this problem is NP-complete. How do we prove that?</p>
+<p>After proving that it’s in NP, we need to reduce an NP-complete
+problem to clique in polynomial time. If we can do that, clique is NP
+complete.</p>
 <hr />
-<h1 id="alpha-height-2"><span
-class="math inline">\(\alpha\)</span>-height (2)</h1>
-<p>Every time we go down a level: <span
-class="math inline">\(n_\mathrm{child} \le (2/3)\cdot
-n_\mathrm{parent}\)</span></p>
-<p>The <span class="math inline">\(\alpha=2/3\)</span> tells us that the
-child must be no more than two-thirds of the parent. Otherwise, we’ve
-violated the balance.</p>
-<p>What about going down two levels? <span
-class="math inline">\(n_\mathrm{child} \le (2/3)^2\cdot
-n_\mathrm{parent}\)</span></p>
+<h1 id="sat-le-clique">SAT <span class="math inline">\(\le\)</span>
+CLIQUE</h1>
+<p>Shortly after Stephen Cook’s seminal paper, <a
+href="https://en.wikipedia.org/wiki/Richard_M._Karp">Richard Karp</a>
+took <a
+href="https://en.wikipedia.org/wiki/Karp%27s_21_NP-complete_problems">21
+NP problems and reduced SAT to them</a> (proving NP-completeness). One
+of these was SAT <span class="math inline">\(\to\)</span> CLIQUE.</p>
+<p>It worked like this: create a vertex for every pair of <span
+class="math inline">\((v, c)\)</span>, where <span
+class="math inline">\(v\)</span> is a literal (i.e., a variable or a
+negation of a variable), and <span class="math inline">\(c\)</span> is a
+clause that <span class="math inline">\(v\)</span> appears in.</p>
+<p>So if we had this formula: <span class="math inline">\((X \lor Y)
+\land (Y \lor \lnot Z) \land (Z \lor X)\)</span>, define these: <span
+class="math inline">\((X, X \lor Y), (X, Z \lor X), (Y, X \lor Y), (Y, Y
+\lor \lnot Z), (\lnot Z, Y \lor \lnot Z), (Z, Z \lor X)\)</span></p>
+<p>Note, each of these is just a point. We haven’t connected them
+yet.</p>
+<p><span class="math inline">\((X, X \lor Y)\)</span> represents the
+statement “X is true, making <span class="math inline">\(X \lor
+Y\)</span> true”.</p>
+<p>This is how we connect them…</p>
 <hr />
-<h1 id="alpha-height-3"><span
-class="math inline">\(\alpha\)</span>-height (3)</h1>
-<p>What is the absolute deepest we can go and have the relation still
-hold? We don’t know, that’s what we’re trying to solve for.</p>
-<p>However, we do know for certain that the size of the child at that
-point will be 1.</p>
-<p>Why?</p>
-<p>Because we check whenever we insert a node. When we insert a node, it
-is the root of a tree of size 1. So after inserting a node, this
-inequality holds:</p>
-<p><span class="math inline">\(1 \le (2/3)^d \cdot n\)</span></p>
-<p>Where <span class="math inline">\(d\)</span> is the depth of the
-insertion, and <span class="math inline">\(n\)</span> is the number of
-nodes in the tree.</p>
+<h1 id="sat-le-clique-assignments">SAT <span
+class="math inline">\(\le\)</span> CLIQUE assignments</h1>
+<p>Connect any nodes where the clauses are <strong>different</strong>
+and the variable assignment is not contradictory. That is, for two
+points, if their clauses are different but the variables aren’t <span
+class="math inline">\(A\)</span> and <span class="math inline">\(\lnot
+A\)</span>, connect them. Connections: - <span class="math inline">\((X,
+X \lor Y)\)</span> is connected to every other node except <span
+class="math inline">\((Y, X \lor Y)\)</span>. - <span
+class="math inline">\((X, Z \lor X)\)</span> is connected to every other
+node except <span class="math inline">\((Z, Z \lor X)\)</span>. - <span
+class="math inline">\((Y, X \lor Y)\)</span> and <span
+class="math inline">\((Y, Y \lor \lnot Z)\)</span> are connected to
+every other node, except for nodes with the same clause - <span
+class="math inline">\((\lnot Z, Y \lor \lnot Z)\)</span> and <span
+class="math inline">\((Z, Z \lor X)\)</span> are connected to every
+other node except nodes of the same clause as well as each other,
+because <span class="math inline">\(\lnot Z\)</span> is not compatible
+with <span class="math inline">\(Z\)</span>.</p>
+<p>[Let’s whiteboard/mermaid it if time permits]</p>
 <hr />
-<h1 id="alpha-height-4"><span
-class="math inline">\(\alpha\)</span>-height (4)</h1>
-<p><span class="math inline">\(1 \le (2/3)^d \cdot n \equiv\)</span>
-<span class="math inline">\(1/n \le (2/3)^d \equiv\)</span> <span
-class="math inline">\(n \ge (3/2)^d \equiv\)</span> <span
-class="math inline">\(\leftarrow\)</span> we take the reciprocal, so the
-inequality flips <span class="math inline">\(\log_{(3 / 2)}(n) \ge
-\log_{(3 / 2)}((3/2)^d) \equiv\)</span> <span
-class="math inline">\(\log_{(3 / 2)}(n) \ge d\)</span> <span
-class="math inline">\(\leftarrow\)</span> we use the log to solve for
-the exponent</p>
-<p>So we solved for the maximum depth we can allow. As long as the depth
-of an insertion is less than <span class="math inline">\(\log_{(1 /
-\alpha)}(n)\)</span>, where <span class="math inline">\(n\)</span> is
-the number of nodes in the tree, we’re balanced.</p>
-<p>In practice, we are okay with <span class="math inline">\(d\)</span>
-being one greater, because in cases where we have <span
-class="math inline">\(\alpha=50\%\)</span>, we don’t want it to be
-impossible for a tree with 4 nodes to ever be balanced. [whiteboard]</p>
+<h1 id="sat-le-clique-assignments-1">SAT <span
+class="math inline">\(\le\)</span> CLIQUE assignments</h1>
+<p>We want at least a 3-clique: there are 3 clauses in the original
+expression, and a 3-clique would mean they could all be simultaneously
+true. For k clauses we need a k-clique.</p>
+<p>I.e., a clique here represents clauses that can all be true at the
+same time, because none of them in the clique have contradictory
+variable assignments (e.g., <span class="math inline">\(Z\)</span> and
+<span class="math inline">\(\lnot Z\)</span>)</p>
+<p>In our case, we have more than one to choose from. One of them is:
+<span class="math inline">\((\lnot Z, Y \lor \lnot Z), (Y, X \lor Y),
+(X, Z \lor X)\)</span></p>
+<p>This means it is possible to satisfy the equation <span
+class="math inline">\((X \lor Y) \land (Z \lor X) \land (Y \lor \lnot
+Z)\)</span> using the assignments, Y = true, X = true, Z = false. (it’s
+fine that <span class="math inline">\(Y \lor \lnot Z\)</span> is
+connected to <span class="math inline">\(Z \lor X\)</span>, it’s only
+the assignments that can’t be contradictory)</p>
+<p>In general, any clique of size k has to have k different clauses in
+it, so we found a way to satisfy our 3 clauses without a single pair of
+contradictions. In this case: more exist.</p>
 <hr />
-<h1 id="the-scapegoat-tree-rule">The scapegoat tree rule</h1>
-<p>So this is the rule: - When we insert into a scapegoat tree, we track
-how far down we are. Every recursive call increases the depth by 1. -
-The balance condition is: <span class="math inline">\(d \le
-\log_{(1/\alpha)}(n) + 1\)</span>. - If that inequality holds, we do
-nothing. - Otherwise, we need to find a scapegoat…</p>
-<p>But first…</p>
+<figure>
+<img src="Sat_reduced_to_Clique_from_Sipser.svg"
+alt="bg right:60% height:85% a graph demonstrating a 3-clique that satisfies the expression (x or x or y) and (not x or not y or not y) and (not x or y or y). These clauses are connected to each other, and the variables y, not x, and not x are highlighted (the graph does not show all 6 pairs of variable and clause)" />
+<figcaption aria-hidden="true">bg right:60% height:85% a graph
+demonstrating a 3-clique that satisfies the expression (x or x or y) and
+(not x or not y or not y) and (not x or y or y). These clauses are
+connected to each other, and the variables y, not x, and not x are
+highlighted (the graph does not show all 6 pairs of variable and
+clause)</figcaption>
+</figure>
+<h1 id="another-example">Another example</h1>
+<p>This is a subgraph of the cliques for the boolean expression <span
+class="math inline">\((x \lor x \lor y) \land (\lnot x \lor \lnot y \lor
+\lnot y) \land\)</span> <span class="math inline">\((\lnot x \lor y \lor
+y)\)</span>. The chosen assignments are highlighted in green.</p>
+<div class="footnote">
+<p><a
+href="https://en.wikipedia.org/wiki/File:Sat_reduced_to_Clique_from_Sipser.svg">Image</a>
+by Thore Husfeldt, <a
+href="https://creativecommons.org/licenses/by-sa/3.0/deed.en">CC BY-SA
+3.0 unported</a>, 2009.</p>
+</div>
+<hr />
+<h1 id="practice-problems-1">Practice problems</h1>
+<ul>
+<li>Create a random boolean expression with at least 4 clauses and 4
+different variables, with 3 variables or their negations per
+clause.</li>
+<li>Construct the graph according to the SAT <span
+class="math inline">\(\to\)</span> CLIQUE reduction.</li>
+<li>Does your expression have a solution?</li>
+<li>If so, modify it so that it does not. If not, modify it so that it
+does. Notice how it either creates or breaks cliques.</li>
+</ul>
 <hr />
 <h1 id="questions-5">Questions?</h1>
-<!-- _class: invert questions -->
+<!-- _class: questions invert -->
 <hr />
-<h1 id="finding-the-scapegoat">Finding the scapegoat</h1>
-<p>Consider this imbalanced tree rooted at <span
-class="math inline">\(2\)</span>: <span class="math inline">\(1
-\leftarrow 2 \rightarrow 3 \rightarrow 4 \rightarrow 5\)</span></p>
-<p>Suppose that we’ve chosen <span
-class="math inline">\(\alpha=0.6\)</span>. First, let’s compute <span
-class="math inline">\(1/\alpha = 1/0.6 \approx 1.67\)</span></p>
-<p>What is the maximum depth we can permit with this tree? <span
-class="math inline">\(d \le \lfloor \log_{1.67}(5) \rfloor + 1 \equiv d
-\le \lfloor \log(5) / \log(1.67) \rfloor + 1 \equiv d \le 3 + 1 \equiv d
-\le 4\)</span></p>
-<p>So if <span class="math inline">\(d \gt 4\)</span>, we need to do
-something.</p>
-<p>(I’m taking the floor because the depth is an integer, so we can
-safely round down.)</p>
+<h1 id="indset">INDSET</h1>
+<p>Now that we understand the clique problem, this one will be easy.</p>
+<p>INDSET stands for “independent set”. k vertices form an indset if
+<em>none</em> of them are adjacent. It’s like an anti-clique.</p>
+<p>In the image, the blue vertices form a 9-indset.</p>
+<figure>
+<img src="Independent_set_graph.svg" alt="bg right:50% height:80%" />
+<figcaption aria-hidden="true">bg right:50% height:80%</figcaption>
+</figure>
 <hr />
-<h1 id="finding-the-scapegoat-2">Finding the scapegoat (2)</h1>
-<p>Let’s insert 6. This is our new tree <span class="math inline">\(1
-\leftarrow 2 \rightarrow 3 \rightarrow 4 \rightarrow 5 \rightarrow
-6\)</span></p>
-<p>And what’s the depth of that insertion? <span class="math inline">\(d
-= 5\)</span>. Uh-oh, now we need a scapegoat. (I’m treating depth as the
-height of the tree. So the root has depth <span
-class="math inline">\(1\)</span>.)</p>
-<p>To do this, we start at the <span class="math inline">\(6\)</span>,
-and work our way up, parent by parent. At each point, we evaluate this
-inequality: <span class="math inline">\(i \le \log(n_\mathrm{subtree}) /
-\log(1 / \alpha) + 1\)</span> Where <span
-class="math inline">\(i\)</span> is the height of the tree at each
-point. <span class="math inline">\(i\)</span> starts at <span
-class="math inline">\(1\)</span>, and goes up by 1 for each parent. If
-this inequality ever fails, we have found our scapegoat.</p>
+<h1 id="reduce-indset-le-clique-and-clique-le-indset">Reduce INDSET
+<span class="math inline">\(\le\)</span> CLIQUE and CLIQUE <span
+class="math inline">\(\le\)</span> INDSET</h1>
+<p>Do it for me.</p>
+<p>How can I reduce these problems to each other?</p>
 <hr />
-<h1 id="finding-the-scapegoat-3">Finding the scapegoat (3)</h1>
-<p>Let’s do this step-by-step.</p>
-<p>We just inserted <span class="math inline">\(6\)</span>. Is that one
-node imbalanced? <span class="math inline">\(1 \le \log(1) / \log(1.67)
-+ 1 = 0 + 1 = 1\)</span> Nope, it’s fine, let’s keep going.</p>
-<p>The parent is <span class="math inline">\(5\)</span>. Is that node
-imbalanced? <span class="math inline">\(2 \le \lfloor \log(2) /
-\log(1.67) \rfloor + 1 = 1 + 1 = 2\)</span> Nope, <span
-class="math inline">\(2 \le 2\)</span>, let’s keep going.</p>
+<h2 id="indset-le-clique">INDSET <span
+class="math inline">\(\le\)</span> CLIQUE</h2>
+<p>For this reduction, just invert all the adjacencies. So if nodes A
+and B are connected make them unconnected and vice versa.</p>
+<p>Now, if we had a k-indset (none of the nodes were connected), we now
+have a k-clique (all of them will be connected). Therefore, our k-clique
+solver will return true for our inverted graph if and only iff our
+original graph had an indset of size k.</p>
+<h2 id="clique-le-indset">CLIQUE <span
+class="math inline">\(\le\)</span> INDSET</h2>
+<p>This is identical. Invert the adjacencies. If we had a clique before,
+we have an indset now of the same size.</p>
 <hr />
-<h1 id="finding-the-scapegoat-4">Finding the scapegoat (4)</h1>
-<p>Notice that <span class="math inline">\(i\)</span> is increasing for
-each parent we consider. And the size is also increasing by 1. But if
-the tree were not degenerate, the size would increase by more.</p>
-<p>The grandparent is <span class="math inline">\(4\)</span>. Is that
-node imbalanced? <span class="math inline">\(3 \le \lfloor \log(3) /
-\log(1.67) \rfloor + 1 =3\)</span> Just barely balanced (within 1).</p>
-<p>What about <span class="math inline">\(3\)</span>?</p>
-<p><span class="math inline">\(4 \le \lfloor \log(4) / \log(1.67)
-\rfloor + 1 = 3\)</span></p>
-<p>Uh oh.</p>
+<h1 id="clique-le-indset-le-clique">CLIQUE <span
+class="math inline">\(\le\)</span> INDSET <span
+class="math inline">\(\le\)</span> CLIQUE</h1>
+<p>Are these reductions polynomial time?</p>
+<p>Yes. If there are <span class="math inline">\(n\)</span> nodes in a
+graph, there are necessarily <span class="math inline">\(O(n^2)\)</span>
+connections between them. Therefore, inverting all the connections is
+<span class="math inline">\(O(n^2)\)</span>.</p>
 <hr />
-<h1 id="finding-the-scapegoat-5">Finding the scapegoat (5)</h1>
-<p><span class="math inline">\(1 \leftarrow 2 \rightarrow \mathbf{3}
-\rightarrow 4 \rightarrow 5 \rightarrow 6\)</span></p>
-<p>Can you <em>believe</em> this 3? It’s completely imbalanced! If it
-weren’t for them, everything would have been fine. It’s not 2’s
-fault!</p>
-<p>3, we have some concerns we need to talk about.</p>
+<h1 id="vertex-cover-vc-problem">Vertex Cover (VC) problem</h1>
+<p>A k-vertex cover occurs when there are k nodes such that every edge
+in the graph is connected to at least one of the k nodes.</p>
+<p>For example, in the bottom image to the right, there is a vertex
+cover of size 2.</p>
+<p>There is a functional version of this problem to find the
+<em>minimum</em> vertex cover, but we are concerned with a decision
+problem: <em>is</em> there a vertex cover of size k? In this case, yes
+for <span class="math inline">\(\ge\)</span> 2, no for 1.</p>
+<figure>
+<img src="Couverture_de_sommets.svg"
+alt="bg height:90% right:40% the image shows 3 graphs. One with no vertices highlighted, one with one vertex highlighted, and one with two vertices highlighted. The highlighted vertex in the second image is connected to two edges, but it is not connected to 4 other edges, therefore it does not form a cover. However, the two vertices highlighted in the bottom graph are together connected to every edge in the graph. That is, every edge in the graph touches at least one of the two selected nodes. Therefore, there is a vertex cover of size 2." />
+<figcaption aria-hidden="true">bg height:90% right:40% the image shows 3
+graphs. One with no vertices highlighted, one with one vertex
+highlighted, and one with two vertices highlighted. The highlighted
+vertex in the second image is connected to two edges, but it is not
+connected to 4 other edges, therefore it does not form a cover. However,
+the two vertices highlighted in the bottom graph are together connected
+to every edge in the graph. That is, every edge in the graph touches at
+least one of the two selected nodes. Therefore, there is a vertex cover
+of size 2.</figcaption>
+</figure>
+<div class="footnote">
+<p><a
+href="https://en.wikipedia.org/wiki/File:Couverture_de_sommets.svg">Image</a>
+by Fschwarzentruber, 2016, <a
+href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">CC BY-SA
+4.0</a></p>
+</div>
 <hr />
-<h1 id="what-now">What now?</h1>
-<p>So we have someone to blame. Now what?</p>
-<p>Now, we rebuild the tree centered at 3.</p>
-<p>What does it mean to rebuild the tree?</p>
-<p>Here are the nodes in the sub-tree, in order:
-<code>3, 4, 5, 6</code></p>
-<p>Choose the median index, round down. That’s the new root. Do the same
-to the left and right. We get this new sub-tree: <span
-class="math inline">\(3 \leftarrow 4 \rightarrow 5 \rightarrow
-6\)</span> And this is inserted back into the whole tree: <span
-class="math inline">\(1 \leftarrow 2 \rightarrow (3 \leftarrow 4
-\rightarrow 5 \rightarrow 6)\)</span> (2 is the root of the whole tree,
-and 4 is the root of its right child)</p>
+<h1 id="vc-le-indset-le-vc">VC <span class="math inline">\(\le\)</span>
+INDSET <span class="math inline">\(\le\)</span> VC</h1>
+<p>It turns out, if there are <span class="math inline">\(n\)</span>
+nodes and there is a clique of size <span
+class="math inline">\(k\)</span>, then there is an indset of size <span
+class="math inline">\(n - k\)</span></p>
+<p>Consider the graph on the right. There are vertex covers of size 2.
+One of them is <span class="math inline">\(\{A, B\}\)</span></p>
+<figure>
+<img src="cover_indset.svg"
+alt="bg height:100% right:60% an undirected graph in which A is connected to B, C, D, and E; and B is connected to A and C, but not D and E." />
+<figcaption aria-hidden="true">bg height:100% right:60% an undirected
+graph in which A is connected to B, C, D, and E; and B is connected to A
+and C, but not D and E.</figcaption>
+</figure>
+<p>Is there an indset of size 3?</p>
+<hr />
+<h1 id="vc-le-indset-le-vc-2">VC <span
+class="math inline">\(\le\)</span> INDSET <span
+class="math inline">\(\le\)</span> VC (2)</h1>
+<p>Yes, <span class="math inline">\(\{D, E, C\}\)</span> is an indset of
+size 3.</p>
+<p>It turns out, we don’t even need to modify the graph. Knowing that
+there is a VC tells us there is an indset and vice versa.</p>
+<p>Why does this work? Imagine that you have an indset. The nodes are
+not adjacent to each other. If you take the compliment (i.e., the nodes
+not in the indset), it would include all the adjacent nodes and
+therefore all the adjacent edges.</p>
+<p>If the graph is connected, it would have to include all the gaps
+between the nodes in the indset. If the graph is not connected, then
+there are random disconnected nodes that do not have edges to
+connect.</p>
+<p>The same argument works in reverse. If I have a vertex cover, then
+its compliment includes nodes that are adjacent to the cover but not
+touching each other.</p>
+<hr />
+<h1 id="be-careful">Be careful</h1>
+<p>Just because there <em>is</em> an indset of size 3 doesn’t mean that
+it’s the largest indset.</p>
+<p>Suppose we describe a graph in which nodes A, B, and C are all
+connected to each other in a clique, but there is also a connection from
+C to D.</p>
+<p>This graph has a 3-clique, and it also has indsets of size <span
+class="math inline">\(4 - 3 = 1\)</span>, as we would expect.</p>
+<p>But it <em>also</em> has indsets of size 2!</p>
 <hr />
 <h1 id="questions-6">Questions?</h1>
 <!-- _class: invert questions -->
 <hr />
-<h1 id="more-on-rebuilding-trees">More on rebuilding trees</h1>
-<p>In practice, we don’t need to compute the log each time. Which is
-good because that’s an expensive operation.</p>
-<p>Instead, we can just directly use the size of the ancestor.</p>
-<p>If we rebuild the first ancestor <span
-class="math inline">\(i\)</span> for which <span
-class="math inline">\(\mathrm{size}(i) \gt \alpha \cdot
-\mathrm{size}(\mathrm{parent})\)</span>, that is equivalent.</p>
-<p>Why is it equivalent? Because if the tree is balanced, that should
-never happen. No node should be larger than the alpha fraction of its
-parent.</p>
-<p>More algebra follows…</p>
+<h1 id="knowledge-check-2">Knowledge check (2)</h1>
+<ul>
+<li>We’ve shown VC <span class="math inline">\(\le\)</span> INDSET <span
+class="math inline">\(\le\)</span> VC</li>
+<li>We’ve shown CLIQUE <span class="math inline">\(\le\)</span> INDSET
+<span class="math inline">\(\le\)</span> CLIQUE</li>
+<li>What can we say about the relationship INDSET and VC?</li>
+</ul>
 <hr />
-<h1 id="finding-the-scapegoat-quickly">Finding the scapegoat
-quickly</h1>
-<p>Remember that we were searching for the first <span
-class="math inline">\(i^{\mathrm{th}}\)</span> ancestor of the inserted
-node, such that <span class="math inline">\(i \gt \log_{(1 /
-\alpha)}(\mathrm{size}(i))\)</span></p>
-<p>Raise both sides by <span class="math inline">\(1/ \alpha\)</span>:
-<span class="math inline">\((1 / \alpha)^i \gt
-\mathrm{size}(i)\)</span></p>
-<p>This is the first <span class="math inline">\(i\)</span> we find
-moving up from the inserted node with this inequality. The previous
-<span class="math inline">\(i\)</span> did not have this property
-(including <span class="math inline">\(i = 1\)</span>): <span
-class="math inline">\((1 / \alpha)^{i - 1} \le \mathrm{size}(i -
-1)\)</span></p>
+<h1 id="kc-2-answers">KC 2 answers</h1>
+<p>INDSET and VC are in the same class. They are both NP-complete.</p>
+<p>Because VC <span class="math inline">\(\le\)</span> INDSET <span
+class="math inline">\(\le\)</span> VC and CLIQUE <span
+class="math inline">\(\le\)</span> INDSET <span
+class="math inline">\(\le\)</span> CLIQUE, then VC <span
+class="math inline">\(\le\)</span> INDSET <span
+class="math inline">\(\le\)</span> CLIQUE and CLIQUE <span
+class="math inline">\(\le\)</span> INDSET <span
+class="math inline">\(\le\)</span> VC</p>
+<p>By transitivity, VC, INDSET, and CLIQUE are all in the same class.
+Another way of putting it is: VC <span
+class="math inline">\(\le\)</span> INDSET <span
+class="math inline">\(\le\)</span> VC makes VC and INDSET in the same
+class. Same for INDSET and CLIQUE. Therefore CLIQUE and VC are in the
+same class.</p>
+<p>We also showed SAT <span class="math inline">\(\le\)</span> CLIQUE,
+and CLIQUE <span class="math inline">\(\le\)</span> NP, so now we have
+that all of these problems are in NP-complete.</p>
 <hr />
-<h1 id="finding-the-scapegoat-quickly-2">Finding the scapegoat quickly
-(2)</h1>
-<p>We can divide those two inequalities. <span class="math inline">\((1
-/ \alpha)^i \gt \mathrm{size}(i)\)</span> means that if we divide the
-right by a larger value than the left, the inequality will still be
-true. Therefore. <span class="math inline">\({(1 / \alpha)^i \over (1 /
-\alpha)^{i - 1}} \gt {\mathrm{size(i)} \over \mathrm{size(i -
-1)}}\)</span></p>
-<p>After simplifying: <span class="math inline">\((1 / \alpha) \gt
-{\mathrm{size}(i) \over \mathrm{size}(i - 1)} \equiv \alpha \lt
-{\mathrm{size}(i - 1)\over \mathrm{size}(i)} \equiv
-\alpha\cdot\mathrm{size}(i) \lt \mathrm{size}(i-1)\)</span></p>
-<p>Remember here that <span class="math inline">\(i\)</span> is the
-parent, and <span class="math inline">\(i-1\)</span> is the child. So
-this is how we derive that inequality from before.</p>
-<p>In other words, go back up from your insertion until you find a child
-that is bigger than alpha times its parent.</p>
+<h1 id="more-np-complete-problems">More NP-complete problems</h1>
+<p>There are hundreds of NP-complete problems, but we’re out of time to
+learn more. Here are some popularly referenced ones:</p>
+<ul>
+<li>HP: the Hamiltonian Path Problem. Is there a Hamiltonia Path in the
+graph? A Hamiltonian path is a path that visits each node exactly once.
+(I can’t actually find a common abbreviation for this problem, so I’m
+using HP)</li>
+<li>TSP: travelling salesperson, decision version. Is there a path that
+visits each node exactly once that is shorter or equal to a target
+length? (normally TSP is stated as finding the shortest such circuit,
+but that version is FNP)</li>
+<li>The subset sum problem. Given a set of numbers and a target sum, is
+there any subset of the given set that has the target sum?</li>
+<li>The partition problem. Given a set of numbers, is it possible to
+partition it so that both partitions have the same sum?</li>
+</ul>
 <hr />
-<h1 id="go-back-up-from-the-insertion">Go back up from the
-insertion?</h1>
-<p>What do we mean by “go back up from the insertion”? How do you do
-that?</p>
-<p>Scapegoat trees were envisioned to not require a parent pointer in
-their struct. They were designed to use ordinary binary search tree
-structures.</p>
-<p>Why? Avoiding the parent pointer improves the cache efficiency and
-memory overhead of the tree.</p>
-<p>As a result, they wanted to build a self-balancing tree that did not
-require parent pointers.</p>
-<p>Now, AVL trees also don’t technically require them, but it ends up
-being really annoying to delete from them without parent pointers. Same
-with red-black trees.</p>
+<h1 id="practice">Practice</h1>
+<ul>
+<li>Reduce HP to TSP: it’s surprisingly easy</li>
+<li>Reduce TSP to HP: harder, but if you are clever with the lengths you
+use for your edges and the target length for TSP, you can do it.</li>
+<li>Do we need to do anything else to prove NP-completeness of TSP and
+HP? If so, what would it take? This one is answered in the next
+slide.</li>
+</ul>
 <hr />
-<h1 id="go-back-up-from-the-insertion-2">Go back up from the insertion?
-(2)</h1>
-<p>So, as you insert down into the tree, you are expected to maintain a
-list of ancestors.</p>
-<p>How big should the list be? For any reasonable value of alpha you can
-use a static list. Unless the tree is <em>really</em> imbalanced it
-shouldn’t need more than 1000 depth.</p>
-<p>Feel free to use an array list of your own making though. Double the
-array list every time it gets full and you will have amortized <span
-class="math inline">\(O(1)\)</span> insertions.</p>
+<h1 id="proving-np-completeness-of-tsp-and-hp">Proving NP-completeness
+of TSP and HP</h1>
+<p>We haven’t proved it’s NP-complete.</p>
+<p>We need to show: - that TSP or HP is NP. Then we know they are both
+in NP. - that an existing NP-complete problem can be reduced to one of
+them.</p>
+<p>If we did this, both problems would be proven np-complete (which they
+are).</p>
+<p>In practice, there is a clever reduction from 3SAT to HP that
+involves creating a series of diamonds of 4 vertices, one for each
+variable, that forces you to pick one way or the other depending on
+whether the variable is assigned true or not.</p>
 <hr />
-<h1 id="go-back-up-from-the-insertion-3">Go back up from the insertion?
-(3)</h1>
-<p>Then, after inserting, the length of that list (+ 1) is the depth. If
-that number is larger than the alpha depth of the tree, we have a
-problem.</p>
-<p>Whom do we blame? Iterate over the list of ancestors in reverse
-order. If we find an ancestor <span class="math inline">\(i\)</span>
-where <span class="math inline">\(\alpha \cdot \mathrm{size}(i - 1) \lt
-\mathrm{size}(i)\)</span>, we make <span
-class="math inline">\(i\)</span> the scapegoat.</p>
-<p>(note: this formula is slightly different from the previous one,
-because here, <span class="math inline">\(i\)</span> is the index in an
-array and <span class="math inline">\(i = 0\)</span> is the root,
-whereas before, <span class="math inline">\(i=1\)</span> was the node we
-just inserted)</p>
-<p>Eventually, we <em>will</em> reach a scapegoat. The root can be a
-scapegoat too.</p>
+<h1 id="beyond-np-np-hard">Beyond NP: NP-Hard</h1>
+<p>NP-complete is the hardest set that we’ve spent a lot of time on.</p>
+<p>The problems in NP-complete are all <span
+class="math inline">\(O(2^{p(n)})\)</span>, because all of them can be
+solved by considering every combination (for <span
+class="math inline">\(n\)</span> inputs, there are <span
+class="math inline">\(2^n\)</span> combinations) and then some
+polynomial time work to verify each input.</p>
+<p>Every NP-complete problem is in NP-hard, but NP-hard has some
+decision problems that are even slower than NP-complete.</p>
+<p>Can anyone think of some?</p>
 <hr />
-<h1 id="getting-the-size">Getting the size</h1>
-<p>But how do we get the size on the way up?</p>
-<p>In the original paper, the authors wanted the tree node struct to be
-small, so it doesn’t store the size of the node.</p>
-<p>Instead, we start at a size of 1. We store that in an accumulator.
-Then, whenever we look at the parent node, we recursively compute the
-size of the sibling, + 1 for the parent, and add those values to the
-accumulator. We end up needing to add potentially all the nodes in the
-tree.</p>
-<p>This is <span class="math inline">\(O(n)\)</span>, so why doesn’t
-that destroy the performance of the tree?</p>
+<h1 id="np-hard---np-complete-problems">NP-hard - NP-complete
+problems</h1>
+<p>Undecidable problems are harder than NP-complete (because there is no
+bound to how long they can take).</p>
+<p>So the halting problem and equivalence problems are NP-hard and not
+NP-complete.</p>
+<p>Determining if one piece of code is “maximally optimized” in general
+is also harder than NP-complete (it relies on equivalence).</p>
+<p>There are also more conventional problems that are hard. For example:
+“is this the set of all permutations of <span
+class="math inline">\(n\)</span> values” is <span
+class="math inline">\(\Theta(n!)\)</span></p>
 <hr />
-<h1 id="amortized-analysis">Amortized analysis</h1>
-<p>Remember how we did best-case, worst-case, and average-case
-analysis?</p>
-<p>There’s another kind, called amortized analysis.</p>
-<p>Sometimes you will hear of a data structure having “amortized <span
-class="math inline">\(\Theta(n)\)</span>”. A good example of that is
-array lists.</p>
-<p>Array lists store an array, say, with a capacity of 16. They also
-store the current size, which let’s say is 10.</p>
+<h1 id="below-np-complete-but-above-p-np-inter">Below NP-complete but
+above P: NP-Inter</h1>
+<p>If P is not NP, then there are problems that are in NP, but not in P
+nor in NP-complete.</p>
+<p>For now (as long as we don’t know P = NP), we call this set
+NP-inter.</p>
+<p>The most widely referenced NP-inter problem I’m aware of is integer
+factorization: given two integers, do they have a common factor greater
+than 1? This is exponential in the number of bits, <a
+href="https://en.wikipedia.org/wiki/General_number_field_sieve">but is
+much faster than <span class="math inline">\(O(2^n)\)</span></a></p>
+<p>Another one is the <a
+href="https://en.wikipedia.org/wiki/Discrete_logarithm">discrete
+logarithm problem</a>.</p>
+<p>The non-P nature of these is important. Interestingly, many of these
+(but not all) are instances of a more fundamental problem called
+“abelian hidden subgroup” problems, which can be solved by quantum
+computers in polynomial time. Bad news for browser security!</p>
 <hr />
-<h1 id="amortized-analysis-2">Amortized analysis (2)</h1>
-<p>When you add something to the array, it’s normally <span
-class="math inline">\(\Theta(1)\)</span>. You just put it at the end and
-increment the size.</p>
-<p>However, if you keep doing this, eventually the array will fill up.
-Then what?</p>
-<p>Then you allocate a new array that is twice as big, and copy over the
-values. This costs <span class="math inline">\(\Theta(n)\)</span> to
-copy everything over.</p>
-<p>So does that mean that adding to the end of an array list is <span
-class="math inline">\(O(n)\)</span>? That’s bad, though.</p>
-<p>Sort of…</p>
+<h1 id="tested-skills">Tested skills</h1>
+<p>This section will be tested by asking short problems that test the
+following: - That you understand the definitions. - What is required for
+membership in P? - What is required for membership in NP? - What is
+required for membership in NP-inter? - What is required for membership
+in NP-hard? - What is required for membership in NP-complete?</p>
+<ul>
+<li>That you understand the reduction from any NP problem to SAT.</li>
+<li>That you understand SAT <span class="math inline">\(\to\)</span>
+3SAT</li>
+</ul>
+<p>More on the next slide…</p>
 <hr />
-<h1 id="amortized-analysis-3">Amortized analysis (3)</h1>
-<p>Yes, in the worst case, adding to the array is very expensive.</p>
-<p>Let’s say that it costs 1 time unit to copy one element.</p>
-<p>If it starts with capacity 1, it takes 1 time unit to fill it up, and
-1 time unit to copy it over. Now it has capacity 2.</p>
-<p>It takes 1 more time unit to fill it up. 2 time units to copy it. Now
-capacity = 4. It takes 2 more units to fill, 4 more to copy. Capacity =
-8…</p>
-<p>let’s make a table…</p>
+<h1 id="tested-skills-2">Tested skills (2)</h1>
+<ul>
+<li>That you understand SAT <span class="math inline">\(\le\)</span>
+CLIQUE</li>
+<li>That you understand INDSET, CLIQUE, and VC, and the mutual
+reductions.</li>
+<li>That you are familiar with the complexity class of all the problems
+we’ve talked about in this lecture (i.e., if I say reduce a problem to
+discrete log, you know that means NP-inter)</li>
+<li>That you understand how to prove that problems belong to one
+category or another using reductions.</li>
+</ul>
 <hr />
-<h1 id="amortized-analysis-4">Amortized analysis (4)</h1>
-<table>
-<thead>
-<tr>
-<th>Capacity</th>
-<th>Time to fill from previous capacity</th>
-<th>Time to reallocate</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>2</td>
-<td>1</td>
-<td>2</td>
-</tr>
-<tr>
-<td>4</td>
-<td>2</td>
-<td>4</td>
-</tr>
-<tr>
-<td>8</td>
-<td>4</td>
-<td>8</td>
-</tr>
-<tr>
-<td>16</td>
-<td>8</td>
-<td>16</td>
-</tr>
-<tr>
-<td>32</td>
-<td>16</td>
-<td>32</td>
-</tr>
-</tbody>
-</table>
-<p>See the pattern?</p>
+<h1 id="quiz-format">Quiz format</h1>
+<p>The quiz will be 4 questions. Each question will be short answer, and
+will require a brief explanation.</p>
+<p>The 4 questions will be waited equally (25%). Self grading will be
+the same as always.</p>
 <hr />
-<h1 id="amortized-analysis-5">Amortized analysis (5)</h1>
-<p>Everytime we reallocate the array, we have twice as long until we
-need to reallocate.</p>
-<p>The future reallocation time is twice the time it takes to fill up
-half the array.</p>
-<p>So we can just pretend that it takes 3 time units to append one
-element.</p>
-<p>For each element between size 8 and 16, we pay one time unit to
-append that element. However, in the future, will have to pay 16 time
-units. So total = (16-8) + 16 = 24 = <span
-class="math inline">\(3\cdot8\)</span></p>
-<p>For each element between size 16 and 32, we pay 1 unit to append.
-However, in the future we will have to pay 32. Total = (32 - 16) + 32 =
-48 = <span class="math inline">\(3 \cdot 16\)</span></p>
-<p>We always pay a total of three time units per element, even though we
-keep having to copy more and more</p>
+<h1 id="example-problems">Example problems</h1>
+<ol type="1">
+<li>Is the problem of determining if a list is sorted in NP? Give a 1
+sentence explanation of your answer.</li>
+<li>Do you think the problem of determining if a matrix is the product
+of two matrices is known to be in NP-complete? Give a 1 sentence
+explanation of your opinion.</li>
+<li>Assuming P is not NP, are we aware of any problems in NP-Inter that
+are also in NP-complete? Explain your answer, and provide an example if
+your answer is “yes”.</li>
+<li>Suppose we learn that P = NP. Is NP-inter now empty?</li>
+<li>Are there any members of NP-complete that are not in NP-hard?
+Explain your answer; provide an example if the answer is yes.</li>
+</ol>
 <hr />
-<h1 id="amortized-analysis-6-why">Amortized analysis (6), why?</h1>
-<p>The reason: every time we allocate, we pay twice as much. But…</p>
-<p>Every time we allocate, we go twice as long before we need to
-re-allocate.</p>
-<p>Therefore it cancels out, and it ends up being, on average, constant
-time. Just with a larger constant to account for occsional long
-copies.</p>
-<p>Wait…so amortized time is average time?</p>
-<p>In this particular case, yes. The amortized time is the same as
-average time. That’s because we’re only considering one operation:
-append.</p>
-<p>But what about with trees?</p>
+<h1 id="example-problems-2">Example problems (2)</h1>
+<ol start="6" type="1">
+<li>Suppose we are performing the sat reduction for a problem. <span
+class="math inline">\(S_{t, i, a}\)</span> is true and <span
+class="math inline">\(S_{t + 1, i + 1, b}\)</span> is true. Is is
+possible for both variables to be true? Explain your answer?</li>
+<li>Suppose we have a graph with 100 nodes, and a minimum VC of 10
+nodes. Does that say anything about the largest indset? If so, what is
+its size?</li>
+<li>Suppose we just now found a polynomial time reduction of TSP <span
+class="math inline">\(\le_m^p\)</span> List-is-sorted. Does this prove
+anything interesting we didn’t already know? If so, what, and explain
+why? If not, explain why not.</li>
+<li>Suppose we just now found find a polynomial time reduction of
+List-is-sorted <span class="math inline">\(\le\)</span> TSP. Does this
+prove anything interesting we didn’t already know? If so, what, and
+explain why? If not, explain why not.</li>
+<li>Suppose TSP <span class="math inline">\(\le\)</span> A <span
+class="math inline">\(\le\)</span> B. If A is <span
+class="math inline">\(\Omega(n!)\)</span>, which category can we assign
+B to?</li>
+</ol>
 <hr />
-<h1 id="amortized-analysis-for-trees">Amortized analysis for trees</h1>
-<p>Trees need to be careful. They are used for dictionaries. Suppose
-we’re using the dictionary to store user activity because we want to see
-all the activity over the previous month or something. We have to be
-very careful.</p>
-<p>A user might realize that we’re using a tree, and craft some activity
-that hits the worst case for the tree with the goal of slowing down our
-server. This is called a denial of service attack.</p>
-<p>Amortized analysis is when you consider every possible action a user
-could take, and conclude that in every possible case, the total amount
-of time is bounded by some function of <span
-class="math inline">\(n\)</span>.</p>
+<h1 id="selected-answers">Selected answers</h1>
+<p>For 1, yes, determining if a list is sorted is in P, and every
+problem in P is in NP.</p>
+<p>For 3, no, if P <span class="math inline">\(\ne\)</span> NP, NP-inter
+and NP-complete are disjoint. If we showed an NP-inter problem were in
+NP-complete, it would imply that we reduced an NP-complete problem to an
+NP-inter problem in polynomial time, which would “merge” the two
+sets.</p>
+<p>For 5, no, every member of NP-complete is in NP-hard by definition.
+NP-hard is the set of problems that are at least as hard as the problems
+in NP-complete.</p>
+<p>For 8, yes, it would mean that P = NP, because we reduced an
+np-complete problem to a P problem in polynomial time.</p>
+<p>For 9, no, we already knew the problem List-is-sorted can be reduced
+to TSP, because P <span class="math inline">\(\le\)</span> NP <span
+class="math inline">\(\le\)</span> SAT <span
+class="math inline">\(\le\)</span> TSP.</p>
 <hr />
-<h1 id="amortized-analysis-in-general">Amortized analysis in
-general</h1>
-<p>Amortized analysis is more complicated than the tricks we’ve used so
-far.</p>
-<p>There’s typically some kind of accounting that needs to be done.</p>
-<p>One way of doing it is to define a relation that represents all the
-valid states our data structure could be in, and then do induction over
-derivations of the relation.</p>
-<p>This kind of analysis features in Ph.D. level coursework on
-algorithms and it’s outside the scope of this class.</p>
-<p>However, we can use the amortized analysis of others…</p>
+<h1 id="more">More</h1>
+<p>These are just some of the types of questions I can ask.</p>
+<p>I can also ask about cliques, 3SAT reductions, the reasons for
+complexity classes (instead of just relying on big-<span
+class="math inline">\(\Theta\)</span>), etc.</p>
+<p>Anything in the slides is fair game.</p>
+<p>However, now you can see what kinds of questions I am going to ask
+and roughly how long they will take.</p>
+<p>I highly recommend letting an AI quiz you based on these slides. This
+is a truly good, healthy, and constructive use of AI.</p>
 <hr />
-<h1 id="amortized-analysis-for-scapegoat-tree-sizes">Amortized analysis
-for scapegoat tree sizes</h1>
-<p>When we’re computing the size of each ancestor in the scapegoat tree,
-we will touch at most <span class="math inline">\(n\)</span> nodes,
-where <span class="math inline">\(n\)</span> is the size of the
-scapegoat.</p>
-<p>Then we will re-build the scapegoat, which is also <span
-class="math inline">\(O(n)\)</span></p>
-<p>However, both of these operations occur fairly rarely. Even in the
-worst case scenario, with <span class="math inline">\(.5 \lt \alpha \lt
-1\)</span>, the insertion itself will be <span
-class="math inline">\(O(\lg n)\)</span>, and then some time will pass
-before we have to do it again. As the tree gets big, even with alpha
-very close to <span class="math inline">\(.5\)</span>, this holds.</p>
+<h1 id="final-video">Final video</h1>
+<p>I recommend <a
+href="https://www.youtube.com/watch?v=unLPk4H1hto">this video</a> to
+help you understand just how creative reductions can be.</p>
+<p>The video shows a reduction from 3SAT into determining whether a
+Super Mario Bros. level is beatable.</p>
+<p>This might help it click if you’re struggling to understand
+reduction.</p>
 <hr />
-<h1 id="rebuilding-the-tree">Rebuilding the tree</h1>
-<p>We’ve talked about how to insert, how to compute the sizes of each
-ancestor, and how to find the scapegoat. We’ve also mentioned rebuilding
-the tree. How do you do it?</p>
-<p>The easiest way: the tree is already in order because it is a binary
-search tree. Perform an in-order traversal on the scapegoat tree and
-write it into an array.</p>
-<p>Use that array to rebuild the tree. Take the median as the new root.
-Now run the rebuild algorithm on the left and right partitions of that
-array, and make them the left and right children of the root.</p>
-<p>This takes <span class="math inline">\(O(n)\)</span> time. The
-authors in the studies have a more complex re-build algorithm that avoid
-re-allocations, and involves manipulating the child node pointers of the
-scapegoat.</p>
-<hr />
-<h1 id="questions-7">Questions?</h1>
-<!-- _class: invert questions -->
-<hr />
-<h1 id="your-assignment">Your assignment</h1>
-<p>Your next project involves using scapegoat trees.</p>
-<p>Let’s take a look!</p>
-<hr />
-<h1 id="appendix">Appendix</h1>
-<p>The shortest paper on scapegoat trees from the authors are <a
-href="https://people.csail.mit.edu/rivest/pubs/GR93.pdf">these ACM-SIAM
-proceedings</a>.</p>
-<p>They have enough information for you to implement scapegoat
-trees.</p>
-<p>However, feel free to reach out for help if you get stuck.</p>
+<p>Appendix: Mermaid source</p>
+<pre><code>---
+config:
+      theme: redux
+---
+flowchart TD
+  A --- B
+  A --- C
+  A --- D
+  B --- C</code></pre>
 </body>
 </html>
