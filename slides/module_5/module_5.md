@@ -24,7 +24,7 @@ Feel free to submit fixes, improvements, and new material [here](https://github.
 
 In this module we will review trees.
 
-We will learn about their benefits, their drawbacks, and how to mitigate them.
+We will learn about their benefits, their drawbacks, and how to mitigate those drawbacks.
 
 However, before we get too much into it, I have a quesiton:
 
@@ -52,7 +52,7 @@ A dictionary can be seen either as a generalization of an array, or as a special
 
 Ordinarily, arrays are a kind of function. You give them an index, and they give you some kind of value.
 
-We say that they are *partial* functions, because arrays are not required to have a value for every index. Some indices might not have a value. If an array has size 100, then any index $\ge$ 100 is not going to be there.
+We say that they are *partial* functions, because arrays are not required to have a value for every index. Some indices might not have a value. If an array has size 100, then any index $\gt$ 100 is not going to be there.
 
 However, array indices are limited to natural numbers (usually, technically in C you can access arrays with negative indices for extremely arcane purposes). And the keys need to be adjacent for efficiency reasons.
 
@@ -106,11 +106,13 @@ Specifically, an in-order traversal will be in order.
 
 # Trees are sorted (2)
 
-By induction on a tree:
+By induction on a binary search tree:
 - If it's empty, it's sorted
 - If in-order traversal of its child nodes is sorted, and everything in left < root < everything in right, than inorder(left) ++ root ++ inorder(right) is sorted.
 
 So the normal property of BSTs, that the node's value is always between the values of its left and right children, naturally makes it so that in-order traversal is sorted.
+
+[how would the proof need to change for ternary, or $n$-ary tree?] 
 
 ---
 
@@ -225,6 +227,8 @@ The type looks like this:
 
 That's a function pointer. And we never, ever use them without a typedef.
 
+(We *can* use them without a typedef, but we shouldn't. C's syntax which makes types a prefix but the pointer `*` a suffix make it really janky to write them in practice).
+
 ---
 
 # Function pointer typedef
@@ -266,7 +270,7 @@ That said, our pool pages are still in a linked list, and trees are non-linear d
 
 However, we can free the entire tree with a single `pool_destroy` call.
 
-It's not absolutely required to use a pool. Feel free to use `malloc` and `free`. There are other benefits, too, 
+It's not absolutely required to use a pool. Feel free to use `malloc` and `free`. There are other benefits, too. Tools like `valgrind` will help you debug memory errors if you use `malloc` and `free`.
 
 ---
 
@@ -367,7 +371,7 @@ Does this make sense? We have time for questions if we need to cover double poin
 
 # The drawbacks of BSTs
 
-BSTs are useful, but they have a huge drawback.
+BSTs are useful, but they have a huge drawback relative to hash maps.
 
 [what is it?]
 
