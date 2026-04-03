@@ -1766,7 +1766,7 @@ You can also try quizzes from previous semesters. They are in this repository, i
 
 # Quiz: How should I study? (2)
 
-Remember: *if you aren't studying under time controls with pen and paper, **you aren't studying!*** So actually take these like quizzes.
+Remember: *if you aren't studying under time controls with pen and paper, **you aren't fully studying!*** So actually take these like quizzes.
 
 The first practice quiz is worked. The others aren't.
 

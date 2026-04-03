@@ -279,7 +279,7 @@ There is no small-θ</p>
 useful</h1>
 <p>There’s nothing wrong with measuring how long an algorithm takes.</p>
 <p>In fact: you should do that. It’s a good idea. Sometimes algorithms
-can be theoretically fast an practically slow.</p>
+can be theoretically fast and practically slow.</p>
 <p>For example, <a
 href="https://en.wikipedia.org/wiki/Computational_complexity_of_matrix_multiplication">there
 are ways of multiplying matrices that are theoretically faster than the
@@ -298,7 +298,10 @@ average of 2 minutes when n = 10000, with a standard deviation of
 when doing purely empirical measurement. You have to take multiple
 measurements to determine exponents, plus additional measurements to get
 a feel for how much they vary.</p>
-<p>Doing high quality empirical benchmarks is surprisingly involved.</p>
+<p>Doing high quality empirical benchmarks is surprisingly
+involved/difficult (we have a couple we discuss in later lectures: check
+the code in the repo to see how much work we have to do to force the
+compiler to not throw microbenchmark code away).</p>
 <div class="footnote">
 <ul>
 <li>unless you’re hosting an unsecure SSH or something.</li>
@@ -447,6 +450,9 @@ class="math inline">\(O(f(n))\)</span> is the set of functions that are
 eventually bounded by <span class="math inline">\(f(n)\)</span> if n is
 large enough and if we multiply by a large enough positive constant
 <span class="math inline">\(C\)</span>.</p>
+<p>That means two things: we can ignore constant multiples (by choosing
+a big <span class="math inline">\(C\)</span>), and that we can assume
+that <span class="math inline">\(n\)</span> is really big.</p>
 <p>For example: - <span class="math inline">\(n \in O(n)\)</span>,
 because <span class="math inline">\(n \leq C \cdot n\)</span> if we
 choose <span class="math inline">\(C=1\)</span> (or 2, or 3, or anything
@@ -481,6 +487,37 @@ enough.</figcaption>
 class="math inline">\(f(n)=n\)</span>.</p>
 <p>This would be true even of a smaller linear function, because we can
 multiply by any constant.</p>
+<p>Therefore, we can say <span class="math inline">\(f(n) = n\)</span>
+<span class="math inline">\(\in O(n^2)\)</span>, <span
+class="math inline">\(\in O(1.25n)\)</span>, and <span
+class="math inline">\(\in O(n \log n)\)</span></p>
+<hr />
+<h1 id="even-smaller-functions-can-bound-bigger-ones">Even smaller
+functions can “bound” bigger ones</h1>
+<p>We can even say that <span class="math inline">\(n \in
+O(0.001n)\)</span></p>
+<p>But how? Isn’t <span class="math inline">\(g(n) = 0.001n\)</span> a
+lot smaller than <span class="math inline">\(f(n) = n\)</span>? How
+could it ever be the same or larger?</p>
+<p>Remember, <span class="math inline">\(f(n) \in O(g(n))\)</span> does
+not mean <span class="math inline">\(g(n)\)</span> is bigger. It means
+that we can <em>make</em> it be bigger if we let <span
+class="math inline">\(n\)</span> be large enough <em>or</em> we multiply
+it by a big enough constant <span class="math inline">\(C\)</span>!</p>
+<p>So multiply it by 1,000! Now it’s the same size and we’re good.</p>
+<p>If <em>some</em> constant can be multiplied by the function to make
+<span class="math inline">\(g(n)\)</span> bigger than <span
+class="math inline">\(f(n)\)</span> for any choice of “big enough” <span
+class="math inline">\(n\)</span>, we’re good. <span
+class="math inline">\(f(n) \in O(g(n))\)</span></p>
+<p>Another way to think about it: <span
+class="math inline">\(O(g(n))\)</span> is the set of functions that can
+be <em>bounded</em> by <span class="math inline">\(g(n)\)</span> (with a
+big enough <span class="math inline">\(C\)</span>). We’re saying that
+<span class="math inline">\(f\)</span> is in that set.</p>
+<hr />
+<h1 id="questions-1">Questions?</h1>
+<!-- _class: invert questions -->
 <hr />
 <h1 id="knowledge-check">Knowledge check</h1>
 <p>Give an example of a function <span
@@ -583,7 +620,7 @@ without bogging down the reader with computer specific information or
 meaningless time blips.</p>
 <hr />
 <!-- _class: invert questions -->
-<h1 id="questions-1">Questions?</h1>
+<h1 id="questions-2">Questions?</h1>
 <hr />
 <h1 id="the-formal-definition">The formal definition</h1>
 <p>Okay, let’s get more rigorous. Our definition was good before, but
@@ -650,8 +687,9 @@ class="math inline">\(\forall\)</span>, a typical way to start your
 proof is by saying “suppose”.</p>
 <p>To make it easier to track, let’s track the goal, and the proof so
 far, at the same time.</p>
-<p>Proof: <em>empty</em> Goal: <span class="math inline">\(\forall f: N
-\to R^+, f \in O(n) \implies f \in O(n^2)\)</span></p>
+<p>Proof so far: <em>empty</em> Goal: <span
+class="math inline">\(\forall f: N \to R^+, f \in O(n) \implies f \in
+O(n^2)\)</span></p>
 <hr />
 <h1 id="proving-that-statement-2">Proving that statement (2)</h1>
 <p>Now we “suppose” to “peel off” the forall at the beginning of the
@@ -663,7 +701,7 @@ N \to R^+}, f \in O(n) \implies f \in O(n^2)\)</span>.</p>
 \in O(n^2)\)</span>?</p>
 <hr />
 <h1 id="proving-implications">Proving implications</h1>
-<p>So how, do we prove that <span class="math inline">\(P \implies
+<p>So how do we prove that <span class="math inline">\(P \implies
 Q\)</span>?</p>
 <p>We have three options: 1. Assume that <span
 class="math inline">\(P\)</span> (aka, the hypothesis) is true, and show
@@ -851,7 +889,8 @@ of nowhere.</p>
 <hr />
 <h1 id="subsets-example-what-now">Subsets example: what now?</h1>
 <p>Notice that we have some natural number named <span
-class="math inline">\(n&#39;\)</span> in our context.</p>
+class="math inline">\(n&#39;\)</span> in our <em>context</em>. The
+context is the set of all the things we have “supposed”.</p>
 <p>And notice that we have an assumption: <span
 class="math inline">\(\forall n, n \ge n_0 \implies f(n) \leq C \cdot
 n\)</span></p>
@@ -1043,7 +1082,7 @@ feel confident.</p>
 there, office hours/email, or AI for convenience.</p>
 <p>Let’s check the assignments to see if one is ready for us!</p>
 <hr />
-<h1 id="questions-2">Questions?</h1>
+<h1 id="questions-3">Questions?</h1>
 <!-- _class: invert questions -->
 <hr />
 <!--
@@ -1198,7 +1237,7 @@ class="math inline">\(Ω\)</span> for lower bound, and <span
 class="math inline">\(Θ\)</span> for both lower and upper.</p>
 <hr />
 <!-- _class: questions invert -->
-<h1 id="questions-3">Questions?</h1>
+<h1 id="questions-4">Questions?</h1>
 <hr />
 <h1 id="lets-have-an-example">Let’s have an example</h1>
 <p>Okay, enough abstract math. Let’s look at a real algorithm!</p>
@@ -1276,12 +1315,17 @@ This algorithm is called an “inductive principle”.</p>
 <p>There are many inductive principles for each inductive datatype. The
 most basic inductive principle for natural numbers is called <em>weak
 induction</em>*.</p>
-<p>Weak induction is a proof algorithm. If you give it two proofs, it
-will spit out a proof of <span class="math inline">\(P(n)\)</span> for
-any n. </p>
+<p>Weak induction is a proof algorithm. It will generate proofs of the
+form <span class="math inline">\(\forall n \in N, P(n)\)</span> If you
+give it two proofs, it will spit out a proof of <span
+class="math inline">\(\forall n \in N, P(n)\)</span> for any n. </p>
 <p>Here are the proofs we must give it: 1. <span
 class="math inline">\(P(0)\)</span> 2. <span
-class="math inline">\(\forall n, P(n) \implies P(n + 1)\)</span></p>
+class="math inline">\(\forall n, [P(n) \implies P(n + 1)]\)</span>
+(notice the brackets: we fix <span class="math inline">\(n\)</span>
+first. Then, <span class="math inline">\(P(n)\)</span> for whatever
+choice of <span class="math inline">\(n\)</span> also must imply <span
+class="math inline">\(P(n+1)\)</span></p>
 <p>These proofs each correspond to one of the constructors of natural
 numbers.</p>
 <div class="footnote">
@@ -1292,7 +1336,7 @@ working with trees and divide and conquer algorithms.</p>
 <h1 id="the-weak-induction-algorithm">The weak induction algorithm</h1>
 <p>Because this (half-functional psuedocode) is the function that weak
 induction requires*</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>P<span class="op">(</span>n<span class="op">)</span> weak_induction<span class="op">(</span>P<span class="op">,</span> n<span class="op">,</span> P<span class="op">(</span><span class="dv">0</span><span class="op">)</span> base<span class="op">,</span> P<span class="op">(</span>forall n<span class="op">,</span> P<span class="op">(</span>n<span class="op">)</span> <span class="op">-&gt;</span> P<span class="op">(</span>n <span class="op">+</span> <span class="dv">1</span><span class="op">))</span> ind<span class="op">)</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>P<span class="op">(</span>n<span class="op">)</span> weak_induction<span class="op">(</span>P<span class="op">,</span> n<span class="op">,</span> P<span class="op">(</span><span class="dv">0</span><span class="op">)</span> base<span class="op">,</span> P<span class="op">(</span>forall n<span class="op">,</span> <span class="op">(</span>P<span class="op">(</span>n<span class="op">)</span> <span class="op">-&gt;</span> P<span class="op">(</span>n <span class="op">+</span> <span class="dv">1</span><span class="op">)))</span> ind<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> n of</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">|</span> <span class="dv">0</span> <span class="op">=&gt;</span> <span class="cf">return</span> base</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">|</span> n<span class="ch">&#39; </span><span class="er">+ 1 =&gt;                                     // n</span><span class="ch">&#39;</span> is the number before n</span>
@@ -1461,6 +1505,34 @@ picked the wrong goal. - We could have made a logic error in the proof.
 be different than we expect. - I had bugs in both my proof and code
 making these slides.</p>
 <hr />
+<h1 id="proofs-aid-unit-testing">Proofs aid unit testing</h1>
+<p>However, it’s still very useful to do this. For real. In actual
+code.</p>
+<p>You don’t have to decorate your loops with detailed logical
+arguments, but looking at the code and clearly understanding its
+invariant is often key to understanding it.</p>
+<p>Once you understand the proof, you get a nice “unit test generator”.
+You basically have a road map for every way the code could be wrong: *
+If we swapped the wrong values, the inner invariant would not be true. *
+If the inner loop had the wrong bounds (both starting and ending), the
+invariant would not be true. Test for both. Same for the outer loop. *
+If by some weird fluke the increment was wrong: the invariant would not
+hold true.</p>
+<p>By testing for all these things, we gain confidence that the code
+conforms to our model.</p>
+<hr />
+<h1 id="how-would-i-convince-someone-else">“How would I convince someone
+else?”</h1>
+<p>At this point, we’re used to writing software, but not necessarily
+<em>reliable</em> software.</p>
+<p>“How do I know this is right?” Right now a lot of us use vibes.</p>
+<p>I recommend asking the question: how would I convince someone else
+this works?</p>
+<p>A good invariant is a very strong argument that the approach is
+good.</p>
+<p>Good unit tests that test the invariant are a strong argument that
+the actual code is good.</p>
+<hr />
 <h1 id="unit-testing-in-c">Unit testing in C</h1>
 <p>Check the code on the <a
 href="https://github.com/grantwill74/notes-on-algorithm-design">GitHub</a>.
@@ -1472,7 +1544,7 @@ paste.</p>
 <p>Feel free to copy my unit testing solution for your assignments.</p>
 <hr />
 <h1 id="proofs-are-still-valuable">Proofs are still valuable</h1>
-<p>“Then why bother with proofs?”</p>
+<p>“Seriously, why bother with proofs?”</p>
 <p>Proofs force you to deeply understand the code.</p>
 <p>Once you’ve proven it, even if the proof is wrong, when you step
 through the code with a debugger, it will be much easier to understand
@@ -1485,17 +1557,121 @@ inductive reasoning instead.</p>
 <p>One more thing: most competitive and technical interview problems
 start from a proof.</p>
 <hr />
-<h1 id="proof-practice">Proof practice</h1>
+<h1 id="making-good-invariants">Making good invariants</h1>
+<p>An invariant <em>must</em> have these properties: 1. Initialization:
+it must be true before the structure (usually a loop) is entered. 2.
+Maintenance: it must be true after each complete iteration. 3.
+Termination: It must be true when exiting the structure. This is often
+implied by the maintenance condition, but if you allow early breaks, you
+also need to consider that it’s true after one of those.</p>
+<p>But technically, <code>1 + 1 = 2</code> is an invariant that will
+always meet those requirements, and I won’t accept it on a test. So what
+does an invariant need to be actually useful?</p>
+<hr />
+<h1 id="making-good-invariants-2">Making good invariants (2)</h1>
+<p>In general, the invariant needs to do three things: 1. Include the
+variables actually modified by the loop. If it doesn’t describe things
+the loop changes, it’s not really describing the behavior of the loop.
+2. Progressively reach the goal. This is important for inductive
+reasoning. We want to know that after each iteration of the loop, we’re
+one step closer. Ask yourself: is the property I want now true for at
+least one more element in the collection or range I’m iterating over? 3.
+Make it easy to see that the goal is met. If our algorithm is supposed
+to sort things, the invariant should demonstrate that the result will be
+sorted. If our algorithm is supposed to count things, the invariant
+should show that the count is correct.</p>
+<hr />
+<h1 id="good-invariant-knowledge-check">Good invariant knowledge
+check</h1>
+<p>Write a good invariant for this loop which sums all the elements of
+an array and returns 0 on an empty range. We’re allowing overflow to
+happen:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint64_t</span> sum<span class="op">(</span><span class="dt">uint64_t</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">uint64_t</span> sum <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        sum <span class="op">+=</span> arr<span class="op">[</span>i<span class="op">]</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sum<span class="op">;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="good-invariant-knowledge-check-answer">Good invariant knowledge
+check answer</h1>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint64_t</span> sum<span class="op">(</span><span class="dt">uint64_t</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">uint64_t</span> acc <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// I: acc is the sum of values from [0 .. i) </span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        acc <span class="op">+=</span> arr<span class="op">[</span>i<span class="op">]</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> acc<span class="op">;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Here, the invariant relates the accumulator <code>acc</code> to the
+sum of values up to but not including <code>i</code>.</p>
+<p>This is trivially true before the loop: [0 .. 0) is an empty range.
+After each loop iteration, we have included one more value, and
+<code>i</code> increases. When the loop is finished, it is still true,
+and it’s easy to see that <code>i == n</code>. So we have also shown
+that <code>acc is the sum of values from [0 .. n)</code>, which is the
+goal.</p>
+<hr />
+<h1 id="good-invariant-knowledge-check-2">Good invariant knowledge check
+(2)</h1>
+<p>Write one for this loop, which computes the totient of a positive
+natural number <code>n</code> (the number of smaller natural numbers
+<code>m</code> which are coprime, i.e., <code>gcd(n, m) == 1</code>)</p>
+<p>We will assume that <code>gcd</code> is defined.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> totient<span class="op">(</span><span class="dt">unsigned</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">unsigned</span> count <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">unsigned</span> m <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> m <span class="op">&lt;</span> n<span class="op">;</span> m<span class="op">++)</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>gcd<span class="op">(</span>n<span class="op">,</span> m<span class="op">)</span> <span class="op">==</span> <span class="dv">1</span><span class="op">)</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>            count <span class="op">++;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> count<span class="op">;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="good-invariant-knowledge-check-2-answers">Good invariant
+knowledge check 2 answers</h1>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> totient<span class="op">(</span><span class="dt">unsigned</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">unsigned</span> count <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// I: count contains the number of totatives (co-prime smaller numbers)</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// between the range [0 .. m).</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 0 is never a totative, so starting at 1 is valid.</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">unsigned</span> m <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> m <span class="op">&lt;</span> n<span class="op">;</span> m<span class="op">++)</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>gcd<span class="op">(</span>n<span class="op">,</span> m<span class="op">)</span> <span class="op">==</span> <span class="dv">1</span><span class="op">)</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>            count <span class="op">++;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> count<span class="op">;</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="more-invariant-practice">More invariant practice</h1>
+<p>Write simple C programs to solve these problems using loops, and then
+add high-quality invariants:</p>
+<ol type="1">
+<li>Define a function that computes the intersection between two sets.
+These are arrays of booleans, where <code>a[20]</code> means that the
+value <code>20</code> is in set <code>a</code>, and <code>!a[20]</code>
+means it isn’t. Write the intersection to set <code>c</code>. You may
+assume both sets are the same size.
+<code>void set_inter(bool* a, bool* b, bool* c, size_t size);</code></li>
+<li>Given an array of integers, compute the longest span of
+<code>0</code>s in the array. That is,
+<code>{1, 0, 0, 0, 2, 0, 0}</code> has a span of 3 consecutive
+<code>0</code>s, which is its longest span. (Hint: your invariant will
+cover the loop, but you also need to insure that the length of your span
+so far is handled correctly after the loop). This problem shows why an
+invariant isn’t always a complete proof.
+<code>uint32_t max_span(int* arr, size_t n);</code></li>
+</ol>
+<hr />
+<h1 id="questions-5">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="more-proof-practice">More Proof practice</h1>
 <p>This is selection sort:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// finds the index of the minimum element within first n characters</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> arg_min<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">);</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> sel_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span><span class="op">;</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> min_i <span class="op">=</span> i <span class="op">+</span> arg_min<span class="op">(</span>arr <span class="op">+</span> i<span class="op">,</span> n <span class="op">-</span> i<span class="op">);</span> <span class="co">// add i, because ptr offset</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        swap<span class="op">(</span>arr <span class="op">+</span> min_i<span class="op">,</span> arr <span class="op">+</span> i<span class="op">);</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">// finds the index of the minimum element within first n characters</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> arg_min<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">);</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> sel_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> min_i <span class="op">=</span> i <span class="op">+</span> arg_min<span class="op">(</span>arr <span class="op">+</span> i<span class="op">,</span> n <span class="op">-</span> i<span class="op">);</span> <span class="co">// add i, because ptr offset</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        swap<span class="op">(</span>arr <span class="op">+</span> min_i<span class="op">,</span> arr <span class="op">+</span> i<span class="op">);</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>arr[i] is swapped with the minimum value of the array to the right.
 Apply the same analysis we did to insertion sort. You’ll need to
 implement arg_min, and prove that it works, too. If you use a loop,
@@ -1507,7 +1683,7 @@ index is correct.</p>
 <p>Implement it, then prove that your implementation is correct.</p>
 <hr />
 <!-- _class: questions invert -->
-<h1 id="questions-4">Questions</h1>
+<h1 id="questions-6">Questions</h1>
 <hr />
 <h1 id="but-how-fast-is-it">But how fast is it?</h1>
 <p>How do we determine the big-O of insertion sort?</p>
@@ -1520,18 +1696,18 @@ there’s one thing that always takes the same amount of time: swap.</p>
 <h1 id="swap">Swap</h1>
 <p>Here’s a reasonable implementation of swap. (You may know the fancier
 version using xor, but it’s not faster and it has an edge case):</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span><span class="op">*</span> i<span class="op">,</span> <span class="dt">int</span><span class="op">*</span> j<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> t <span class="op">=</span> <span class="op">*</span>i<span class="op">;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>i <span class="op">=</span> <span class="op">*</span>j<span class="op">;</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>j <span class="op">=</span> t<span class="op">;</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span><span class="op">*</span> i<span class="op">,</span> <span class="dt">int</span><span class="op">*</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> t <span class="op">=</span> <span class="op">*</span>i<span class="op">;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>i <span class="op">=</span> <span class="op">*</span>j<span class="op">;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>j <span class="op">=</span> t<span class="op">;</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>This is what it compiles into with clang, target x64, with -O2:</p>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode asm"><code class="sourceCode fasm"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">swap:</span>   <span class="bu">mov</span>     <span class="kw">eax</span><span class="op">,</span> <span class="dt">dword</span> <span class="dt">ptr</span> <span class="op">[</span><span class="kw">rdi</span><span class="op">]</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>        <span class="bu">mov</span>     <span class="kw">ecx</span><span class="op">,</span> <span class="dt">dword</span> <span class="dt">ptr</span> <span class="op">[</span><span class="kw">rsi</span><span class="op">]</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">mov</span>     <span class="dt">dword</span> <span class="dt">ptr</span> <span class="op">[</span><span class="kw">rdi</span><span class="op">],</span> <span class="kw">ecx</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">mov</span>     <span class="dt">dword</span> <span class="dt">ptr</span> <span class="op">[</span><span class="kw">rsi</span><span class="op">],</span> <span class="kw">eax</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">ret</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode asm"><code class="sourceCode fasm"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">swap:</span>   <span class="bu">mov</span>     <span class="kw">eax</span><span class="op">,</span> <span class="dt">dword</span> <span class="dt">ptr</span> <span class="op">[</span><span class="kw">rdi</span><span class="op">]</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>        <span class="bu">mov</span>     <span class="kw">ecx</span><span class="op">,</span> <span class="dt">dword</span> <span class="dt">ptr</span> <span class="op">[</span><span class="kw">rsi</span><span class="op">]</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">mov</span>     <span class="dt">dword</span> <span class="dt">ptr</span> <span class="op">[</span><span class="kw">rdi</span><span class="op">],</span> <span class="kw">ecx</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">mov</span>     <span class="dt">dword</span> <span class="dt">ptr</span> <span class="op">[</span><span class="kw">rsi</span><span class="op">],</span> <span class="kw">eax</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">ret</span></span></code></pre></div>
 <hr />
 <h1 id="swap-2">Swap (2)</h1>
 <p>The swap is 5 assembly instructions.</p>
@@ -1596,14 +1772,14 @@ instructions in sequence. <span class="math inline">\(O(1) + O(1) + O(1)
 + O(1) + O(1) = O(5) = O(1)\)</span>.</p>
 <p>So lets annotate how long insertion sort takes with that
 knowledge:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span>                             <span class="co">// O(?) </span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span>                              <span class="co">// O(?)</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span>   <span class="co">// O(?)</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span>                         <span class="co">// O(1)</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span>                             <span class="co">// O(?) </span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span>                              <span class="co">// O(?)</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span>   <span class="co">// O(?)</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span>                         <span class="co">// O(1)</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <hr />
 <h1 id="the-outer-loop">The outer loop</h1>
-<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span></code></pre></div>
 <p>How many times will this run?</p>
 <p>[Class]</p>
 <hr />
@@ -1620,8 +1796,8 @@ but in fact, it’s worse than that.</p>
 <hr />
 <h1 id="the-inner-loop">The inner loop</h1>
 <p>What about the inner loop?</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span>   <span class="co">// O(?)</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span>                         <span class="co">// O(1)</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span>   <span class="co">// O(?)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span>                         <span class="co">// O(1)</span></span></code></pre></div>
 <p><span class="math inline">\(O\)</span> is about upper bounds, so we
 need to ask: “what is the most possible number of times this loop will
 run?”</p>
@@ -1633,11 +1809,11 @@ class="math inline">\(O(i)\)</span>.</p>
 <hr />
 <h1 id="the-whole-thing">The whole thing</h1>
 <p>Now we can finish annotating the function:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span>                             <span class="co">// O(?) </span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span>                              <span class="co">// O(n)</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span>   <span class="co">// O(i)</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span>                         <span class="co">// O(1)</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span>                             <span class="co">// O(?) </span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span>                              <span class="co">// O(n)</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span>   <span class="co">// O(i)</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span>                         <span class="co">// O(1)</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>So it runs an outer loop <span class="math inline">\(O(n)\)</span>
 times, and an inner loop <span class="math inline">\(O(i)\)</span>
 times. Does that mean it runs <span class="math inline">\(O(ni)\)</span>
@@ -1686,11 +1862,11 @@ it.</p>
 <hr />
 <h1 id="finishing-up-multiply-the-big-os">Finishing up: multiply the
 big-<span class="math inline">\(O\)</span>s</h1>
-<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span>                             <span class="co">// O(?) </span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span>                              <span class="co">// O(n)</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span>   <span class="co">// O(n)</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span>                         <span class="co">// O(1)</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> ins_sort<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span>                             <span class="co">// O(?) </span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span>                              <span class="co">// O(n)</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> i<span class="op">;</span> <span class="dv">0</span> <span class="op">&lt;</span> j <span class="op">&amp;&amp;</span> arr<span class="op">[</span>j<span class="op">]</span> <span class="op">&lt;</span> arr<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">];</span> j<span class="op">--)</span>   <span class="co">// O(n)</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>            swap<span class="op">(</span>arr <span class="op">+</span> j <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> arr <span class="op">+</span> j<span class="op">);</span>                         <span class="co">// O(1)</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>We can now say this code is <span class="math inline">\(O(n)\times
 O(n)\times O(1)=O(n \times n \times 1)=O(n^2)\)</span></p>
 <p>Because the outer loop runs <span class="math inline">\(O(n)\)</span>
@@ -1703,20 +1879,20 @@ bound on the time of insertion sort.</p>
 <h1 id="multiply-the-big-os">Multiply the Big-<span
 class="math inline">\(O\)</span>s?</h1>
 <p>But what about this?</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="co">// O(n)</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    constant_time_thing<span class="op">();</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="co">// O(n)</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    constant_time_thing<span class="op">();</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="co">// O(n)</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    constant_time_thing<span class="op">();</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="co">// O(n)</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    constant_time_thing<span class="op">();</span></span></code></pre></div>
 <p>[Class?]</p>
 <hr />
 <h1 id="add-the-big-os">Add the big-<span
 class="math inline">\(O\)</span>s</h1>
-<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="co">// O(n)</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    constant_time_thing<span class="op">();</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="co">// O(n)</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    constant_time_thing<span class="op">();</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="co">// O(n)</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    constant_time_thing<span class="op">();</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="co">// O(n)</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    constant_time_thing<span class="op">();</span></span></code></pre></div>
 <p>The code runs in sequence. So this is <span
 class="math inline">\(O(n) + O(n) = O(n + n) = O(2n) = O(n)\)</span></p>
 <p>Code in sequence adds the time, code nested in loops multiplies the
@@ -1740,14 +1916,14 @@ learned to analyze a very useful algorithm.</p>
 always <span
 class="math inline">\(n^\mathrm{n\_nested\_loops}\)</span>!</h1>
 <p>Quick! What’s the big-O of this code!</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CHUNK_LEN </span><span class="op">...</span><span class="pp"> </span><span class="co">//some number</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">(</span><span class="dt">char</span><span class="op">*</span> str<span class="op">,</span> <span class="dt">int</span> chunks<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// each chunk is CHUNK_LEN chars</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> chunks<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> CHUNK_LEN<span class="op">;</span> j<span class="op">++)</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>            do_something_to_char<span class="op">(</span>str <span class="op">+</span> i <span class="op">*</span> CHUNK_LEN <span class="op">+</span> j<span class="op">);</span> <span class="co">// O(1)</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CHUNK_LEN </span><span class="op">...</span><span class="pp"> </span><span class="co">//some number</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">(</span><span class="dt">char</span><span class="op">*</span> str<span class="op">,</span> <span class="dt">int</span> chunks<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// each chunk is CHUNK_LEN chars</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> chunks<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> CHUNK_LEN<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>            do_something_to_char<span class="op">(</span>str <span class="op">+</span> i <span class="op">*</span> CHUNK_LEN <span class="op">+</span> j<span class="op">);</span> <span class="co">// O(1)</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <hr />
 <h1 id="careful-its-not-always-nmathrmn_nested_loops-2">Careful! It’s
 not always <span
@@ -1770,10 +1946,10 @@ class="math inline">\(O\)</span></p>
 <h1 id="be-reasonable-about-constant-time">Be reasonable about constant
 time</h1>
 <p>Consider this function</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> linear_time_function<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>        do_constant_time_thing<span class="op">();</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> linear_time_function<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>        do_constant_time_thing<span class="op">();</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Most people would consider this to be <span
 class="math inline">\(O(n)\)</span>.</p>
 <p>However, the more litigious among you might say “well, n <span
@@ -1835,7 +2011,183 @@ ones. You can do it!</li>
 </ul>
 <hr />
 <!-- _class: questions invert -->
-<h1 id="questions-5">Questions?</h1>
+<h1 id="questions-7">Questions?</h1>
+<hr />
+<h1 id="actual-quiz-next-week">Actual quiz next week</h1>
+<p>Next week we will have a quiz on this material.</p>
+<p>This quiz counts! It’s going to measure your understanding of this
+module.</p>
+<p><strong>You must bring paper and a writing implement! This is your
+responsibility! Set reminders on your phone!</strong></p>
+<p>I think when you see the practice quizzes, you’re going to be a
+little relieved. I’m not going to make you write mega complex
+proofs!</p>
+<hr />
+<h1 id="actual-quiz-next-week-2">Actual quiz next week (2)</h1>
+<p>Take the following practice quzzes. Time yourself!</p>
+<p>Start studying now, and try to resolve any feelings of meta-cognitive
+unease. If you feel like “I don’t quite get this”, listen to the
+feeling!</p>
+<p>Test yourself. The quiz will be proctored, pen-and-paper, and timed
+(15 minutes). If you aren’t studying under these time and resource
+controls, you aren’t fully studying for the quiz!</p>
+<p>The quiz will test the first learning mastery standard.</p>
+<p>You can also try quizzes from previous semesters. They are in this
+repository, in the <code>old_problems</code> folder. Note that the
+format of the quiz may have changed somewhat. In particular, in the
+first semester, I tested on big-<span
+class="math inline">\(\Theta\)</span> instead of big-O, which we haven’t
+covered yet (but will next week)</p>
+<hr />
+<h1 id="quiz-how-should-i-study-2">Quiz: How should I study? (2)</h1>
+<p>Remember: <em>if you aren’t studying under time controls with pen and
+paper, <strong>you aren’t fully studying!</strong></em> So actually take
+these like quizzes.</p>
+<p>The first practice quiz is worked. The others aren’t.</p>
+<p>And remember to bring pen and paper for the quiz next week!</p>
+<hr />
+<h1 id="practice-quiz-1">Practice Quiz 1</h1>
+<ol type="1">
+<li><p>(25 points) Write an iterative function in C that returns the
+smallest magnitude negative int in a given list, or 0 if there are no
+negative numbers. For example
+<code>lsmall({-2, -5, 2, 5, 7, -100}, 6) == -2</code>.
+<code>lsmall({}, 0) == 0</code></p></li>
+<li><p>(50 points) Provide a useful invariant that gives us confidence
+the algorithm’s loop is correct. It should be true before the first
+iteration of the loop and after each iteration of the loop. It should
+also relate the inputs of the function to the goal.</p></li>
+<li><p>(25 points) Determine the algorithm’s <em>tight</em> big-<span
+class="math inline">\(O\)</span>, and prove it by putting the big-<span
+class="math inline">\(O\)</span> in the margins like we did in the
+slides. You don’t have to <em>prove</em>, but you must use the tightest
+big-<span class="math inline">\(O\)</span> that fits.</p></li>
+</ol>
+<hr />
+<h1 id="practice-quiz-1-answers">Practice Quiz 1 answers</h1>
+<p>You could also do it iteratively:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> lsmall<span class="op">(</span><span class="dt">int</span><span class="op">*</span> arr<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> res <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// I: res is the least-magnitude negative number in arr[0..i)</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// I: (more mathematically) res = maximum (filter negatives (arr))</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span>                          <span class="co">// O(n)</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">// if we found a negative, if it&#39;s the first one or it&#39;s &gt; res</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>arr<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> <span class="op">(</span>res <span class="op">==</span> <span class="dv">0</span> <span class="op">||</span> arr<span class="op">[</span>i<span class="op">]</span> <span class="op">&gt;</span> res<span class="op">))</span>       <span class="co">// O(1)</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>            res <span class="op">=</span> arr<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> res<span class="op">;</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This algorithm is <code>O(n)</code>. The for loop runs <code>n</code>
+times, and the if statement inside of it is bounded by constant
+time.</p>
+<hr />
+<h1 id="how-will-i-grade">How will I grade?</h1>
+<p>I generally grade like this: - For extremely minor syntax errors
+(forgetting a semicolon, forgetting a paren where it was clearly
+implied, etc.) I don’t take any points off. - For minor issues like type
+coercions where it’s wrong but it would require pretty strong knowledge
+of C to know about (like that signed negative overflow is undefiend
+behavior), I deduct 1 point. - For small but significant logic errors
+(like off-by-ones), I deduct 5 points. - For more serious logic errors
+but where I can still see that you understand, either 10 or 15 depending
+on how serious the error is. - Point values are doubled for 50 point
+questions.</p>
+<hr />
+<h1 id="practice-quiz-2">Practice Quiz 2</h1>
+<ol type="1">
+<li>(25 points) Write an iterative function in C that returns the sum of
+every even-index element, starting with index 0. e.g.,
+<code>even_sum({1, 2, 3, 4}, 4) == 4</code>,
+<code>even_sum({}, 0) == 0</code></li>
+<li>(50 points) Provide a useful invariant that gives us confidence the
+algorithm’s loop is correct. It should be true before the first
+iteration of the loop and after each iteration of the loop. It should
+also relate the inputs of the function to the goal.</li>
+<li>(25 points) Determine the algorithm’s <em>tight</em> big-<span
+class="math inline">\(O\)</span>, and prove it by putting the big-<span
+class="math inline">\(O\)</span> in the margins like we did in the
+slides. You don’t have to <em>prove</em>, but you must use the tightest
+big-<span class="math inline">\(O\)</span> that fits.</li>
+</ol>
+<hr />
+<h1 id="pratice-quiz-3">Pratice Quiz 3</h1>
+<ol type="1">
+<li>(25 points) Write an iterative function in C that returns the
+largest sum of adjacent pairs of an array. For example,
+<code>{1,2,3,1}</code> has adjacent pairs (1, 2); (2, 3); and (3, 1).
+(2, 3) has the largest sum, 5, so it would return 5.
+<code>max_adj_sum({1,2,3,4}, 4) == 3 + 4 == 7</code>
+<code>max_adj_sum({1}, 1) == 0</code>
+<code>max_adj_sum({}, 0) == 0</code></li>
+<li>(50 points) Provide a useful invariant that gives us confidence the
+algorithm’s loop is correct. It should be true before the first
+iteration of the loop and after each iteration of the loop. It should
+also relate the inputs of the function to the goal.</li>
+<li>(25 points) Determine the algorithm’s <em>tight</em> big-<span
+class="math inline">\(O\)</span>, and prove it by putting the big-<span
+class="math inline">\(O\)</span> in the margins like we did in the
+slides. You don’t have to <em>prove</em>, but you must use the tightest
+big-<span class="math inline">\(O\)</span> that fits.</li>
+</ol>
+<hr />
+<h1 id="practice-quiz-34">Practice Quiz 34</h1>
+<ol type="1">
+<li>(25 points) Write an iterative function in C that finds the last
+zero-based index of the lowercase letter ‘q’ in an ascii string. If the
+letter ‘q’ is not present, return -1. Otherwise, return the index of the
+last ‘q’. <code>rscan_q("hello world") == -1</code>
+<code>rscan_q("quello quorld") == 7</code>
+<code>rscan_q("") == -1</code></li>
+<li>(50 points) Provide a useful invariant that gives us confidence the
+algorithm’s loop is correct. It should be true before the first
+iteration of the loop and after each iteration of the loop. It should
+also relate the inputs of the function to the goal.</li>
+<li>(25 points) Determine the algorithm’s <em>tight</em> big-<span
+class="math inline">\(O\)</span>, and prove it by putting the big-<span
+class="math inline">\(O\)</span> in the margins like we did in the
+slides. You don’t have to <em>prove</em>, but you must use the tightest
+big-<span class="math inline">\(O\)</span> that fits.</li>
+</ol>
+<hr />
+<h1 id="more-practice">More practice</h1>
+<p>Do the older quizzes! I’ve posted last year’s problems.</p>
+<p>They’re in the <code>old_problems</code> folder in the repo.</p>
+<p>These were the actual problems (with maybe some slight wording
+differences) I used for the ME graded assessments.</p>
+<p>Note: The first semester under this new outcome-based system I asked
+about big-<span class="math inline">\(\Theta\)</span> on quiz 1 which
+this semester we haven’t covered yet. Replace big-<span
+class="math inline">\(\Theta\)</span> with tight big-<span
+class="math inline">\(O\)</span> for now. The midterm and final can
+cover the other notation besides big-<span
+class="math inline">\(O\)</span>. They can also ask for recursive
+functions (which we will show how to analyze next time)</p>
+<p>They are named fairly boringly. Just a number for each one. The
+number is just the order of problems I made for that outcome. It doesn’t
+mean anything specific.</p>
+<hr />
+<h1 id="even-more-practice">Even more practice</h1>
+<p>Give this markdown file to an LLM, along with the problems from last
+year.</p>
+<p>Ask it to generate a quiz like the these.</p>
+<p>Then, pull out a pen and paper and set a timer (both important) and
+try to take its quiz.</p>
+<p>Transcribe your pen-and-paper quiz and have the LLM grade you
+following my loose guidelines above. I recommend asking it to be
+strict.</p>
+<p>This is a <em>great</em> way to use LLMs. They can be excellent
+learning tools.</p>
+<hr />
+<h1 id="a-sample-prompt">A sample prompt</h1>
+<blockquote>
+<p>Please generate a quiz like the practice quizzes in the attached
+slides and also in the attached problems from previous semesters. Don’t
+reveal the answer. I will try to solve it, and please score me
+afterwards. Be fairly strict.</p>
+</blockquote>
+<p>Note: I like linear time problems for these, but they aren’t
+guaranteed to be linear! Try writing a quiz based around binary search
+for an example of a fair problem that isn’t <span
+class="math inline">\(\Theta(n)\)</span>.</p>
 <hr />
 <h1 id="appendix-a-principle-of-explosion">Appendix A: principle of
 explosion</h1>
