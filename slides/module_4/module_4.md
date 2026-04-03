@@ -1250,9 +1250,27 @@ Why? Because we want to ensure that the work at the root is bigger than the work
 
 Then we can't use the master theorem. Sorry.
 
+This can happen with functions that get *bigger* when their input value gets smaller. So things like $f(n) = 1/n$ would fail this requirement.
+
+Also, random-ish functions are like this. So if $f(n)$ were a random number or hash function in which $n$ were not interpreted as a time but rather as a hash input, the total time can be anywhere from 0 to $2^{512}$ or something, but making $n$ smaller does not make the result smaller.
+
+The purpose of the regularity condition is to ensure that all the children together cost less than the parent. So even if it doesn't get strictly bigger, it can't "get smaller slower". Therefore, a logarithm would also fail. This is academic, because $f(n) = \log(n)$ cannot ever be case 3, because $n^{c_{crit}}$ cant be bounded by a log for any positive $c_{crit}$.
+
 ---
 
-# The master method
+# Regularity condition promise
+
+Okay, I feel your pain. I won't ask you an example in which the regularity condition *fails*. 
+
+Therefore, you should expect to find $k$!
+
+I didn't use to give this promise, so old quizzes might have an instance where it fails.
+
+To be honest, I couldn't come up with a non-goofy example in which it failed, and I didn't want to give goofy questions. This stuff is hard enough as it is.
+
+---
+
+# The master method: in summary
 
 Try to express your problem as:
 $T(n) = A\cdot T(n / B) + f(n)$, where $A$ and $B$ are constant. 
@@ -1339,11 +1357,51 @@ Quicksort is just like quickselect, but after partitioning we just quicksort eac
 
 # Appendix A: Practice Quiz
 
-I'm going to pick 4 recurrence relations. Your job will be to use the master theorem to find their big-$\Theta$ if applicable, or say "cannot use master method if not"
+I'm going to generate 4 recurrence relations. Your job will be to use the master theorem to find their big-$\Theta$ if applicable, or say "cannot use master method if not". For case 3, you will need to show that the regularity condition applies.
 
 For $c_\mathrm{crit}$, you can use whatever logarithm base you want, as long as you use it for the numerator and denominator. 
 
-For example: for $T(n) = 3 \cdot T(n / 9) + n$, $c_\mathrm{crit} = \log_3 3 / \log_3 9 = 1 / 2$
+For example: for $T(n) = 3 \cdot T(n / 9) + n$, $c_\mathrm{crit} = \log_3 3 / \log_3 9 = 1 / 2$ and $c = 1$ (because $f(n) = n = n^1$)
+
+Remember that finding $c$ can be a little tricky. If the function is a polynomial like $n^3$, then $c$ is 3. However, if it's something like $|\sin n|$ then we need to realize that $|\sin n| = \Theta(1) = \Theta(n^0)$ (because it's always in the range $[0, 1]$). This lets us discover that $c = 0$.
+
+---
+
+# Warning!
+
+You will not be allowed to use a calculator in the quizzes or exams! I will give you logarithms that you can easily compute in your head.
+
+I strongly recommend specifically drilling logarithms if you are struggling with this. Here's a good set of flashcards to make:
+1. For one side, generate two natural numbers, A and B, which are both exponents of the same base, $b$. For example, $125$ and $25$, or $27$ and $81$
+2. For the reverse side, write the result of $\log_b A$, $\log_b B$, and $c_{crit} = {\log_b A \over \log_b B}$
+3. Drill yourself on your ability to, looking at just A and B, compute their common base and ratio of logarithms.
+
+I'm saying this because I gave a quiz with $T(n) = 81 \cdot T(n/3)$ and people kept asking to use their calculuator.
+
+---
+
+# Other log situations
+
+I can also ask for logs where the exact value doesn't matter.
+
+For example, $T(n) = 5 * T(n/2) + n^{4}$
+I don't know what the $\log 5 / \log 2$ is, but I do know it's somewhere between $\log 4 / \log2 = 2$ and $\log 8 / \log 2 = 3$.
+
+So therefore, it must be smaller than $4$, and this is a case 3 recurrence relation!
+
+I recommend some flashcards with this kind of scenario, too.
+
+Since we're CS majors, it's a good idea to learn to use [tools like this one](https://apps.ankiweb.net/).
+
+---
+
+# Another warning!
+
+You will have a 15 minute time limit for the quiz!
+
+That means about 3.5 minutes per problem.
+
+If you've been drilling these, I think it is reasonable, but you have to practice under a time constraint.
 
 ---
 
@@ -1351,8 +1409,8 @@ For example: for $T(n) = 3 \cdot T(n / 9) + n$, $c_\mathrm{crit} = \log_3 3 / \l
 
 1. $T(n) = 2 \cdot T(n / 2) + n$
 2. $T(n) = T(n / 3) + n^2$
-3. $T(n) = 4\cdot T(n / 2) + n$
-4. $T(n) = 2\cdot T(n / 2) + n \cdot |\sin n|$
+3. $T(n) = n + 4\cdot T(n / 2)$
+4. $T(n) = 256\cdot T(n / 2) + n^3 \cdot |\sin n|$
 5. $T(n) = 49 \cdot T (n / 7) + \Theta(n^2 \log n)$
 6. $T(n) = 100 \cdot T(n / 10) + 1$
 7. $T(n) = T(n - 1) + \Theta(n)$
@@ -1364,13 +1422,39 @@ For example: for $T(n) = 3 \cdot T(n / 9) + n$, $c_\mathrm{crit} = \log_3 3 / \l
 1. $c_\mathrm{crit}= 1$, $f(n) = n^1 \cdot (\log n)^0$, so case 2. $T(n) = \Theta(n \lg n)$
 2. $c_\mathrm{crit}= 0$, $f(n) = \Omega(n^2)$, $c_\mathrm{crit} \lt 2$ case 3. $\exists k \lt 1, n^2 / 2 \le k n^2$? 
    Yes, case 3: $T(n) = \Theta(n^2)$
-3. $c_\mathrm{crit}= \lg 4 / \lg 2 = 2$, $f(n) = \Omega(n^1)$, $2 \gt 1$, so case 1. $T(n) = \Theta(n^{c_\mathrm{crit}})=\Theta(n^2)$
-4. $c_\mathrm{crit}= 1$, $f(n) = \Omega(n^1)$, $2 \lt 3$, $\exists k \lt 1, 2((n/2) \cdot |\sin (n / 2)|) = \le k \cdot n \cdot \sin n$?
-   Fails the regularity test. Cannot apply master theorem.
+3. I flipped the terms around but it doesn't matter: $c_\mathrm{crit}= \lg 4 / \lg 2 = 2$, $f(n) = O(n^1)$, $2 \gt 1$, so case 1. $T(n) = \Theta(n^{c_\mathrm{crit}})=\Theta(n^2)$
+4. $c_\mathrm{crit}= 7$, $f(n) = O(n^3)$, therefore case 1: $T(n) = \Theta(n^7)$
 5. $c_\mathrm{crit}= \log_7 49 / \log_7 7 = 2$, $c = 2$, case 2. $T(n) = \Theta(n^2 (\log n)^2)$
-6. $c_\mathrm{crit}= \log_{10} 100 / \log_{10} 10 = 2$, $1 = O(n^0)$, $1 \gt 0$, case 1: $T(n) = \Theta(n^2)$
+6. $c_\mathrm{crit}= \log_{10} 100 / \log_{10} 10 = 2$, $1 = O(n^0)$, $1 \gt 0$, $c_\mathrm{crit} > c$ case 1: $T(n) = \Theta(n^2)$
 7. Not a divide and conquer problem; can't use the master theorem.
 
+---
+
+# I'm confused about finding C!
+
+One of the challenging parts of the master method is that sometimes $c$ isn't there.
+
+In this situation, it is: $T(n) = 2 \cdot T(n/4) + n^2$
+We use $A = 2$, $B = 4$, $c_\mathrm{crit} = 1/2$, and $c = 2$. This is a case 3.
+
+But what about this? $T(n) = 2 \cdot T(n/4) + n |\sin n| + n$
+Then we need to ask:
+* Is this case 1? If so, we would need $n |\sin n| + n = O(n^c)$ and have $c < 1/2$
+  This isn't possible. $|sin n|$ is as big as $1$. Therefore, the tightest bound of $n | \sin n| + n$ is $O(n)$, which implies $c = 1$.
+* Is this case 2? No for the same reason.
+* Therefore, it must be case 3. Now we need to find a $c$ so $n|\sin n| + n = \Omega(n^c)$. We can do this with $c = 1$. Regularity is easy to show with $f(n) = n^1$
+
+---
+
+# Finding C (2)
+
+So the flowchart still works, but sometimes we need to consider all 3 possibilities. 
+
+These are the more challenging problems.
+
+Here are some more problems, unworked, some of which are more challenging.
+
+Remember, 15 minutes for 4 problems!
 
 ---
 
@@ -1380,6 +1464,7 @@ For example: for $T(n) = 3 \cdot T(n / 9) + n$, $c_\mathrm{crit} = \log_3 3 / \l
 1. $T(n) = 3T(n / 2) + n^2$
 2. $T(n) = T(n / 4) + n \log n$
 3. $T(n) = 5T(n / 3) + n$
+(the answer can have a log ratio in it when it's not something computable by hand)
 4. $T(n) = 2T(n / 2) + n^2 \log_8 n$
 5. $T(n) = 9T(n / 3) + n^2$
 6. $T(n) = 2T(n / 2) + n(\log n)^2$
@@ -1391,14 +1476,13 @@ For example: for $T(n) = 3 \cdot T(n / 9) + n$, $c_\mathrm{crit} = \log_3 3 / \l
 
 # Appendix A: tricky samples that I can still ask
 
-Ponder these. All of them have definite solutions, and are solvable using math you know. I consider these to be reasonable exam problems (I would include the hints), but you'll want to study them.
+Ponder these. All of them have definite solutions, and are solvable using math you know. I consider these to be reasonable exam problems, but you'll want to study them.
 
 - $T(n) = T(n / 2) + 2^n$
   Hint: This one *does* pass the regularity test.
-- $T(n) = 2 \cdot T(n / 2) + sin(n)$
-  Hint: is this like the ones that failed the regularity test? Or is $\sin(n)$ bounded?
+- $T(n) = T(n!)$
+  Hint: this is the factorial function
 - $T(n) = 4 \cdot T(n / 2) + n^2 + n$
-  Hint: what kind of bound can we apply to $n^2 + n$?
 - $T(n) = 8 \cdot T(n / 2) + (\log n)^3$
   Hint: $(\log n)^k = O(n)$ for all constant $k$
 

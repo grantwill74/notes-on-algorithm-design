@@ -406,10 +406,10 @@ the same thing.</p>
 saying that a and b will never point to the same array.</p>
 <p>Why is this useful? Because if they could point to the same data,
 then many optimizations don’t work.</p>
-<p>For example, if we did not make the pointer <code>restrict</code>,
-the compiler would have to reload the data from <code>lo</code> and
-<code>hi</code> every time we wrote to <code>merge_buf</code>, because
-it might have changed.</p>
+<p>Without <code>restrict</code> the compiler would have to consider the
+theoretical possibility that changing <code>merge_buf</code> could also
+change what is read from <code>lo</code> or <code>hi</code>, forcing it
+to reload the data after writing it.</p>
 <hr />
 <h1 id="restrict-2">Restrict (2)</h1>
 <p>The <code>restrict</code> keyword in C only applies to pointers, so
@@ -431,8 +431,8 @@ benefit of being a right-conster is that the underlying types will line
 up if you have a non-const type a line below a const type or vice versa.
 The main drawback is that less experienced programmers will think that
 you’re declaring a constant pointer. It’s also kind of weird that a
-modifier is coming after the thing it modifies, which is why I don’t
-usually do it.</p>
+modifier is coming after the thing it modifies, which is why I usually
+don’t do it.</p>
 </div>
 <hr />
 <h1 id="understanding-merge-2">Understanding <code>merge</code> (2)</h1>
@@ -474,7 +474,7 @@ the first part: copying over the rest of the other array.</p>
 <p>How can we prove our merge is correct?</p>
 <p>We need some kind of loop invariant. How about this one:
 <code>sorted(lo), sorted(hi), sorted(merge_buf[0 .. i_merge)),</code>
-<code>everything in merge_buf &lt;= lo, everything in merge_buf &lt;= hi</code></p>
+<code>all elements in merge buf &lt;= lo[i_lo] and also &lt;= hi[i_hi]</code></p>
 <p>So, basically, both our sub-arrays are sorted, our merge buffer so
 far is sorted, and everything in the merge buffer is smaller than
 everything in either sub array.</p>
@@ -492,9 +492,10 @@ rest of that array to the end. Solid!</p>
 <p>The same applies when <code>hi</code> is empty conversely.</p>
 <hr />
 <h1 id="proving-it-3">Proving it (3)</h1>
-<p>But what if neither <code>lo</code> or <code>hi</code> are empty?</p>
+<p>But what if neither <code>lo</code> nor <code>hi</code> are
+empty?</p>
 <p>Say that the front of <code>lo</code> is smaller or equal. We have
-that <code>everything in merge_buf &lt;= lo</code>. So that means,
+that <code>everything in merge_buf &lt;= lo[lo_i]</code>. So that means,
 <code>merge_buf ++ [head lo]</code> is sorted. And, we don’t violate our
 <code>everything in merge_buf &lt;= hi</code> assumption, because we
 took something that was smaller than everything in <code>hi</code>.</p>
@@ -599,6 +600,9 @@ merged into <code>[1, 2, 3, 4, 5]</code>.</figcaption>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    memcpy<span class="op">(</span>arr<span class="op">,</span> merge_buf<span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">)</span> <span class="op">*</span> n<span class="op">);</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    free<span class="op">(</span>merge_buf<span class="op">);</span></span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>It’s slow because we allocate repeatedly. [what tells us that
+allocation is happening?] [Can you come up with a way to avoid
+this?]</p>
 <hr />
 <h1 id="proving-it-1">Proving it</h1>
 <p>We showed that <code>merge</code> works. How do we show that
@@ -659,7 +663,8 @@ class="math inline">\(P(4)\)</span> depends on <span
 class="math inline">\(P(2)\)</span>, and <span
 class="math inline">\(P(5)\)</span> depends on <span
 class="math inline">\(P(3)\)</span>, then by the time we reach a high
-number, a lower number has been proven.</p>
+number, the proposition has been proven for the lower number it
+needs.</p>
 <p>If we could use <span class="math inline">\(P(5)\)</span> in the
 proof of <span class="math inline">\(P(10)\)</span>, then we could prove
 that mergesort works for array size 10, because it works for 5. How do
@@ -878,9 +883,7 @@ where that formula doesn’t work?</p></li>
 <hr />
 <h1 id="proving-this">Proving this</h1>
 <p>The purpose of drawing a sketch of how many rows and columns there
-are was to give us a proposition for induction. Remember: it’s called
-induction because induction is how we come up with the goal, not because
-there’s anything inductive about the proof.</p>
+are was to give us a proposition for induction.</p>
 <p>Here is the recurrence relation: <span class="math inline">\(T(0) =
 1\)</span> <span class="math inline">\(T(1) = 1\)</span> <span
 class="math inline">\(T(n) = 2T(n / 2) + \Theta(n)\)</span></p>
@@ -921,9 +924,9 @@ class="math inline">\(\lg 0\)</span> is undefined.</p>
 <p>If we choose <span class="math inline">\(n_0 = 1\)</span>, it’s
 vacuously true, becuase <span class="math inline">\(0 \lt
 1\)</span>.</p>
-<p>We actually don’t want vacuous truth here because of the inductive
-step. If we pick <span class="math inline">\(n_0 = 1\)</span>, then,
-when we want to (in the next step) show <span
+<p>We actually don’t want vacuous truth here because it will complicate
+the inductive step. If we pick <span class="math inline">\(n_0 =
+1\)</span>, then, when we want to (in the next step) show <span
 class="math inline">\((\forall i \le n, P(i)) \implies P(n +
 1)\)</span>, we actually won’t be able to. <span
 class="math inline">\(P(0) \implies P(1)\)</span> is false with <span
@@ -938,10 +941,10 @@ find the first non-vacuous case.</p>
 <hr />
 <h1 id="the-strong-inductive-case">The (strong) inductive case</h1>
 <p><span class="math inline">\((\forall i \lt n, n \ge 2 \implies T(i)
-\le C(i \lg i)) \implies n \ge n_0 \implies T(n) \le C(n \lg
+\le C(i \lg i)) \implies n \ge 2 \implies T(n) \le C(n \lg
 n)\)</span></p>
 <p>We start by supposing this hypothesis: <span
-class="math inline">\((\forall i \lt n, i \ge n_0 \implies T(i) \le C(n
+class="math inline">\((\forall i \lt n, i \ge 2 \implies T(i) \le C(n
 \lg n))\)</span></p>
 <p>Then we suppose <span class="math inline">\(n \ge 2\)</span>. We must
 show <span class="math inline">\(T(n) \le C(n \lg n)\)</span></p>
@@ -1079,12 +1082,12 @@ class="math inline">\(\Theta\)</span>?</li>
 class="math inline">\(k^{th}\)</span> largest value in a list of <span
 class="math inline">\(n\)</span> items.</p>
 <p>(This is a common tech-interview question. You can also efficiently
-solve it with an <span class="math inline">\(n\)</span>-sized
+solve it with an <span class="math inline">\(k\)</span>-sized
 min-heap)</p>
-<p>The naive approach is to just sort the list and take the middle. That
-will not pass you the tech interview. Instead, we can improve on the
-time it takes to sort by recognizing that we don’t need the whole list
-to be sorted. We just need to know the top <span
+<p>The naive approach is to just sort the list and take element
+<code>k - 1</code>. That is not optimal, however. Instead, we can
+improve on the time it takes to sort by recognizing that we don’t need
+the whole list to be sorted. We just need to know the top <span
 class="math inline">\(k\)</span>.</p>
 <p>Think of it like this: it you want to know the max, it’s clearly
 <span class="math inline">\(\Theta(n)\)</span>. What if you want the
@@ -1100,6 +1103,8 @@ we want the 13th smallest value. (the 3rd largest)</p>
 <p>We can split the list into three pieces: <span
 class="math inline">\(\lt\)</span> median <code>++</code> median
 <code>++</code> <span class="math inline">\(\ge\)</span> median</p>
+<p>That is, those elements that are less than the median, the median
+itself, and those that are greater.</p>
 <p>Suppose the values are all different. We expect the lower half to
 have 7 elements, and the upper half to have the same.</p>
 <hr />
@@ -1149,6 +1154,9 @@ right.</p>
 <p>Sometimes the left array will be tiny, and sometimes the right array
 will be tiny. However, we might get lucky and have the value we’re
 looking for be in the tiny part. That would really speed things up.</p>
+<p>From an information-theory point of view, ideally, the two halves
+will be the same size. This will minimize the expected number of
+searches.</p>
 <hr />
 <h1 id="example-partition-function">Example partition function</h1>
 <p>Here’s a simple partition in C, based on Tony Hoare’s partition
@@ -1173,9 +1181,10 @@ method:</p>
 <p>First, we select a “pivot”, which is the value we want to be in the
 middle.</p>
 <p>Actually figuring out the median would require us to sort the array,
-which is typically <span class="math inline">\(\Theta(n \lg n)\)</span>,
-which is not good.</p>
-<p>Instead we just guess randomly and assume it’s the last element.</p>
+which is typically <span class="math inline">\(\Theta(n \lg n)\)</span>.
+Not good.</p>
+<p>Instead we just guess randomly by assuming the pivot is the last
+element.</p>
 <p>Then, we enter a loop: <code>for(;;) ...</code></p>
 <hr />
 <h1 id="explaining-it-2">Explaining it (2)</h1>
@@ -1231,9 +1240,9 @@ values on either side of the median.</p>
 average case recurrence relation</h1>
 <p><span class="math inline">\(T(0) = 1\)</span> <span
 class="math inline">\(T(n) = T(n / 2) + \Theta(n)\)</span></p>
-<p>Interesting. So we split it in half, but only once. Then we do
-something that takes roughly <span class="math inline">\(n\)</span>
-time.</p>
+<p>Interesting. So we split it in half, but only once (it’s not <span
+class="math inline">\(2\cdot T(n/2)\)</span>). Then we do something that
+takes roughly <span class="math inline">\(n\)</span> time.</p>
 <hr />
 <h1 id="sketch-of-quickselect">Sketch of quickselect</h1>
 <p>Imagine we have <span class="math inline">\(n = 64\)</span>. We
@@ -1308,7 +1317,7 @@ class="math inline">\((n / B^r)\)</span> in general.</p>
 this: <span class="math inline">\(f(n) + A(f(n / B)) + A^2(f(n / B^2)) +
 \ldots=\large \sum_{i = 0}^{(\log_B n) -
 1}(A^{i}f(n/B^{i}))\)</span></p>
-<p>But that’s not the only source of work we need to care about</p>
+<p>But that’s not the only source of work we need to care about!</p>
 <hr />
 <h1 id="the-number-of-leaves">The number of leaves</h1>
 <p>When we reach a leaf, D&amp;C algorithms end up being expressed as:
@@ -1350,8 +1359,7 @@ class="math inline">\(\Theta(n^c \cdot A^i/B^{ic})\)</span>.</p>
 <p>Let <span class="math inline">\(L=\log_B n\)</span>, how do we get
 <span class="math inline">\(\sum_{i = 0}^{L - 1} \Theta(n^c \cdot
 A^i/B^{ic})\)</span>?</p>
-<p>First, we can factor out <span class="math inline">\(n^c\)</span>,
-and factor <em>in</em> the sum: <span class="math inline">\(\Theta(n^c
+<p>First, we can refactor a bit: <span class="math inline">\(\Theta(n^c
 \cdot \sum_{i = 0}^{L - 1} A^i/B^{ic}) = \Theta(n^c \cdot \sum_{i =
 0}^{L - 1} (A/B^c)^i)\)</span></p>
 <hr />
@@ -1376,9 +1384,11 @@ n^{\log_B A}\)</span> So now we have:</p>
 class="math inline">\(c_\mathrm{crit}\)</span></h1>
 <p><span class="math inline">\(T(n) = \Theta(n^c \cdot \sum_{i =
 0}^{(\log_B n) - 1} (A/B^c)^i) + \Theta(n^{\log_B A})\)</span></p>
-<p>Now look at that sum. It’s a geometric series with <span
+<p>The sum is actually a geometric series with <span
 class="math inline">\(r = A / B^c\)</span> So everything hinges on that
-ratio: <span class="math inline">\(r=A/B^c\)</span></p>
+ratio: <span class="math inline">\(r=A/B^c\)</span> (if you’ve
+forgotten: you learned about geometric series in one of your calculus
+classes)</p>
 <p>One last substitution will give us something to make a decision
 on…</p>
 <p>Let <span class="math inline">\(c_\mathrm{crit} = \log_B A\)</span>,
@@ -1481,8 +1491,38 @@ obvious bound, and we need to use another technique.</p>
 <h1 id="case-3-what-if-the-regularity-condition-is-false">Case 3: what
 if the regularity condition is false?</h1>
 <p>Then we can’t use the master theorem. Sorry.</p>
+<p>This can happen with functions that get <em>bigger</em> when their
+input value gets smaller. So things like <span
+class="math inline">\(f(n) = 1/n\)</span> would fail this
+requirement.</p>
+<p>Also, random-ish functions are like this. So if <span
+class="math inline">\(f(n)\)</span> were a random number or hash
+function in which <span class="math inline">\(n\)</span> were not
+interpreted as a time but rather as a hash input, the total time can be
+anywhere from 0 to <span class="math inline">\(2^{512}\)</span> or
+something, but making <span class="math inline">\(n\)</span> smaller
+does not make the result smaller.</p>
+<p>The purpose of the regularity condition is to ensure that all the
+children together cost less than the parent. So even if it doesn’t get
+strictly bigger, it can’t “get smaller slower”. Therefore, a logarithm
+would also fail. This is academic, because <span
+class="math inline">\(f(n) = \log(n)\)</span> cannot ever be case 3,
+because <span class="math inline">\(n^{c_{crit}}\)</span> cant be
+bounded by a log for any positive <span
+class="math inline">\(c_{crit}\)</span>.</p>
 <hr />
-<h1 id="the-master-method">The master method</h1>
+<h1 id="regularity-condition-promise">Regularity condition promise</h1>
+<p>Okay, I feel your pain. I won’t ask you an example in which the
+regularity condition <em>fails</em>.</p>
+<p>Therefore, you should expect to find <span
+class="math inline">\(k\)</span>!</p>
+<p>I didn’t use to give this promise, so old quizzes might have an
+instance where it fails.</p>
+<p>To be honest, I couldn’t come up with a non-goofy example in which it
+failed, and I didn’t want to give goofy questions. This stuff is hard
+enough as it is.</p>
+<hr />
+<h1 id="the-master-method-in-summary">The master method: in summary</h1>
 <p>Try to express your problem as: <span class="math inline">\(T(n) =
 A\cdot T(n / B) + f(n)\)</span>, where <span
 class="math inline">\(A\)</span> and <span
@@ -1575,25 +1615,76 @@ way.</li>
 </ul>
 <hr />
 <h1 id="appendix-a-practice-quiz">Appendix A: Practice Quiz</h1>
-<p>I’m going to pick 4 recurrence relations. Your job will be to use the
-master theorem to find their big-<span
+<p>I’m going to generate 4 recurrence relations. Your job will be to use
+the master theorem to find their big-<span
 class="math inline">\(\Theta\)</span> if applicable, or say “cannot use
-master method if not”</p>
+master method if not”. For case 3, you will need to show that the
+regularity condition applies.</p>
 <p>For <span class="math inline">\(c_\mathrm{crit}\)</span>, you can use
 whatever logarithm base you want, as long as you use it for the
 numerator and denominator.</p>
 <p>For example: for <span class="math inline">\(T(n) = 3 \cdot T(n / 9)
 + n\)</span>, <span class="math inline">\(c_\mathrm{crit} = \log_3 3 /
-\log_3 9 = 1 / 2\)</span></p>
+\log_3 9 = 1 / 2\)</span> and <span class="math inline">\(c = 1\)</span>
+(because <span class="math inline">\(f(n) = n = n^1\)</span>)</p>
+<p>Remember that finding <span class="math inline">\(c\)</span> can be a
+little tricky. If the function is a polynomial like <span
+class="math inline">\(n^3\)</span>, then <span
+class="math inline">\(c\)</span> is 3. However, if it’s something like
+<span class="math inline">\(|\sin n|\)</span> then we need to realize
+that <span class="math inline">\(|\sin n| = \Theta(1) =
+\Theta(n^0)\)</span> (because it’s always in the range <span
+class="math inline">\([0, 1]\)</span>). This lets us discover that <span
+class="math inline">\(c = 0\)</span>.</p>
+<hr />
+<h1 id="warning">Warning!</h1>
+<p>You will not be allowed to use a calculator in the quizzes or exams!
+I will give you logarithms that you can easily compute in your head.</p>
+<p>I strongly recommend specifically drilling logarithms if you are
+struggling with this. Here’s a good set of flashcards to make: 1. For
+one side, generate two natural numbers, A and B, which are both
+exponents of the same base, <span class="math inline">\(b\)</span>. For
+example, <span class="math inline">\(125\)</span> and <span
+class="math inline">\(25\)</span>, or <span
+class="math inline">\(27\)</span> and <span
+class="math inline">\(81\)</span> 2. For the reverse side, write the
+result of <span class="math inline">\(\log_b A\)</span>, <span
+class="math inline">\(\log_b B\)</span>, and <span
+class="math inline">\(c_{crit} = {\log_b A \over \log_b B}\)</span> 3.
+Drill yourself on your ability to, looking at just A and B, compute
+their common base and ratio of logarithms.</p>
+<p>I’m saying this because I gave a quiz with <span
+class="math inline">\(T(n) = 81 \cdot T(n/3)\)</span> and people kept
+asking to use their calculuator.</p>
+<hr />
+<h1 id="other-log-situations">Other log situations</h1>
+<p>I can also ask for logs where the exact value doesn’t matter.</p>
+<p>For example, <span class="math inline">\(T(n) = 5 * T(n/2) +
+n^{4}\)</span> I don’t know what the <span class="math inline">\(\log 5
+/ \log 2\)</span> is, but I do know it’s somewhere between <span
+class="math inline">\(\log 4 / \log2 = 2\)</span> and <span
+class="math inline">\(\log 8 / \log 2 = 3\)</span>.</p>
+<p>So therefore, it must be smaller than <span
+class="math inline">\(4\)</span>, and this is a case 3 recurrence
+relation!</p>
+<p>I recommend some flashcards with this kind of scenario, too.</p>
+<p>Since we’re CS majors, it’s a good idea to learn to use <a
+href="https://apps.ankiweb.net/">tools like this one</a>.</p>
+<hr />
+<h1 id="another-warning">Another warning!</h1>
+<p>You will have a 15 minute time limit for the quiz!</p>
+<p>That means about 3.5 minutes per problem.</p>
+<p>If you’ve been drilling these, I think it is reasonable, but you have
+to practice under a time constraint.</p>
 <hr />
 <h1 id="appendix-a-some-samples">Appendix A: some samples</h1>
 <ol type="1">
 <li><span class="math inline">\(T(n) = 2 \cdot T(n / 2) +
 n\)</span></li>
 <li><span class="math inline">\(T(n) = T(n / 3) + n^2\)</span></li>
-<li><span class="math inline">\(T(n) = 4\cdot T(n / 2) + n\)</span></li>
-<li><span class="math inline">\(T(n) = 2\cdot T(n / 2) + n \cdot |\sin
-n|\)</span></li>
+<li><span class="math inline">\(T(n) = n + 4\cdot T(n / 2)\)</span></li>
+<li><span class="math inline">\(T(n) = 256\cdot T(n / 2) + n^3 \cdot
+|\sin n|\)</span></li>
 <li><span class="math inline">\(T(n) = 49 \cdot T (n / 7) + \Theta(n^2
 \log n)\)</span></li>
 <li><span class="math inline">\(T(n) = 100 \cdot T(n / 10) +
@@ -1612,32 +1703,64 @@ class="math inline">\(f(n) = \Omega(n^2)\)</span>, <span
 class="math inline">\(c_\mathrm{crit} \lt 2\)</span> case 3. <span
 class="math inline">\(\exists k \lt 1, n^2 / 2 \le k n^2\)</span>? Yes,
 case 3: <span class="math inline">\(T(n) = \Theta(n^2)\)</span></li>
-<li><span class="math inline">\(c_\mathrm{crit}= \lg 4 / \lg 2 =
-2\)</span>, <span class="math inline">\(f(n) = \Omega(n^1)\)</span>,
-<span class="math inline">\(2 \gt 1\)</span>, so case 1. <span
+<li>I flipped the terms around but it doesn’t matter: <span
+class="math inline">\(c_\mathrm{crit}= \lg 4 / \lg 2 = 2\)</span>, <span
+class="math inline">\(f(n) = O(n^1)\)</span>, <span
+class="math inline">\(2 \gt 1\)</span>, so case 1. <span
 class="math inline">\(T(n) =
 \Theta(n^{c_\mathrm{crit}})=\Theta(n^2)\)</span></li>
-<li><span class="math inline">\(c_\mathrm{crit}= 1\)</span>, <span
-class="math inline">\(f(n) = \Omega(n^1)\)</span>, <span
-class="math inline">\(2 \lt 3\)</span>, <span
-class="math inline">\(\exists k \lt 1, 2((n/2) \cdot |\sin (n / 2)|) =
-\le k \cdot n \cdot \sin n\)</span>? Fails the regularity test. Cannot
-apply master theorem.</li>
+<li><span class="math inline">\(c_\mathrm{crit}= 7\)</span>, <span
+class="math inline">\(f(n) = O(n^3)\)</span>, therefore case 1: <span
+class="math inline">\(T(n) = \Theta(n^7)\)</span></li>
 <li><span class="math inline">\(c_\mathrm{crit}= \log_7 49 / \log_7 7 =
 2\)</span>, <span class="math inline">\(c = 2\)</span>, case 2. <span
 class="math inline">\(T(n) = \Theta(n^2 (\log n)^2)\)</span></li>
 <li><span class="math inline">\(c_\mathrm{crit}= \log_{10} 100 /
 \log_{10} 10 = 2\)</span>, <span class="math inline">\(1 =
-O(n^0)\)</span>, <span class="math inline">\(1 \gt 0\)</span>, case 1:
-<span class="math inline">\(T(n) = \Theta(n^2)\)</span></li>
+O(n^0)\)</span>, <span class="math inline">\(1 \gt 0\)</span>, <span
+class="math inline">\(c_\mathrm{crit} &gt; c\)</span> case 1: <span
+class="math inline">\(T(n) = \Theta(n^2)\)</span></li>
 <li>Not a divide and conquer problem; can’t use the master theorem.</li>
 </ol>
+<hr />
+<h1 id="im-confused-about-finding-c">I’m confused about finding C!</h1>
+<p>One of the challenging parts of the master method is that sometimes
+<span class="math inline">\(c\)</span> isn’t there.</p>
+<p>In this situation, it is: <span class="math inline">\(T(n) = 2 \cdot
+T(n/4) + n^2\)</span> We use <span class="math inline">\(A = 2\)</span>,
+<span class="math inline">\(B = 4\)</span>, <span
+class="math inline">\(c_\mathrm{crit} = 1/2\)</span>, and <span
+class="math inline">\(c = 2\)</span>. This is a case 3.</p>
+<p>But what about this? <span class="math inline">\(T(n) = 2 \cdot
+T(n/4) + n |\sin n| + n\)</span> Then we need to ask: * Is this case 1?
+If so, we would need <span class="math inline">\(n |\sin n| + n =
+O(n^c)\)</span> and have <span class="math inline">\(c &lt; 1/2\)</span>
+This isn’t possible. <span class="math inline">\(|sin n|\)</span> is as
+big as <span class="math inline">\(1\)</span>. Therefore, the tightest
+bound of <span class="math inline">\(n | \sin n| + n\)</span> is <span
+class="math inline">\(O(n)\)</span>, which implies <span
+class="math inline">\(c = 1\)</span>. * Is this case 2? No for the same
+reason. * Therefore, it must be case 3. Now we need to find a <span
+class="math inline">\(c\)</span> so <span class="math inline">\(n|\sin
+n| + n = \Omega(n^c)\)</span>. We can do this with <span
+class="math inline">\(c = 1\)</span>. Regularity is easy to show with
+<span class="math inline">\(f(n) = n^1\)</span></p>
+<hr />
+<h1 id="finding-c-2">Finding C (2)</h1>
+<p>So the flowchart still works, but sometimes we need to consider all 3
+possibilities.</p>
+<p>These are the more challenging problems.</p>
+<p>Here are some more problems, unworked, some of which are more
+challenging.</p>
+<p>Remember, 15 minutes for 4 problems!</p>
 <hr />
 <h1 id="appendix-a-unworked-samples">Appendix A: unworked samples</h1>
 <ol type="1">
 <li><span class="math inline">\(T(n) = 3T(n / 2) + n^2\)</span></li>
 <li><span class="math inline">\(T(n) = T(n / 4) + n \log n\)</span></li>
-<li><span class="math inline">\(T(n) = 5T(n / 3) + n\)</span></li>
+<li><span class="math inline">\(T(n) = 5T(n / 3) + n\)</span> (the
+answer can have a log ratio in it when it’s not something computable by
+hand)</li>
 <li><span class="math inline">\(T(n) = 2T(n / 2) + n^2 \log_8
 n\)</span></li>
 <li><span class="math inline">\(T(n) = 9T(n / 3) + n^2\)</span></li>
@@ -1650,17 +1773,15 @@ n)^2\)</span></li>
 <h1 id="appendix-a-tricky-samples-that-i-can-still-ask">Appendix A:
 tricky samples that I can still ask</h1>
 <p>Ponder these. All of them have definite solutions, and are solvable
-using math you know. I consider these to be reasonable exam problems (I
-would include the hints), but you’ll want to study them.</p>
+using math you know. I consider these to be reasonable exam problems,
+but you’ll want to study them.</p>
 <ul>
 <li><span class="math inline">\(T(n) = T(n / 2) + 2^n\)</span> Hint:
 This one <em>does</em> pass the regularity test.</li>
-<li><span class="math inline">\(T(n) = 2 \cdot T(n / 2) +
-sin(n)\)</span> Hint: is this like the ones that failed the regularity
-test? Or is <span class="math inline">\(\sin(n)\)</span> bounded?$</li>
+<li><span class="math inline">\(T(n) = T(n!)\)</span> Hint: this is the
+factorial function</li>
 <li><span class="math inline">\(T(n) = 4 \cdot T(n / 2) + n^2 +
-n\)</span> Hint: what kind of bound can we apply to <span
-class="math inline">\(n^2 + n\)</span>?</li>
+n\)</span></li>
 <li><span class="math inline">\(T(n) = 8 \cdot T(n / 2) + (\log
 n)^3\)</span> Hint: <span class="math inline">\((\log n)^k =
 O(n)\)</span> for all constant <span
