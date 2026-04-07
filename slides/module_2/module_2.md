@@ -1776,11 +1776,12 @@ And remember to bring pen and paper for the quiz next week!
 
 # Practice Quiz 1
 
-1. (25 points) Write an iterative function in C that returns the smallest magnitude negative int in a given list, or 0 if there are no negative numbers.
+1. (25 points) Define an iterative function in C that returns the smallest magnitude negative int in a given list, or 0 if there are no negative numbers.
  For example `lsmall({-2, -5, 2, 5, 7, -100}, 6) == -2`. `lsmall({}, 0) == 0`
-
 2. (50 points) Provide a useful invariant that gives us confidence the algorithm's loop is correct. It should be true before the first iteration of the loop and after each iteration of the loop. It should also relate the inputs of the function to the goal.
 3. (25 points) Determine the algorithm's *tight* big-$O$, and prove it by putting the big-$O$ in the margins like we did in the slides. You don't have to *prove*, but you must use the tightest big-$O$ that fits.
+
+(Remember: in C, to "declare" a function means to simply say that it exists along with type information like this: `void something(int x);`. To define it means to write the code inside the curly braces: `void something(int x) { ... }`.)
 
 ---
 
@@ -1817,7 +1818,7 @@ I generally grade like this:
 
 # Practice Quiz 2
 
-1. (25 points) Write an iterative function in C that returns the sum of every even-index element, starting with index 0. e.g., `even_sum({1, 2, 3, 4}, 4) == 4`, `even_sum({}, 0) == 0`
+1. (25 points) Define an iterative function in C that returns the sum of every even-index element, starting with index 0. e.g., `even_sum({1, 2, 3, 4}, 4) == 4`, `even_sum({}, 0) == 0`
 2. (50 points) Provide a useful invariant that gives us confidence the algorithm's loop is correct. It should be true before the first iteration of the loop and after each iteration of the loop. It should also relate the inputs of the function to the goal.
 3. (25 points) Determine the algorithm's *tight* big-$O$, and prove it by putting the big-$O$ in the margins like we did in the slides. You don't have to *prove*, but you must use the tightest big-$O$ that fits.
 
@@ -1825,7 +1826,7 @@ I generally grade like this:
 
 # Pratice Quiz 3
 
-1. (25 points) Write an iterative function in C that returns the largest sum of adjacent pairs of an array. For example, `{1,2,3,1}` has adjacent pairs (1, 2); (2, 3); and (3, 1). (2, 3) has the largest sum, 5, so it would return 5.
+1. (25 points) Define an iterative function in C that returns the largest sum of adjacent pairs of an array. For example, `{1,2,3,1}` has adjacent pairs (1, 2); (2, 3); and (3, 1). (2, 3) has the largest sum, 5, so it would return 5.
 `max_adj_sum({1,2,3,4}, 4) == 3 + 4 == 7`
 `max_adj_sum({1}, 1) == 0`
 `max_adj_sum({}, 0) == 0`
@@ -1836,7 +1837,7 @@ I generally grade like this:
 
 # Practice Quiz 34
 
-1. (25 points) Write an iterative function in C that finds the last zero-based index of the lowercase letter 'q' in an ascii string. If the letter 'q' is not present, return -1. Otherwise, return the index of the last 'q'.
+1. (25 points) Define an iterative function in C that finds the last zero-based index of the lowercase letter 'q' in an ascii string. If the letter 'q' is not present, return -1. Otherwise, return the index of the last 'q'.
 `rscan_q("hello world") == -1`
 `rscan_q("quello quorld") == 7`
 `rscan_q("") == -1`

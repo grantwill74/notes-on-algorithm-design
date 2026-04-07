@@ -2048,21 +2048,26 @@ these like quizzes.</p>
 <hr />
 <h1 id="practice-quiz-1">Practice Quiz 1</h1>
 <ol type="1">
-<li><p>(25 points) Write an iterative function in C that returns the
+<li>(25 points) Define an iterative function in C that returns the
 smallest magnitude negative int in a given list, or 0 if there are no
 negative numbers. For example
 <code>lsmall({-2, -5, 2, 5, 7, -100}, 6) == -2</code>.
-<code>lsmall({}, 0) == 0</code></p></li>
-<li><p>(50 points) Provide a useful invariant that gives us confidence
-the algorithm’s loop is correct. It should be true before the first
+<code>lsmall({}, 0) == 0</code></li>
+<li>(50 points) Provide a useful invariant that gives us confidence the
+algorithm’s loop is correct. It should be true before the first
 iteration of the loop and after each iteration of the loop. It should
-also relate the inputs of the function to the goal.</p></li>
-<li><p>(25 points) Determine the algorithm’s <em>tight</em> big-<span
+also relate the inputs of the function to the goal.</li>
+<li>(25 points) Determine the algorithm’s <em>tight</em> big-<span
 class="math inline">\(O\)</span>, and prove it by putting the big-<span
 class="math inline">\(O\)</span> in the margins like we did in the
 slides. You don’t have to <em>prove</em>, but you must use the tightest
-big-<span class="math inline">\(O\)</span> that fits.</p></li>
+big-<span class="math inline">\(O\)</span> that fits.</li>
 </ol>
+<p>(Remember: in C, to “declare” a function means to simply say that it
+exists along with type information like this:
+<code>void something(int x);</code>. To define it means to write the
+code inside the curly braces:
+<code>void something(int x) { ... }</code>.)</p>
 <hr />
 <h1 id="practice-quiz-1-answers">Practice Quiz 1 answers</h1>
 <p>You could also do it iteratively:</p>
@@ -2094,8 +2099,8 @@ questions.</p>
 <hr />
 <h1 id="practice-quiz-2">Practice Quiz 2</h1>
 <ol type="1">
-<li>(25 points) Write an iterative function in C that returns the sum of
-every even-index element, starting with index 0. e.g.,
+<li>(25 points) Define an iterative function in C that returns the sum
+of every even-index element, starting with index 0. e.g.,
 <code>even_sum({1, 2, 3, 4}, 4) == 4</code>,
 <code>even_sum({}, 0) == 0</code></li>
 <li>(50 points) Provide a useful invariant that gives us confidence the
@@ -2111,7 +2116,7 @@ big-<span class="math inline">\(O\)</span> that fits.</li>
 <hr />
 <h1 id="pratice-quiz-3">Pratice Quiz 3</h1>
 <ol type="1">
-<li>(25 points) Write an iterative function in C that returns the
+<li>(25 points) Define an iterative function in C that returns the
 largest sum of adjacent pairs of an array. For example,
 <code>{1,2,3,1}</code> has adjacent pairs (1, 2); (2, 3); and (3, 1).
 (2, 3) has the largest sum, 5, so it would return 5.
@@ -2131,7 +2136,7 @@ big-<span class="math inline">\(O\)</span> that fits.</li>
 <hr />
 <h1 id="practice-quiz-34">Practice Quiz 34</h1>
 <ol type="1">
-<li>(25 points) Write an iterative function in C that finds the last
+<li>(25 points) Define an iterative function in C that finds the last
 zero-based index of the lowercase letter ‘q’ in an ascii string. If the
 letter ‘q’ is not present, return -1. Otherwise, return the index of the
 last ‘q’. <code>rscan_q("hello world") == -1</code>
