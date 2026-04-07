@@ -1587,9 +1587,11 @@ However, if you're comparing two $O(n^2)$ algorithms, that factor of $1\over 2$ 
 
 ```c
 void ins_sort(int* arr, size_t n) {                             // O(?) 
-    for (size_t i = 1; i < n; i++)                              // O(n)
-        for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)   // O(n)
+    for (size_t i = 1; i < n; i++)                              // O(n) iters
+        for (size_t j = i; 0 < j && arr[j] < arr[j - 1]; j--)   // O(n) iters
             swap(arr + j - 1, arr + j);                         // O(1)
+        // inner loop: O(n) total bound
+    // outer loop: O(n * n) = O(n^2) bound
 }
 ```
 
@@ -1606,11 +1608,11 @@ So that's it, $n^2$ is an upper bound on the time of insertion sort.
 But what about this?
 
 ```c
-for (int i = 0; i < n; i++) // O(n)
-    constant_time_thing();
+for (int i = 0; i < n; i++) // O(n) iterations
+    constant_time_thing();  // O(1)
 
-for (int i = 0; i < n; i++) // O(n)
-    constant_time_thing();
+for (int i = 0; i < n; i++) // O(n) iterations    
+    constant_time_thing();  // O(1)
 ```
 
 [Class?]
@@ -1619,11 +1621,15 @@ for (int i = 0; i < n; i++) // O(n)
 
 # Add the big-$O$s
 ```c
-for (int i = 0; i < n; i++) // O(n)
-    constant_time_thing();
+for (int i = 0; i < n; i++) // O(n) iterations
+    constant_time_thing();  // O(1)
+// O(n) total
 
-for (int i = 0; i < n; i++) // O(n)
-    constant_time_thing();
+for (int i = 0; i < n; i++) // O(n) iterations
+    constant_time_thing();  // O(1)
+// O(n) total
+
+// Total sequence bound: O(n) + O(n) = O(2n) = O(n)
 ```
 
 The code runs in sequence. So this is $O(n) + O(n) = O(n + n) = O(2n) = O(n)$
@@ -1787,16 +1793,16 @@ And remember to bring pen and paper for the quiz next week!
 
 # Practice Quiz 1 answers
 
-You could also do it iteratively:
 ```c
 int lsmall(int* arr, size_t n) {
     int res = 0;
     // I: res is the least-magnitude negative number in arr[0..i)
     // I: (more mathematically) res = maximum (filter negatives (arr))
-    for (size_t i = 0; i < n; i++)                          // O(n)
+    for (size_t i = 0; i < n; i++)                          // O(n) iterations
         // if we found a negative, if it's the first one or it's > res
         if (arr[i] < 0 && (res == 0 || arr[i] > res))       // O(1)
-            res = arr[i];
+            res = arr[i];                                   // O(1)
+    // loop is O(n). O(n) iterations of O(1) stateemnts
     return res;
 }
 ```

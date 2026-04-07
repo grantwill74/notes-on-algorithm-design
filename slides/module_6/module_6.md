@@ -675,7 +675,7 @@ And what's the depth of that insertion? $d = 5$. Uh-oh, now we need a scapegoat.
 
 To do this, we start at the $6$, and work our way up, parent by parent. At each point, we evaluate this inequality:
 $i \le \log(n_\mathrm{subtree}) / \log(1 / \alpha) + 1$
-Where $i$ is the height of the tree at each point. $i$ starts at $1$, and goes up by 1 for each parent. If this inequality ever fails, we have found our scapegoat.
+Where $i$ is the number of steps up from the inserted node. $i$ starts at $1$, and goes up by 1 for each parent. If this inequality ever fails, we have found our scapegoat.
 
 ---
 
@@ -717,11 +717,12 @@ Can you *believe* this 3? It's completely imbalanced! If it weren't for them, ev
 
 3, we have some concerns we need to talk about.
 
+So we have someone to blame. Now what?
+
 ---
 
 # What now?
 
-So we have someone to blame. Now what?
 
 Now, we rebuild the tree centered at 3.
 
@@ -759,28 +760,32 @@ More algebra follows...
 
 # Finding the scapegoat quickly
 
-Remember that we were searching for the first $i^{\mathrm{th}}$ ancestor of the inserted node, such that $i \gt \log_{(1 / \alpha)}(\mathrm{size}(i))$
+Let's write $n_i$ to mean the $i^{\mathrm{th}}$ ancestor of $n$, which will be the node we just inserted.
+
+Remember that we were searching for the first $i^{\mathrm{th}}$ ancestor of the inserted node, such that $i \gt \log_{(1 / \alpha)}(\mathrm{size}(n_i))$
 
 Raise both sides by $1/ \alpha$:
-$(1 / \alpha)^i \gt \mathrm{size}(i)$
+$(1 / \alpha)^i \gt \mathrm{size}(n_i)$
+This node is too small to be so high up from the leaves.
 
 This is the first $i$ we find moving up from the inserted node with this inequality. The previous $i$ did not have this property (including $i = 1$):
-$(1 / \alpha)^{i - 1} \le \mathrm{size}(i - 1)$
+$(1 / \alpha)^{i - 1} \le \mathrm{size}(n_{i - 1})$
 
 ---
 
 # Finding the scapegoat quickly (2)
 
-We can divide those two inequalities. 
-$(1 / \alpha)^i \gt \mathrm{size}(i)$ means that if we divide the right by a larger value than the left, the inequality will still be true. Therefore.
-${(1 / \alpha)^i \over (1 / \alpha)^{i - 1}} \gt {\mathrm{size(i)} \over \mathrm{size(i - 1)}}$
+So we have:
+$\mathrm{size}(n_i) < (1 / \alpha)^i$ 
+$(1 / \alpha)^{i - 1} \le \mathrm{size}(n_{i - 1})$
 
-After simplifying:
-$(1 / \alpha) \gt {\mathrm{size}(i) \over \mathrm{size}(i - 1)} \equiv \alpha \lt {\mathrm{size}(i - 1)\over \mathrm{size}(i)} \equiv \alpha\cdot\mathrm{size}(i) \lt \mathrm{size}(i-1)$
+Multiply the first inequality by $\alpha$:
+$\alpha \cdot \mathrm{size}(n_i) < (1 / \alpha)^{i-1}$
 
-Remember here that $i$ is the parent, and $i-1$ is the child. So this is how we derive that inequality from before.
+Now, by transitivity:
+$\alpha \cdot \mathrm{size}(n_i) \lt \mathrm{size}(n_{i - 1})$ 
 
-In other words, go back up from your insertion until you find a child that is bigger than alpha times its parent.
+In other words, go back up from your insertion until you find a child that is bigger than alpha times its parent. The *parent* is the scapegoat.
 
 ---
 
@@ -915,7 +920,7 @@ Therefore it cancels out, and it ends up being, on average, constant time. Just 
 
 Wait...so amortized time is average time?
 
-In this particular case, yes. The amortized time is the same as average time. That's because we're only considering one operation: append.
+In this particular case, yes. The amortized time ends up being the same as average time. That's because we're only considering one operation: append.
 
 But what about with trees?
 
@@ -927,7 +932,9 @@ Trees need to be careful. They are used for dictionaries. Suppose we're using th
 
 A user might realize that we're using a tree, and craft some activity that hits the worst case for the tree with the goal of slowing down our server. This is called a denial of service attack.
 
-Amortized analysis is when you consider every possible action a user could take, and conclude that in every possible case, the total amount of time is bounded by some function of $n$.
+Amortized analysis is when you consider every possible action a user could take, and conclude that in every possible case, the total amount of time is bounded by some function of $n$. Amortized big-$O$ is a bound on the worst-case sequence of events.
+
+Not just one insertion, but over any sequence of insertions.
 
 ---
 

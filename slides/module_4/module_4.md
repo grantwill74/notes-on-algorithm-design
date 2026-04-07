@@ -1408,10 +1408,10 @@ If you've been drilling these, I think it is reasonable, but you have to practic
 # Appendix A: some samples
 
 1. $T(n) = 2 \cdot T(n / 2) + n$
-2. $T(n) = T(n / 3) + n^2$
+2. $T(n) = T(n / 3) + n^2 \lg n$
 3. $T(n) = n + 4\cdot T(n / 2)$
 4. $T(n) = 256\cdot T(n / 2) + n^3 \cdot |\sin n|$
-5. $T(n) = 49 \cdot T (n / 7) + \Theta(n^2 \log n)$
+5. $T(n) = 49 \cdot T (n / 7) + n^2 \log n$
 6. $T(n) = 100 \cdot T(n / 10) + 1$
 7. $T(n) = T(n - 1) + \Theta(n)$
 
@@ -1420,8 +1420,8 @@ If you've been drilling these, I think it is reasonable, but you have to practic
 # Appendix A: the answers
 
 1. $c_\mathrm{crit}= 1$, $f(n) = n^1 \cdot (\log n)^0$, so case 2. $T(n) = \Theta(n \lg n)$
-2. $c_\mathrm{crit}= 0$, $f(n) = \Omega(n^2)$, $c_\mathrm{crit} \lt 2$ case 3. $\exists k \lt 1, n^2 / 2 \le k n^2$? 
-   Yes, case 3: $T(n) = \Theta(n^2)$
+2. $c_\mathrm{crit}= 0$, $f(n) = n^2 \lg n = \Omega(n^2)$, $c_\mathrm{crit} \lt 2$ case 3. $\exists k \lt 1, n^2 / 2 \le k n^2$? 
+   Yes, case 3: $T(n) = \Theta(n^2 \lg n)$
 3. I flipped the terms around but it doesn't matter: $c_\mathrm{crit}= \lg 4 / \lg 2 = 2$, $f(n) = O(n^1)$, $2 \gt 1$, so case 1. $T(n) = \Theta(n^{c_\mathrm{crit}})=\Theta(n^2)$
 4. $c_\mathrm{crit}= 7$, $f(n) = O(n^3)$, therefore case 1: $T(n) = \Theta(n^7)$
 5. $c_\mathrm{crit}= \log_7 49 / \log_7 7 = 2$, $c = 2$, case 2. $T(n) = \Theta(n^2 (\log n)^2)$
@@ -1469,7 +1469,8 @@ Remember, 15 minutes for 4 problems!
 5. $T(n) = 9T(n / 3) + n^2$
 6. $T(n) = 2T(n / 2) + n(\log n)^2$
 7. $T(n) = T(n-1) + T(n - 2) + 1$
-
+8. $T(n) = 3^8 \cdot T(n/3^4) + n^2 (\log n)^2$
+9. $T(n) = 2\cdot T(n/4) + \sqrt{n}$
 
 
 ---
