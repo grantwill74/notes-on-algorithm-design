@@ -817,9 +817,8 @@ Feel free to use an array list of your own making though. Double the array list 
 
 Then, after inserting, the length of that list (+ 1) is the depth. If that number is larger than the alpha depth of the tree, we have a problem.
 
-Whom do we blame? Iterate over the list of ancestors in reverse order. If we find an ancestor $i$ where $\alpha \cdot \mathrm{size}(i - 1) \lt \mathrm{size}(i)$, we make $i$ the scapegoat.
+Whom do we blame? Iterate over the list of ancestors in reverse order. If we find an ancestor $n_i$ where $\mathrm{size}(n_i) > \alpha \cdot \mathrm{size}(n_{i - 1})$, we make $n_{i - 1}$ the scapegoat.
 
-(note: this formula is slightly different from the previous one, because here, $i$ is the index in an array and $i = 0$ is the root, whereas before, $i=1$ was the node we just inserted)
 
 Eventually, we *will* reach a scapegoat. The root can be a scapegoat too.
 
