@@ -389,7 +389,7 @@ A linear system is one in which the variables don't depend on each other. If we 
 
 In the case of many greedy problems, this is the key. If there isn't some drawback to increasing one variable, we can just always do it. If your goal is to maximize $x$, and $x$ does not affect $y$ or $z$, then your decision is easy: ignore $y$ and $z$.
 
-All matrices are matroids, but there are matroids that aren't matrices. There are lots of ways to define a matroid, but there is one that works well for many greedy problems and which doesn't require higher math: the set theoretic definition.
+A matroid is designed to generalize the idea of linear independence outside of matrices. There are lots of ways to define a matroid, but there is one that works well for many greedy problems and which doesn't require higher math: the set theoretic definition.
 
 ---
 
@@ -881,6 +881,22 @@ size_t max_money(size_t* jobs, size_t n, size_t dt) { ... }
 ```
 
 Example: suppose the list is `{0, 1, 5, 2, 1}`. The best we can achieve is doing the day 0 job on day 0, one of the day 1 deadline jobs on day 1, and then the day 2 and 5 jobs on days 2 and 3. That's 4 jobs for $800. It's impossible to do both jobs with a day 1 deadline.
+
+There is a hint for this problem on the next slide if you're struggling...
+
+---
+
+# Quiz 3 hint
+
+What if you sorted the jobs?
+
+How should you sort them to maximize the *number* of jobs you can do? Remember, they all pay the same.
+
+---
+
+# Prior quizzes and exams
+
+Remember, also try out the previous quizzes and exams for ME 4!
 
 ---
 
