@@ -34,11 +34,11 @@ So instead of something like exponential time, they are in P.
 
 # This week
 
-This week, we're going to learn about dynamic algorithms.
+This week, we're going to learn about dynamic programming algorithms.
 
 These are algorithms that solve actual tough problems, and there's no "trick".
 
-However, they are divide and conquer algorithms where the sub-problems have overlap.
+However, they are divide and conquer algorithms where the sub-problems overlap.
 
 By being smart about what we compute (and usually by saving some data in a table), we end up running way less code.
 
@@ -93,7 +93,7 @@ The book itself was intended to introduce the European reader to the use of Arab
 The Fibonacci sequence is defined like this:
 $F(0) = 0$
 $F(1) = 1$
-$F(n) = F(n - 2) + f(n - 1)$
+$F(n) = F(n - 2) + F(n - 1)$
 
 That is, the nth Fibonacci number is the sum of the previous two numbers in the sequence.
 
@@ -177,7 +177,7 @@ To see this, let's consider what our call-tree would look like if we didn't comp
 
 ---
 
-![bg right:30% height:90% a diagram showing the computation of Fibonacci numbers that is more tractable. F(10) requires F(9) and F(8). However, the F(8) that F(9) depends on is shared between F(10) and F(9), saving the calculation. This results in the "Tree" looking like a list, instead.](fibo2.svg)
+![bg right:30% height:90% : a diagram showing the computation of Fibonacci numbers that is more tractable. F(10) requires F(9) and F(8). However, the F(8) that F(9) depends on is shared between F(10) and F(9), saving the calculation. This results in the "Tree" looking like a list, instead.](fibo2.svg)
 
 # More Tractable Growth
 
@@ -293,7 +293,7 @@ for (int i = 2; i < 10; i++) {
 
 We don't even need a function now. The 49th Fibonacci number is `saved[49]`. 
 
-This is bottom-up dynamic programming. We compute the first value we need ($F(2)$), then the next, and the next, and so on, until reaching the actual value we want.ed
+This is bottom-up dynamic programming. We compute the first value we need ($F(2)$), then the next, and the next, and so on, until reaching the actual value we wanted.
 
 ---
 
@@ -669,7 +669,7 @@ Therefore, 1 pound was 20 shillings, 240 pence, or 960 farthings
 
 Where on earth am I going with this? The point is that, with such a variety of currency, it is entirely possible that you would not be able to make exact change, and even if you were: the greedy algorithm might be *wrong*
 
-Suppose you're a shopkeeper in pre-decimilized UK. 
+Suppose you're a shopkeeper in pre-decimalized UK. 
 
 Prices were written as £ / s / d. So something that cost 2 pounds, 7 shillings, and 3 pence would be: 2 / 7 / 3. 
 
@@ -753,7 +753,7 @@ For $n$ pence, take the minimum greater than zero of:
 - $C(n - 10) + 1$
 - $C(n - 1) + 1$
 
-We need a base case, too: $C(1) = 1$
+We need a base case, too: $C(0) = 0$
 
 Does it make sense why this would give us the correct answer? 
 
@@ -1065,14 +1065,15 @@ For full credit, the answer must be bottom-up.
 
 # Practice quiz 2
 
-Suppose Alice is taking a motorcycle trip across the country. She can go `k` kilometers on one tank of gas.
+Suppose Alice is taking a motorcycle trip across the country past `n` gas stations. She can go `k` kilometers on one tank of gas. At certain points along her trip, there are gas stations. At a gas station, she can fill her tank up to full, but it costs money, which she wants to minimize. This is a gas station: 
+```c
+typedef struct { int kms_from_start, cost_per_km; } Station;
+```
 
-At certain points along her trip, there are gas stations. At a gas station, she can fill her tank up to full, but it takes time, so she wants to minimize it.
+Alice can make it to a gas station `d` km away if she has at least `d` km of fuel. Alice must fill up completely when stopping. The gas stations are lined up along her route, so she can go from, e.g., station {20, _} to {30, _} if she has at least 10 km of fuel. Given a `k` and a list stations, write a DP algorithm in C that runs in polynomial time and returns the lowest cost. The last gas station in the list is her destination.
 
-Alice can make it to a gas station `d` km away if she has `d`  km of fuel. Alice has planned her route so that she knows, how far away each gas station is from the start. Given a `k` and a list of gas station distances, write a DP algorithm in C that runs in polynomial time and returns the fewest number of gas stops. Her destination is the last gas station which counts as a stop. You may assume the array of stations is global.
-
-Example:
-`k = 50` and `a = {49, 50, 100, 101, 150}` returns 3: she stops at 50, 100, and 150
+E.g., `k = 50` and `a = {{49, 100}, {50, 200}, {60, 500}, {100, 200}, {150, 0}}` 
+returns 3: she stops at 50, 100, and 150
 
 ---
 
@@ -1085,6 +1086,19 @@ The team owner wants the best team for a maximum salary $m$. That is, he wants t
 Write a DP algorithm in C, which runs in polynomial time that returns the highest obtainable sum of ability scores. You may assume that the arrays `int[] a = {...}` and `int[] s = {...}` for ability scores and salaries are global. 
 
 Example: `a = {1, 10, 100}`, `s = {2, 10, 1000}`, `m = 42` will return 41, because the best solution is to draft 4 twins of the player with score 10, and 1 of the player with 1.
+
+---
+
+# Warning about the quiz:
+
+You really do need to practice these. There is no set of lecture slides you can read that will give you the ability to solve any DP problem. 
+
+I recommend going on [LeetCode](https://leetcode.com/problemset/) and doing easy problems with the *Dynamic-Programming* tag.
+
+Note: do these problems without help. You won't have access to an LLM, a friend, or an editorial on the quiz or tests. Only look for the answer if you've spent at least 30 minutes trying and you have no idea what to do.
+
+As always, you can also have an LLM generate problems for you, but in this case, the LLM will be heavily influenced by what's out there (so it will likely just generate a LeetCode problem anyway).
+
 
 ---
 

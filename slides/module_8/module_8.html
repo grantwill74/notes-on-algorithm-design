@@ -257,11 +257,12 @@ maximizing some variable) at each step.</p>
 <p>So instead of something like exponential time, they are in P.</p>
 <hr />
 <h1 id="this-week">This week</h1>
-<p>This week, we’re going to learn about dynamic algorithms.</p>
+<p>This week, we’re going to learn about dynamic programming
+algorithms.</p>
 <p>These are algorithms that solve actual tough problems, and there’s no
 “trick”.</p>
 <p>However, they are divide and conquer algorithms where the
-sub-problems have overlap.</p>
+sub-problems overlap.</p>
 <p>By being smart about what we compute (and usually by saving some data
 in a table), we end up running way less code.</p>
 <hr />
@@ -310,7 +311,7 @@ abacus and Roman numerals. [This was surprisingly controversial]</p>
 <h1 id="fibonacci-sequence-1">Fibonacci Sequence</h1>
 <p>The Fibonacci sequence is defined like this: <span
 class="math inline">\(F(0) = 0\)</span> <span class="math inline">\(F(1)
-= 1\)</span> <span class="math inline">\(F(n) = F(n - 2) + f(n -
+= 1\)</span> <span class="math inline">\(F(n) = F(n - 2) + F(n -
 1)\)</span></p>
 <p>That is, the nth Fibonacci number is the sum of the previous two
 numbers in the sequence.</p>
@@ -383,12 +384,12 @@ didn’t compute each number over and over again.</p>
 <hr />
 <figure>
 <img src="fibo2.svg"
-alt="bg right:30% height:90% a diagram showing the computation of Fibonacci numbers that is more tractable. F(10) requires F(9) and F(8). However, the F(8) that F(9) depends on is shared between F(10) and F(9), saving the calculation. This results in the “Tree” looking like a list, instead." />
-<figcaption aria-hidden="true">bg right:30% height:90% a diagram showing
-the computation of Fibonacci numbers that is more tractable. F(10)
-requires F(9) and F(8). However, the F(8) that F(9) depends on is shared
-between F(10) and F(9), saving the calculation. This results in the
-“Tree” looking like a list, instead.</figcaption>
+alt="bg right:30% height:90% : a diagram showing the computation of Fibonacci numbers that is more tractable. F(10) requires F(9) and F(8). However, the F(8) that F(9) depends on is shared between F(10) and F(9), saving the calculation. This results in the “Tree” looking like a list, instead." />
+<figcaption aria-hidden="true">bg right:30% height:90% : a diagram
+showing the computation of Fibonacci numbers that is more tractable.
+F(10) requires F(9) and F(8). However, the F(8) that F(9) depends on is
+shared between F(10) and F(9), saving the calculation. This results in
+the “Tree” looking like a list, instead.</figcaption>
 </figure>
 <h1 id="more-tractable-growth">More Tractable Growth</h1>
 <p>Notice what happens when we <em>don’t</em> recompute the values each
@@ -493,7 +494,7 @@ recursively?</p>
 <code>saved[49]</code>.</p>
 <p>This is bottom-up dynamic programming. We compute the first value we
 need (<span class="math inline">\(F(2)\)</span>), then the next, and the
-next, and so on, until reaching the actual value we want.ed</p>
+next, and so on, until reaching the actual value we wanted.</p>
 <hr />
 <h1 id="which-one">Which one?</h1>
 <p>In this case, we end up computing the same values whether we use
@@ -857,7 +858,7 @@ price fluctuated.</p>
 variety of currency, it is entirely possible that you would not be able
 to make exact change, and even if you were: the greedy algorithm might
 be <em>wrong</em></p>
-<p>Suppose you’re a shopkeeper in pre-decimilized UK.</p>
+<p>Suppose you’re a shopkeeper in pre-decimalized UK.</p>
 <p>Prices were written as £ / s / d. So something that cost 2 pounds, 7
 shillings, and 3 pence would be: 2 / 7 / 3.</p>
 <p>Let’s imagine that you normally have the following denominations:
@@ -915,8 +916,8 @@ greater than zero of: - <span class="math inline">\(C(n - 240) +
 class="math inline">\(C(n - 12) + 1\)</span> - <span
 class="math inline">\(C(n - 10) + 1\)</span> - <span
 class="math inline">\(C(n - 1) + 1\)</span></p>
-<p>We need a base case, too: <span class="math inline">\(C(1) =
-1\)</span></p>
+<p>We need a base case, too: <span class="math inline">\(C(0) =
+0\)</span></p>
 <p>Does it make sense why this would give us the correct answer?</p>
 <hr />
 <h1 id="sketch-of-an-implementation">Sketch of an implementation</h1>
@@ -1241,21 +1242,22 @@ a given integer in polynomial time.</p>
 <p>For full credit, the answer must be bottom-up.</p>
 <hr />
 <h1 id="practice-quiz-2">Practice quiz 2</h1>
-<p>Suppose Alice is taking a motorcycle trip across the country. She can
-go <code>k</code> kilometers on one tank of gas.</p>
-<p>At certain points along her trip, there are gas stations. At a gas
-station, she can fill her tank up to full, but it takes time, so she
-wants to minimize it.</p>
+<p>Suppose Alice is taking a motorcycle trip across the country past
+<code>n</code> gas stations. She can go <code>k</code> kilometers on one
+tank of gas. At certain points along her trip, there are gas stations.
+At a gas station, she can fill her tank up to full, but it costs money,
+which she wants to minimize. This is a gas station:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> <span class="op">{</span> <span class="dt">int</span> kms_from_start<span class="op">,</span> cost_per_km<span class="op">;</span> <span class="op">}</span> Station<span class="op">;</span></span></code></pre></div>
 <p>Alice can make it to a gas station <code>d</code> km away if she has
-<code>d</code> km of fuel. Alice has planned her route so that she
-knows, how far away each gas station is from the start. Given a
-<code>k</code> and a list of gas station distances, write a DP algorithm
-in C that runs in polynomial time and returns the fewest number of gas
-stops. Her destination is the last gas station which counts as a stop.
-You may assume the array of stations is global.</p>
-<p>Example: <code>k = 50</code> and
-<code>a = {49, 50, 100, 101, 150}</code> returns 3: she stops at 50,
-100, and 150</p>
+at least <code>d</code> km of fuel. Alice must fill up completely when
+stopping. The gas stations are lined up along her route, so she can go
+from, e.g., station {20, <em>} to {30, </em>} if she has at least 10 km
+of fuel. Given a <code>k</code> and a list stations, write a DP
+algorithm in C that runs in polynomial time and returns the lowest cost.
+The last gas station in the list is her destination.</p>
+<p>E.g., <code>k = 50</code> and
+<code>a = {{49, 100}, {50, 200}, {60, 500}, {100, 200}, {150, 0}}</code>
+returns 3: she stops at 50, 100, and 150</p>
 <hr />
 <h1 id="practice-quiz-3">Practice quiz 3</h1>
 <p>Suppose Alice is the draft manager for a sports team. She and her
@@ -1276,6 +1278,21 @@ ability scores and salaries are global.</p>
 <code>s = {2, 10, 1000}</code>, <code>m = 42</code> will return 41,
 because the best solution is to draft 4 twins of the player with score
 10, and 1 of the player with 1.</p>
+<hr />
+<h1 id="warning-about-the-quiz">Warning about the quiz:</h1>
+<p>You really do need to practice these. There is no set of lecture
+slides you can read that will give you the ability to solve any DP
+problem.</p>
+<p>I recommend going on <a
+href="https://leetcode.com/problemset/">LeetCode</a> and doing easy
+problems with the <em>Dynamic-Programming</em> tag.</p>
+<p>Note: do these problems without help. You won’t have access to an
+LLM, a friend, or an editorial on the quiz or tests. Only look for the
+answer if you’ve spent at least 30 minutes trying and you have no idea
+what to do.</p>
+<p>As always, you can also have an LLM generate problems for you, but in
+this case, the LLM will be heavily influenced by what’s out there (so it
+will likely just generate a LeetCode problem anyway).</p>
 <hr />
 <h1 id="questions-9">Questions?</h1>
 <!-- _class: questions invert -->
