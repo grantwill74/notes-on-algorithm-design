@@ -1099,6 +1099,7 @@ Note: do these problems without help. You won't have access to an LLM, a friend,
 
 As always, you can also have an LLM generate problems for you, but in this case, the LLM will be heavily influenced by what's out there (so it will likely just generate a LeetCode problem anyway).
 
+And be sure to do the problems from previous semesters!
 
 ---
 
