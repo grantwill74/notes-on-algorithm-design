@@ -81,7 +81,7 @@ We solved that problem with a breadth-first search. Because there was no notion 
 
 When the weights are all the same, that's what Dijkstra's algorithm does. It's lowest-cost-first search, which is breadth-first search when the costs are all the same.
 
-And why might that not be desireable?
+And why might that not be desirable?
 
 ---
 
@@ -416,7 +416,7 @@ Notice that the behavior is very "realistic": it hits the wall and then goes aro
 
 And it still finds its way to the goal, even if the path isn't optimal.
 
-![bg right width:100% height:100% an illustration by the same author as the first two animations. The scenario is the same: there is a concave obstacle with concavity facing the source node, viewed from the top. Here, the search algorithm searches every node in a line to the destination until hitting the obstacle. Then, it ](Weighted_A_star_with_eps_5.gif)
+![bg right width:100% height:100% an illustration by the same author as the first two animations. The scenario is the same: there is a concave obstacle with concavity facing the source node, viewed from the top. Here, the search algorithm searches every node in a line to the destination until hitting the obstacle. Then, it backs up to consider previous nodes before finding one that can navigate around the obstacle. The final path is not ideal: it navigates around the obstacle too closely, so it ends up wasting some time by moving into a corner and then backing out rather than avoiding the obstacle with a wider path around.](Weighted_A_star_with_eps_5.gif)
 
 <div class="footnote">
 
@@ -533,7 +533,7 @@ Each action takes one turn, so technically, Dijkstra's is the same as breadth fi
 
 ---
 
-# Psuedocode
+# Pseudocode
 
 This is how we solve it with one enemy:
 
@@ -546,7 +546,7 @@ This is how we solve it with one enemy:
 
 ---
 
-# Psuedocode (2): consider every action
+# Pseudocode (2): consider every action
 
 1. We attack; the new state after attacking is: 
     `{hp - d_i, mp, heals, enemy_hp - 10, actions_taken + 1}`
@@ -562,7 +562,7 @@ What about the blast state?
 
 ---
 
-# Psuedocode (3)
+# Pseudocode (3)
 
 3. We blast; `{hp - d_i, mp - 1, heals, enemy_hp - 20, actions_taken + 1}`
     - Check for validity. If we hit hp 0 and not the enemy, invalid. Also mp >= 0.
@@ -687,7 +687,7 @@ In theory, the fastest way to win is to blast the enemy.
 
 Yes, it takes magic points to do that, so the most we can blast is three.
 
-But suppose we estimate the number of turns to beat an enemy as number of blasts. We'll never *overestimate* the number, but we'll often undersestimate it, and sometimes we'll be right.
+But suppose we estimate the number of turns to beat an enemy as number of blasts. We'll never *overestimate* the number, but we'll often underestimate it, and sometimes we'll be right.
 
 So $h(s) = \lceil\mathrm{enemy\_hp(s)} / 20\rceil$
 
@@ -1223,7 +1223,7 @@ In this case, if $n \ge 2$, it's shortest to blow up the two walls between `S` a
 # Sample quiz 2
 
 Suppose you're a formula 1 racer. You have $n$ laps of fuel, you are in position $p$, and there are $r$ laps remaining. You have the following options:
-- You may drive agressively for one lap. You use 2 laps of fuel, but you gain a position ($p - 1$).
+- You may drive aggressively for one lap. You use 2 laps of fuel, but you gain a position ($p - 1$).
 - You may maintain position by spending 1 lap of fuel. 
 - You may conserve fuel. You lose 1 position, but only spend 0.5 laps of fuel.
 - You may take a pit stop. You refill your fuel, but you lose $10$ positions ($p + 10$).

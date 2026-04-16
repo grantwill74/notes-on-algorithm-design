@@ -357,8 +357,8 @@ serializing/deserializing) and also to save space: if we have fewer than
 about 4.2 billion nodes, we can use an unsigned 32-bit integer.</p>
 <hr />
 <h1 id="memory-management-2">Memory management (2)</h1>
-<p>We can also use our pool-based memory managent here if we want,
-because each node is the same size in memory.</p>
+<p>We can use our pool-based memory management here if we want, because
+each node is the same size in memory.</p>
 <p>We can also store the neighbors in an array list, linked list,
 hashtable, or tree. All of these data-structures can grow dynamically so
 we don’t need to pre-allocate space for all our neighbors. Here it is as
@@ -442,7 +442,7 @@ permitted but not required.</p>
 list.</p>
 <p>If the list is not ordered, then any kind of query will be <span
 class="math inline">\(\Theta(|E|)\)</span> time on average, which is
-unacceptable for most applications.</p>
+unacceptable for many applications.</p>
 <p>Kruskal’s algorithm relies on the list being sorted by edge weight.
 So why not sort the edges using <code>qsort</code>? This will take <span
 class="math inline">\(\Theta(|E| \lg |E|)\)</span> on average, but we
@@ -460,9 +460,10 @@ the edge lists to be in a particular order.</p>
 distribution of source or dest IDs, there might be shortcuts (like
 counting sort).</p>
 <p>We could also store our edges in a tree instead, sorted by the index
-we choose (like weight or source). We could also use a hashmap, but then
-we wouldn’t be able to get every neighbor of a particular node (if
-that’s not required, this is a good solution)</p>
+we choose (like weight or source). We could also use a hashset over
+(source, destination) tuples, but then we wouldn’t be able to get every
+neighbor of a particular node (if that’s not required, this is a good
+solution)</p>
 <p>If we want to have multiple kinds of queries, we would need multiple
 copies of edge lists, sorted differently. This can be problematic if we
 need to insert a new edge. Workflows with random insertion and deletion
@@ -495,9 +496,10 @@ class="math inline">\(|E|\)</span>)?</p>
 <hr />
 <h1 id="adjacency-matrices-2">Adjacency matrices (2)</h1>
 <p>It turns out, <span class="math inline">\(|E| \le |V|^2\)</span>.</p>
-<p>That is, every vertex can be connected to every other vertex, which
-means that there are <span class="math inline">\(|V|\)</span> vertices
-for every vertex, hence <span class="math inline">\(|V|^2\)</span>.</p>
+<p>That is, every vertex can potentially be connected to every other
+vertex, which means that there are up to <span
+class="math inline">\(|V|\)</span> vertices for every vertex, hence
+<span class="math inline">\(|V|^2\)</span>.</p>
 <p>If every vertex is connected to every distinct vertex in a graph, we
 call it <em>complete</em>.</p>
 <p>If <em>most</em> vertices are connected, we call the graph
@@ -624,8 +626,8 @@ efficient? Why even bother with edge lists if the matrix is so good?</p>
 <p>Now we have <span class="math inline">\(5 \times 5 \times 4 =
 100\)</span> bytes to store instead of 64. And if we add another? <span
 class="math inline">\(6 \times 6 \times 4 = 144\)</span> bytes. It’s
-quadratic, so we keep adding more and more each time we add one
-node.</p>
+quadratic, so we keep adding more and more space requirements each time
+we add one node.</p>
 <p>In applications where we might have a lot of sparsely connected
 nodes, this does not work at all. Imagine if there were 1 million nodes?
 How many ints would we need to allocate?</p>
@@ -689,7 +691,7 @@ what we want, because it means the array is densely packed.</p>
 <hr />
 <h1 id="dynamic-allocation-1">Dynamic allocation</h1>
 <p>The second one defines mat to be an array of 200 pointers. However,
-then the malloc is erroneous, because the array of poitners is on the
+then the malloc is erroneous, because the array of pointers is on the
 stack. Instead, we would have to iterate over that array and malloc a
 row for each pointer. Accessing an edge weight would require extra
 indirection: we would need to follow a pointer first.</p>
@@ -736,10 +738,10 @@ representations of graphs with dynamic size?</p>
 <p>We do it ourselves! It was nice having compiler support for
 mat[row][col], but the math the compiler was doing behind the scenes is
 not that hard.</p>
-<p>With square matrices of size <code>dim * dim</code>: - For each row
-we go down, we add <code>dim</code> columns. - Once we’ve got the
-address of the correct row, we just add <code>col</code> to get the
-element we want.</p>
+<p>With square matrices of size <code>b_rows * n_cols</code>: - For each
+row down, we add <code>n_cols</code> elements. So we select
+<code>row * n_cols</code>. - Once we’ve got the address of the correct
+row, we just add <code>col</code> to get the element we want.</p>
 <hr />
 <h1 id="using-1d-addressing-2">Using 1D addressing (2)</h1>
 <p>So if we want the element at row 24, col 15 of a 30 node graph, we
@@ -831,7 +833,7 @@ and (1, 0).</p>
 <hr />
 <h1 id="implied-graphs">Implied graphs</h1>
 <p>In this case, the neighbors are implied. We don’t store them.</p>
-<p>That means their weights are implied too: the graph doesnt’ store
+<p>That means their weights are implied too: the graph doesn’t store
 them.</p>
 <p>If we need weights, for example, to make it so that some terrain is
 more expensive to walk through, we can either use the terrain in the
@@ -874,8 +876,8 @@ common.</p>
 refusing to search a node that has already been visited.</p>
 <hr />
 <h1 id="searching-orders">Searching orders</h1>
-<p>Just like for trees, there are two orders to iterate over a graph: -
-Depth first - Breadth first</p>
+<p>Just like for trees, there are some standard orders to iterate over a
+graph: - Depth first - Breadth first</p>
 <p>Both will eventually visit every reachable node, so often it doesn’t
 matter.</p>
 <p>However, sometimes one is more desirable. I have an example later of
@@ -1474,9 +1476,9 @@ polynomial time.</p>
 <hr />
 <h1 id="practice-4">Practice</h1>
 <ul>
-<li>It’s very important to be good at Dijstra’s algorithm. Try modifying
-my graph or generating your own and find shortest paths between
-arbitrary points.</li>
+<li>It’s very important to be good at Dijkstra’s algorithm. Try
+modifying my graph or generating your own and find shortest paths
+between arbitrary points.</li>
 <li>Implement the algorithm in C. You’ll need to do this for project 5
 anyway. How do you need to modify the heap to make it work on paths? (we
 can discuss this if there is time)</li>

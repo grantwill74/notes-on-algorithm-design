@@ -150,7 +150,7 @@ This also gives us the flexibility to refer to nodes by an ID instead by pointer
 
 # Memory management (2)
 
-We can also use our pool-based memory managent here if we want, because each node is the same size in memory. 
+We can use our pool-based memory management here if we want, because each node is the same size in memory. 
 
 We can also store the neighbors in an array list, linked list, hashtable, or tree. All of these data-structures can grow dynamically so we don't need to pre-allocate space for all our neighbors. Here it is as a linked list:
 
@@ -241,7 +241,7 @@ We could also have node structures as before if we need to associate data with n
 
 One issue with edge-lists, though, is that we need to organize the list.
 
-If the list is not ordered, then any kind of query will be $\Theta(|E|)$ time on average, which is unacceptable for most applications.
+If the list is not ordered, then any kind of query will be $\Theta(|E|)$ time on average, which is unacceptable for many applications.
 
 Kruskal's algorithm relies on the list being sorted by edge weight. So why not sort the edges using `qsort`? This will take $\Theta(|E| \lg |E|)$ on average, but we only need to do it once. We just need to iterate over this list in order.
 
@@ -255,7 +255,7 @@ This raises the biggest drawback of edge lists, though: the need for the edge li
 
 Sorting isn't *slow*, and if we know something about our distribution of source or dest IDs, there might be shortcuts (like counting sort). 
 
-We could also store our edges in a tree instead, sorted by the index we choose (like weight or source). We could also use a hashmap, but then we wouldn't be able to get every neighbor of a particular node (if that's not required, this is a good solution)
+We could also store our edges in a tree instead, sorted by the index we choose (like weight or source). We could also use a hashset over (source, destination) tuples, but then we wouldn't be able to get every neighbor of a particular node (if that's not required, this is a good solution)
 
 If we want to have multiple kinds of queries, we would need multiple copies of edge lists, sorted differently. This can be problematic if we need to insert a new edge. Workflows with random insertion and deletion probably require using a tree.
 
@@ -292,7 +292,7 @@ Suppose there are $|V|$ nodes. What is the limit to the number of edges ($|E|$)?
 
 It turns out, $|E| \le |V|^2$.
 
-That is, every vertex can be connected to every other vertex, which means that there are $|V|$ vertices for every vertex, hence $|V|^2$.
+That is, every vertex can potentially be connected to every other vertex, which means that there are up to $|V|$ vertices for every vertex, hence $|V|^2$.
 
 If every vertex is connected to every distinct vertex in a graph, we call it *complete*.
 
@@ -393,7 +393,7 @@ But our graph only has 7 out of 16 edges! And it's still more efficient? Why eve
 Because what happens if we add another node?
 
 Now we have $5 \times 5 \times 4 = 100$ bytes to store instead of 64. And if we add another?
-$6 \times 6 \times 4 = 144$ bytes. It's quadratic, so we keep adding more and more each time we add one node.
+$6 \times 6 \times 4 = 144$ bytes. It's quadratic, so we keep adding more and more space requirements each time we add one node.
 
 In applications where we might have a lot of sparsely connected nodes, this does not work at all. Imagine if there were 1 million nodes? How many ints would we need to allocate?
 
@@ -465,7 +465,7 @@ The first one defines `mat` to be a pointer to arrays of 200 ints. That means we
 
 # Dynamic allocation
 
-The second one defines mat to be an array of 200 pointers. However, then the malloc is erroneous, because the array of poitners is on the stack. Instead, we would have to iterate over that array and malloc a row for each pointer. Accessing an edge weight would require extra indirection: we would need to follow a pointer first.
+The second one defines mat to be an array of 200 pointers. However, then the malloc is erroneous, because the array of pointers is on the stack. Instead, we would have to iterate over that array and malloc a row for each pointer. Accessing an edge weight would require extra indirection: we would need to follow a pointer first.
 
 The first one is singly-indirect. It also only requires one `malloc` and one `free`.
 
@@ -518,8 +518,8 @@ Unfortunately, VLA support is optional as of C11, and Microsoft Visual C does no
 
 We do it ourselves! It was nice having compiler support for mat[row][col], but the math the compiler was doing behind the scenes is not that hard.
 
-With square matrices of size `dim * dim`:
-- For each row we go down, we add `dim` columns.
+With square matrices of size `b_rows * n_cols`:
+- For each row down, we add `n_cols` elements. So we select `row * n_cols`. 
 - Once we've got the address of the correct row, we just add `col` to get the element we want.
 
 ---
@@ -637,7 +637,7 @@ A tile at location 0, 0 only has two neighbors: (0, 1) and (1, 0).
 
 In this case, the neighbors are implied. We don't store them.
 
-That means their weights are implied too: the graph doesnt' store them.
+That means their weights are implied too: the graph doesn't store them.
 
 If we need weights, for example, to make it so that some terrain is more expensive to walk through, we can either use the terrain in the tile we're walking into, the tile we're walking from, or some kind of function of the two.
 
@@ -687,7 +687,7 @@ We fix this problem by marking which nodes we've searched, and refusing to searc
 
 # Searching orders
 
-Just like for trees, there are two orders to iterate over a graph:
+Just like for trees, there are some standard orders to iterate over a graph:
 - Depth first
 - Breadth first
 
@@ -1362,7 +1362,7 @@ We'll also see how we can use it to solve graph modelling problems. These proble
 
 # Practice
 
-- It's very important to be good at Dijstra's algorithm. Try modifying my graph or generating your own and find shortest paths between arbitrary points.
+- It's very important to be good at Dijkstra's algorithm. Try modifying my graph or generating your own and find shortest paths between arbitrary points.
 - Implement the algorithm in C. You'll need to do this for project 5 anyway. How do you need to modify the heap to make it work on paths? (we can discuss this if there is time)
 
 ---

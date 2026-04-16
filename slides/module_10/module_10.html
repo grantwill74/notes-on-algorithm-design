@@ -244,7 +244,7 @@ island.</p>
 <p>When the weights are all the same, that’s what Dijkstra’s algorithm
 does. It’s lowest-cost-first search, which is breadth-first search when
 the costs are all the same.</p>
-<p>And why might that not be desireable?</p>
+<p>And why might that not be desirable?</p>
 <hr />
 <h1 id="its-slow">It’s slow</h1>
 <p>Notice that we end up searching almost every node.</p>
@@ -620,13 +620,17 @@ then goes around. Fast, too!</p>
 optimal.</p>
 <figure>
 <img src="Weighted_A_star_with_eps_5.gif"
-alt="bg right width:100% height:100% an illustration by the same author as the first two animations. The scenario is the same: there is a concave obstacle with concavity facing the source node, viewed from the top. Here, the search algorithm searches every node in a line to the destination until hitting the obstacle. Then, it" />
+alt="bg right width:100% height:100% an illustration by the same author as the first two animations. The scenario is the same: there is a concave obstacle with concavity facing the source node, viewed from the top. Here, the search algorithm searches every node in a line to the destination until hitting the obstacle. Then, it backs up to consider previous nodes before finding one that can navigate around the obstacle. The final path is not ideal: it navigates around the obstacle too closely, so it ends up wasting some time by moving into a corner and then backing out rather than avoiding the obstacle with a wider path around." />
 <figcaption aria-hidden="true">bg right width:100% height:100% an
 illustration by the same author as the first two animations. The
 scenario is the same: there is a concave obstacle with concavity facing
 the source node, viewed from the top. Here, the search algorithm
 searches every node in a line to the destination until hitting the
-obstacle. Then, it</figcaption>
+obstacle. Then, it backs up to consider previous nodes before finding
+one that can navigate around the obstacle. The final path is not ideal:
+it navigates around the obstacle too closely, so it ends up wasting some
+time by moving into a corner and then backing out rather than avoiding
+the obstacle with a wider path around.</figcaption>
 </figure>
 <div class="footnote">
 <p><a
@@ -749,7 +753,7 @@ we’re considering.</p>
 breadth first search. However, what if an action took multiple turns?
 Like, if fleeing took 5? Then we would need Dijkstra’s algorithm.</p>
 <hr />
-<h1 id="psuedocode">Psuedocode</h1>
+<h1 id="pseudocode">Pseudocode</h1>
 <p>This is how we solve it with one enemy:</p>
 <ul>
 <li>Create a priority queue that stores instances of this structure:
@@ -763,7 +767,7 @@ actions at the top.</li>
 <li>But if not, what do we do then?</li>
 </ul>
 <hr />
-<h1 id="psuedocode-2-consider-every-action">Psuedocode (2): consider
+<h1 id="pseudocode-2-consider-every-action">Pseudocode (2): consider
 every action</h1>
 <ol type="1">
 <li>We attack; the new state after attacking is:
@@ -788,7 +792,7 @@ nothing.</li>
 </ol>
 <p>What about the blast state?</p>
 <hr />
-<h1 id="psuedocode-3">Psuedocode (3)</h1>
+<h1 id="pseudocode-3">Pseudocode (3)</h1>
 <ol start="3" type="1">
 <li>We blast;
 <code>{hp - d_i, mp - 1, heals, enemy_hp - 20, actions_taken + 1}</code>
@@ -921,7 +925,7 @@ winning is impossible).</p>
 three.</p>
 <p>But suppose we estimate the number of turns to beat an enemy as
 number of blasts. We’ll never <em>overestimate</em> the number, but
-we’ll often undersestimate it, and sometimes we’ll be right.</p>
+we’ll often underestimate it, and sometimes we’ll be right.</p>
 <p>So <span class="math inline">\(h(s) = \lceil\mathrm{enemy\_hp(s)} /
 20\rceil\)</span></p>
 <p>That is, divide the enemy’s health by 20 and take the ceiling. That’s
@@ -1418,7 +1422,7 @@ didn’t use those in the heuristic.</li>
 class="math inline">\(n\)</span> laps of fuel, you are in position <span
 class="math inline">\(p\)</span>, and there are <span
 class="math inline">\(r\)</span> laps remaining. You have the following
-options: - You may drive agressively for one lap. You use 2 laps of
+options: - You may drive aggressively for one lap. You use 2 laps of
 fuel, but you gain a position (<span class="math inline">\(p -
 1\)</span>). - You may maintain position by spending 1 lap of fuel. -
 You may conserve fuel. You lose 1 position, but only spend 0.5 laps of
