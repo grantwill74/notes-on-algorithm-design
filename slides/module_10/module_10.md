@@ -1119,6 +1119,8 @@ Of course, maybe we don't have to compute it for every node. But usually, it sho
 - Prove that ride time is a consistent heuristic in the previous horse maze problem.
 - Prove that walk time is not consistent. That is, find a path $s \to s'$ where $h(s) \gt c(s, s') + h(s')$
 
+Random note: we can rearrange the consistency inequality to $h(s) - h(s') \le c(s, s')$, which can be handy if our heuristic is some constant distance between adjacent states.
+
 ---
 
 # Conceptual practice
@@ -1175,12 +1177,7 @@ The quiz for this material will take this form:
 - Here is a problem requiring graph modelling
     - How do you encode the state space for the priority queue? (25%)
     - How are neighbor states derived? I.e., mathematically show me how to construct them (25%)
-- Here is a heuristic for A\* or I will ask for an heuristic.
-    - If I give a heuristic: Is it consistent? (10%), Prove it (40%)
-    - If I ask:
-        - Give me a consistent heuristic (10%)
-        - Prove it is consistent (40%)
-
+    - (50%) Then a couple of questions about the heuristic. I.e., suggest a heuristic, and prove that it is consistent. Alternatively, here is a heuristic: is it consistent and can you prove it? Alternatively, here is a heuristic: is it *useful*?  I.e., if the minimum cost is 1, we can use it as the heuristic, but then it will be the same for every neighbor, and will therefore not affect the ranking in the priority queue.
 ---
 
 # Sample quiz 1

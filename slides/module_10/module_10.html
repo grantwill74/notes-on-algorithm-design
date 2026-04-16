@@ -1316,6 +1316,10 @@ maze problem.</li>
 class="math inline">\(s \to s&#39;\)</span> where <span
 class="math inline">\(h(s) \gt c(s, s&#39;) + h(s&#39;)\)</span></li>
 </ul>
+<p>Random note: we can rearrange the consistency inequality to <span
+class="math inline">\(h(s) - h(s&#39;) \le c(s, s&#39;)\)</span>, which
+can be handy if our heuristic is some constant distance between adjacent
+states.</p>
 <hr />
 <h1 id="conceptual-practice">Conceptual practice</h1>
 <p>The game Super Mario 64 has the A-button challenge. This is a
@@ -1371,11 +1375,13 @@ but it’s a perfect example of state-space graph modelling.</p>
 <p>The quiz for this material will take this form: - Here is a problem
 requiring graph modelling - How do you encode the state space for the
 priority queue? (25%) - How are neighbor states derived? I.e.,
-mathematically show me how to construct them (25%) - Here is a heuristic
-for A* or I will ask for an heuristic. - If I give a heuristic: Is it
-consistent? (10%), Prove it (40%) - If I ask: - Give me a consistent
-heuristic (10%) - Prove it is consistent (40%)</p>
-<hr />
+mathematically show me how to construct them (25%) - (50%) Then a couple
+of questions about the heuristic. I.e., suggest a heuristic, and prove
+that it is consistent. Alternatively, here is a heuristic: is it
+consistent and can you prove it? Alternatively, here is a heuristic: is
+it <em>useful</em>? I.e., if the minimum cost is 1, we can use it as the
+heuristic, but then it will be the same for every neighbor, and will
+therefore not affect the ranking in the priority queue. —</p>
 <h1 id="sample-quiz-1">Sample quiz 1</h1>
 <p>Suppose we’re trying to find the length of the shortest path through
 a tile maze, like the two in this module. We can walk in any cardinal
