@@ -171,7 +171,9 @@ We keep calculating $F(1)$ and $F(0)$ over and over
 
 # The fundamental issue
 
-Computing Fibonacci numbers is not hard. We're just recomputing an enormous amount of data for no reason at all.
+Computing Fibonacci numbers is not hard.
+
+We're just recomputing an enormous amount of them for no reason at all.
 
 To see this, let's consider what our call-tree would look like if we didn't compute each number over and over again.
 
@@ -181,9 +183,8 @@ To see this, let's consider what our call-tree would look like if we didn't comp
 
 # More Tractable Growth
 
-Notice what happens when we *don't* recompute the values each time.
-
-Notice that the tree doesn't "fan out".
+Notice what happens when we *don't* recompute the values each time:
+The tree doesn't "fan out".
 
 This is all we *need* to calculate. We didn't need to calculate $F(6)$ a bunch of times. We only should need to calculate it once.
 
@@ -217,6 +218,8 @@ Make sure `n < 50` in this example.
 
 Here, we're using a long long, because the standard guarantees that it's large enough to store 2^64 - 1. Fibo grows very quickly.
 
+Specifically, $F_n = \Theta(\phi^n)$, where $\phi$ is the golden ratio, about 1.62.
+
 We have two base cases now. If we used a sentinel value like -1 to represent an uncomputed value, we could omit the first one and test for -1 instead. But then we couldn't use the auto-array initializer.
 
 Crucially, once we calculate the result, we store it in the table. Now we will only ever calculate it once. If that fibo comes up again, we will find it in the table instead.
@@ -227,7 +230,7 @@ Now our call graph looks like the one on the previous slide. We don't recompute 
 
 # What is the big-O?
 
-Previously it was $O(2^n)$. What did we improve it to?
+Previously it was loosely bounded at $O(2^n)$. What did we improve it to?
 
 [Thoughts?]
 
@@ -243,7 +246,9 @@ This was the naive recurrence relation. However, for this version, $F(n - 2)$ wa
 $T(\le 1) = 1$
 $T(n) = T(n - 1) + \Theta(1)$
 
-And from our earlier lemma about linear recurrence relations, we know that this is $\Theta(n)$.
+And from our earlier lemma about linear recurrence relations, we know that this is $\Theta(n)$
+
+We went from *exponential* time all the way to *linear* time! Just with a tiny change!
 
 ---
 
@@ -261,13 +266,41 @@ We originally had a problem that was based on "overlapping sub-problems". That i
 
 But these sub-problems had many sub-problems in common. For example, $F(7)$.
 
-We call it Dynamic Programming when we avoid re-computing the shared values.
+**We call it Dynamic Programming when we avoid re-computing the shared values.**
+
+---
+
+# Questions?
+
+<!-- _class: invert questions -->
+
+---
+
+# Two requirements
+
+Specifically, there are two requirements that must be met for DP to be useful:
+1. **Optimal sub-structure**: we can solve the bigger problem by solving smaller instances of the problem. E.g., we can break $F(10)$ into the sum of $F(9)$ and $F(8)$. If there were no 
+2. **Overlapping sub-problems**: solving the bigger problem involves solving the same smaller problem multiple times. For example, to solve $F(10)$ means to solves $F(9)$ and $F(8)$, and to solve $F(9)$ means to solve $F(8)$ and $F(7)$. Therefore, we would solve $F(8)$ twice if we did this naively. For the Fibonacci sequence, the naive solution will solve lower numbers many, many times. $F(2)$ will be present an exponential number of times because it's part of the solution for every larger Fibonacci number.   
+
+---
+
+# If those requirements are met...
+
+If those two requirements are met, we are able to *use dynamic programming*.
+
+That means we will *re-use* the overlapped problems without re-computing them. Either by storing them in a data structure to be re-trieved, or somehow discarding them.
+
+Usually, when people say "use dp", they mean to store the sub-problems in a table. That table is often just named `dp`.
+
+As a result, we replace an expensive, usually exponential computation with a constant or logarithmic-time data structure lookup.
+
+That is the nature of dynamic programming.
 
 ---
 
 # Top down vs. bottom up
 
-In our example, we started with the value we wanted to compute, e.g., $F(10)$, and then recursively compute $F(9)$, $F(8)$, etc.
+In our example, we started with the value we wanted to compute, e.g., $F(10)$, and then recursively computed $F(9)$, $F(8)$, etc.
 
 We store the intermediate recursive results in a data structure on the way back up. Doing this is called *memoization*. (not a misspelling)
 
@@ -333,231 +366,10 @@ We don't need a table. We just need the last two values. Becuase each element of
 
 How do we do this? How should we change the code to still do a bottom-up approach, but without needing a whole table? [Class]
 
----
-
-# My answer
-
-```c
-#include <stdint.h>
-
-uint64_t fibo(uint64_t n) {
-    if (n <= 1) return n;
-
-    uint64_t a = 1, b = 1;
-
-    for (uint64_t i = 2; i < n; i++) {
-        uint64_t c = a + b;
-        a = b; b = c;
-    }
-
-    return b;
-}
-```
+The answer is in the **appendix**, please read it! (it's the last set of slides in this deck)
 
 ---
 
-# My answer (2)
-
-First, we're using `stdint.h` for access to the `uint64_t` typedef. It's a lot more convenient than writing `unsigned long long`.
-
-We have a quick check for the `n == 0` and `n == 1` conditions. 
-
-We can think of `a` as the previous value, and `b` as the current one.
-
-Because we started by checking for `n == 0` and `n == 1`, we want `a` and `b` to start in a state where `n == 2`, which is why we chose to make both be `1`.
-
----
-
-# My answer (3)
-
-To get the next element of the series, we add `a` and `b`. Call it `c`.
-
-We want `b` to be the "current" value, so we cycle them: The current `b` because the new `a`, and the current `c` (the sum) becomes the new `b`.
-
-Our invariant is that `b` is the ith Fibonacci number and `a` is the $(i - 1)$th. It's true for `i == 2`, and if it's true for some `i`, then after adding and cycling, it's true for `i + 1`.
-
-[Does that count as a proof? Does it make sense?]
-
----
-
-# How fast is it now?
-
-After removing the table, what's our big-$\Theta$?
-
----
-
-# It's still $\Theta(n)$
-
-We can use our basic iterative big-$\Theta$ analysis here. There's a for loop over roughly `n` elements, so it's $\Theta(n)$.
-
-So, it doesn't change anything fundamentally.
-
-But we're using less memory and we don't have to handle the case that there isn't enough (we never need to allocate).
-
----
-
-# Questions?
-<!-- _class: questions invert -->
-
----
-
-# Improving further
-
-You might think that $\Theta(n)$ is the best we can do, but the Fibonacci series appears in a lot of places, and it's heavily studied.
-
-It might surprise you to learn that we can improve to sub-linear time. 
-
-This is more advanced than you will likely be required to do in a typical technical interview, but it's a cool technique that demonstrates how linear algebra techniques can help us think about problems.
-
-(Once we do this technique, it's not DP anymore, BTW. It's an algebraic technique.)
-
----
-
-# Building a matrix
-
-First, recall our technique of using `a` and `b` and using those values to compute the next element in the series.
-
-As a linear transformation, it looks like this:
-$$
-\begin{pmatrix} b_{n + 1} \\ a_{n + 1} \end{pmatrix} = \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}^n\begin{pmatrix}1 \\ 0\end{pmatrix}
-$$
-
-The $2 \times 2$ matrix in the middle is the fundamental linear transformation. 
-
-Notice how we're still adding $b_n + a_n$ to get $b_{n + 1}$, and we're still setting $a_{n + 1} = b_n$. This is a way of encoding our simple iterative logic into a matrix equation.
-
-But how does it help?
-
----
-
-# Fast exponentiation
-
-Two ways: first, multiplying two $2 \times 2$ matrices can be done in constant time. In fact, with SIMD, it can be a pretty fast constant time (4 dot products and stores). 
-
-The critical insight is that we can use fast exponentiation to comptue exponents in logarithmic time.
-
-For example, if $n = 100$ how do we compute $X^{100}$ where X is a matrix? If we multiply $X$ by itself $100$ times, then this ends up being linear time, because a matrix multiplication is constant, and we do it $n$ times.
-
-However, notice that $X^{100}$ = $X^{50} \times X^{50}$. So we really only need to compute $X^{50}$, and then it's one more multiplication.
-
----
-
-# Fast exponentiation
-
-But $X^{50}$ is just $X^{25} \times X^{25}$. So we can compute $X^{100} = ((X^{25})^2)^2$. So really, once we get $X^{25}$, it's just two more operations.
-
-But now we have an odd number, so we have to factor out an $X$ before we continue:
-$((X^{25})^2)^2 = ((X\times X^{24})^2)^2 = ((X \times (X^{12})^2)^2)^2 = ((X \times ((X^{6})^2)^2)^2)^2$
-$=((X \times (((X^{3})^2)^2)^2)^2)^2 = ((X \times (((X\times X^{2})^2)^2)^2)^2)^2$
-
-We've got 8 operations now for $n = 100$. Each time, if our factor is odd, we add 2 operations, and if it's even, we add 1. Either way, this is logarithmic time.
-
----
-
-# Practice
-
-- Implement this method yourself. I've worked it in `code/mod8.c`.
-- Roughly, how large do we expect $n$ to get before fibo overflows? 
-- If we implement this in Python with its automatic BigInt promotion, would we still consider it $\Theta(\lg n)$? 
-- Explain why or why not, and what the new big-$\Theta$ would be if not.
- (it might surprise you)
-
----
-
-# Questions?
-<!-- _class: questions invert -->
-
----
-
-# Closed form Fibonacci
-
-Of course, some of you already know the closed form equation to compute Fibonacci numbers:
-
-$$
-f_n = {1 \over \sqrt{5}}\left(\left({1 + \sqrt{5} \over 2}\right)^n-\left({1 - \sqrt{5} \over 2}\right)^n\right)
-$$
-
-This $\left({1 + \sqrt{5} \over 2}\right)^n$ term is called the golden ratio. 
-
-[Deriving this equation](https://www.cantorsparadise.com/deriving-and-understanding-binets-formula-for-the-fibonacci-sequence-4cc2693838b0) involves some discrete math techniques that are a little more advanced than we've seen so far (the superposition principle), but nothing too wild. (You don't have to learn it for this class.)
-
-However, does this mean that it's constant time?
-
----
-
-# It's not constant time
-
-That equation is cool, but it runs into the same problem as our matrix equation.
-
-Once the exponent gets big, we start needing to use arbitrary precision floating point. We can't just throw doubles in there and expect to get the right answer for $n$ values that overflow the mantissa.
-
-So, in practice, it's unlikely to be faster. We still need a logarithmic number of squares, but now our arithmetic involves big-floats instead of big-ints. It's still $\Theta((\lg n)^2)$ 
-
----
-
-# Questions?
-
-<!-- _class: invert questions -->
-
----
-
-# Automatic DP in languages like Python
-
-We're using C for this class, but I wanted to show you that DP techniques are so well-understood, that some languages actually have built-in support for them.
-
-Python has a technique that lets you *automatically* turn a function into a DP version without having to actually re-code it.
-
-Obviously I'm not going to test you on a Python technique, I just thought it was cool.
-
----
-
-# Starting point
-
-Let's imagine we're starting with this:
-```python
-def fibo(n):
-    if n <= 1: return n	
-    return fibo(n – 1) + fibo(n – 2)
-```
-
-It has the same problems as the original naive C code, except it can reach an `n` of probably a couple lower in a given time because it's in Python.
-
-Recall that we used a table to store intermediate results before. We can still do that. However, there's an approach that does this automatically...
-
----
-
-# Cache
-
-Check this out:
-```python
-from functools import cache
-
-@cache
-def fibo(n):
-    if n <= 1: return n
-    return fibo(n - 2) + fibo(n - 1)
-```
-
-This magically works. It runs in $\Theta(n)$, like the memoized version (because it is memoized).
-
----
-
-# Cache (2)
-
-How does it work? `@cache` is something called a *decorator*.
-
-Basically, when you write a decorator on top of a function, the decorator gets called like a function, and it receives the function it's on top of as an argument.
-
-It then creates a hashtable and a local function that looks up its argument in the hashtable, and if it's there, returns it, and if not, calls itself again recursively.
-
-This requires that the value be hashable, but otherwise, it's pretty flexible. It can really speed up a lot of common top-down DP problems.
-
----
-
-# Questions?
-<!-- _class: questions invert -->
-
----
 
 # More DP
 
@@ -715,7 +527,7 @@ But because one of our denominations does not divide the previous one, we have c
 
 # Practice
 
-Find some more cent values which make the greedy algorithm wrong.
+Find some more denomination values which make the greedy algorithm wrong.
 
 ---
 
@@ -756,6 +568,30 @@ For $n$ pence, take the minimum greater than zero of:
 We need a base case, too: $C(0) = 0$
 
 Does it make sense why this would give us the correct answer? 
+
+---
+
+# Why this works
+
+The idea is that, since a pound is worth 240 pence, $C(n - 240) + 1$ is the subproblem of "how many pence we would have to make up if we used a pound".
+
+For example, $C(350)$ has a solution of $C(110) + 1$: we could use one pound (the +1), and then use the solution for $60$ pence.
+
+Alternatively, we could use a crown. Then, we're using $+ 1$ for the crown, but now we have to find the ideal solution for $C(350 - 60) = C(290)$.
+
+This is probably a worse solution (290 is bigger than 110), but it's not guaranteed to be for any set of denominations. 
+
+---
+
+# Why DP is useful here
+
+This problem has:
+* optimal substructure: solving $C(110)$ can help us solve $C(350)$. Big values depend on smaller values.
+* overlapping sub-problems: $C(110)$ appears in the solution of $C(350)$, but it also appears in the solution for $C(170)$ (one more crown). 
+
+Therefore, saving our solutions for smaller pence values in a table can help us solve the problem faster, because we avoid re-computing the same values over and over.
+
+That is, we're going to use DP.
 
 ---
 
@@ -870,13 +706,39 @@ Once a solution is calculated, we don't re-calculate it.
 
 # The new bound
 
-The new time bound is polynomial. $O(nd)$ where $d$ is the number of denominations.
+The new time bound seems polynomial. $O(nd)$ where $d$ is the number of denominations.
 
 Why? Because once we compute a particular value, we never compute it again.
 
 Therefore, the largest number we could compute is $n$. 
 
 And each time, we're doing a for loop of size $d$. Some table lookups and additions.
+
+---
+
+# Be careful about times
+
+When doing abstract computer scientists, researchers prefer to use time bounds in terms of the number of digits, rather than the absolute value of the integer input.
+
+That is, $100$ would be considered $n = 7$ binary digits.
+
+If we base the time on the number of digits, then our algorithm is *exponential*, because adding one digit roughly doubles the amount of time we need to spend.
+
+However, practitioners often don't use this kind of time bound. It's not like we're going to run this program on a ternary machine or something where the digits are not binary.
+
+We have a term for algorithms that run in polynomial time in the magnitude of their input but not in the number of digits: *psuedo-polynomial* time.
+
+---
+
+# Psuedo-polynomial time
+
+I'll spare you the mathematical definition. The main idea is this: a lot of these DP problems end up being NP-complete.
+
+That can be confusing at first glance. Didn't we solve the general change making problem in polynomial time?
+
+We did in the magnitude of its input, but not in the number of bits of its input.
+
+So don't be confused: even if a DP problem is considered NP-complete, it might still have a solution that is efficient enough for practical use. Psuedo-polynomial time is still quite tractable for everyday problems.
 
 ---
 
@@ -888,13 +750,15 @@ And each time, we're doing a for loop of size $d$. Some table lookups and additi
 # Practice
 
 - I've shown the top-down solution. Now write the bottom-up solution.
+- Hint:  the solution for 100 can add a crown to it and give us one of the possible solutions for 160, and also 220, and also 280, etc.
+- Hint: As long as you keep the minimum solution, you can choose to only overwrite a cell if its n - 60 is smaller than, e.g., n - 12.
 - Which one do you expect to be faster and why? There's a clear answer with the denominations we've given.
 - What would change if we didn't just track denominations, but also the amount we had of each coin? How would we analyze that problem? Is there still a DP solution? Suppose you have as much memory as you want.
 
 
 ---
 
-# One more problem
+# Another DP problem
 
 Suppose we work for a company that cuts and sells aluminum rods.
 
@@ -963,7 +827,7 @@ Just like before, the issue is that this scales exponentially.
 
 Furthermore, we have a lot of repeated sub-problems. For example, `rod_price(10)` will need to know `rod_price(7)`, but so will `rod_price(9)` and `rod_price(8)`.
 
-So, this is a problem that can be solved with DP.
+So, this is a problem that can be solved with DP. It has optimal sub-structure (solving for a smaller length rod gives us a solution for a larger length rod), and it has overlapping sub-problems (we need `rod_price(1)` for every solution, `rod_price(2)` for all `> 2` solutions, etc.)
 
 How do we do it?
 
@@ -1035,11 +899,349 @@ For the rest, we try cutting off one of every length we can sell. If that result
 
 ---
 
+# Time for a hard one
+
+The previous problems all use a *one dimensional* DP array. 
+
+That is not a requirement. Some DP problems use 2, or even higher dimensional tables.
+
+In fact, the knapsack problem (project 4) is one of those problems.
+
+And the egg-dropping problem is another. Let's look at it...
+
+---
+
+# Dropping eggs
+
+Consider this [Leetcode problem](https://leetcode.com/problems/super-egg-drop/description/).
+
+Paraphrased:
+You have `k` identical eggs. There is a building with `n` floors. You are determining the highest floor (`f`) at which the egg will not break. That is, if `f` is 9, then dropping the egg from floor 9 will not cause it to break, but dropping it from 10 will. Dropping from floor `> f` will break the egg, and from floor `<= f` will not.
+
+Even though you are trying to find `f`, the goal of the problem is not to do that. It's to determine *how fast it is possible* to guarantee that you will find `f`. You want to know the smallest number of drops in which you would know for certain the value of `f`.
+
+---
+
+# Some examples
+
+Suppose the building is 5 floors tall and you have 3 eggs (`k = 3, n = 5`).
+
+You could drop an egg from floor 3. If it breaks, we know that `f <= 3`. If not `f > 3`.
+If `f <= 3`, we've already checked floor 3, so try 2. If it doesn't break, `f = 3`.
+If it does, we still need to try 1. If it breaks, then `f = 0`, otherwise, `f = 1`.
+If `f >= 3`, we can likewise try floor 5, if it breaks then we check floor 4.
+If it doesn't break, then `f = 5`.
+
+So, to *guarantee* that we solve the solution in the minimum number of steps, we need at most 3 drops. There is no chain of events where we need more than 3.
+
+In fact, this happens to be the answer to this set of inputs (`k = 3, n = 5`). But how did we know not to drop the first egg from floor 5? We'll talk about it. But first, what if we don't have that many eggs?
+
+---
+
+# When we are egg-limited.
+
+Suppose `n = 5` but we only have one egg (`k = 1`).
+
+[What is the solution now?]
+
+---
+
+# When we are egg-limited (2)
+
+The best we can do is drop the egg from floor 1.
+If it breaks then `f = 0`.
+If it doesn't, then `f >= 1`. Then we try floor 2.
+If it breaks, `f = 1`, if not, `f >= 2` and we try floor 3.
+If it breaks, `f = 2`, if not, `f >= 3` and we try floor 4.
+If it breaks, `f = 3`, if not, `f >= 4` and we try floor 5.
+If it breaks, `f = 4`, if not `f = 5`.
+
+There were 5 tries in the worst case to guarantee we knew `f`. Therefore, the answer for `k = 1, n = 5` is 5.
+
+We *had* to try each floor in order, because if we started in the middle and the egg broke, we couldn't drop any more eggs. The problem required us to know for certain.
+
+---
+
+# Questions?
+
+<!-- _class: invert questions -->
+
+---
+
+# A naive solution
+
+It turns out, when `k == 1`, the best we can do is `n` drops. So that's a base case.
+Also, if `n == 1`, obviously the answer is `1` drop. We'll assume `k, n >= 1`.
+
+But how can we find the *optimal sub-structure* of this problem? 
+
+That is, how do smaller solutions help us find bigger ones?
+
+---
+
+# A naive solution (2)
+
+Consider that we want to know the solution for `k = 2, n = 5`.
+
+We already know all the solutions for `k = 1`. Those are a base case.
+
+What if we dropped the egg from floor 3? What would that tell us?
+
+It depends:
+* If the egg survives, it tells us that there are two more floors remaining to check. We know that either `f == 3` (already checked), `f == 4`, or `f == 5`. That is, if we knew the solution to the problem for `n = 2, k = 2`, we would know the answer to `n = 5, k = 2`.
+* If the egg breaks, it also tells us that there are 2 more floors to check. Since we only have one egg left, we need to solve `n = 2, k =1`, which is 2.
+
+---
+
+# A naive solution (3)
+
+Therefore, we have two subproblems: `eggDrops(2, 2)` and `eggDrops(1, 2)`.
+
+And whatever the answer to those problems is, our answer will be the maximum of them, *plus 1* (because we had to drop the egg from floor 3 in order to split it into those sub problems).
+
+So `eggDrops(2, 5) = max(eggDrops(2, 2), eggDrops(1, 2)) + 1` **but only if we drop from floor 3**.
+
+What if we drop from floor 2?
+
+---
+
+# A naive solution (4)
+
+If we drop from floor 2, things are slightly different:
+* If the egg breaks, we need to solve `eggDrops(1, 1) = 1` because there is one egg left and one floor left to check.
+* If the egg survives, we need to solve `eggDrops(2, 3)`, because there are two eggs left, and 3 floors it could be. This is slower: `eggDrops(2, 3) = 2`.
+
+However, we still get the same answer: `eggDrops(2, 5) = max(eggDrops(1, 1), eggDrops(2, 3)) + 1` **but only if we drop from floor 2.
+
+What if we dropped from floor 5? (how would the solution break down)?
+
+---
+
+# A naive solution (5)
+
+If we dropped from floor 5 first, either:
+* The egg breaks. Now we only have one egg left, and 4 more floors. `1 + 4 = 5` is our number of drops, because we have to go back to floor 1 and drop from each floor with our final, precious egg.
+* The egg doesn't break, and we solve the problem immediately. If the egg doesn't break on the top floor, we know the answer is `f == n`.
+
+So we have a really asymmetrical solution: if we're lucky, we gain a ton of information, but in the average case we have a horrible solution.
+
+---
+
+# A naive solution (6)
+
+So to minimize the number of guaranteed drops, we want `max(if_it_breaks, if_it_doesnt)` to be as small as possible.
+
+So, naively, we could do something like this (in Python so it fits in a slide):
+```python
+def eggDrops(k, n):
+    if k == 1 or n <= 1: return n
+    best_sol = float('inf')
+    # try dropping from every floor
+    for drop_point in range(1, n + 1):
+        if_it_breaks = eggDrops(k - 1, drop_point - 1)
+        if_it_doesnt = eggDrops(k, n - drop_point)
+        guaranteed_drops = max(if_it_breaks, if_it_doesnt) + 1
+        best_sol = min(best_sol, guaranteed_drops)
+    
+    return best_sol
+```
+
+---
+
+# How bad is it?
+
+What do you think the time bound is on the naive solution?
+
+---
+
+# How bad is it? (2)
+
+It ends up being worse than *factorial* time. Because to solve `eggDrops(k, n)`, we have to solve `eggDrops(k, 1)`, `eggDrops(k, 2)`, ..., `eggDrops(k, n - 1)`.
+
+Likewise, we have to solve all the above for `k - 1` for the "egg breaks" case.
+
+The worst of those is going to be `eggDrops(k, n - 1)`, which will again have to run itself `n - 1` times.
+
+This happens over and over. We end up with `n * (n - 1) * (n - 2) * ...` function calls, twice.
+
+So...what do we do?
+
+---
+
+# Questions?
+
+<!-- _class: invert questions -->
+
+---
+
+# Using DP
+
+We use DP.
+
+We can use a table to store earlier solutions. For example, in C, we could use:
+```c
+int dp* = malloc((MAX_K + 1) * (MAX_N + 1) * sizeof(int));
+```
+
+The `+ 1` is so that we can actually store the answer for `k = MAX_K` and `n = MAX_N`. That is, if `MAX_N = 10`, we want to be able to store `10` floors in the table.
+
+A solution for `k = 3, n = 10` would be stored in: `dp[3 * (MAX_N + 1) + 10]`
+
+---
+
+# Using DP (2)
+
+Array lookups are constant time, so now this python code...
+```python
+dp = [float('inf')] * MAX_K * MAX_N
+def eggDrops(k, n):
+    if k == 1 or n <= 1: return n
+    if dp[k * MAX_N + n] != float('inf'): return dp[k * MAX_N + n]
+    # try dropping from every floor
+    best_sol = float('inf')
+    for drop_point in range(1, n + 1):
+        if_it_breaks = eggDrops(k - 1, drop_point - 1)
+        if_it_doesnt = eggDrops(k, n - drop_point)
+        guaranteed_drops = max(if_it_breaks, if_it_doesnt) + 1
+        best_sol = min(best_sol, guaranteed_drops)
+    
+    dp[k * MAX_N + n] = best_sol
+    return best_sol
+```
+
+...is much faster. How much?
+
+---
+
+# Time with DP
+
+Imagine we solved the problem bottom-up instead of top down.
+
+We need to basically solve it like this. What is the Big-O?
+```python
+dp = [float('inf')] * (k + 1) * (n + 1)
+# k = 1 has known solutions:
+for i in range(n + 1): dp[n + 1 + i] = i
+# so does n = 0
+for j in range(0, k + 1): dp[j * (n + 1)] = 0
+# everything else
+for j in range(2, k + 1): # O(?)
+    for i in range(n + 1):
+        for drop_point in range(1, i + 1):
+            if_it_breaks = dp[(j - 1) * (n + 1) + drop_point - 1]
+            if_it_doesnt = dp[j * (n + 1) + (i - drop_point)]
+            max_drops = max(if_it_breaks, if_it_doesnt) + 1
+            dp[j * (n + 1) + i] = min(dp[j * (n + 1) + i], max_drops)
+```
+
+---
+
+# Time with DP
+
+We end up with $k*n^2$. It's a degree-3 multinomial.
+
+Therefore, it's psuedopolynomial time of either $O(k^3)$ or $O(n^3)$ (whichever is bigger).
+
+Can we do better than that?
+
+---
+
+# Yes, but it's hard
+
+We can, but it requires a particular bit of insight that comes from information theory.
+
+One of the things we learn in information theory is how to ask *maximally informative questions*.
+
+There really is a best floor to drop the egg from.
+If we drop from the top floor, it's great if the egg doesn't break, but horrible otherwise.
+If we drop from the bottom floor, it's great if the egg breaks, but horrible otherwise.
+
+If we go from the bottom to the top, for each floor, it becomes more informative if it doesn't break, and less informative if it does. By less informative, I mean that it excludes fewer floors. We gain less information about the range of floors that `f` could be.
+
+We want to pick one of the floors where it's the same number either way. This is the maximally informative drop.
+
+---
+
+# Yes, but it's hard (2)
+
+We don't know exactly where that floor is, but we can bisect our way to find it.
+
+First, let's set up the problem. I'm using `lru_cache` which is similar to `cache` discussed in the appendix. This makes it automatically save the value of my function in a dp table.
+
+```python
+@lru_cache(101 * 10001)
+def superEggDrop(k: int, n: int) -> int:
+    if k == 1: return n
+    if n <= 2: return n
+    def test_drop_diff(drop_point):
+        if_it_breaks = self.superEggDrop(k - 1, drop_point - 1)
+        if_it_doesnt = self.superEggDrop(k, n - drop_point)
+        return (if_it_doesnt - if_it_breaks), max(if_it_breaks, if_it_doesnt) + 1
+    lo = 0
+    hi = n
+    best = 999999
+    # ... more follows
+```
+
+---
+
+# Yes, but it's hard (3)
+
+```python
+while lo < hi:
+    mid = (lo + hi + 1) // 2
+    if_it_breaks = self.superEggDrop(k - 1, mid - 1)
+    if_it_doesnt = self.superEggDrop(k, n - mid)
+    diff = if_it_doesnt - if_it_breaks
+    drops = max(if_it_breaks, if_it_doesnt) + 1
+    best = min(best, drops)
+
+    if diff <= 0:
+        hi = mid - 1
+    else:
+        lo = mid
+
+    return best
+```
+
+---
+
+# Yes, but it's hard (4)
+
+We're bisecting our way to the solution, using the difference between the number of floors we eliminate in each case.
+
+I have to admit: I didn't come up with this. I was able to get the cubic solution, but then I got stumped with making it work on some extreme sizes (`k = 50, n = 5000`). It kept timing out.
+
+After fixing it, what is the time complexity?
+
+---
+
+# Improved time
+
+Now, we still have a factor of `k` because we keep decreasing the eggs by 1, and a factor of `n` because we run at least once for every floor.
+
+But now we get a solution through bisection, so the other factor of `n` becomes logarithmic.
+
+We end up with $O(k\cdot n \cdot \lg n)$
+
+Much better. Almost quadratic time.
+
+Note: this is not at all something I would expect you to come up with in a test. This problem is a leetcode hard. I didn't even solve it without having to look at the bisection solution. I target more of a leetcode easy difficulty for tests.
+
+That said, I wanted you to see a 2D table for DP: *that* can happen on tests.
+
+---
+
+# Questions?
+<!-- _class: questions invert -->
+
+---
+
 # Quiz format
 
 The quiz will look like this:
 
-1. (100%) Here is a problem. Write a C algorithm that solves it which uses DP and runs in polynomial time.
+1. (100%) Here is a problem. Write a C algorithm that solves it which uses DP and runs in psuedo-polynomial time.
 
 That's it. The quiz will have one question.
 
@@ -1107,6 +1309,245 @@ And be sure to do the problems from previous semesters!
 <!-- _class: questions invert -->
 
 ---
+
+# Appendix A: more Fibonacci
+
+Previously I asked you to consider how we could solve Fibonacci efficiently in a table but only storing a constant number of values (no need to save all of them).
+
+Here is my answer...
+
+---
+
+# My answer
+
+```c
+#include <stdint.h>
+
+uint64_t fibo(uint64_t n) {
+    if (n <= 1) return n;
+
+    uint64_t a = 1, b = 1;
+
+    for (uint64_t i = 2; i < n; i++) {
+        uint64_t c = a + b;
+        a = b; b = c;
+    }
+
+    return b;
+}
+```
+
+---
+
+# My answer (2)
+
+First, we're using `stdint.h` for access to the `uint64_t` typedef. It's a lot more convenient than writing `unsigned long long`.
+
+We have a quick check for the `n == 0` and `n == 1` conditions. 
+
+We can think of `a` as the previous value, and `b` as the current one.
+
+Because we started by checking for `n == 0` and `n == 1`, we want `a` and `b` to start in a state where `n == 2`, which is why we chose to make both be `1`.
+
+---
+
+# My answer (3)
+
+To get the next element of the series, we add `a` and `b`. Call it `c`.
+
+We want `b` to be the "current" value, so we cycle them: The current `b` because the new `a`, and the current `c` (the sum) becomes the new `b`.
+
+Our invariant is that `b` is the ith Fibonacci number and `a` is the $(i - 1)$th. It's true for `i == 2`, and if it's true for some `i`, then after adding and cycling, it's true for `i + 1`.
+
+[Does that count as a proof? Does it make sense?]
+
+---
+
+# How fast is it now?
+
+After removing the table, what's our big-$\Theta$?
+
+---
+
+# It's still $\Theta(n)$
+
+We can use our basic iterative big-$\Theta$ analysis here. There's a for loop over roughly `n` elements, so it's $\Theta(n)$.
+
+So, it doesn't change anything fundamentally.
+
+But we're using less memory and we don't have to handle the case that there isn't enough (we never need to allocate).
+
+---
+
+# Questions?
+<!-- _class: questions invert -->
+
+---
+
+# Improving further
+
+You might think that $\Theta(n)$ is the best we can do, but the Fibonacci series appears in a lot of places, and it's heavily studied.
+
+It might surprise you to learn that we can improve to sub-linear time. 
+
+This is more advanced than you will likely be required to do in a typical technical interview, but it's a cool technique that demonstrates how linear algebra techniques can help us think about problems.
+
+(Once we do this technique, it's not DP anymore, BTW. It's an algebraic technique.)
+
+---
+
+# Building a matrix
+
+First, recall our technique of using `a` and `b` and using those values to compute the next element in the series.
+
+As a linear transformation, it looks like this:
+$$
+\begin{pmatrix} b_{n + 1} \\ a_{n + 1} \end{pmatrix} = \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}^n\begin{pmatrix}1 \\ 0\end{pmatrix}
+$$
+
+The $2 \times 2$ matrix in the middle is the fundamental linear transformation. 
+
+Notice how we're still adding $b_n + a_n$ to get $b_{n + 1}$, and we're still setting $a_{n + 1} = b_n$. This is a way of encoding our simple iterative logic into a matrix equation.
+
+But how does it help?
+
+---
+
+# Fast exponentiation
+
+Two ways: first, multiplying two $2 \times 2$ matrices can be done in constant time. In fact, with SIMD, it can be a pretty fast constant time (4 dot products and stores). 
+
+The critical insight is that we can use fast exponentiation to comptue exponents in logarithmic time.
+
+For example, if $n = 100$ how do we compute $X^{100}$ where X is a matrix? If we multiply $X$ by itself $100$ times, then this ends up being linear time, because a constant-sized matrix multiplication is constant time, and we do it $n$ times.
+
+However, notice that $X^{100}$ = $X^{50} \times X^{50}$. So we really only need to compute $X^{50}$, and then it's one more multiplication.
+
+---
+
+# Fast exponentiation
+
+But $X^{50}$ is just $X^{25} \times X^{25}$. So we can compute $X^{100} = ((X^{25})^2)^2$. So really, once we get $X^{25}$, it's just two more operations.
+
+But now we have an odd number, so we have to factor out an $X$ before we continue:
+$((X^{25})^2)^2 = ((X\times X^{24})^2)^2 = ((X \times (X^{12})^2)^2)^2 = ((X \times ((X^{6})^2)^2)^2)^2$
+$=((X \times (((X^{3})^2)^2)^2)^2)^2 = ((X \times (((X\times X^{2})^2)^2)^2)^2)^2$
+
+We've got 8 operations now for $n = 100$. Each time, if our factor is odd, we add 2 operations, and if it's even, we add 1. Either way, this is logarithmic time.
+
+---
+
+# Practice
+
+- Implement this method yourself. I've worked it in `code/mod8.c`.
+- Roughly, how large do we expect $n$ to get before fibo overflows? 
+- If we implement this in Python with its automatic BigInt promotion, would we still consider it $\Theta(\lg n)$? 
+- Explain why or why not, and what the new big-$\Theta$ would be if not.
+ (it might surprise you)
+
+---
+
+# Questions?
+<!-- _class: questions invert -->
+
+---
+
+# Closed form Fibonacci
+
+Of course, some of you already know the closed form equation to compute Fibonacci numbers:
+
+$$
+f_n = {1 \over \sqrt{5}}\left(\left({1 + \sqrt{5} \over 2}\right)^n-\left({1 - \sqrt{5} \over 2}\right)^n\right)
+$$
+
+This $\left({1 + \sqrt{5} \over 2}\right)^n$ term is called the golden ratio. 
+
+[Deriving this equation](https://www.cantorsparadise.com/deriving-and-understanding-binets-formula-for-the-fibonacci-sequence-4cc2693838b0) involves some discrete math techniques that are a little more advanced than we've seen so far (the superposition principle), but nothing too wild. (You don't have to learn it for this class.)
+
+However, does this mean that it's constant time?
+
+---
+
+# It's not constant time
+
+That equation is cool, but it runs into the same problem as our matrix equation.
+
+Once the exponent gets big, we start needing to use arbitrary precision floating point. We can't just throw doubles in there and expect to get the right answer for $n$ values that overflow the mantissa.
+
+So, in practice, it's unlikely to be faster. We still need a logarithmic number of squares, but now our arithmetic involves big-floats instead of big-ints. It's still $\Theta((\lg n)^2)$ 
+
+---
+
+# Questions?
+
+<!-- _class: invert questions -->
+
+---
+
+# Automatic DP in languages like Python
+
+We're using C for this class, but I wanted to show you that DP techniques are so well-understood, that some languages actually have built-in support for them.
+
+Python has a technique that lets you *automatically* turn a function into a DP version without having to actually re-code it.
+
+Obviously I'm not going to test you on a Python technique, I just thought it was cool.
+
+---
+
+# Starting point
+
+Let's imagine we're starting with this:
+```python
+def fibo(n):
+    if n <= 1: return n	
+    return fibo(n – 1) + fibo(n – 2)
+```
+
+It has the same problems as the original naive C code, except it can reach an `n` of probably a couple lower in a given time because it's in Python.
+
+Recall that we used a table to store intermediate results before. We can still do that. However, there's an approach that does this automatically...
+
+---
+
+# Cache
+
+Check this out:
+```python
+from functools import cache
+
+@cache
+def fibo(n):
+    if n <= 1: return n
+    return fibo(n - 2) + fibo(n - 1)
+```
+
+This magically works. It runs in $\Theta(n)$, like the memoized version (because it is memoized).
+
+---
+
+# Cache (2)
+
+How does it work? `@cache` is something called a *decorator*.
+
+Basically, when you write a decorator on top of a function, the decorator gets called like a function, and it receives the function it's on top of as an argument.
+
+It then creates a hashtable and a local function that looks up its argument in the hashtable, and if it's there, returns it, and if not, calls itself again recursively.
+
+This requires that the value be hashable, but otherwise, it's pretty flexible. It can really speed up a lot of common top-down DP problems.
+
+Warning: this technique is *only* available for functions that are *referentially transparent*. We learned this term in functional programming class. It means when a function always returns the same output for the same input. If it doesn't, the cache will "freeze" our value and we'll get the wrong resuls.
+
+---
+
+# Questions?
+<!-- _class: questions invert -->
+
+---
+
+
+---
+
+
 
 fibo 1 source:
 ```

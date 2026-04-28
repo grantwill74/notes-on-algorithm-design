@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>module_8</title>
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     html {
       color: #1a1a1a;
       background-color: #fdfdfd;
@@ -88,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -151,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -231,7 +234,7 @@
     code span.vs { color: #4070a0; } /* VerbatimString */
     code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
-  <script
+  <script defer=""
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
   type="text/javascript"></script>
 </head>
@@ -377,8 +380,9 @@ pretend it’s intentional. It’s too many calculations.</p>
 <!-- _class: invert questions -->
 <hr />
 <h1 id="the-fundamental-issue">The fundamental issue</h1>
-<p>Computing Fibonacci numbers is not hard. We’re just recomputing an
-enormous amount of data for no reason at all.</p>
+<p>Computing Fibonacci numbers is not hard.</p>
+<p>We’re just recomputing an enormous amount of them for no reason at
+all.</p>
 <p>To see this, let’s consider what our call-tree would look like if we
 didn’t compute each number over and over again.</p>
 <hr />
@@ -393,8 +397,7 @@ the “Tree” looking like a list, instead.</figcaption>
 </figure>
 <h1 id="more-tractable-growth">More Tractable Growth</h1>
 <p>Notice what happens when we <em>don’t</em> recompute the values each
-time.</p>
-<p>Notice that the tree doesn’t “fan out”.</p>
+time: The tree doesn’t “fan out”.</p>
 <p>This is all we <em>need</em> to calculate. We didn’t need to
 calculate <span class="math inline">\(F(6)\)</span> a bunch of times. We
 only should need to calculate it once.</p>
@@ -421,6 +424,9 @@ ones for Fibonacci in particular)</p>
 (2)</h1>
 <p>Here, we’re using a long long, because the standard guarantees that
 it’s large enough to store 2^64 - 1. Fibo grows very quickly.</p>
+<p>Specifically, <span class="math inline">\(F_n =
+\Theta(\phi^n)\)</span>, where <span class="math inline">\(\phi\)</span>
+is the golden ratio, about 1.62.</p>
 <p>We have two base cases now. If we used a sentinel value like -1 to
 represent an uncomputed value, we could omit the first one and test for
 -1 instead. But then we couldn’t use the auto-array initializer.</p>
@@ -431,8 +437,8 @@ will find it in the table instead.</p>
 recompute values.</p>
 <hr />
 <h1 id="what-is-the-big-o">What is the big-O?</h1>
-<p>Previously it was <span class="math inline">\(O(2^n)\)</span>. What
-did we improve it to?</p>
+<p>Previously it was loosely bounded at <span
+class="math inline">\(O(2^n)\)</span>. What did we improve it to?</p>
 <p>[Thoughts?]</p>
 <hr />
 <h1 id="the-new-big-theta">The new big-<span
@@ -446,7 +452,9 @@ class="math inline">\(\Theta\)</span></h1>
 again. Instead we get: <span class="math inline">\(T(\le 1) = 1\)</span>
 <span class="math inline">\(T(n) = T(n - 1) + \Theta(1)\)</span></p>
 <p>And from our earlier lemma about linear recurrence relations, we know
-that this is <span class="math inline">\(\Theta(n)\)</span>.</p>
+that this is <span class="math inline">\(\Theta(n)\)</span></p>
+<p>We went from <em>exponential</em> time all the way to <em>linear</em>
+time! Just with a tiny change!</p>
 <hr />
 <h1 id="questions-1">Questions?</h1>
 <!-- _class: invert questions -->
@@ -459,13 +467,51 @@ depended on <span class="math inline">\(F(9)\)</span> and <span
 class="math inline">\(F(8)\)</span>.</p>
 <p>But these sub-problems had many sub-problems in common. For example,
 <span class="math inline">\(F(7)\)</span>.</p>
-<p>We call it Dynamic Programming when we avoid re-computing the shared
-values.</p>
+<p><strong>We call it Dynamic Programming when we avoid re-computing the
+shared values.</strong></p>
+<hr />
+<h1 id="questions-2">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="two-requirements">Two requirements</h1>
+<p>Specifically, there are two requirements that must be met for DP to
+be useful: 1. <strong>Optimal sub-structure</strong>: we can solve the
+bigger problem by solving smaller instances of the problem. E.g., we can
+break <span class="math inline">\(F(10)\)</span> into the sum of <span
+class="math inline">\(F(9)\)</span> and <span
+class="math inline">\(F(8)\)</span>. If there were no 2.
+<strong>Overlapping sub-problems</strong>: solving the bigger problem
+involves solving the same smaller problem multiple times. For example,
+to solve <span class="math inline">\(F(10)\)</span> means to solves
+<span class="math inline">\(F(9)\)</span> and <span
+class="math inline">\(F(8)\)</span>, and to solve <span
+class="math inline">\(F(9)\)</span> means to solve <span
+class="math inline">\(F(8)\)</span> and <span
+class="math inline">\(F(7)\)</span>. Therefore, we would solve <span
+class="math inline">\(F(8)\)</span> twice if we did this naively. For
+the Fibonacci sequence, the naive solution will solve lower numbers
+many, many times. <span class="math inline">\(F(2)\)</span> will be
+present an exponential number of times because it’s part of the solution
+for every larger Fibonacci number.</p>
+<hr />
+<h1 id="if-those-requirements-are-met">If those requirements are
+met…</h1>
+<p>If those two requirements are met, we are able to <em>use dynamic
+programming</em>.</p>
+<p>That means we will <em>re-use</em> the overlapped problems without
+re-computing them. Either by storing them in a data structure to be
+re-trieved, or somehow discarding them.</p>
+<p>Usually, when people say “use dp”, they mean to store the
+sub-problems in a table. That table is often just named
+<code>dp</code>.</p>
+<p>As a result, we replace an expensive, usually exponential computation
+with a constant or logarithmic-time data structure lookup.</p>
+<p>That is the nature of dynamic programming.</p>
 <hr />
 <h1 id="top-down-vs.-bottom-up">Top down vs. bottom up</h1>
 <p>In our example, we started with the value we wanted to compute, e.g.,
-<span class="math inline">\(F(10)\)</span>, and then recursively compute
-<span class="math inline">\(F(9)\)</span>, <span
+<span class="math inline">\(F(10)\)</span>, and then recursively
+computed <span class="math inline">\(F(9)\)</span>, <span
 class="math inline">\(F(8)\)</span>, etc.</p>
 <p>We store the intermediate recursive results in a data structure on
 the way back up. Doing this is called <em>memoization</em>. (not a
@@ -528,229 +574,8 @@ element of the Fibonacci series is defined by the previous two
 elements.</p>
 <p>How do we do this? How should we change the code to still do a
 bottom-up approach, but without needing a whole table? [Class]</p>
-<hr />
-<h1 id="my-answer">My answer</h1>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdint.h&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">uint64_t</span> fibo<span class="op">(</span><span class="dt">uint64_t</span> n<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span> n<span class="op">;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">uint64_t</span> a <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">uint64_t</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">uint64_t</span> c <span class="op">=</span> a <span class="op">+</span> b<span class="op">;</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> b<span class="op">;</span> b <span class="op">=</span> c<span class="op">;</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> b<span class="op">;</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<hr />
-<h1 id="my-answer-2">My answer (2)</h1>
-<p>First, we’re using <code>stdint.h</code> for access to the
-<code>uint64_t</code> typedef. It’s a lot more convenient than writing
-<code>unsigned long long</code>.</p>
-<p>We have a quick check for the <code>n == 0</code> and
-<code>n == 1</code> conditions.</p>
-<p>We can think of <code>a</code> as the previous value, and
-<code>b</code> as the current one.</p>
-<p>Because we started by checking for <code>n == 0</code> and
-<code>n == 1</code>, we want <code>a</code> and <code>b</code> to start
-in a state where <code>n == 2</code>, which is why we chose to make both
-be <code>1</code>.</p>
-<hr />
-<h1 id="my-answer-3">My answer (3)</h1>
-<p>To get the next element of the series, we add <code>a</code> and
-<code>b</code>. Call it <code>c</code>.</p>
-<p>We want <code>b</code> to be the “current” value, so we cycle them:
-The current <code>b</code> because the new <code>a</code>, and the
-current <code>c</code> (the sum) becomes the new <code>b</code>.</p>
-<p>Our invariant is that <code>b</code> is the ith Fibonacci number and
-<code>a</code> is the <span class="math inline">\((i - 1)\)</span>th.
-It’s true for <code>i == 2</code>, and if it’s true for some
-<code>i</code>, then after adding and cycling, it’s true for
-<code>i + 1</code>.</p>
-<p>[Does that count as a proof? Does it make sense?]</p>
-<hr />
-<h1 id="how-fast-is-it-now">How fast is it now?</h1>
-<p>After removing the table, what’s our big-<span
-class="math inline">\(\Theta\)</span>?</p>
-<hr />
-<h1 id="its-still-thetan">It’s still <span
-class="math inline">\(\Theta(n)\)</span></h1>
-<p>We can use our basic iterative big-<span
-class="math inline">\(\Theta\)</span> analysis here. There’s a for loop
-over roughly <code>n</code> elements, so it’s <span
-class="math inline">\(\Theta(n)\)</span>.</p>
-<p>So, it doesn’t change anything fundamentally.</p>
-<p>But we’re using less memory and we don’t have to handle the case that
-there isn’t enough (we never need to allocate).</p>
-<hr />
-<h1 id="questions-2">Questions?</h1>
-<!-- _class: questions invert -->
-<hr />
-<h1 id="improving-further">Improving further</h1>
-<p>You might think that <span class="math inline">\(\Theta(n)\)</span>
-is the best we can do, but the Fibonacci series appears in a lot of
-places, and it’s heavily studied.</p>
-<p>It might surprise you to learn that we can improve to sub-linear
-time.</p>
-<p>This is more advanced than you will likely be required to do in a
-typical technical interview, but it’s a cool technique that demonstrates
-how linear algebra techniques can help us think about problems.</p>
-<p>(Once we do this technique, it’s not DP anymore, BTW. It’s an
-algebraic technique.)</p>
-<hr />
-<h1 id="building-a-matrix">Building a matrix</h1>
-<p>First, recall our technique of using <code>a</code> and
-<code>b</code> and using those values to compute the next element in the
-series.</p>
-<p>As a linear transformation, it looks like this: <span
-class="math display">\[
-\begin{pmatrix} b_{n + 1} \\ a_{n + 1} \end{pmatrix} = \begin{pmatrix} 1
-&amp; 1 \\ 1 &amp; 0 \end{pmatrix}^n\begin{pmatrix}1 \\ 0\end{pmatrix}
-\]</span></p>
-<p>The <span class="math inline">\(2 \times 2\)</span> matrix in the
-middle is the fundamental linear transformation.</p>
-<p>Notice how we’re still adding <span class="math inline">\(b_n +
-a_n\)</span> to get <span class="math inline">\(b_{n + 1}\)</span>, and
-we’re still setting <span class="math inline">\(a_{n + 1} =
-b_n\)</span>. This is a way of encoding our simple iterative logic into
-a matrix equation.</p>
-<p>But how does it help?</p>
-<hr />
-<h1 id="fast-exponentiation">Fast exponentiation</h1>
-<p>Two ways: first, multiplying two <span class="math inline">\(2 \times
-2\)</span> matrices can be done in constant time. In fact, with SIMD, it
-can be a pretty fast constant time (4 dot products and stores).</p>
-<p>The critical insight is that we can use fast exponentiation to
-comptue exponents in logarithmic time.</p>
-<p>For example, if <span class="math inline">\(n = 100\)</span> how do
-we compute <span class="math inline">\(X^{100}\)</span> where X is a
-matrix? If we multiply <span class="math inline">\(X\)</span> by itself
-<span class="math inline">\(100\)</span> times, then this ends up being
-linear time, because a matrix multiplication is constant, and we do it
-<span class="math inline">\(n\)</span> times.</p>
-<p>However, notice that <span class="math inline">\(X^{100}\)</span> =
-<span class="math inline">\(X^{50} \times X^{50}\)</span>. So we really
-only need to compute <span class="math inline">\(X^{50}\)</span>, and
-then it’s one more multiplication.</p>
-<hr />
-<h1 id="fast-exponentiation-1">Fast exponentiation</h1>
-<p>But <span class="math inline">\(X^{50}\)</span> is just <span
-class="math inline">\(X^{25} \times X^{25}\)</span>. So we can compute
-<span class="math inline">\(X^{100} = ((X^{25})^2)^2\)</span>. So
-really, once we get <span class="math inline">\(X^{25}\)</span>, it’s
-just two more operations.</p>
-<p>But now we have an odd number, so we have to factor out an <span
-class="math inline">\(X\)</span> before we continue: <span
-class="math inline">\(((X^{25})^2)^2 = ((X\times X^{24})^2)^2 = ((X
-\times (X^{12})^2)^2)^2 = ((X \times ((X^{6})^2)^2)^2)^2\)</span> <span
-class="math inline">\(=((X \times (((X^{3})^2)^2)^2)^2)^2 = ((X \times
-(((X\times X^{2})^2)^2)^2)^2)^2\)</span></p>
-<p>We’ve got 8 operations now for <span class="math inline">\(n =
-100\)</span>. Each time, if our factor is odd, we add 2 operations, and
-if it’s even, we add 1. Either way, this is logarithmic time.</p>
-<hr />
-<h1 id="practice">Practice</h1>
-<ul>
-<li>Implement this method yourself. I’ve worked it in
-<code>code/mod8.c</code>.</li>
-<li>Roughly, how large do we expect <span
-class="math inline">\(n\)</span> to get before fibo overflows?</li>
-<li>If we implement this in Python with its automatic BigInt promotion,
-would we still consider it <span class="math inline">\(\Theta(\lg
-n)\)</span>?</li>
-<li>Explain why or why not, and what the new big-<span
-class="math inline">\(\Theta\)</span> would be if not. (it might
-surprise you)</li>
-</ul>
-<hr />
-<h1 id="questions-3">Questions?</h1>
-<!-- _class: questions invert -->
-<hr />
-<h1 id="closed-form-fibonacci">Closed form Fibonacci</h1>
-<p>Of course, some of you already know the closed form equation to
-compute Fibonacci numbers:</p>
-<p><span class="math display">\[
-f_n = {1 \over \sqrt{5}}\left(\left({1 + \sqrt{5} \over
-2}\right)^n-\left({1 - \sqrt{5} \over 2}\right)^n\right)
-\]</span></p>
-<p>This <span class="math inline">\(\left({1 + \sqrt{5} \over
-2}\right)^n\)</span> term is called the golden ratio.</p>
-<p><a
-href="https://www.cantorsparadise.com/deriving-and-understanding-binets-formula-for-the-fibonacci-sequence-4cc2693838b0">Deriving
-this equation</a> involves some discrete math techniques that are a
-little more advanced than we’ve seen so far (the superposition
-principle), but nothing too wild. (You don’t have to learn it for this
-class.)</p>
-<p>However, does this mean that it’s constant time?</p>
-<hr />
-<h1 id="its-not-constant-time">It’s not constant time</h1>
-<p>That equation is cool, but it runs into the same problem as our
-matrix equation.</p>
-<p>Once the exponent gets big, we start needing to use arbitrary
-precision floating point. We can’t just throw doubles in there and
-expect to get the right answer for <span
-class="math inline">\(n\)</span> values that overflow the mantissa.</p>
-<p>So, in practice, it’s unlikely to be faster. We still need a
-logarithmic number of squares, but now our arithmetic involves
-big-floats instead of big-ints. It’s still <span
-class="math inline">\(\Theta((\lg n)^2)\)</span></p>
-<hr />
-<h1 id="questions-4">Questions?</h1>
-<!-- _class: invert questions -->
-<hr />
-<h1 id="automatic-dp-in-languages-like-python">Automatic DP in languages
-like Python</h1>
-<p>We’re using C for this class, but I wanted to show you that DP
-techniques are so well-understood, that some languages actually have
-built-in support for them.</p>
-<p>Python has a technique that lets you <em>automatically</em> turn a
-function into a DP version without having to actually re-code it.</p>
-<p>Obviously I’m not going to test you on a Python technique, I just
-thought it was cool.</p>
-<hr />
-<h1 id="starting-point">Starting point</h1>
-<p>Let’s imagine we’re starting with this:</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fibo(n):</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">1</span>: <span class="cf">return</span> n </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fibo(n – <span class="dv">1</span>) <span class="op">+</span> fibo(n – <span class="dv">2</span>)</span></code></pre></div>
-<p>It has the same problems as the original naive C code, except it can
-reach an <code>n</code> of probably a couple lower in a given time
-because it’s in Python.</p>
-<p>Recall that we used a table to store intermediate results before. We
-can still do that. However, there’s an approach that does this
-automatically…</p>
-<hr />
-<h1 id="cache">Cache</h1>
-<p>Check this out:</p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> functools <span class="im">import</span> cache</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">@cache</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fibo(n):</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">1</span>: <span class="cf">return</span> n</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fibo(n <span class="op">-</span> <span class="dv">2</span>) <span class="op">+</span> fibo(n <span class="op">-</span> <span class="dv">1</span>)</span></code></pre></div>
-<p>This magically works. It runs in <span
-class="math inline">\(\Theta(n)\)</span>, like the memoized version
-(because it is memoized).</p>
-<hr />
-<h1 id="cache-2">Cache (2)</h1>
-<p>How does it work? <code>@cache</code> is something called a
-<em>decorator</em>.</p>
-<p>Basically, when you write a decorator on top of a function, the
-decorator gets called like a function, and it receives the function it’s
-on top of as an argument.</p>
-<p>It then creates a hashtable and a local function that looks up its
-argument in the hashtable, and if it’s there, returns it, and if not,
-calls itself again recursively.</p>
-<p>This requires that the value be hashable, but otherwise, it’s pretty
-flexible. It can really speed up a lot of common top-down DP
-problems.</p>
-<hr />
-<h1 id="questions-5">Questions?</h1>
-<!-- _class: questions invert -->
+<p>The answer is in the <strong>appendix</strong>, please read it! (it’s
+the last set of slides in this deck)</p>
 <hr />
 <h1 id="more-dp">More DP</h1>
 <p>We spent a lot of time on Fibonacci. Let’s look at some other
@@ -773,19 +598,19 @@ smallest number of coins we need, given our 4 denominations?</p>
 <p>You’ve done this problem before, so here is the answer…</p>
 <hr />
 <h1 id="greedy-coin-counting-2">Greedy coin counting (2)</h1>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> greedy_fixed<span class="op">(</span><span class="dt">int</span> cents<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> n_coins <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    n_coins <span class="op">+=</span> cents <span class="op">/</span> <span class="dv">25</span><span class="op">;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    cents <span class="op">%=</span> <span class="dv">25</span><span class="op">;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    n_coins <span class="op">+=</span> cents <span class="op">/</span> <span class="dv">10</span><span class="op">;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    cents <span class="op">%=</span> <span class="dv">10</span><span class="op">;</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    n_coins <span class="op">+=</span> cents <span class="op">/</span> <span class="dv">5</span><span class="op">;</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    cents <span class="op">%=</span> <span class="dv">5</span><span class="op">;</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    n_coins <span class="op">+=</span> cents<span class="op">;</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n_coins<span class="op">;</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> greedy_fixed<span class="op">(</span><span class="dt">int</span> cents<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> n_coins <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    n_coins <span class="op">+=</span> cents <span class="op">/</span> <span class="dv">25</span><span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    cents <span class="op">%=</span> <span class="dv">25</span><span class="op">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    n_coins <span class="op">+=</span> cents <span class="op">/</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    cents <span class="op">%=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    n_coins <span class="op">+=</span> cents <span class="op">/</span> <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    cents <span class="op">%=</span> <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    n_coins <span class="op">+=</span> cents<span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n_coins<span class="op">;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <hr />
 <h1 id="greedy-coin-counting-3">Greedy coin counting (3)</h1>
 <p>Hopefully this makes sense. We try to use as many quarters as
@@ -890,10 +715,11 @@ but you will use more coins.</p>
 <p>But because one of our denominations does not divide the previous
 one, we have combinations that are sub-optimal.</p>
 <hr />
-<h1 id="practice-1">Practice</h1>
-<p>Find some more cent values which make the greedy algorithm wrong.</p>
+<h1 id="practice">Practice</h1>
+<p>Find some more denomination values which make the greedy algorithm
+wrong.</p>
 <hr />
-<h1 id="questions-6">Questions?</h1>
+<h1 id="questions-3">Questions?</h1>
 <!-- _class: invert questions -->
 <hr />
 <h1 id="fixing-it">Fixing it</h1>
@@ -920,21 +746,50 @@ class="math inline">\(C(n - 1) + 1\)</span></p>
 0\)</span></p>
 <p>Does it make sense why this would give us the correct answer?</p>
 <hr />
+<h1 id="why-this-works">Why this works</h1>
+<p>The idea is that, since a pound is worth 240 pence, <span
+class="math inline">\(C(n - 240) + 1\)</span> is the subproblem of “how
+many pence we would have to make up if we used a pound”.</p>
+<p>For example, <span class="math inline">\(C(350)\)</span> has a
+solution of <span class="math inline">\(C(110) + 1\)</span>: we could
+use one pound (the +1), and then use the solution for <span
+class="math inline">\(60\)</span> pence.</p>
+<p>Alternatively, we could use a crown. Then, we’re using <span
+class="math inline">\(+ 1\)</span> for the crown, but now we have to
+find the ideal solution for <span class="math inline">\(C(350 - 60) =
+C(290)\)</span>.</p>
+<p>This is probably a worse solution (290 is bigger than 110), but it’s
+not guaranteed to be for any set of denominations.</p>
+<hr />
+<h1 id="why-dp-is-useful-here">Why DP is useful here</h1>
+<p>This problem has: * optimal substructure: solving <span
+class="math inline">\(C(110)\)</span> can help us solve <span
+class="math inline">\(C(350)\)</span>. Big values depend on smaller
+values. * overlapping sub-problems: <span
+class="math inline">\(C(110)\)</span> appears in the solution of <span
+class="math inline">\(C(350)\)</span>, but it also appears in the
+solution for <span class="math inline">\(C(170)\)</span> (one more
+crown).</p>
+<p>Therefore, saving our solutions for smaller pence values in a table
+can help us solve the problem faster, because we avoid re-computing the
+same values over and over.</p>
+<p>That is, we’re going to use DP.</p>
+<hr />
 <h1 id="sketch-of-an-implementation">Sketch of an implementation</h1>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> slow_change<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// the - 1 is to avoid the overflow later</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> INT_MAX <span class="op">-</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span> n<span class="op">;</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> solution <span class="op">=</span> INT_MAX <span class="op">-</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">240</span><span class="op">));</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">60</span><span class="op">));</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">12</span><span class="op">));</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">10</span><span class="op">));</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">));</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> solution<span class="op">;</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> slow_change<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// the - 1 is to avoid the overflow later</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> INT_MAX <span class="op">-</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span> n<span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> solution <span class="op">=</span> INT_MAX <span class="op">-</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">240</span><span class="op">));</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">60</span><span class="op">));</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">12</span><span class="op">));</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">10</span><span class="op">));</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    solution <span class="op">=</span> min<span class="op">(</span>solution<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> slow_change<span class="op">(</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">));</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> solution<span class="op">;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>This is a janky solution with weird magic numbers. We’ll talk about
 how to improve it.</p>
 <hr />
@@ -975,22 +830,22 @@ once and save it.</p>
 <hr />
 <h1 id="improving-it">Improving it</h1>
 <p>Two ways: bottom-up or top-down. Let’s do top down.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> denoms<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">240</span><span class="op">,</span> <span class="dv">60</span><span class="op">,</span> <span class="dv">12</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">1</span><span class="op">};</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> dp<span class="op">[</span><span class="bn">0x10000</span><span class="op">]</span> <span class="op">=</span> <span class="op">{};</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> dyn_change<span class="op">(</span><span class="dt">int</span> p<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>p <span class="op">&lt;=</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>dp<span class="op">[</span>p<span class="op">])</span> <span class="cf">return</span> dp<span class="op">[</span>p<span class="op">];</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> sol <span class="op">=</span> INT_MAX<span class="op">;</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N_DENOMS<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>denoms<span class="op">[</span>i<span class="op">]</span> <span class="op">&gt;</span> p<span class="op">)</span> <span class="cf">continue</span><span class="op">;</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> sub <span class="op">=</span> dyn_change<span class="op">(</span>p <span class="op">-</span> denoms<span class="op">[</span>i<span class="op">]);</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>sub <span class="op">==</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="cf">continue</span><span class="op">;</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span><span class="dv">1</span> <span class="op">+</span> sub <span class="op">&lt;</span> sol<span class="op">)</span> sol <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> sub<span class="op">;</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    dp<span class="op">[</span>p<span class="op">]</span> <span class="op">=</span> sol <span class="op">==</span> INT_MAX <span class="op">?</span> <span class="op">-</span><span class="dv">1</span> <span class="op">:</span> sol<span class="op">;</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dp<span class="op">[</span>p<span class="op">];</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> denoms<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">240</span><span class="op">,</span> <span class="dv">60</span><span class="op">,</span> <span class="dv">12</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">1</span><span class="op">};</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> dp<span class="op">[</span><span class="bn">0x10000</span><span class="op">]</span> <span class="op">=</span> <span class="op">{};</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> dyn_change<span class="op">(</span><span class="dt">int</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>p <span class="op">&lt;=</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>dp<span class="op">[</span>p<span class="op">])</span> <span class="cf">return</span> dp<span class="op">[</span>p<span class="op">];</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> sol <span class="op">=</span> INT_MAX<span class="op">;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N_DENOMS<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>denoms<span class="op">[</span>i<span class="op">]</span> <span class="op">&gt;</span> p<span class="op">)</span> <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> sub <span class="op">=</span> dyn_change<span class="op">(</span>p <span class="op">-</span> denoms<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>sub <span class="op">==</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span><span class="dv">1</span> <span class="op">+</span> sub <span class="op">&lt;</span> sol<span class="op">)</span> sol <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> sub<span class="op">;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    dp<span class="op">[</span>p<span class="op">]</span> <span class="op">=</span> sol <span class="op">==</span> INT_MAX <span class="op">?</span> <span class="op">-</span><span class="dv">1</span> <span class="op">:</span> sol<span class="op">;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dp<span class="op">[</span>p<span class="op">];</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <hr />
 <h1 id="explaining-it">Explaining it</h1>
 <p>It works for solutions smaller than <span
@@ -1001,7 +856,7 @@ class="math inline">\(2^{20}\)</span> (<code>0x100000</code>)</p>
 <p>[So what is a good time-bound now?]</p>
 <hr />
 <h1 id="the-new-bound">The new bound</h1>
-<p>The new time bound is polynomial. <span
+<p>The new time bound seems polynomial. <span
 class="math inline">\(O(nd)\)</span> where <span
 class="math inline">\(d\)</span> is the number of denominations.</p>
 <p>Why? Because once we compute a particular value, we never compute it
@@ -1011,13 +866,45 @@ class="math inline">\(n\)</span>.</p>
 <p>And each time, we’re doing a for loop of size <span
 class="math inline">\(d\)</span>. Some table lookups and additions.</p>
 <hr />
-<h1 id="questions-7">Questions?</h1>
+<h1 id="be-careful-about-times">Be careful about times</h1>
+<p>When doing abstract computer scientists, researchers prefer to use
+time bounds in terms of the number of digits, rather than the absolute
+value of the integer input.</p>
+<p>That is, <span class="math inline">\(100\)</span> would be considered
+<span class="math inline">\(n = 7\)</span> binary digits.</p>
+<p>If we base the time on the number of digits, then our algorithm is
+<em>exponential</em>, because adding one digit roughly doubles the
+amount of time we need to spend.</p>
+<p>However, practitioners often don’t use this kind of time bound. It’s
+not like we’re going to run this program on a ternary machine or
+something where the digits are not binary.</p>
+<p>We have a term for algorithms that run in polynomial time in the
+magnitude of their input but not in the number of digits:
+<em>psuedo-polynomial</em> time.</p>
+<hr />
+<h1 id="psuedo-polynomial-time">Psuedo-polynomial time</h1>
+<p>I’ll spare you the mathematical definition. The main idea is this: a
+lot of these DP problems end up being NP-complete.</p>
+<p>That can be confusing at first glance. Didn’t we solve the general
+change making problem in polynomial time?</p>
+<p>We did in the magnitude of its input, but not in the number of bits
+of its input.</p>
+<p>So don’t be confused: even if a DP problem is considered NP-complete,
+it might still have a solution that is efficient enough for practical
+use. Psuedo-polynomial time is still quite tractable for everyday
+problems.</p>
+<hr />
+<h1 id="questions-4">Questions?</h1>
 <!-- _class: invert questions -->
 <hr />
-<h1 id="practice-2">Practice</h1>
+<h1 id="practice-1">Practice</h1>
 <ul>
 <li>I’ve shown the top-down solution. Now write the bottom-up
 solution.</li>
+<li>Hint: the solution for 100 can add a crown to it and give us one of
+the possible solutions for 160, and also 220, and also 280, etc.</li>
+<li>Hint: As long as you keep the minimum solution, you can choose to
+only overwrite a cell if its n - 60 is smaller than, e.g., n - 12.</li>
 <li>Which one do you expect to be faster and why? There’s a clear answer
 with the denominations we’ve given.</li>
 <li>What would change if we didn’t just track denominations, but also
@@ -1026,7 +913,7 @@ there still a DP solution? Suppose you have as much memory as you
 want.</li>
 </ul>
 <hr />
-<h1 id="one-more-problem">One more problem</h1>
+<h1 id="another-dp-problem">Another DP problem</h1>
 <p>Suppose we work for a company that cuts and sells aluminum rods.</p>
 <table>
 <thead>
@@ -1166,7 +1053,11 @@ price[3] + rod_price(4) - etc…</p>
 <p>Furthermore, we have a lot of repeated sub-problems. For example,
 <code>rod_price(10)</code> will need to know <code>rod_price(7)</code>,
 but so will <code>rod_price(9)</code> and <code>rod_price(8)</code>.</p>
-<p>So, this is a problem that can be solved with DP.</p>
+<p>So, this is a problem that can be solved with DP. It has optimal
+sub-structure (solving for a smaller length rod gives us a solution for
+a larger length rod), and it has overlapping sub-problems (we need
+<code>rod_price(1)</code> for every solution, <code>rod_price(2)</code>
+for all <code>&gt; 2</code> solutions, etc.)</p>
 <p>How do we do it?</p>
 <hr />
 <h1 id="dp-array">DP array</h1>
@@ -1178,31 +1069,31 @@ solutions in an array.</p>
 <hr />
 <h1 id="rod-cutting-in-c">Rod cutting in C</h1>
 <p>Starting out:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">int</span> N_LENGTHS <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> lengths<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">10</span><span class="op">};</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> rod_prices<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">17</span><span class="op">,</span> <span class="dv">17</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">24</span><span class="op">,</span> <span class="dv">30</span><span class="op">};</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> rod_dp<span class="op">[</span><span class="bn">0x10000</span><span class="op">]</span> <span class="op">=</span> <span class="op">{};</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> rod_price<span class="op">(</span><span class="dt">int</span> l<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>l <span class="op">&lt;=</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>rod_dp<span class="op">[</span>l<span class="op">]</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> rod_dp<span class="op">[</span>l<span class="op">];</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">int</span> N_LENGTHS <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> lengths<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">10</span><span class="op">};</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> rod_prices<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">17</span><span class="op">,</span> <span class="dv">17</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">24</span><span class="op">,</span> <span class="dv">30</span><span class="op">};</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> rod_dp<span class="op">[</span><span class="bn">0x10000</span><span class="op">]</span> <span class="op">=</span> <span class="op">{};</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> rod_price<span class="op">(</span><span class="dt">int</span> l<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>l <span class="op">&lt;=</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>rod_dp<span class="op">[</span>l<span class="op">]</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> rod_dp<span class="op">[</span>l<span class="op">];</span></span></code></pre></div>
 <p>We initialize our DP array and we have our base cases.</p>
 <hr />
 <h1 id="rod-cutting-in-c-2">Rod cutting in C (2)</h1>
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">// ...</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> best_price <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N_LENGTHS<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> length <span class="op">=</span> lengths<span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> other <span class="op">=</span> l <span class="op">-</span> length<span class="op">;</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>other <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">continue</span><span class="op">;</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> potential <span class="op">=</span> rod_prices<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> rod_price<span class="op">(</span>other<span class="op">);</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>potential <span class="op">&gt;</span> best_price<span class="op">)</span> best_price <span class="op">=</span> potential<span class="op">;</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    rod_dp<span class="op">[</span>l<span class="op">]</span> <span class="op">=</span> best_price<span class="op">;</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> rod_dp<span class="op">[</span>l<span class="op">];</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// ...</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> best_price <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N_LENGTHS<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> length <span class="op">=</span> lengths<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> other <span class="op">=</span> l <span class="op">-</span> length<span class="op">;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>other <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> potential <span class="op">=</span> rod_prices<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> rod_price<span class="op">(</span>other<span class="op">);</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>potential <span class="op">&gt;</span> best_price<span class="op">)</span> best_price <span class="op">=</span> potential<span class="op">;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    rod_dp<span class="op">[</span>l<span class="op">]</span> <span class="op">=</span> best_price<span class="op">;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> rod_dp<span class="op">[</span>l<span class="op">];</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>For the rest, we try cutting off one of every length we can sell. If
 that results in more money than any other combination, we take it. We
 store the result.</p>
@@ -1215,14 +1106,316 @@ store the result.</p>
 always choose a particular length?</li>
 </ul>
 <hr />
-<h1 id="questions-8">Questions?</h1>
+<h1 id="questions-5">Questions?</h1>
 <!-- _class: invert questions -->
+<hr />
+<h1 id="time-for-a-hard-one">Time for a hard one</h1>
+<p>The previous problems all use a <em>one dimensional</em> DP
+array.</p>
+<p>That is not a requirement. Some DP problems use 2, or even higher
+dimensional tables.</p>
+<p>In fact, the knapsack problem (project 4) is one of those
+problems.</p>
+<p>And the egg-dropping problem is another. Let’s look at it…</p>
+<hr />
+<h1 id="dropping-eggs">Dropping eggs</h1>
+<p>Consider this <a
+href="https://leetcode.com/problems/super-egg-drop/description/">Leetcode
+problem</a>.</p>
+<p>Paraphrased: You have <code>k</code> identical eggs. There is a
+building with <code>n</code> floors. You are determining the highest
+floor (<code>f</code>) at which the egg will not break. That is, if
+<code>f</code> is 9, then dropping the egg from floor 9 will not cause
+it to break, but dropping it from 10 will. Dropping from floor
+<code>&gt; f</code> will break the egg, and from floor
+<code>&lt;= f</code> will not.</p>
+<p>Even though you are trying to find <code>f</code>, the goal of the
+problem is not to do that. It’s to determine <em>how fast it is
+possible</em> to guarantee that you will find <code>f</code>. You want
+to know the smallest number of drops in which you would know for certain
+the value of <code>f</code>.</p>
+<hr />
+<h1 id="some-examples">Some examples</h1>
+<p>Suppose the building is 5 floors tall and you have 3 eggs
+(<code>k = 3, n = 5</code>).</p>
+<p>You could drop an egg from floor 3. If it breaks, we know that
+<code>f &lt;= 3</code>. If not <code>f &gt; 3</code>. If
+<code>f &lt;= 3</code>, we’ve already checked floor 3, so try 2. If it
+doesn’t break, <code>f = 3</code>. If it does, we still need to try 1.
+If it breaks, then <code>f = 0</code>, otherwise, <code>f = 1</code>. If
+<code>f &gt;= 3</code>, we can likewise try floor 5, if it breaks then
+we check floor 4. If it doesn’t break, then <code>f = 5</code>.</p>
+<p>So, to <em>guarantee</em> that we solve the solution in the minimum
+number of steps, we need at most 3 drops. There is no chain of events
+where we need more than 3.</p>
+<p>In fact, this happens to be the answer to this set of inputs
+(<code>k = 3, n = 5</code>). But how did we know not to drop the first
+egg from floor 5? We’ll talk about it. But first, what if we don’t have
+that many eggs?</p>
+<hr />
+<h1 id="when-we-are-egg-limited.">When we are egg-limited.</h1>
+<p>Suppose <code>n = 5</code> but we only have one egg
+(<code>k = 1</code>).</p>
+<p>[What is the solution now?]</p>
+<hr />
+<h1 id="when-we-are-egg-limited-2">When we are egg-limited (2)</h1>
+<p>The best we can do is drop the egg from floor 1. If it breaks then
+<code>f = 0</code>. If it doesn’t, then <code>f &gt;= 1</code>. Then we
+try floor 2. If it breaks, <code>f = 1</code>, if not,
+<code>f &gt;= 2</code> and we try floor 3. If it breaks,
+<code>f = 2</code>, if not, <code>f &gt;= 3</code> and we try floor 4.
+If it breaks, <code>f = 3</code>, if not, <code>f &gt;= 4</code> and we
+try floor 5. If it breaks, <code>f = 4</code>, if not
+<code>f = 5</code>.</p>
+<p>There were 5 tries in the worst case to guarantee we knew
+<code>f</code>. Therefore, the answer for <code>k = 1, n = 5</code> is
+5.</p>
+<p>We <em>had</em> to try each floor in order, because if we started in
+the middle and the egg broke, we couldn’t drop any more eggs. The
+problem required us to know for certain.</p>
+<hr />
+<h1 id="questions-6">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="a-naive-solution">A naive solution</h1>
+<p>It turns out, when <code>k == 1</code>, the best we can do is
+<code>n</code> drops. So that’s a base case. Also, if
+<code>n == 1</code>, obviously the answer is <code>1</code> drop. We’ll
+assume <code>k, n &gt;= 1</code>.</p>
+<p>But how can we find the <em>optimal sub-structure</em> of this
+problem?</p>
+<p>That is, how do smaller solutions help us find bigger ones?</p>
+<hr />
+<h1 id="a-naive-solution-2">A naive solution (2)</h1>
+<p>Consider that we want to know the solution for
+<code>k = 2, n = 5</code>.</p>
+<p>We already know all the solutions for <code>k = 1</code>. Those are a
+base case.</p>
+<p>What if we dropped the egg from floor 3? What would that tell us?</p>
+<p>It depends: * If the egg survives, it tells us that there are two
+more floors remaining to check. We know that either <code>f == 3</code>
+(already checked), <code>f == 4</code>, or <code>f == 5</code>. That is,
+if we knew the solution to the problem for <code>n = 2, k = 2</code>, we
+would know the answer to <code>n = 5, k = 2</code>. * If the egg breaks,
+it also tells us that there are 2 more floors to check. Since we only
+have one egg left, we need to solve <code>n = 2, k =1</code>, which is
+2.</p>
+<hr />
+<h1 id="a-naive-solution-3">A naive solution (3)</h1>
+<p>Therefore, we have two subproblems: <code>eggDrops(2, 2)</code> and
+<code>eggDrops(1, 2)</code>.</p>
+<p>And whatever the answer to those problems is, our answer will be the
+maximum of them, <em>plus 1</em> (because we had to drop the egg from
+floor 3 in order to split it into those sub problems).</p>
+<p>So
+<code>eggDrops(2, 5) = max(eggDrops(2, 2), eggDrops(1, 2)) + 1</code>
+<strong>but only if we drop from floor 3</strong>.</p>
+<p>What if we drop from floor 2?</p>
+<hr />
+<h1 id="a-naive-solution-4">A naive solution (4)</h1>
+<p>If we drop from floor 2, things are slightly different: * If the egg
+breaks, we need to solve <code>eggDrops(1, 1) = 1</code> because there
+is one egg left and one floor left to check. * If the egg survives, we
+need to solve <code>eggDrops(2, 3)</code>, because there are two eggs
+left, and 3 floors it could be. This is slower:
+<code>eggDrops(2, 3) = 2</code>.</p>
+<p>However, we still get the same answer:
+<code>eggDrops(2, 5) = max(eggDrops(1, 1), eggDrops(2, 3)) + 1</code>
+**but only if we drop from floor 2.</p>
+<p>What if we dropped from floor 5? (how would the solution break
+down)?</p>
+<hr />
+<h1 id="a-naive-solution-5">A naive solution (5)</h1>
+<p>If we dropped from floor 5 first, either: * The egg breaks. Now we
+only have one egg left, and 4 more floors. <code>1 + 4 = 5</code> is our
+number of drops, because we have to go back to floor 1 and drop from
+each floor with our final, precious egg. * The egg doesn’t break, and we
+solve the problem immediately. If the egg doesn’t break on the top
+floor, we know the answer is <code>f == n</code>.</p>
+<p>So we have a really asymmetrical solution: if we’re lucky, we gain a
+ton of information, but in the average case we have a horrible
+solution.</p>
+<hr />
+<h1 id="a-naive-solution-6">A naive solution (6)</h1>
+<p>So to minimize the number of guaranteed drops, we want
+<code>max(if_it_breaks, if_it_doesnt)</code> to be as small as
+possible.</p>
+<p>So, naively, we could do something like this (in Python so it fits in
+a slide):</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> eggDrops(k, n):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> k <span class="op">==</span> <span class="dv">1</span> <span class="kw">or</span> n <span class="op">&lt;=</span> <span class="dv">1</span>: <span class="cf">return</span> n</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    best_sol <span class="op">=</span> <span class="bu">float</span>(<span class="st">&#39;inf&#39;</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># try dropping from every floor</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> drop_point <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        if_it_breaks <span class="op">=</span> eggDrops(k <span class="op">-</span> <span class="dv">1</span>, drop_point <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        if_it_doesnt <span class="op">=</span> eggDrops(k, n <span class="op">-</span> drop_point)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        guaranteed_drops <span class="op">=</span> <span class="bu">max</span>(if_it_breaks, if_it_doesnt) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        best_sol <span class="op">=</span> <span class="bu">min</span>(best_sol, guaranteed_drops)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> best_sol</span></code></pre></div>
+<hr />
+<h1 id="how-bad-is-it">How bad is it?</h1>
+<p>What do you think the time bound is on the naive solution?</p>
+<hr />
+<h1 id="how-bad-is-it-2">How bad is it? (2)</h1>
+<p>It ends up being worse than <em>factorial</em> time. Because to solve
+<code>eggDrops(k, n)</code>, we have to solve
+<code>eggDrops(k, 1)</code>, <code>eggDrops(k, 2)</code>, …,
+<code>eggDrops(k, n - 1)</code>.</p>
+<p>Likewise, we have to solve all the above for <code>k - 1</code> for
+the “egg breaks” case.</p>
+<p>The worst of those is going to be <code>eggDrops(k, n - 1)</code>,
+which will again have to run itself <code>n - 1</code> times.</p>
+<p>This happens over and over. We end up with
+<code>n * (n - 1) * (n - 2) * ...</code> function calls, twice.</p>
+<p>So…what do we do?</p>
+<hr />
+<h1 id="questions-7">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="using-dp">Using DP</h1>
+<p>We use DP.</p>
+<p>We can use a table to store earlier solutions. For example, in C, we
+could use:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> dp<span class="op">*</span> <span class="op">=</span> malloc<span class="op">((</span>MAX_K <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span>MAX_N <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<p>The <code>+ 1</code> is so that we can actually store the answer for
+<code>k = MAX_K</code> and <code>n = MAX_N</code>. That is, if
+<code>MAX_N = 10</code>, we want to be able to store <code>10</code>
+floors in the table.</p>
+<p>A solution for <code>k = 3, n = 10</code> would be stored in:
+<code>dp[3 * (MAX_N + 1) + 10]</code></p>
+<hr />
+<h1 id="using-dp-2">Using DP (2)</h1>
+<p>Array lookups are constant time, so now this python code…</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dp <span class="op">=</span> [<span class="bu">float</span>(<span class="st">&#39;inf&#39;</span>)] <span class="op">*</span> MAX_K <span class="op">*</span> MAX_N</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> eggDrops(k, n):</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> k <span class="op">==</span> <span class="dv">1</span> <span class="kw">or</span> n <span class="op">&lt;=</span> <span class="dv">1</span>: <span class="cf">return</span> n</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> dp[k <span class="op">*</span> MAX_N <span class="op">+</span> n] <span class="op">!=</span> <span class="bu">float</span>(<span class="st">&#39;inf&#39;</span>): <span class="cf">return</span> dp[k <span class="op">*</span> MAX_N <span class="op">+</span> n]</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># try dropping from every floor</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    best_sol <span class="op">=</span> <span class="bu">float</span>(<span class="st">&#39;inf&#39;</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> drop_point <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        if_it_breaks <span class="op">=</span> eggDrops(k <span class="op">-</span> <span class="dv">1</span>, drop_point <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        if_it_doesnt <span class="op">=</span> eggDrops(k, n <span class="op">-</span> drop_point)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        guaranteed_drops <span class="op">=</span> <span class="bu">max</span>(if_it_breaks, if_it_doesnt) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        best_sol <span class="op">=</span> <span class="bu">min</span>(best_sol, guaranteed_drops)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    dp[k <span class="op">*</span> MAX_N <span class="op">+</span> n] <span class="op">=</span> best_sol</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> best_sol</span></code></pre></div>
+<p>…is much faster. How much?</p>
+<hr />
+<h1 id="time-with-dp">Time with DP</h1>
+<p>Imagine we solved the problem bottom-up instead of top down.</p>
+<p>We need to basically solve it like this. What is the Big-O?</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dp <span class="op">=</span> [<span class="bu">float</span>(<span class="st">&#39;inf&#39;</span>)] <span class="op">*</span> (k <span class="op">+</span> <span class="dv">1</span>) <span class="op">*</span> (n <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># k = 1 has known solutions:</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n <span class="op">+</span> <span class="dv">1</span>): dp[n <span class="op">+</span> <span class="dv">1</span> <span class="op">+</span> i] <span class="op">=</span> i</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># so does n = 0</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, k <span class="op">+</span> <span class="dv">1</span>): dp[j <span class="op">*</span> (n <span class="op">+</span> <span class="dv">1</span>)] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># everything else</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, k <span class="op">+</span> <span class="dv">1</span>): <span class="co"># O(?)</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> drop_point <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, i <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>            if_it_breaks <span class="op">=</span> dp[(j <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> (n <span class="op">+</span> <span class="dv">1</span>) <span class="op">+</span> drop_point <span class="op">-</span> <span class="dv">1</span>]</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>            if_it_doesnt <span class="op">=</span> dp[j <span class="op">*</span> (n <span class="op">+</span> <span class="dv">1</span>) <span class="op">+</span> (i <span class="op">-</span> drop_point)]</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>            max_drops <span class="op">=</span> <span class="bu">max</span>(if_it_breaks, if_it_doesnt) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>            dp[j <span class="op">*</span> (n <span class="op">+</span> <span class="dv">1</span>) <span class="op">+</span> i] <span class="op">=</span> <span class="bu">min</span>(dp[j <span class="op">*</span> (n <span class="op">+</span> <span class="dv">1</span>) <span class="op">+</span> i], max_drops)</span></code></pre></div>
+<hr />
+<h1 id="time-with-dp-1">Time with DP</h1>
+<p>We end up with <span class="math inline">\(k*n^2\)</span>. It’s a
+degree-3 multinomial.</p>
+<p>Therefore, it’s psuedopolynomial time of either <span
+class="math inline">\(O(k^3)\)</span> or <span
+class="math inline">\(O(n^3)\)</span> (whichever is bigger).</p>
+<p>Can we do better than that?</p>
+<hr />
+<h1 id="yes-but-its-hard">Yes, but it’s hard</h1>
+<p>We can, but it requires a particular bit of insight that comes from
+information theory.</p>
+<p>One of the things we learn in information theory is how to ask
+<em>maximally informative questions</em>.</p>
+<p>There really is a best floor to drop the egg from. If we drop from
+the top floor, it’s great if the egg doesn’t break, but horrible
+otherwise. If we drop from the bottom floor, it’s great if the egg
+breaks, but horrible otherwise.</p>
+<p>If we go from the bottom to the top, for each floor, it becomes more
+informative if it doesn’t break, and less informative if it does. By
+less informative, I mean that it excludes fewer floors. We gain less
+information about the range of floors that <code>f</code> could be.</p>
+<p>We want to pick one of the floors where it’s the same number either
+way. This is the maximally informative drop.</p>
+<hr />
+<h1 id="yes-but-its-hard-2">Yes, but it’s hard (2)</h1>
+<p>We don’t know exactly where that floor is, but we can bisect our way
+to find it.</p>
+<p>First, let’s set up the problem. I’m using <code>lru_cache</code>
+which is similar to <code>cache</code> discussed in the appendix. This
+makes it automatically save the value of my function in a dp table.</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="at">@lru_cache</span>(<span class="dv">101</span> <span class="op">*</span> <span class="dv">10001</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> superEggDrop(k: <span class="bu">int</span>, n: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> k <span class="op">==</span> <span class="dv">1</span>: <span class="cf">return</span> n</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">2</span>: <span class="cf">return</span> n</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_drop_diff(drop_point):</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        if_it_breaks <span class="op">=</span> <span class="va">self</span>.superEggDrop(k <span class="op">-</span> <span class="dv">1</span>, drop_point <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        if_it_doesnt <span class="op">=</span> <span class="va">self</span>.superEggDrop(k, n <span class="op">-</span> drop_point)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (if_it_doesnt <span class="op">-</span> if_it_breaks), <span class="bu">max</span>(if_it_breaks, if_it_doesnt) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    lo <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    hi <span class="op">=</span> n</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    best <span class="op">=</span> <span class="dv">999999</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ... more follows</span></span></code></pre></div>
+<hr />
+<h1 id="yes-but-its-hard-3">Yes, but it’s hard (3)</h1>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> lo <span class="op">&lt;</span> hi:</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    mid <span class="op">=</span> (lo <span class="op">+</span> hi <span class="op">+</span> <span class="dv">1</span>) <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    if_it_breaks <span class="op">=</span> <span class="va">self</span>.superEggDrop(k <span class="op">-</span> <span class="dv">1</span>, mid <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    if_it_doesnt <span class="op">=</span> <span class="va">self</span>.superEggDrop(k, n <span class="op">-</span> mid)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    diff <span class="op">=</span> if_it_doesnt <span class="op">-</span> if_it_breaks</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    drops <span class="op">=</span> <span class="bu">max</span>(if_it_breaks, if_it_doesnt) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    best <span class="op">=</span> <span class="bu">min</span>(best, drops)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> diff <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        hi <span class="op">=</span> mid <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        lo <span class="op">=</span> mid</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> best</span></code></pre></div>
+<hr />
+<h1 id="yes-but-its-hard-4">Yes, but it’s hard (4)</h1>
+<p>We’re bisecting our way to the solution, using the difference between
+the number of floors we eliminate in each case.</p>
+<p>I have to admit: I didn’t come up with this. I was able to get the
+cubic solution, but then I got stumped with making it work on some
+extreme sizes (<code>k = 50, n = 5000</code>). It kept timing out.</p>
+<p>After fixing it, what is the time complexity?</p>
+<hr />
+<h1 id="improved-time">Improved time</h1>
+<p>Now, we still have a factor of <code>k</code> because we keep
+decreasing the eggs by 1, and a factor of <code>n</code> because we run
+at least once for every floor.</p>
+<p>But now we get a solution through bisection, so the other factor of
+<code>n</code> becomes logarithmic.</p>
+<p>We end up with <span class="math inline">\(O(k\cdot n \cdot \lg
+n)\)</span></p>
+<p>Much better. Almost quadratic time.</p>
+<p>Note: this is not at all something I would expect you to come up with
+in a test. This problem is a leetcode hard. I didn’t even solve it
+without having to look at the bisection solution. I target more of a
+leetcode easy difficulty for tests.</p>
+<p>That said, I wanted you to see a 2D table for DP: <em>that</em> can
+happen on tests.</p>
+<hr />
+<h1 id="questions-8">Questions?</h1>
+<!-- _class: questions invert -->
 <hr />
 <h1 id="quiz-format">Quiz format</h1>
 <p>The quiz will look like this:</p>
 <ol type="1">
 <li>(100%) Here is a problem. Write a C algorithm that solves it which
-uses DP and runs in polynomial time.</li>
+uses DP and runs in psuedo-polynomial time.</li>
 </ol>
 <p>That’s it. The quiz will have one question.</p>
 <p>However, grading will be strict. If there is no attempt at DP, or if
@@ -1247,7 +1440,7 @@ a given integer in polynomial time.</p>
 tank of gas. At certain points along her trip, there are gas stations.
 At a gas station, she can fill her tank up to full, but it costs money,
 which she wants to minimize. This is a gas station:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> <span class="op">{</span> <span class="dt">int</span> kms_from_start<span class="op">,</span> cost_per_km<span class="op">;</span> <span class="op">}</span> Station<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> <span class="op">{</span> <span class="dt">int</span> kms_from_start<span class="op">,</span> cost_per_km<span class="op">;</span> <span class="op">}</span> Station<span class="op">;</span></span></code></pre></div>
 <p>Alice can make it to a gas station <code>d</code> km away if she has
 at least <code>d</code> km of fuel. Alice must fill up completely when
 stopping. The gas stations are lined up along her route, so she can go
@@ -1297,6 +1490,241 @@ will likely just generate a LeetCode problem anyway).</p>
 <hr />
 <h1 id="questions-9">Questions?</h1>
 <!-- _class: questions invert -->
+<hr />
+<h1 id="appendix-a-more-fibonacci">Appendix A: more Fibonacci</h1>
+<p>Previously I asked you to consider how we could solve Fibonacci
+efficiently in a table but only storing a constant number of values (no
+need to save all of them).</p>
+<p>Here is my answer…</p>
+<hr />
+<h1 id="my-answer">My answer</h1>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdint.h&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="dt">uint64_t</span> fibo<span class="op">(</span><span class="dt">uint64_t</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span> n<span class="op">;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">uint64_t</span> a <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">uint64_t</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">uint64_t</span> c <span class="op">=</span> a <span class="op">+</span> b<span class="op">;</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> b<span class="op">;</span> b <span class="op">=</span> c<span class="op">;</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> b<span class="op">;</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h1 id="my-answer-2">My answer (2)</h1>
+<p>First, we’re using <code>stdint.h</code> for access to the
+<code>uint64_t</code> typedef. It’s a lot more convenient than writing
+<code>unsigned long long</code>.</p>
+<p>We have a quick check for the <code>n == 0</code> and
+<code>n == 1</code> conditions.</p>
+<p>We can think of <code>a</code> as the previous value, and
+<code>b</code> as the current one.</p>
+<p>Because we started by checking for <code>n == 0</code> and
+<code>n == 1</code>, we want <code>a</code> and <code>b</code> to start
+in a state where <code>n == 2</code>, which is why we chose to make both
+be <code>1</code>.</p>
+<hr />
+<h1 id="my-answer-3">My answer (3)</h1>
+<p>To get the next element of the series, we add <code>a</code> and
+<code>b</code>. Call it <code>c</code>.</p>
+<p>We want <code>b</code> to be the “current” value, so we cycle them:
+The current <code>b</code> because the new <code>a</code>, and the
+current <code>c</code> (the sum) becomes the new <code>b</code>.</p>
+<p>Our invariant is that <code>b</code> is the ith Fibonacci number and
+<code>a</code> is the <span class="math inline">\((i - 1)\)</span>th.
+It’s true for <code>i == 2</code>, and if it’s true for some
+<code>i</code>, then after adding and cycling, it’s true for
+<code>i + 1</code>.</p>
+<p>[Does that count as a proof? Does it make sense?]</p>
+<hr />
+<h1 id="how-fast-is-it-now">How fast is it now?</h1>
+<p>After removing the table, what’s our big-<span
+class="math inline">\(\Theta\)</span>?</p>
+<hr />
+<h1 id="its-still-thetan">It’s still <span
+class="math inline">\(\Theta(n)\)</span></h1>
+<p>We can use our basic iterative big-<span
+class="math inline">\(\Theta\)</span> analysis here. There’s a for loop
+over roughly <code>n</code> elements, so it’s <span
+class="math inline">\(\Theta(n)\)</span>.</p>
+<p>So, it doesn’t change anything fundamentally.</p>
+<p>But we’re using less memory and we don’t have to handle the case that
+there isn’t enough (we never need to allocate).</p>
+<hr />
+<h1 id="questions-10">Questions?</h1>
+<!-- _class: questions invert -->
+<hr />
+<h1 id="improving-further">Improving further</h1>
+<p>You might think that <span class="math inline">\(\Theta(n)\)</span>
+is the best we can do, but the Fibonacci series appears in a lot of
+places, and it’s heavily studied.</p>
+<p>It might surprise you to learn that we can improve to sub-linear
+time.</p>
+<p>This is more advanced than you will likely be required to do in a
+typical technical interview, but it’s a cool technique that demonstrates
+how linear algebra techniques can help us think about problems.</p>
+<p>(Once we do this technique, it’s not DP anymore, BTW. It’s an
+algebraic technique.)</p>
+<hr />
+<h1 id="building-a-matrix">Building a matrix</h1>
+<p>First, recall our technique of using <code>a</code> and
+<code>b</code> and using those values to compute the next element in the
+series.</p>
+<p>As a linear transformation, it looks like this: <span
+class="math display">\[
+\begin{pmatrix} b_{n + 1} \\ a_{n + 1} \end{pmatrix} = \begin{pmatrix} 1
+&amp; 1 \\ 1 &amp; 0 \end{pmatrix}^n\begin{pmatrix}1 \\ 0\end{pmatrix}
+\]</span></p>
+<p>The <span class="math inline">\(2 \times 2\)</span> matrix in the
+middle is the fundamental linear transformation.</p>
+<p>Notice how we’re still adding <span class="math inline">\(b_n +
+a_n\)</span> to get <span class="math inline">\(b_{n + 1}\)</span>, and
+we’re still setting <span class="math inline">\(a_{n + 1} =
+b_n\)</span>. This is a way of encoding our simple iterative logic into
+a matrix equation.</p>
+<p>But how does it help?</p>
+<hr />
+<h1 id="fast-exponentiation">Fast exponentiation</h1>
+<p>Two ways: first, multiplying two <span class="math inline">\(2 \times
+2\)</span> matrices can be done in constant time. In fact, with SIMD, it
+can be a pretty fast constant time (4 dot products and stores).</p>
+<p>The critical insight is that we can use fast exponentiation to
+comptue exponents in logarithmic time.</p>
+<p>For example, if <span class="math inline">\(n = 100\)</span> how do
+we compute <span class="math inline">\(X^{100}\)</span> where X is a
+matrix? If we multiply <span class="math inline">\(X\)</span> by itself
+<span class="math inline">\(100\)</span> times, then this ends up being
+linear time, because a constant-sized matrix multiplication is constant
+time, and we do it <span class="math inline">\(n\)</span> times.</p>
+<p>However, notice that <span class="math inline">\(X^{100}\)</span> =
+<span class="math inline">\(X^{50} \times X^{50}\)</span>. So we really
+only need to compute <span class="math inline">\(X^{50}\)</span>, and
+then it’s one more multiplication.</p>
+<hr />
+<h1 id="fast-exponentiation-1">Fast exponentiation</h1>
+<p>But <span class="math inline">\(X^{50}\)</span> is just <span
+class="math inline">\(X^{25} \times X^{25}\)</span>. So we can compute
+<span class="math inline">\(X^{100} = ((X^{25})^2)^2\)</span>. So
+really, once we get <span class="math inline">\(X^{25}\)</span>, it’s
+just two more operations.</p>
+<p>But now we have an odd number, so we have to factor out an <span
+class="math inline">\(X\)</span> before we continue: <span
+class="math inline">\(((X^{25})^2)^2 = ((X\times X^{24})^2)^2 = ((X
+\times (X^{12})^2)^2)^2 = ((X \times ((X^{6})^2)^2)^2)^2\)</span> <span
+class="math inline">\(=((X \times (((X^{3})^2)^2)^2)^2)^2 = ((X \times
+(((X\times X^{2})^2)^2)^2)^2)^2\)</span></p>
+<p>We’ve got 8 operations now for <span class="math inline">\(n =
+100\)</span>. Each time, if our factor is odd, we add 2 operations, and
+if it’s even, we add 1. Either way, this is logarithmic time.</p>
+<hr />
+<h1 id="practice-2">Practice</h1>
+<ul>
+<li>Implement this method yourself. I’ve worked it in
+<code>code/mod8.c</code>.</li>
+<li>Roughly, how large do we expect <span
+class="math inline">\(n\)</span> to get before fibo overflows?</li>
+<li>If we implement this in Python with its automatic BigInt promotion,
+would we still consider it <span class="math inline">\(\Theta(\lg
+n)\)</span>?</li>
+<li>Explain why or why not, and what the new big-<span
+class="math inline">\(\Theta\)</span> would be if not. (it might
+surprise you)</li>
+</ul>
+<hr />
+<h1 id="questions-11">Questions?</h1>
+<!-- _class: questions invert -->
+<hr />
+<h1 id="closed-form-fibonacci">Closed form Fibonacci</h1>
+<p>Of course, some of you already know the closed form equation to
+compute Fibonacci numbers:</p>
+<p><span class="math display">\[
+f_n = {1 \over \sqrt{5}}\left(\left({1 + \sqrt{5} \over
+2}\right)^n-\left({1 - \sqrt{5} \over 2}\right)^n\right)
+\]</span></p>
+<p>This <span class="math inline">\(\left({1 + \sqrt{5} \over
+2}\right)^n\)</span> term is called the golden ratio.</p>
+<p><a
+href="https://www.cantorsparadise.com/deriving-and-understanding-binets-formula-for-the-fibonacci-sequence-4cc2693838b0">Deriving
+this equation</a> involves some discrete math techniques that are a
+little more advanced than we’ve seen so far (the superposition
+principle), but nothing too wild. (You don’t have to learn it for this
+class.)</p>
+<p>However, does this mean that it’s constant time?</p>
+<hr />
+<h1 id="its-not-constant-time">It’s not constant time</h1>
+<p>That equation is cool, but it runs into the same problem as our
+matrix equation.</p>
+<p>Once the exponent gets big, we start needing to use arbitrary
+precision floating point. We can’t just throw doubles in there and
+expect to get the right answer for <span
+class="math inline">\(n\)</span> values that overflow the mantissa.</p>
+<p>So, in practice, it’s unlikely to be faster. We still need a
+logarithmic number of squares, but now our arithmetic involves
+big-floats instead of big-ints. It’s still <span
+class="math inline">\(\Theta((\lg n)^2)\)</span></p>
+<hr />
+<h1 id="questions-12">Questions?</h1>
+<!-- _class: invert questions -->
+<hr />
+<h1 id="automatic-dp-in-languages-like-python">Automatic DP in languages
+like Python</h1>
+<p>We’re using C for this class, but I wanted to show you that DP
+techniques are so well-understood, that some languages actually have
+built-in support for them.</p>
+<p>Python has a technique that lets you <em>automatically</em> turn a
+function into a DP version without having to actually re-code it.</p>
+<p>Obviously I’m not going to test you on a Python technique, I just
+thought it was cool.</p>
+<hr />
+<h1 id="starting-point">Starting point</h1>
+<p>Let’s imagine we’re starting with this:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fibo(n):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">1</span>: <span class="cf">return</span> n </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fibo(n – <span class="dv">1</span>) <span class="op">+</span> fibo(n – <span class="dv">2</span>)</span></code></pre></div>
+<p>It has the same problems as the original naive C code, except it can
+reach an <code>n</code> of probably a couple lower in a given time
+because it’s in Python.</p>
+<p>Recall that we used a table to store intermediate results before. We
+can still do that. However, there’s an approach that does this
+automatically…</p>
+<hr />
+<h1 id="cache">Cache</h1>
+<p>Check this out:</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> functools <span class="im">import</span> cache</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="at">@cache</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fibo(n):</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">1</span>: <span class="cf">return</span> n</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fibo(n <span class="op">-</span> <span class="dv">2</span>) <span class="op">+</span> fibo(n <span class="op">-</span> <span class="dv">1</span>)</span></code></pre></div>
+<p>This magically works. It runs in <span
+class="math inline">\(\Theta(n)\)</span>, like the memoized version
+(because it is memoized).</p>
+<hr />
+<h1 id="cache-2">Cache (2)</h1>
+<p>How does it work? <code>@cache</code> is something called a
+<em>decorator</em>.</p>
+<p>Basically, when you write a decorator on top of a function, the
+decorator gets called like a function, and it receives the function it’s
+on top of as an argument.</p>
+<p>It then creates a hashtable and a local function that looks up its
+argument in the hashtable, and if it’s there, returns it, and if not,
+calls itself again recursively.</p>
+<p>This requires that the value be hashable, but otherwise, it’s pretty
+flexible. It can really speed up a lot of common top-down DP
+problems.</p>
+<p>Warning: this technique is <em>only</em> available for functions that
+are <em>referentially transparent</em>. We learned this term in
+functional programming class. It means when a function always returns
+the same output for the same input. If it doesn’t, the cache will
+“freeze” our value and we’ll get the wrong resuls.</p>
+<hr />
+<h1 id="questions-13">Questions?</h1>
+<!-- _class: questions invert -->
+<hr />
 <hr />
 <p>fibo 1 source:</p>
 <pre><code>flowchart TD
