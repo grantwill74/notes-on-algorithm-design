@@ -607,7 +607,7 @@ So what if we just made one really big string all at once? Then we could copy al
 # How to fix it
 
 ```java
-var result = new StringBuilder(inst.length * 26);
+var result = new StringBuilder(insts.length * 26);
 for (var inst : instrumentEvents) {
     result.append(inst.name).append(',')
           .append(inst.nAlarms).append(',')
