@@ -1009,7 +1009,7 @@ In the best case, quickselect finds the kth value instantly (it's the pivot). Bu
 
 In the worst case, either the pivot keeps being the biggest value and we want the smallest, or vice versa. This means we pivot $n$ times, and pivot is $\Theta(n)$, so it ends up being $\Theta(n^2)$ worse case.
 
-But what is its average case? It's when there are an equal number of values on either side of the median.
+But what is its average case? It's when there are roughly an equal number of values on either side of the median. (Technically we need amortized analysis for this. Let's just assume both sides are equal.)
 
 ---
 
@@ -1273,7 +1273,7 @@ To be honest, I couldn't come up with a non-goofy example in which it failed, an
 # The master method: in summary
 
 Try to express your problem as:
-$T(n) = A\cdot T(n / B) + f(n)$, where $A$ and $B$ are constant. 
+$T(n) = A\cdot T(n / B) + f(n)$, where $A$ and $B$ are constant, and $T(0) = c$. 
 (If you can't, the master method does not apply)
 Let $c_\mathrm{crit} = {\log A \over \log B}$
 1. If $f(n) = O(n^c)$ and $c_\mathrm{crit} \gt c$
