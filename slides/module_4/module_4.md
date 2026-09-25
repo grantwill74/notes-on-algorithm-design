@@ -292,7 +292,7 @@ The same applies when `hi` is empty conversely.
 
 But what if neither `lo` nor `hi` are empty?
 
-Say that the front of `lo` is smaller or equal. We have that `everything in merge_buf <= lo[lo_i]`. So that means, `merge_buf ++ [rest lo]` is sorted. And, we don't violate our `everything in merge_buf <= hi` assumption, because we took something that was smaller than everything in `hi`.
+Say that the front of `lo` is smaller or equal. We have that `everything in merge_buf <= lo[lo_i]`. So that means, `merge_buf ++ [lo[lo_i]]` is sorted. And, we don't violate our `everything in merge_buf <= hi` assumption, because we took something that was smaller than everything in `hi`.
 
 Likewise, if the front of `hi` is smaller, the invariant is maintained by the same logic.
 

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>module_4</title>
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     html {
       color: #1a1a1a;
       background-color: #fdfdfd;
@@ -88,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -151,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -231,7 +234,7 @@
     code span.vs { color: #4070a0; } /* VerbatimString */
     code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
-  <script
+  <script defer=""
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
   type="text/javascript"></script>
 </head>
@@ -496,8 +499,8 @@ rest of that array to the end. Solid!</p>
 empty?</p>
 <p>Say that the front of <code>lo</code> is smaller or equal. We have
 that <code>everything in merge_buf &lt;= lo[lo_i]</code>. So that means,
-<code>merge_buf ++ [head lo]</code> is sorted. And, we don’t violate our
-<code>everything in merge_buf &lt;= hi</code> assumption, because we
+<code>merge_buf ++ [lo[lo_i]]</code> is sorted. And, we don’t violate
+our <code>everything in merge_buf &lt;= hi</code> assumption, because we
 took something that was smaller than everything in <code>hi</code>.</p>
 <p>Likewise, if the front of <code>hi</code> is smaller, the invariant
 is maintained by the same logic.</p>
@@ -855,9 +858,9 @@ class="math inline">\(\Theta(1)\)</span> operations?</p>
 <h1 id="divide-vs-recombine">Divide vs recombine</h1>
 <p>In this case, recombining is slower, but both phases are <span
 class="math inline">\(\Theta(n \lg n)\)</span>.</p>
-<p>In short: doubling the number of rows will mean doubling the number
-of splits, and also doubling the number of merged integers. So they grow
-at the same rate.</p>
+<p>In short: doubling the number of rows will mean adding one to the
+number of splits, and also adding one to the number of merged integers.
+So they grow at the same rate.</p>
 <p>In some D&amp;C algorithms, dividing takes more work. In others,
 recombining is slower. It turns out we typically get logarithms as the
 big-<span class="math inline">\(\Theta\)</span> when they’re about the
@@ -1233,8 +1236,10 @@ we want the smallest, or vice versa. This means we pivot <span
 class="math inline">\(n\)</span> times, and pivot is <span
 class="math inline">\(\Theta(n)\)</span>, so it ends up being <span
 class="math inline">\(\Theta(n^2)\)</span> worse case.</p>
-<p>But what is its average case? It’s when there are an equal number of
-values on either side of the median.</p>
+<p>But what is its average case? It’s when there are roughly an equal
+number of values on either side of the median. (Technically we need
+amortized analysis for this. Let’s just assume both sides are
+equal.)</p>
 <hr />
 <h1 id="quickselect-average-case-recurrence-relation">Quickselect
 average case recurrence relation</h1>
@@ -1526,7 +1531,8 @@ enough as it is.</p>
 <p>Try to express your problem as: <span class="math inline">\(T(n) =
 A\cdot T(n / B) + f(n)\)</span>, where <span
 class="math inline">\(A\)</span> and <span
-class="math inline">\(B\)</span> are constant. (If you can’t, the master
+class="math inline">\(B\)</span> are constant, and <span
+class="math inline">\(T(0) = c\)</span>. (If you can’t, the master
 method does not apply) Let <span class="math inline">\(c_\mathrm{crit} =
 {\log A \over \log B}\)</span> 1. If <span class="math inline">\(f(n) =
 O(n^c)\)</span> and <span class="math inline">\(c_\mathrm{crit} \gt
@@ -1681,12 +1687,13 @@ to practice under a time constraint.</p>
 <ol type="1">
 <li><span class="math inline">\(T(n) = 2 \cdot T(n / 2) +
 n\)</span></li>
-<li><span class="math inline">\(T(n) = T(n / 3) + n^2\)</span></li>
+<li><span class="math inline">\(T(n) = T(n / 3) + n^2 \lg
+n\)</span></li>
 <li><span class="math inline">\(T(n) = n + 4\cdot T(n / 2)\)</span></li>
 <li><span class="math inline">\(T(n) = 256\cdot T(n / 2) + n^3 \cdot
 |\sin n|\)</span></li>
-<li><span class="math inline">\(T(n) = 49 \cdot T (n / 7) + \Theta(n^2
-\log n)\)</span></li>
+<li><span class="math inline">\(T(n) = 49 \cdot T (n / 7) + n^2 \log
+n\)</span></li>
 <li><span class="math inline">\(T(n) = 100 \cdot T(n / 10) +
 1\)</span></li>
 <li><span class="math inline">\(T(n) = T(n - 1) +
@@ -1699,10 +1706,11 @@ n\)</span></li>
 class="math inline">\(f(n) = n^1 \cdot (\log n)^0\)</span>, so case 2.
 <span class="math inline">\(T(n) = \Theta(n \lg n)\)</span></li>
 <li><span class="math inline">\(c_\mathrm{crit}= 0\)</span>, <span
-class="math inline">\(f(n) = \Omega(n^2)\)</span>, <span
+class="math inline">\(f(n) = n^2 \lg n = \Omega(n^2)\)</span>, <span
 class="math inline">\(c_\mathrm{crit} \lt 2\)</span> case 3. <span
 class="math inline">\(\exists k \lt 1, n^2 / 2 \le k n^2\)</span>? Yes,
-case 3: <span class="math inline">\(T(n) = \Theta(n^2)\)</span></li>
+case 3: <span class="math inline">\(T(n) = \Theta(n^2 \lg
+n)\)</span></li>
 <li>I flipped the terms around but it doesn’t matter: <span
 class="math inline">\(c_\mathrm{crit}= \lg 4 / \lg 2 = 2\)</span>, <span
 class="math inline">\(f(n) = O(n^1)\)</span>, <span
@@ -1768,6 +1776,10 @@ n\)</span></li>
 n)^2\)</span></li>
 <li><span class="math inline">\(T(n) = T(n-1) + T(n - 2) +
 1\)</span></li>
+<li><span class="math inline">\(T(n) = 3^8 \cdot T(n/3^4) + n^2 (\log
+n)^2\)</span></li>
+<li><span class="math inline">\(T(n) = 2\cdot T(n/4) +
+\sqrt{n}\)</span></li>
 </ol>
 <hr />
 <h1 id="appendix-a-tricky-samples-that-i-can-still-ask">Appendix A:
