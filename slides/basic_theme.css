@@ -1,6 +1,8 @@
 /* @theme slides */
-
 @import 'default';
+
+/* Uncomment the below line to enable dark mode */
+/* @import "dark_theme"; */
 
 .footnote {
     font-size: 60%;

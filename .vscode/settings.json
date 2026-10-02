@@ -1,0 +1,6 @@
+{
+  "markdown.marp.themes": [
+    "./slides/basic_theme.css",
+    "./slides/dark_theme.css"
+    ]
+}

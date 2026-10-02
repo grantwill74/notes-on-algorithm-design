@@ -1,0 +1,74 @@
+/* @theme dark_theme */
+
+@import 'default';
+
+:root {
+    --fg: #f0efef;
+    --fg-muted: #c7c7c7;
+    --fg-bold: #ffffff;
+    
+    --bg: #121212;
+    --bg-muted: #1e1e1e;
+
+    --accent: #5066f5;
+    --accent-muted: #acb7f8;
+
+    --fg-latex: #e9f9fd;
+}
+
+section {
+    background-color: var(--bg);
+    color: var(--fg);
+}
+
+section strong, section b {
+    color: var(--fg-bold);
+    font-weight: bold;
+}
+section h1 {
+    color: var(--accent);
+}
+
+section h1, 
+section h2, 
+section h3, 
+section h4, 
+section h5, 
+section  h6 {
+    font-weight: bold;
+}
+
+
+section th, 
+section td {
+    background-color: var(--bg);
+    color: var(--fg);
+}
+
+section th {
+    background-color: var(--bg-muted);
+    font-weight: bold;
+}
+
+section blockquote, 
+section blockquote p {
+    color: var(--fg-muted);
+    border-left-color: var(--accent-muted);
+}
+
+ section pre, section code {
+    background-color: var(--bg-muted);
+    color: var(--fg);
+}
+
+section pre .hljs-string {
+    color: var(--accent-muted) !important;
+}
+
+section pre .hljs-comment {
+    color: var(--fg-muted) !important;
+}
+
+section mjx-container {
+    color: var(--fg-latex);
+}
