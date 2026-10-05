@@ -289,11 +289,11 @@ void insert(BstNode** node, value) {
     if (!*node)
         *node = create a new node with value
     else if (value < (*node)->value)
-        insert ((*node)->left, value);
+        insert (&(*node)->left, value);
     else if (value == (*node)->value)
         *node = deallocate the old value and replace
     else 
-        insert((*node)->right, value);
+        insert(&(*node)->right, value);
 }
 ```
 
@@ -471,7 +471,7 @@ This is where we get to scapegoat trees.
 
 Scapegoat trees are a kind of self-balancing BST which let you configure exactly how out of whack you want the tree to be allowed to get before it rebalances.
 
-Rebalancing a scapegoat tree is very expensive: it rebalances *perfectly*. You will get the theoretically most balanced tree you can get with that data.
+Rebalancing a scapegoat tree is very expensive. You can get the theoretically most balanced tree you can get with that data.
 
 However, you don't have to do it very often, and you also can pick how *much* you rebalance. You typically choose a small portion of the tree to rebalance.
 
