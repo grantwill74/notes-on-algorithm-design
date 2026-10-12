@@ -489,7 +489,7 @@ This was inspired by a PACNW regional problem that I can't find. It involved a s
 
 The input to the program is a list of pairs: $s_{i, {lo}}$ and $s_{i,{hi}},$ for each challenge $i$. 
 
-Alice can consider the list in any order. If she is eligable to perform a challenge, she gains one point of skill, but now may be ineligible to perform some challenges later.
+Alice can see the whole list, but she must do the challenges in order. If she is eligable to perform a challenge, she gains one point of skill, but now may be ineligible to perform some challenges later.
 
 Alice is permitted to do a challenge she is ineligible for, it just doesn't give her a skill point.
 
