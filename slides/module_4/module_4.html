@@ -1532,9 +1532,10 @@ enough as it is.</p>
 A\cdot T(n / B) + f(n)\)</span>, where <span
 class="math inline">\(A\)</span> and <span
 class="math inline">\(B\)</span> are constant, and <span
-class="math inline">\(T(0) = c\)</span>. (If you can’t, the master
-method does not apply) Let <span class="math inline">\(c_\mathrm{crit} =
-{\log A \over \log B}\)</span> 1. If <span class="math inline">\(f(n) =
+class="math inline">\(T(0) = d\)</span> for some constant <span
+class="math inline">\(d\)</span>. (If you can’t, the master method does
+not apply) Let <span class="math inline">\(c_\mathrm{crit} = {\log A
+\over \log B}\)</span> 1. If <span class="math inline">\(f(n) =
 O(n^c)\)</span> and <span class="math inline">\(c_\mathrm{crit} \gt
 c\)</span> Then <span class="math inline">\(T(n) =
 \Theta(n^{c_\mathrm{crit}})\)</span> 2. If <span
@@ -1549,7 +1550,7 @@ c\)</span> and <span class="math inline">\(\exists k, A\cdot f(n / B)
 <hr />
 <figure>
 <img src="master_chart.svg"
-alt="bg height:100% a flowchart for the master method. Step one is telling you to formulate your problem as T(n)=AT(n/B) + f(n). Then we reach a decision: c_crit = (log A) / (log B). If f(n)=O(n^c), and c_crit &gt; c, we go to case 1: T(n)=Theta(n^c_crit). If f(n) = Theta(n^c  (log n)^k) and c_crit = c, we go to case 2: T(n) = Theta(n^c_crit * (log n)^(k + 1). If f(n) = Omega(n^c), and c_crit &lt; c, we go to case 3, which has a decision to make. The decision: is there a k less than 1 such that A * f(n / B) = k * f(n)? If so, T(n) = Theta(f(n)), if not, we go to the crying cat emoji, indicatin that we will have to use another method to determine the running time)" />
+alt="bg height:100% a flowchart for the master method. Step one is telling you to formulate your problem as T(n)=AT(n/B) + f(n). Then we reach a decision: c_crit = (log A) / (log B). If f(n)=O(n^c), and c_crit &gt; c, we go to case 1: T(n)=Theta(n^c_crit). If f(n) = Theta(n^c  (log n)^k) and c_crit = c, we go to case 2: T(n) = Theta(n^c_crit * (log n)^(k + 1). If f(n) = Omega(n^c), and c_crit &lt; c, we go to case 3, which has a decision to make. The decision: is there a k less than 1 such that A * f(n / B) = k * f(n)? If so, T(n) = Theta(f(n)), if not, we go to the crying cat emoji, indicating that we will have to use another method to determine the running time)" />
 <figcaption aria-hidden="true">bg height:100% a flowchart for the master
 method. Step one is telling you to formulate your problem as
 T(n)=A<em>T(n/B) + f(n). Then we reach a decision: c_crit = (log A) /
@@ -1559,7 +1560,7 @@ c, we go to case 2: T(n) = Theta(n^c_crit * (log n)^(k + 1). If f(n) =
 Omega(n^c), and c_crit &lt; c, we go to case 3, which has a decision to
 make. The decision: is there a k less than 1 such that A * f(n / B) = k
 * f(n)? If so, T(n) = Theta(f(n)), if not, we go to the crying cat
-emoji, indicatin that we will have to use another method to determine
+emoji, indicating that we will have to use another method to determine
 the running time)</figcaption>
 </figure>
 <hr />

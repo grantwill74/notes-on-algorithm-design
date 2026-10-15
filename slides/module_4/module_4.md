@@ -1273,8 +1273,7 @@ To be honest, I couldn't come up with a non-goofy example in which it failed, an
 # The master method: in summary
 
 Try to express your problem as:
-$T(n) = A\cdot T(n / B) + f(n)$, where $A$ and $B$ are constant, and $T(0) = c$. 
-(If you can't, the master method does not apply)
+$T(n) = A\cdot T(n / B) + f(n)$, where $A$ and $B$ are constant, and $T(0) = d$ for some constant $d$. (If you can't, the master method does not apply)
 Let $c_\mathrm{crit} = {\log A \over \log B}$
 1. If $f(n) = O(n^c)$ and $c_\mathrm{crit} \gt c$
    Then $T(n) = \Theta(n^{c_\mathrm{crit}})$
@@ -1286,7 +1285,7 @@ Let $c_\mathrm{crit} = {\log A \over \log B}$
 
 ---
 
-![bg height:100% a flowchart for the master method. Step one is telling you to formulate your problem as T(n)=A*T(n/B) + f(n). Then we reach a decision: c_crit = (log A) / (log B). If f(n)=O(n^c), and c_crit > c, we go to case 1: T(n)=Theta(n^c_crit). If f(n) = Theta(n^c * (log n)^k) and c_crit = c, we go to case 2: T(n) = Theta(n^c_crit * (log n)^(k + 1). If f(n) = Omega(n^c), and c_crit < c, we go to case 3, which has a decision to make. The decision: is there a k less than 1 such that A * f(n / B) = k * f(n)? If so, T(n) = Theta(f(n)), if not, we go to the crying cat emoji, indicatin that we will have to use another method to determine the running time)](master_chart.svg)
+![bg height:100% a flowchart for the master method. Step one is telling you to formulate your problem as T(n)=A*T(n/B) + f(n). Then we reach a decision: c_crit = (log A) / (log B). If f(n)=O(n^c), and c_crit > c, we go to case 1: T(n)=Theta(n^c_crit). If f(n) = Theta(n^c * (log n)^k) and c_crit = c, we go to case 2: T(n) = Theta(n^c_crit * (log n)^(k + 1). If f(n) = Omega(n^c), and c_crit < c, we go to case 3, which has a decision to make. The decision: is there a k less than 1 such that A * f(n / B) = k * f(n)? If so, T(n) = Theta(f(n)), if not, we go to the crying cat emoji, indicating that we will have to use another method to determine the running time)](master_chart.svg)
 
 ---
 
