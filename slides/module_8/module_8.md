@@ -575,7 +575,7 @@ Does it make sense why this would give us the correct answer?
 
 The idea is that, since a pound is worth 240 pence, $C(n - 240) + 1$ is the subproblem of "how many pence we would have to make up if we used a pound".
 
-For example, $C(350)$ has a solution of $C(110) + 1$: we could use one pound (the +1), and then use the solution for $60$ pence.
+For example, $C(350)$ has a solution of $C(110) + 1$: we could use one pound (the +1), and then use the solution for $110$ pence.
 
 Alternatively, we could use a crown. Then, we're using $+ 1$ for the crown, but now we have to find the ideal solution for $C(350 - 60) = C(290)$.
 
@@ -651,7 +651,7 @@ Now that we've done that, we shouldn't have to do it over again.
 However, suppose we want to know how to make change for 50p. Then we might end up at 20p from many different angles:
 - 30p minus 10p
 - 21p minus 1p
-- 36p minus 12p
+- 32p minus 12p
 etc.
 
 ---
