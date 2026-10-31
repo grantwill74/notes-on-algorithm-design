@@ -1272,10 +1272,20 @@ Suppose Alice is taking a motorcycle trip across the country past `n` gas statio
 typedef struct { int kms_from_start, cost_per_km; } Station;
 ```
 
-Alice can make it to a gas station `d` km away if she has at least `d` km of fuel. Alice must fill up completely when stopping. The gas stations are lined up along her route, so she can go from, e.g., station {20, _} to {30, _} if she has at least 10 km of fuel. Given a `k` and a list stations, write a DP algorithm in C that runs in polynomial time and returns the lowest cost. The last gas station in the list is her destination.
+Alice can make it to a gas station `d` km away if she has at least `d` km of fuel. Alice must fill up completely when stopping. The gas stations are lined up along her route, so she can go from, e.g., station {20, _} to {30, _} if she has at least 10 km of fuel. Given a `k` and a list stations, write a DP algorithm in C that runs in polynomial time and returns the lowest cost. The last gas station in the list is her destination... (example on next slide)
+
+---
+
+# Practice quiz 2 (ctd.)
 
 E.g., `k = 50` and `a = {{49, 100}, {50, 200}, {60, 500}, {100, 200}, {150, 0}}` 
-returns 3: she stops at 50, 100, and 150
+returns $100 \times 49 + 200 \times 1 + 200 \times 50 + 150 \times 0$ = $15,100$
+
+Alice fills up at the 49 station and tops up with 49 kilometers of gas, then stops at the 50 station to buy the 1 unit she burned to get from the 49 station. Then she makes it past the extremely expensive 60 km station and hits the 100 km station, filling up enough for the end of the journey.
+
+
+Note: this is a "take it or leave it" type of DP problem. You're basically asking the question "what happens if I take this station vs. what happens if I skip over it". This is a very common kind of DP sub-problem.
+
 
 ---
 
