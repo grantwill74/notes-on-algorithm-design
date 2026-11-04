@@ -203,6 +203,9 @@ The reason A\* doesn't is that they have a higher estimated cost than the nodes 
   `path = {source: X, dest: Y, cost: cost_so_far + cost[X][Y] + estimate[Y]}`
 - That's it. You're using A\* now.
 
+
+- (except make sure to keep track of the cost *without* the estimate for future costs)
+
 ---
 
 # Generating that estimate
