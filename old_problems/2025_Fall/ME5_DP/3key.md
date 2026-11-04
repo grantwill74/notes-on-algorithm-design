@@ -23,9 +23,11 @@ int max_xp(Spawn spawns[], int n_spawns) {
         int if_moved = max2(dp[i - 1][(z + 1) % 3], dp[i - 1][(z + 2) % 3]);
         dp[i][z] = max2(if_stayed, if_moved);
 
-        // otherwise, we ignored the monster
-        dp[i][(z + 1) % 3] = dp[i - 1][(z + 1) % 3];
-        dp[i][(z + 2) % 3] = dp[i - 1][(z + 2) % 3];
+        // otherwise, we ignored the monster. We either stayed or moved
+        // here, so take the best of the previous zones.
+        int prev_max =  max3(dp[i - 1][0], dp[i - 1][1], dp[i - 1][2]);
+        dp[i][(z + 1) % 3] = prev_max;
+        dp[i][(z + 2) % 3] = prev_max;
     }
 
     return max3(dp[n_spawns - 1][0], dp[n_spawns - 1][1], dp[n_spawns - 1][2]);
